@@ -510,3 +510,37 @@ Rendering layoutfalsecontent_typetext/htmlactionindex within layouts/documents
 Rendering documents/index
   [4;35;1mDocument Columns (0.001751)[0m   [0mSHOW FIELDS FROM documents[0m
 Completed in 0.01755 (56 reqs/sec) | Rendering: 0.00368 (20%) | DB: 0.00209 (11%) | 200 OK [http://localhost/documents]
+  [4;36;1mSQL (0.073309)[0m   [0;1mSET SQL_AUTO_IS_NULL=0[0m
+  [4;35;1mSQL (0.000000)[0m   [0mMysql::Error: Table 'schema_info' already exists: CREATE TABLE schema_info (version int(11))[0m
+  [4;36;1mSQL (0.037533)[0m   [0;1mSELECT version FROM schema_info[0m
+  [4;35;1mSQL (0.000171)[0m   [0mSELECT version FROM schema_info[0m
+  [4;36;1mSQL (0.000000)[0m   [0;1mMysql::Error: Table 'schema_info' already exists: CREATE TABLE schema_info (version int(11))[0m
+  [4;35;1mSQL (0.000407)[0m   [0mSELECT version FROM schema_info[0m
+  [4;36;1mSQL (0.000178)[0m   [0;1mSELECT version FROM schema_info[0m
+  [4;35;1mSQL (0.000114)[0m   [0mSELECT version FROM schema_info[0m
+  [4;36;1mSQL (0.000108)[0m   [0;1mSELECT version FROM schema_info[0m
+  [4;35;1mSQL (0.000108)[0m   [0mSELECT version FROM schema_info[0m
+Migrating to CreateStructures (6)
+  [4;36;1mSQL (0.058558)[0m   [0;1mDROP TABLE structures[0m
+  [4;35;1mSQL (0.001205)[0m   [0mUPDATE schema_info SET version = 5[0m
+  [4;36;1mSQL (0.000167)[0m   [0;1mSELECT version FROM schema_info[0m
+Migrating to CreateRelationshipTypes (5)
+  [4;35;1mSQL (0.027191)[0m   [0mDROP TABLE relationship_types[0m
+  [4;36;1mSQL (0.000285)[0m   [0;1mUPDATE schema_info SET version = 4[0m
+  [4;35;1mSQL (0.000153)[0m   [0mSELECT version FROM schema_info[0m
+Migrating to CreateAttributes (3)
+  [4;36;1mSQL (0.022553)[0m   [0;1mDROP TABLE attributes[0m
+  [4;35;1mSQL (0.000284)[0m   [0mUPDATE schema_info SET version = 2[0m
+  [4;36;1mSQL (0.000151)[0m   [0;1mSELECT version FROM schema_info[0m
+Migrating to CreateTemplates (2)
+  [4;35;1mSQL (0.013891)[0m   [0mDROP TABLE templates[0m
+  [4;36;1mSQL (0.000286)[0m   [0;1mUPDATE schema_info SET version = 1[0m
+  [4;35;1mSQL (0.000164)[0m   [0mSELECT version FROM schema_info[0m
+Migrating to CreateDocuments (1)
+  [4;36;1mSQL (0.002515)[0m   [0;1mDROP TABLE document_versions[0m
+  [4;35;1mSQL (0.002602)[0m   [0mDROP TABLE documents[0m
+  [4;36;1mSQL (0.000291)[0m   [0;1mUPDATE schema_info SET version = 0[0m
+  [4;35;1mSQL (0.000263)[0m   [0mSELECT * FROM schema_info[0m
+  [4;36;1mSQL (0.016883)[0m   [0;1mSHOW TABLES[0m
+  [4;35;1mSQL (0.006408)[0m   [0mSHOW FIELDS FROM relationship_types_templates[0m
+  [4;36;1mSQL (0.000508)[0m   [0;1mSHOW KEYS FROM relationship_types_templates[0m
