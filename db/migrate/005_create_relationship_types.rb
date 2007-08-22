@@ -4,8 +4,8 @@ class CreateRelationshipTypes < ActiveRecord::Migration
       t.column :name, :string
       t.column :left_description, :string
       t.column :right_description, :string
-      t.column :left_type, :string
-      t.column :right_type, :string
+      t.column :left_template_id, :integer
+      t.column :right_template_id, :integer
       t.column :template_schema_id, :integer
     end
   end
