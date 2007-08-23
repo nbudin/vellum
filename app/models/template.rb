@@ -4,10 +4,10 @@ class Template < ActiveRecord::Base
   has_many :attribute_configurations, :through => :attributes
   belongs_to :project
   belongs_to :template_schema
-  has_many :outward_relationships, :as => :left, :class_name => "Relationship"
-  has_many :inward_relationships, :as => :right, :class_name => "Relationship"
-  
-  def relationships
-    outward_relationships + inward_relationships
+  has_many :outward_relationship_types, :foreign_key => :left_template_id, :class_name => "RelationshipType"
+  has_many :inward_relationship_types, :foreign_key => :right_template_id, :class_name => "RelationshipType"
+
+  def relationship_types
+    outward_relationship_types + inward_relationship_types
   end
 end

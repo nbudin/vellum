@@ -2,11 +2,82 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 0) do
+ActiveRecord::Schema.define(:version => 10) do
+
+  create_table "attribute_value_metadatas", :force => true do |t|
+    t.column "attribute_id", :integer
+    t.column "structure_id", :integer
+    t.column "value_id",     :integer
+    t.column "value_type",   :integer
+  end
+
+  create_table "attributes", :force => true do |t|
+    t.column "name",                         :string
+    t.column "template_id",                  :integer
+    t.column "attribute_configuration_id",   :integer
+    t.column "attribute_configuration_type", :string
+    t.column "position",                     :integer
+  end
+
+  create_table "document_versions", :force => true do |t|
+    t.column "document_id", :integer
+    t.column "version",     :integer
+    t.column "title",       :text
+    t.column "content",     :text
+    t.column "created_at",  :datetime
+    t.column "updated_at",  :datetime
+    t.column "template_id", :integer
+  end
+
+  create_table "documents", :force => true do |t|
+    t.column "title",       :text
+    t.column "content",     :text
+    t.column "created_at",  :datetime
+    t.column "updated_at",  :datetime
+    t.column "template_id", :integer
+    t.column "version",     :integer
+    t.column "project_id",  :integer
+  end
+
+  create_table "projects", :force => true do |t|
+    t.column "name",               :string
+    t.column "template_schema_id", :integer
+  end
+
+  create_table "relationship_types", :force => true do |t|
+    t.column "name",               :string
+    t.column "left_description",   :string
+    t.column "right_description",  :string
+    t.column "left_template_id",   :integer
+    t.column "right_template_id",  :integer
+    t.column "template_schema_id", :integer
+  end
 
   create_table "relationship_types_templates", :id => false, :force => true do |t|
     t.column "relationship_type_id", :integer
     t.column "template_id",          :integer
+  end
+
+  create_table "relationships", :force => true do |t|
+    t.column "relationship_type_id", :integer
+    t.column "left_id",              :integer
+    t.column "right_id",             :integer
+  end
+
+  create_table "structures", :force => true do |t|
+    t.column "template_id", :integer
+    t.column "project_id",  :integer
+  end
+
+  create_table "template_schemas", :force => true do |t|
+    t.column "name",        :string
+    t.column "description", :text
+  end
+
+  create_table "templates", :force => true do |t|
+    t.column "name",               :string
+    t.column "parent_id",          :integer
+    t.column "template_schema_id", :integer
   end
 
 end
