@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 12) do
+ActiveRecord::Schema.define(:version => 13) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.column "attr_id",      :integer
@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(:version => 12) do
     t.column "attr_configuration_id",   :integer
     t.column "attr_configuration_type", :string
     t.column "position",                :integer
+    t.column "required",                :boolean
   end
 
   create_table "document_versions", :force => true do |t|
