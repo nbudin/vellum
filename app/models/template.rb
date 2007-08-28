@@ -10,4 +10,12 @@ class Template < ActiveRecord::Base
   def relationship_types
     outward_relationship_types + inward_relationship_types
   end
+
+  def attr(name)
+    if name.kind_of? Attr
+      name
+    else
+      attrs.find_by_name(name)
+    end
+  end
 end

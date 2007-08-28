@@ -1,10 +1,11 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class StructureTest < Test::Unit::TestCase
-  fixtures :structures
+  fixtures :structures, :templates
 
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  def test_create_structure
+    bob = Structure.new :template => templates(:person)
+    bob.attr("Name").value = "Bob"
+    assert bob.save
   end
 end
