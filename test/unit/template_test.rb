@@ -3,8 +3,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class TemplateTest < Test::Unit::TestCase
   fixtures :templates
 
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  def test_new_template
+    t = Template.new :name => "Carrot"
+    assert t.save
   end
 end

@@ -1,5 +1,5 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-father:
+parentchild:
   id: 1
   name: Parent-Child
   left_template_id: 1
