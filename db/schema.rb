@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(:version => 12) do
   end
 
   create_table "text_values", :force => true do |t|
-    t.column "value", :string
+    t.column "value", :text
   end
 
 end
