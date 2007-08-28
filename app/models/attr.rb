@@ -3,4 +3,6 @@ class Attr < ActiveRecord::Base
   acts_as_list :scope => :template
   belongs_to :attr_configuration, :polymorphic => true, :dependent => :destroy
   has_many :attr_value_metadatas
+
+  validates_uniqueness_of :name, :scope => :template_id
 end

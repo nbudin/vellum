@@ -3,6 +3,8 @@ class AttrValueMetadata < ActiveRecord::Base
   belongs_to :structure
   belongs_to :value, :polymorphic => true
 
+  validates_uniqueness_of :attr_id, :scope => :structure_id
+
   # Get the value pointed to by this AVM.  If it doesn't yet exist, create
   # a nil value and return it.
   def value
