@@ -1,7 +1,7 @@
 class Template < ActiveRecord::Base
   acts_as_tree
-  has_many :attributes, :order => "position", :dependent => :destroy
-  has_many :attribute_configurations, :through => :attributes
+  has_many :attrs, :order => "position", :dependent => :destroy
+  has_many :attr_configurations, :through => :attrs
   belongs_to :project
   belongs_to :template_schema
   has_many :outward_relationship_types, :foreign_key => :left_template_id, :class_name => "RelationshipType"

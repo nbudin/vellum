@@ -4,19 +4,19 @@
 
 ActiveRecord::Schema.define(:version => 10) do
 
-  create_table "attribute_value_metadatas", :force => true do |t|
-    t.column "attribute_id", :integer
+  create_table "attr_value_metadatas", :force => true do |t|
+    t.column "attr_id",      :integer
     t.column "structure_id", :integer
     t.column "value_id",     :integer
     t.column "value_type",   :integer
   end
 
-  create_table "attributes", :force => true do |t|
-    t.column "name",                         :string
-    t.column "template_id",                  :integer
-    t.column "attribute_configuration_id",   :integer
-    t.column "attribute_configuration_type", :string
-    t.column "position",                     :integer
+  create_table "attrs", :force => true do |t|
+    t.column "name",                    :string
+    t.column "template_id",             :integer
+    t.column "attr_configuration_id",   :integer
+    t.column "attr_configuration_type", :string
+    t.column "position",                :integer
   end
 
   create_table "document_versions", :force => true do |t|
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 10) do
     t.column "created_at",  :datetime
     t.column "updated_at",  :datetime
     t.column "template_id", :integer
+    t.column "project_id",  :integer
   end
 
   create_table "documents", :force => true do |t|
@@ -51,11 +52,6 @@ ActiveRecord::Schema.define(:version => 10) do
     t.column "left_template_id",   :integer
     t.column "right_template_id",  :integer
     t.column "template_schema_id", :integer
-  end
-
-  create_table "relationship_types_templates", :id => false, :force => true do |t|
-    t.column "relationship_type_id", :integer
-    t.column "template_id",          :integer
   end
 
   create_table "relationships", :force => true do |t|
