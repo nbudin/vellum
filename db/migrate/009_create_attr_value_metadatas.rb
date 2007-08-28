@@ -4,7 +4,7 @@ class CreateAttrValueMetadatas < ActiveRecord::Migration
       t.column :attr_id, :integer
       t.column :structure_id, :integer
       t.column :value_id, :integer
-      t.column :value_type, :integer
+      t.column :value_type, :string
     end
   end
 

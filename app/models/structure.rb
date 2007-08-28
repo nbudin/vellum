@@ -10,7 +10,8 @@ class Structure < ActiveRecord::Base
   end
 
   def attr_value(a)
-    attr_value_metadatas.find_by_attr_id(self.attr(a).id).value
+    a = self.attr(a)
+    attr_value_metadatas.find_by_attr_id(a.id).value
   end
 
   def relationships
@@ -25,7 +26,7 @@ class Structure < ActiveRecord::Base
     else
       a = attrs.find_by_name(name)
       if a.nil? and (ta = template.attr(name))
-        avm = attr_value_metadatas.create :attr => ta
+        avm = attr_value_metadatas.create :structure => self, :attr => ta
         return ta
       else
         return a

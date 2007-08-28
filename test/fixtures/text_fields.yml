@@ -1,0 +1,4 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+name:
+  id: 1
+  default: Anonymous Coward

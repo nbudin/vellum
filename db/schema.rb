@@ -2,13 +2,13 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 10) do
+ActiveRecord::Schema.define(:version => 12) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.column "attr_id",      :integer
     t.column "structure_id", :integer
     t.column "value_id",     :integer
-    t.column "value_type",   :integer
+    t.column "value_type",   :string
   end
 
   create_table "attrs", :force => true do |t|
@@ -74,6 +74,14 @@ ActiveRecord::Schema.define(:version => 10) do
     t.column "name",               :string
     t.column "parent_id",          :integer
     t.column "template_schema_id", :integer
+  end
+
+  create_table "text_fields", :force => true do |t|
+    t.column "default", :string
+  end
+
+  create_table "text_values", :force => true do |t|
+    t.column "value", :string
   end
 
 end
