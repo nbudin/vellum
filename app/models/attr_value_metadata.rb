@@ -6,7 +6,10 @@ class AttrValueMetadata < ActiveRecord::Base
   # Get the value pointed to by this AVM.  If it doesn't yet exist, create
   # a nil value and return it.
   def value
-    v = read_attribute(value)
+    v = nil
+    if value_type
+      v = eval(value_type).find(value_id)
+    end
     if v
       return v
     else

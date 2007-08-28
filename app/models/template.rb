@@ -15,7 +15,20 @@ class Template < ActiveRecord::Base
     if name.kind_of? Attr
       name
     else
-      attrs.find_by_name(name)
+      a = attrs.find_by_name(name)
+      if a
+        return a
+      elsif not parent.nil?
+        return parent.attr(name)
+      end
+    end
+  end
+
+  def inherited_attrs
+    if parent
+      parent.attrs + parent.inherited_attrs
+    else
+      []
     end
   end
 end
