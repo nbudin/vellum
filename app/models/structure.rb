@@ -2,16 +2,15 @@ class Structure < ActiveRecord::Base
   belongs_to :template
   has_many :attr_value_metadatas
   has_many :template_attrs, :through => :template, :source => :attrs
-  has_many :required_attrs, :through => :template, :source => :attrs, :conditions => "attrs.required = 1"
   has_many :attrs, :through => :attr_value_metadatas
   has_many :outward_relationships, :foreign_key => :left_id, :class_name => "Relationship"
   has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship"
 
   validates_associated :attr_value_metadatas
   validate { |s|
-    s.required_attrs.each do |ta|
-      if not s.attrs.contains?(ta)
-        s.errors.add_to_base("Required attribute "+ta.name+" is not populated.")
+    s.template.required_attrs.each do |ta|
+      if not s.attrs.include?(ta)
+        s.errors.add_to_base("Required attribute #{ta.name} is not populated.")
       end
     end
   }

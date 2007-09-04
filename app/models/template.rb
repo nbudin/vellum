@@ -1,6 +1,7 @@
 class Template < ActiveRecord::Base
   acts_as_tree
   has_many :attrs, :order => "position", :dependent => :destroy
+  has_many :required_attrs, :class_name => "Attr", :conditions => "required = 1"
   has_many :attr_configurations, :through => :attrs
   belongs_to :project
   belongs_to :template_schema
