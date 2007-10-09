@@ -1,11 +1,11 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class RelationshipTest < Test::Unit::TestCase
-  fixtures :relationships, :relationship_types, :templates
+  fixtures :relationships, :relationship_types, :structure_templates
 
   def test_valid_relationship
-    p1 = Structure.new(:template => templates(:person))
-    p2 = Structure.new(:template => templates(:person))
+    p1 = Structure.new(:structure_template => structure_templates(:person))
+    p2 = Structure.new(:structure_template => structure_templates(:person))
     assert p1.save
     assert p2.save
 
@@ -14,7 +14,7 @@ class RelationshipTest < Test::Unit::TestCase
   end
 
   def test_circular_relationship
-    p = Structure.new(:template => templates(:person))
+    p = Structure.new(:structure_template => structure_templates(:person))
 
     r = Relationship.new(:relationship_type => relationship_types(:parent), :left => p, :right => p)
     assert !r.valid?
@@ -24,7 +24,7 @@ class RelationshipTest < Test::Unit::TestCase
     r = Relationship.new(:relationship_type => relationship_types(:parent))
     assert !r.valid?
 
-    p = Structure.new(:template => templates(:person))
+    p = Structure.new(:structure_template => structure_templates(:person))
     r = Relationship.new(:relationship_type => relationship_types(:parent), :left => p)
     assert !r.valid?
 
@@ -33,8 +33,8 @@ class RelationshipTest < Test::Unit::TestCase
   end
 
   def test_untyped_relationships
-    p1 = Structure.new(:template => templates(:person))
-    p2 = Structure.new(:template => templates(:person))
+    p1 = Structure.new(:structure_template => structure_templates(:person))
+    p2 = Structure.new(:structure_template => structure_templates(:person))
 
     r = Relationship.new(:left => p1, :right => p2)
     assert !r.valid?

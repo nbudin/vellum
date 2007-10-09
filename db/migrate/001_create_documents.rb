@@ -5,7 +5,7 @@ class CreateDocuments < ActiveRecord::Migration
       t.column :content, :text
       t.column :created_at, :datetime
       t.column :updated_at, :datetime
-      t.column :template_id, :integer
+      t.column :structure_template_id, :integer
       t.column :version, :integer
     end
     Document.create_versioned_table

@@ -3,6 +3,6 @@ name:
   id: 1
   attr_configuration_id: 1
   attr_configuration_type: TextField
-  template_id: 1
+  structure_template_id: 1
   name: Name
   position: 1

@@ -1,14 +1,14 @@
 class Structure < ActiveRecord::Base
-  belongs_to :template
+  belongs_to :structure_template
   has_many :attr_value_metadatas
-  has_many :template_attrs, :through => :template, :source => :attrs
+  has_many :template_attrs, :through => :structure_template, :source => :attrs
   has_many :attrs, :through => :attr_value_metadatas
   has_many :outward_relationships, :foreign_key => :left_id, :class_name => "Relationship"
   has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship"
 
   validates_associated :attr_value_metadatas
   validate { |s|
-    s.template.required_attrs.each do |ta|
+    s.structure_template.required_attrs.each do |ta|
       if not s.attrs.include?(ta)
         s.errors.add_to_base("Required attribute #{ta.name} is not populated.")
       end
@@ -35,7 +35,7 @@ class Structure < ActiveRecord::Base
       return name
     else
       a = attrs.find_by_name(name)
-      if a.nil? and (ta = template.attr(name))
+      if a.nil? and (ta = structure_template.attr(name))
         avm = attr_value_metadatas.create :structure => self, :attr => ta
         return ta
       else

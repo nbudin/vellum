@@ -1,7 +1,7 @@
 class CreateStructures < ActiveRecord::Migration
   def self.up
     create_table :structures do |t|
-      t.column :template_id, :integer
+      t.column :structure_template_id, :integer
     end
   end
 

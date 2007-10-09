@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class StructureTest < Test::Unit::TestCase
-  fixtures :structures, :templates, :text_fields, :relationship_types, :templates
+  fixtures :structures, :structure_templates, :text_fields, :relationship_types
 
   def test_create_structure
-    bob = Structure.new :template => templates(:person)
+    bob = Structure.new :structure_template => structure_templates(:person)
     assert bob.save
     assert name = bob.attr_value("Name")
     name.value = "Bob"
@@ -15,8 +15,8 @@ class StructureTest < Test::Unit::TestCase
   end
 
   def test_related_structures
-    david = Structure.new(:template => templates(:worker))
-    gareth = Structure.new(:template => templates(:worker))
+    david = Structure.new(:structure_template => structure_templates(:worker))
+    gareth = Structure.new(:structure_template => structure_templates(:worker))
     assert david.save
     assert gareth.save
 
