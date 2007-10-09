@@ -13,7 +13,7 @@ ActiveRecord::Schema.define(:version => 13) do
 
   create_table "attrs", :force => true do |t|
     t.column "name",                    :string
-    t.column "template_id",             :integer
+    t.column "structure_template_id",   :integer
     t.column "attr_configuration_id",   :integer
     t.column "attr_configuration_type", :string
     t.column "position",                :integer
@@ -21,24 +21,24 @@ ActiveRecord::Schema.define(:version => 13) do
   end
 
   create_table "document_versions", :force => true do |t|
-    t.column "document_id", :integer
-    t.column "version",     :integer
-    t.column "title",       :text
-    t.column "content",     :text
-    t.column "created_at",  :datetime
-    t.column "updated_at",  :datetime
-    t.column "template_id", :integer
-    t.column "project_id",  :integer
+    t.column "document_id",           :integer
+    t.column "version",               :integer
+    t.column "title",                 :text
+    t.column "content",               :text
+    t.column "created_at",            :datetime
+    t.column "updated_at",            :datetime
+    t.column "structure_template_id", :integer
+    t.column "project_id",            :integer
   end
 
   create_table "documents", :force => true do |t|
-    t.column "title",       :text
-    t.column "content",     :text
-    t.column "created_at",  :datetime
-    t.column "updated_at",  :datetime
-    t.column "template_id", :integer
-    t.column "version",     :integer
-    t.column "project_id",  :integer
+    t.column "title",                 :text
+    t.column "content",               :text
+    t.column "created_at",            :datetime
+    t.column "updated_at",            :datetime
+    t.column "structure_template_id", :integer
+    t.column "version",               :integer
+    t.column "project_id",            :integer
   end
 
   create_table "projects", :force => true do |t|
@@ -61,20 +61,20 @@ ActiveRecord::Schema.define(:version => 13) do
     t.column "right_id",             :integer
   end
 
+  create_table "structure_templates", :force => true do |t|
+    t.column "name",               :string
+    t.column "parent_id",          :integer
+    t.column "template_schema_id", :integer
+  end
+
   create_table "structures", :force => true do |t|
-    t.column "template_id", :integer
-    t.column "project_id",  :integer
+    t.column "structure_template_id", :integer
+    t.column "project_id",            :integer
   end
 
   create_table "template_schemas", :force => true do |t|
     t.column "name",        :string
     t.column "description", :text
-  end
-
-  create_table "templates", :force => true do |t|
-    t.column "name",               :string
-    t.column "parent_id",          :integer
-    t.column "template_schema_id", :integer
   end
 
   create_table "text_fields", :force => true do |t|

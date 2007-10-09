@@ -4,14 +4,14 @@ class AttrTest < Test::Unit::TestCase
   fixtures :attrs
 
   def test_required_attrs
-    t = Template.new
-    a = Attr.new :template => t, :required => true
+    t = StructureTemplate.new
+    a = Attr.new :structure_template => t, :required => true
 
     assert a.save
     assert t.save
     t.reload
 
-    s = Structure.new :template => t
+    s = Structure.new :structure_template => t
     assert !s.valid?
   end
 end

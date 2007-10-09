@@ -1,4 +1,4 @@
-class Template < ActiveRecord::Base
+class StructureTemplate < ActiveRecord::Base
   acts_as_tree
   has_many :attrs, :order => "position", :dependent => :destroy
   has_many :required_attrs, :class_name => "Attr", :conditions => "required = 1"

@@ -4,11 +4,11 @@ class CreateTemplateSchemas < ActiveRecord::Migration
       t.column :name, :string
       t.column :description, :text
     end
-    add_column "templates", "template_schema_id", :integer
+    add_column "structure_templates", "template_schema_id", :integer
   end
 
   def self.down
-    remove_column "templates", "template_schema_id"
+    remove_column "structure_templates", "template_schema_id"
     drop_table :template_schemas
   end
 end
