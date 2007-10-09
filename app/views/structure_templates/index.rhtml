@@ -1,0 +1,18 @@
+<h1>Listing structure_templates</h1>
+
+<table>
+  <tr>
+  </tr>
+  
+<% for structure_template in @structure_templates %>
+  <tr>
+    <td><%= link_to 'Show', structure_template_path(structure_template) %></td>
+    <td><%= link_to 'Edit', edit_structure_template_path(structure_template) %></td>
+    <td><%= link_to 'Destroy', structure_template_path(structure_template), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New structure_template', new_structure_template_path %>

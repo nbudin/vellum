@@ -1,5 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :documents
+  map.resources :structure_templates do |r|
+    r.resources :attrs
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   
