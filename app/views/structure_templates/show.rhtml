@@ -1,0 +1,19 @@
+<script type="text/javascript">
+  Base.model("StructureTemplate", {format: 'json'});
+</script>
+  
+<h1><%= jipe_editor(@structure_template, "name") %></h1>
+
+<h2>Attributes</h2>
+<table>
+  <% @structure_template.attrs.each do |attr| -%>
+    <tr>
+      <td><i><%=attr.attr_configuration.class.name%></i></td>
+      <td><b><%=attr.name%></b></td>       
+    </tr>
+  <% end -%>
+</table>
+  
+
+<%= link_to 'Edit', edit_structure_template_path(@structure_template) %> |
+<%= link_to 'Back', structure_templates_path %>
