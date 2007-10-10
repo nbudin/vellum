@@ -1,7 +1,11 @@
 <script type="text/javascript">
-  Base.model("StructureTemplate", {format: 'json'});
+  Base.model("StructureTemplate", {format: 'json',
+             prefix: '<%= template_schema_url(@template_schema) %>'});
 </script>
   
+<p><%= link_to "<- Back to #{@template_schema.name}",
+               template_schema_path(@template_schema) %></p>
+
 <h1><%= jipe_editor(@structure_template, "name") %></h1>
 
 <h2>Attributes</h2>
@@ -12,8 +16,11 @@
       <td><b><%=attr.name%></b></td>       
     </tr>
   <% end -%>
+  <% if @structure_template.attrs.count == 0 -%>
+    <tr>
+      <td colspan="2"><i>No attributes.</i></td>
+    </tr>
+  <% end -%>
 </table>
-  
 
-<%= link_to 'Edit', edit_structure_template_path(@structure_template) %> |
-<%= link_to 'Back', structure_templates_path %>
+<p><%= link_to "New attribute", new_attr_path(@template_schema, @structure_template) %></p>
