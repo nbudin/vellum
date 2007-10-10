@@ -1,7 +1,15 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :documents
-  map.resources :structure_templates do |r|
-    r.resources :attrs
+  map.resources :projects do |projects|
+    projects.resources :structures
+    projects.resources :relationships
+    projects.resources :documents
+  end
+  
+  map.resources :template_schemas do |schemas|
+    schemas.resources :structure_templates do |templates|
+      templates.resources :attrs
+    end
+    schemas.resources :relationship_types
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

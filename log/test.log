@@ -6457,3 +6457,392 @@ Processing DocumentsController#update (for 0.0.0.0 at 2007-10-09 14:16:30) [PUT]
 Redirected to http://test.host/documents/1
 Completed in 0.01142 (87 reqs/sec) | DB: 0.00286 (25%) | 302 Found [http://test.host/documents/1?document=]
   [4;35;1mSQL (0.000412)[0m   [0mROLLBACK[0m
+Rails final load path: .
+Rails final dependency load path: /home/nbudin/vellum/config/../vendor/plugins/engines/lib
+enginizing plugin: acts_as_versioned from /home/nbudin/vellum/config/../vendor/plugins/acts_as_versioned
+Plugin 'acts_as_versioned': starting load.
+Plugin 'acts_as_versioned': loaded.
+enginizing plugin: engines from /home/nbudin/vellum/config/../vendor/plugins/engines
+Plugin 'engines': starting load.
+Plugin 'engines': loaded.
+plugins is now: acts_as_versioned, engines
+engines has started.
+loading plugin from /home/nbudin/vellum/config/../vendor/plugins/jipe with engine additions
+Plugin 'jipe': starting load.
+Attempting to copy plugin plugin asset files from '/home/nbudin/vellum/config/../vendor/plugins/jipe/assets' to '/home/nbudin/vellum/config/../public/plugin_assets'
+Plugin 'jipe': loaded.
+checking plugin 'acts_as_versioned' for 'application_helper'
+checking plugin 'engines' for 'application_helper'
+checking plugin 'jipe' for 'application_helper'
+loading from application: application_helper
+  [4;36;1mSQL (0.000150)[0m   [0;1mSET SQL_AUTO_IS_NULL=0[0m
+  [4;35;1mSQL (0.000125)[0m   [0mBEGIN[0m
+  [4;36;1mStructureTemplate Columns (0.001303)[0m   [0;1mSHOW FIELDS FROM structure_templates[0m
+  [4;35;1mAttr Columns (0.001357)[0m   [0mSHOW FIELDS FROM attrs[0m
+  [4;36;1mAttr Load (0.000814)[0m   [0;1mSELECT * FROM attrs WHERE (attrs.name IS NULL AND attrs.structure_template_id IS NULL) LIMIT 1[0m
+  [4;35;1mSQL (0.000235)[0m   [0mINSERT INTO structure_templates (`name`, `template_schema_id`, `parent_id`) VALUES(NULL, NULL, NULL)[0m
+  [4;36;1mAttr Load (0.000922)[0m   [0;1mSELECT * FROM attrs WHERE (structure_template_id = 1) ORDER BY position DESC LIMIT 1[0m
+  [4;35;1mSQL (0.000286)[0m   [0mINSERT INTO attrs (`name`, `attr_configuration_id`, `position`, `required`, `structure_template_id`, `attr_configuration_type`) VALUES(NULL, NULL, 2, 1, 1, NULL)[0m
+  [4;36;1mStructureTemplate Update (0.000259)[0m   [0;1mUPDATE structure_templates SET `template_schema_id` = NULL, `parent_id` = NULL, `name` = NULL WHERE `id` = 1[0m
+  [4;35;1mStructureTemplate Load (0.000530)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;36;1mStructure Columns (0.001195)[0m   [0;1mSHOW FIELDS FROM structures[0m
+  [4;35;1mAttr Load (0.000768)[0m   [0mSELECT * FROM attrs WHERE (attrs.structure_template_id = 1 AND (required = 1)) [0m
+  [4;36;1mSQL (0.001122)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000107)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.000104)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000103)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.000106)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000104)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.000103)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000121)[0m   [0mBEGIN[0m
+  [4;36;1mStructureTemplate Load (0.000592)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;35;1mRelationshipType Columns (0.001412)[0m   [0mSHOW FIELDS FROM relationship_types[0m
+  [4;36;1mRelationshipType Load (0.000787)[0m   [0;1mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 1) [0m
+  [4;35;1mRelationship Columns (0.001236)[0m   [0mSHOW FIELDS FROM relationships[0m
+  [4;36;1mSQL (0.000165)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000106)[0m   [0mBEGIN[0m
+  [4;36;1mRelationshipType Load (0.000607)[0m   [0;1mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 1) [0m
+  [4;35;1mStructureTemplate Load (0.000420)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;36;1mSQL (0.000129)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000106)[0m   [0mBEGIN[0m
+  [4;36;1mStructureTemplate Load (0.000418)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;35;1mSQL (0.000131)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000104)[0m   [0;1mBEGIN[0m
+  [4;35;1mStructureTemplate Load (0.000415)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;36;1mAttr Load (0.000850)[0m   [0;1mSELECT * FROM attrs WHERE (attrs.structure_template_id = 1 AND (required = 1)) [0m
+  [4;35;1mSQL (0.000242)[0m   [0mINSERT INTO structures (`project_id`, `structure_template_id`) VALUES(NULL, 1)[0m
+  [4;36;1mSQL (0.000214)[0m   [0;1mINSERT INTO structures (`project_id`, `structure_template_id`) VALUES(NULL, 1)[0m
+  [4;35;1mRelationshipType Load (0.000614)[0m   [0mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 1) [0m
+  [4;36;1mSQL (0.000259)[0m   [0;1mINSERT INTO relationships (`relationship_type_id`, `left_id`, `right_id`) VALUES(1, 1, 2)[0m
+  [4;35;1mSQL (0.000361)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000103)[0m   [0;1mBEGIN[0m
+  [4;35;1mStructureTemplate Load (0.000547)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;36;1mRelationshipType Load (0.000758)[0m   [0;1mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 2) [0m
+  [4;35;1mSQL (0.000135)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000106)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.000204)[0m   [0mINSERT INTO structure_templates (`name`, `template_schema_id`, `parent_id`) VALUES('Carrot', NULL, NULL)[0m
+  [4;36;1mSQL (0.000305)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000106)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.000344)[0m   [0;1mINSERT INTO structure_templates (`name`, `template_schema_id`, `parent_id`) VALUES('Vegetable', NULL, NULL)[0m
+  [4;35;1mSQL (0.000194)[0m   [0mINSERT INTO structure_templates (`name`, `template_schema_id`, `parent_id`) VALUES('Lettuce', NULL, 4)[0m
+  [4;36;1mStructureTemplate Update (0.000279)[0m   [0;1mUPDATE structure_templates SET `template_schema_id` = NULL, `parent_id` = NULL, `name` = 'Vegetable' WHERE `id` = 4[0m
+  [4;35;1mStructureTemplate Load (0.000563)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 5) [0m
+  [4;36;1mStructureTemplate Load (0.000533)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 4) [0m
+  [4;35;1mStructureTemplate Load (0.000530)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.parent_id = 4) [0m
+  [4;36;1mStructureTemplate Load (0.000507)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 4) [0m
+  [4;35;1mSQL (0.000354)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000105)[0m   [0;1mBEGIN[0m
+  [4;35;1mStructureTemplate Load (0.000568)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;36;1mAttr Load (0.000581)[0m   [0;1mSELECT * FROM attrs WHERE (attrs.structure_template_id = 1 AND (required = 1)) [0m
+  [4;35;1mSQL (0.000224)[0m   [0mINSERT INTO structures (`project_id`, `structure_template_id`) VALUES(NULL, 1)[0m
+  [4;36;1mAttr Load (0.000831)[0m   [0;1mSELECT attrs.* FROM attrs INNER JOIN attr_value_metadatas ON attrs.id = attr_value_metadatas.attr_id WHERE ((attr_value_metadatas.structure_id = 3)) AND (attrs.`name` = 'Name') LIMIT 1[0m
+  [4;35;1mAttr Load (0.000788)[0m   [0mSELECT * FROM attrs WHERE (attrs.structure_template_id = 1) AND (attrs.`name` = 'Name') LIMIT 1[0m
+  [4;36;1mAttrValueMetadata Columns (0.001247)[0m   [0;1mSHOW FIELDS FROM attr_value_metadatas[0m
+  [4;35;1mAttrValueMetadata Load (0.000681)[0m   [0mSELECT * FROM attr_value_metadatas WHERE (attr_value_metadatas.attr_id = 1 AND attr_value_metadatas.structure_id = 3) LIMIT 1[0m
+  [4;36;1mSQL (0.000256)[0m   [0;1mINSERT INTO attr_value_metadatas (`structure_id`, `value_type`, `attr_id`, `value_id`) VALUES(3, NULL, 1, NULL)[0m
+  [4;35;1mAttrValueMetadata Load (0.000620)[0m   [0mSELECT * FROM attr_value_metadatas WHERE (attr_value_metadatas.structure_id = 3) AND (attr_value_metadatas.`attr_id` = 1) LIMIT 1[0m
+  [4;36;1mAttr Load (0.000775)[0m   [0;1mSELECT * FROM attrs WHERE (attrs.`id` = 1) [0m
+  [4;35;1mTextField Columns (0.001173)[0m   [0mSHOW FIELDS FROM text_fields[0m
+  [4;36;1mTextField Load (0.000435)[0m   [0;1mSELECT * FROM text_fields WHERE (text_fields.`id` = 1) [0m
+  [4;35;1mTextValue Columns (0.001086)[0m   [0mSHOW FIELDS FROM text_values[0m
+  [4;36;1mSQL (0.000233)[0m   [0;1mINSERT INTO text_values (`value`) VALUES(NULL)[0m
+  [4;35;1mAttrValueMetadata Load (0.000672)[0m   [0mSELECT * FROM attr_value_metadatas WHERE (attr_value_metadatas.attr_id = 1 AND attr_value_metadatas.structure_id = 3 AND attr_value_metadatas.id <> 3) LIMIT 1[0m
+  [4;36;1mAttrValueMetadata Update (0.000268)[0m   [0;1mUPDATE attr_value_metadatas SET `value_id` = 1, `structure_id` = 3, `attr_id` = 1, `value_type` = 'TextValue' WHERE `id` = 3[0m
+  [4;35;1mTextValue Update (0.000221)[0m   [0mUPDATE text_values SET `value` = 'Bob' WHERE `id` = 1[0m
+  [4;36;1mStructure Load (0.000460)[0m   [0;1mSELECT * FROM structures WHERE (structures.`id` = 3) [0m
+  [4;35;1mAttr Load (0.000792)[0m   [0mSELECT attrs.* FROM attrs INNER JOIN attr_value_metadatas ON attrs.id = attr_value_metadatas.attr_id WHERE ((attr_value_metadatas.structure_id = 3)) AND (attrs.`name` = 'Name') LIMIT 1[0m
+  [4;36;1mAttrValueMetadata Load (0.000618)[0m   [0;1mSELECT * FROM attr_value_metadatas WHERE (attr_value_metadatas.structure_id = 3) AND (attr_value_metadatas.`attr_id` = 1) LIMIT 1[0m
+  [4;35;1mTextValue Load (0.000390)[0m   [0mSELECT * FROM text_values WHERE (text_values.`id` = 1) [0m
+  [4;36;1mSQL (0.000402)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000108)[0m   [0mBEGIN[0m
+  [4;36;1mStructureTemplate Load (0.000575)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 2) [0m
+  [4;35;1mAttr Load (0.000878)[0m   [0mSELECT * FROM attrs WHERE (attrs.structure_template_id = 2 AND (required = 1)) [0m
+  [4;36;1mSQL (0.000216)[0m   [0;1mINSERT INTO structures (`project_id`, `structure_template_id`) VALUES(NULL, 2)[0m
+  [4;35;1mSQL (0.000247)[0m   [0mINSERT INTO structures (`project_id`, `structure_template_id`) VALUES(NULL, 2)[0m
+  [4;36;1mRelationshipType Load (0.000922)[0m   [0;1mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 2) [0m
+  [4;35;1mSQL (0.000226)[0m   [0mINSERT INTO relationships (`relationship_type_id`, `left_id`, `right_id`) VALUES(2, 4, 5)[0m
+  [4;36;1mStructure Load (0.000466)[0m   [0;1mSELECT * FROM structures WHERE (structures.`id` = 4) [0m
+  [4;35;1mStructure Load (0.000425)[0m   [0mSELECT * FROM structures WHERE (structures.`id` = 5) [0m
+  [4;36;1mRelationship Load (0.000562)[0m   [0;1mSELECT * FROM relationships WHERE (relationships.left_id = 4) [0m
+  [4;35;1mRelationship Load (0.000464)[0m   [0mSELECT * FROM relationships WHERE (relationships.right_id = 4) [0m
+  [4;36;1mRelationshipType Load (0.000612)[0m   [0;1mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 2) [0m
+  [4;35;1mRelationship Load (0.000488)[0m   [0mSELECT * FROM relationships WHERE (relationships.left_id = 5) [0m
+  [4;36;1mRelationship Load (0.000498)[0m   [0;1mSELECT * FROM relationships WHERE (relationships.right_id = 5) [0m
+  [4;35;1mRelationshipType Load (0.000611)[0m   [0mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 2) [0m
+  [4;36;1mStructure Load (0.000439)[0m   [0;1mSELECT * FROM structures WHERE (structures.`id` = 4) [0m
+  [4;35;1mStructure Load (0.000440)[0m   [0mSELECT * FROM structures WHERE (structures.`id` = 5) [0m
+  [4;36;1mStructure Load (0.000432)[0m   [0;1mSELECT * FROM structures WHERE (structures.`id` = 4) [0m
+  [4;35;1mSQL (0.000374)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000106)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.000105)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000105)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.000106)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000104)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.000106)[0m   [0mROLLBACK[0m
+Rails final load path: .
+Rails final dependency load path: /home/nbudin/vellum/config/../vendor/plugins/engines/lib
+enginizing plugin: acts_as_versioned from /home/nbudin/vellum/config/../vendor/plugins/acts_as_versioned
+Plugin 'acts_as_versioned': starting load.
+Plugin 'acts_as_versioned': loaded.
+enginizing plugin: engines from /home/nbudin/vellum/config/../vendor/plugins/engines
+Plugin 'engines': starting load.
+Plugin 'engines': loaded.
+plugins is now: acts_as_versioned, engines
+engines has started.
+loading plugin from /home/nbudin/vellum/config/../vendor/plugins/jipe with engine additions
+Plugin 'jipe': starting load.
+Attempting to copy plugin plugin asset files from '/home/nbudin/vellum/config/../vendor/plugins/jipe/assets' to '/home/nbudin/vellum/config/../public/plugin_assets'
+Plugin 'jipe': loaded.
+checking plugin 'acts_as_versioned' for 'application_helper'
+checking plugin 'engines' for 'application_helper'
+checking plugin 'jipe' for 'application_helper'
+loading from application: application_helper
+checking plugin 'acts_as_versioned' for 'structure_templates_helper'
+checking plugin 'engines' for 'structure_templates_helper'
+checking plugin 'jipe' for 'structure_templates_helper'
+loading from application: structure_templates_helper
+checking plugin 'acts_as_versioned' for 'attrs_helper'
+checking plugin 'engines' for 'attrs_helper'
+checking plugin 'jipe' for 'attrs_helper'
+loading from application: attrs_helper
+checking plugin 'acts_as_versioned' for 'documents_helper'
+checking plugin 'engines' for 'documents_helper'
+checking plugin 'jipe' for 'documents_helper'
+loading from application: documents_helper
+  [4;36;1mSQL (0.000143)[0m   [0;1mSET SQL_AUTO_IS_NULL=0[0m
+  [4;35;1mSQL (0.000142)[0m   [0mBEGIN[0m
+  [4;36;1mAttr Columns (0.001299)[0m   [0;1mSHOW FIELDS FROM attrs[0m
+  [4;35;1mSQL (0.000429)[0m   [0mSELECT count(*) AS count_all FROM attrs [0m
+
+
+Processing AttrsController#create (for 0.0.0.0 at 2007-10-10 14:15:14) [POST]
+  Session ID: 
+  Parameters: {"action"=>"create", "controller"=>"attrs", "attr"=>{}}
+  [4;36;1mSQL (0.000203)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000102)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.000234)[0m   [0;1mSELECT count(*) AS count_all FROM attrs [0m
+
+
+Processing AttrsController#destroy (for 0.0.0.0 at 2007-10-10 14:15:14) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "id"=>"1", "controller"=>"attrs"}
+  [4;35;1mSQL (0.000151)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000102)[0m   [0;1mBEGIN[0m
+
+
+Processing AttrsController#edit (for 0.0.0.0 at 2007-10-10 14:15:14) [GET]
+  Session ID: 
+  Parameters: {"action"=>"edit", "id"=>"1", "controller"=>"attrs"}
+  [4;35;1mSQL (0.000129)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000114)[0m   [0;1mBEGIN[0m
+
+
+Processing AttrsController#index (for 0.0.0.0 at 2007-10-10 14:15:14) [GET]
+  Session ID: 
+  Parameters: {"action"=>"index", "controller"=>"attrs"}
+  [4;35;1mSQL (0.000141)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000100)[0m   [0;1mBEGIN[0m
+
+
+Processing AttrsController#new (for 0.0.0.0 at 2007-10-10 14:15:14) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"attrs"}
+  [4;35;1mSQL (0.000136)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000102)[0m   [0;1mBEGIN[0m
+
+
+Processing AttrsController#show (for 0.0.0.0 at 2007-10-10 14:15:14) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "id"=>"1", "controller"=>"attrs"}
+  [4;35;1mSQL (0.000126)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000100)[0m   [0;1mBEGIN[0m
+
+
+Processing AttrsController#update (for 0.0.0.0 at 2007-10-10 14:15:14) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "id"=>"1", "controller"=>"attrs", "attr"=>{}}
+  [4;35;1mSQL (0.000125)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000141)[0m   [0;1mBEGIN[0m
+  [4;35;1mDocument Columns (0.001367)[0m   [0mSHOW FIELDS FROM documents[0m
+  [4;36;1mSQL (0.000489)[0m   [0;1mSELECT count(*) AS count_all FROM documents [0m
+
+
+Processing DocumentsController#create (for 0.0.0.0 at 2007-10-10 14:15:15) [POST]
+  Session ID: 
+  Parameters: {"action"=>"create", "document"=>{}, "controller"=>"documents"}
+  [4;35;1mSQL (0.000337)[0m   [0mINSERT INTO documents (`project_id`, `updated_at`, `title`, `version`, `content`, `structure_template_id`, `created_at`) VALUES(NULL, '2007-10-10 14:15:15', NULL, 1, NULL, NULL, '2007-10-10 14:15:15')[0m
+  [4;36;1mDocument::Version Columns (0.001607)[0m   [0;1mSHOW FIELDS FROM document_versions[0m
+  [4;35;1mSQL (0.000406)[0m   [0mINSERT INTO document_versions (`project_id`, `updated_at`, `document_id`, `title`, `version`, `content`, `structure_template_id`, `created_at`) VALUES(NULL, '2007-10-10 14:15:15', 3, NULL, 1, NULL, NULL, '2007-10-10 14:15:15')[0m
+Redirected to http://test.host/documents/3
+Completed in 0.01565 (63 reqs/sec) | DB: 0.00822 (52%) | 302 Found [http://test.host/documents?document=]
+  [4;36;1mSQL (0.000353)[0m   [0;1mSELECT count(*) AS count_all FROM documents [0m
+  [4;35;1mSQL (0.099062)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000135)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.000364)[0m   [0mSELECT count(*) AS count_all FROM documents [0m
+
+
+Processing DocumentsController#destroy (for 0.0.0.0 at 2007-10-10 14:15:15) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "id"=>"1", "controller"=>"documents"}
+  [4;36;1mDocument Load (0.000860)[0m   [0;1mSELECT * FROM documents WHERE (documents.`id` = 1) [0m
+  [4;35;1mDocument::Version Delete all (0.000181)[0m   [0mDELETE FROM document_versions WHERE (document_id = 1) [0m
+  [4;36;1mDocument Destroy (0.000201)[0m   [0;1m DELETE FROM documents
+ WHERE `id` = 1
+[0m
+Redirected to http://test.host/documents
+Completed in 0.00273 (366 reqs/sec) | DB: 0.10116 (3706%) | 302 Found [http://test.host/documents/1]
+  [4;35;1mSQL (0.000331)[0m   [0mSELECT count(*) AS count_all FROM documents [0m
+  [4;36;1mSQL (0.096374)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000138)[0m   [0mBEGIN[0m
+
+
+Processing DocumentsController#edit (for 0.0.0.0 at 2007-10-10 14:15:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"edit", "id"=>"1", "controller"=>"documents"}
+  [4;36;1mDocument Load (0.000872)[0m   [0;1mSELECT * FROM documents WHERE (documents.`id` = 1) [0m
+Rendering  within layouts/application
+Rendering documents/edit
+Completed in 0.00679 (147 reqs/sec) | Rendering: 0.00550 (81%) | DB: 0.09772 (1439%) | 200 OK [http://test.host/documents/1;edit]
+  [4;35;1mSQL (0.094940)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000117)[0m   [0;1mBEGIN[0m
+
+
+Processing DocumentsController#index (for 0.0.0.0 at 2007-10-10 14:15:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"index", "controller"=>"documents"}
+  [4;35;1mDocument Load (0.000879)[0m   [0mSELECT * FROM documents [0m
+Rendering actionindexcontent_typetext/htmllayoutfalse within layouts/application
+Rendering documents/index
+Completed in 0.00612 (163 reqs/sec) | Rendering: 0.00459 (75%) | DB: 0.09594 (1568%) | 200 OK [http://test.host/documents]
+  [4;36;1mSQL (0.000177)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000106)[0m   [0mBEGIN[0m
+
+
+Processing DocumentsController#new (for 0.0.0.0 at 2007-10-10 14:15:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"documents"}
+Rendering  within layouts/application
+Rendering documents/new
+Completed in 0.00375 (266 reqs/sec) | Rendering: 0.00360 (95%) | DB: 0.00028 (7%) | 200 OK [http://test.host/documents/new]
+  [4;36;1mSQL (0.000173)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000104)[0m   [0mBEGIN[0m
+
+
+Processing DocumentsController#show (for 0.0.0.0 at 2007-10-10 14:15:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "id"=>"1", "controller"=>"documents"}
+  [4;36;1mDocument Load (0.000683)[0m   [0;1mSELECT * FROM documents WHERE (documents.`id` = 1) [0m
+Rendering actionshowcontent_typetext/htmllayoutfalse within layouts/application
+Rendering documents/show
+Completed in 0.00582 (171 reqs/sec) | Rendering: 0.00449 (77%) | DB: 0.00096 (16%) | 200 OK [http://test.host/documents/1]
+  [4;35;1mSQL (0.000256)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000106)[0m   [0;1mBEGIN[0m
+
+
+Processing DocumentsController#update (for 0.0.0.0 at 2007-10-10 14:15:15) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "id"=>"1", "document"=>{}, "controller"=>"documents"}
+  [4;35;1mDocument Load (0.000691)[0m   [0mSELECT * FROM documents WHERE (documents.`id` = 1) [0m
+  [4;36;1mSQL (0.000412)[0m   [0;1mSELECT max(version) AS max_version FROM document_versions WHERE (document_versions.document_id = 1) [0m
+  [4;35;1mDocument Update (0.000361)[0m   [0mUPDATE documents SET `created_at` = NULL, `content` = 'MyText', `structure_template_id` = NULL, `version` = 1, `title` = 'MyText', `updated_at` = '2007-10-10 14:15:15', `project_id` = NULL WHERE `id` = 1[0m
+  [4;36;1mDocument::Version Load (0.000819)[0m   [0;1mSELECT * FROM document_versions WHERE (document_versions.document_id = 1) ORDER BY version[0m
+  [4;35;1mSQL (0.000391)[0m   [0mINSERT INTO document_versions (`project_id`, `updated_at`, `document_id`, `title`, `version`, `content`, `structure_template_id`, `created_at`) VALUES(NULL, '2007-10-10 14:15:15', 1, 'MyText', 1, 'MyText', NULL, '2007-10-10 14:15:15')[0m
+Redirected to http://test.host/documents/1
+Completed in 0.01765 (56 reqs/sec) | DB: 0.00304 (17%) | 302 Found [http://test.host/documents/1?document=]
+  [4;36;1mSQL (0.000517)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000100)[0m   [0mBEGIN[0m
+  [4;36;1mStructureTemplate Columns (0.001144)[0m   [0;1mSHOW FIELDS FROM structure_templates[0m
+  [4;35;1mSQL (0.000415)[0m   [0mSELECT count(*) AS count_all FROM structure_templates [0m
+
+
+Processing StructureTemplatesController#create (for 0.0.0.0 at 2007-10-10 14:15:15) [POST]
+  Session ID: 
+  Parameters: {"action"=>"create", "controller"=>"structure_templates", "structure_template"=>{}}
+  [4;36;1mSQL (0.000329)[0m   [0;1mINSERT INTO structure_templates (`name`, `template_schema_id`, `parent_id`) VALUES(NULL, NULL, NULL)[0m
+Redirected to http://test.host/structure_templates/6
+Completed in 0.00417 (239 reqs/sec) | DB: 0.00250 (60%) | 302 Found [http://test.host/structure_templates?structure_template=]
+  [4;35;1mSQL (0.000371)[0m   [0mSELECT count(*) AS count_all FROM structure_templates [0m
+  [4;36;1mSQL (0.000411)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000106)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.000351)[0m   [0;1mSELECT count(*) AS count_all FROM structure_templates [0m
+
+
+Processing StructureTemplatesController#destroy (for 0.0.0.0 at 2007-10-10 14:15:15) [DELETE]
+  Session ID: 
+  Parameters: {"action"=>"destroy", "id"=>"1", "controller"=>"structure_templates"}
+  [4;35;1mStructureTemplate Load (0.000619)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;36;1mStructureTemplate Load (0.000552)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.parent_id = 1) [0m
+  [4;35;1mStructureTemplate Load (0.000599)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.parent_id = 2) [0m
+  [4;36;1mAttr Load (0.000802)[0m   [0;1mSELECT * FROM attrs WHERE (attrs.structure_template_id = 2) ORDER BY position[0m
+  [4;35;1mStructureTemplate Destroy (0.000270)[0m   [0m DELETE FROM structure_templates
+ WHERE `id` = 2
+[0m
+  [4;36;1mAttr Load (0.000807)[0m   [0;1mSELECT * FROM attrs WHERE (attrs.structure_template_id = 1) ORDER BY position[0m
+  [4;35;1mAttr Destroy (0.000275)[0m   [0m DELETE FROM attrs
+ WHERE `id` = 1
+[0m
+  [4;36;1mAttr Update (0.000203)[0m   [0;1mUPDATE attrs SET position = (position - 1) WHERE (structure_template_id = 1 AND position > 1) [0m
+  [4;35;1mStructureTemplate Destroy (0.000187)[0m   [0m DELETE FROM structure_templates
+ WHERE `id` = 1
+[0m
+Redirected to http://test.host/structure_templates
+Completed in 0.00951 (105 reqs/sec) | DB: 0.00555 (58%) | 302 Found [http://test.host/structure_templates/1]
+  [4;36;1mSQL (0.000345)[0m   [0;1mSELECT count(*) AS count_all FROM structure_templates [0m
+  [4;35;1mSQL (0.000435)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000107)[0m   [0;1mBEGIN[0m
+
+
+Processing StructureTemplatesController#edit (for 0.0.0.0 at 2007-10-10 14:15:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"edit", "id"=>"1", "controller"=>"structure_templates"}
+  [4;35;1mStructureTemplate Load (0.000619)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+Rendering  within layouts/application
+Rendering structure_templates/edit
+Completed in 0.01872 (53 reqs/sec) | Rendering: 0.01765 (94%) | DB: 0.00151 (8%) | 200 OK [http://test.host/structure_templates/1;edit]
+  [4;36;1mSQL (0.000198)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000108)[0m   [0mBEGIN[0m
+
+
+Processing StructureTemplatesController#index (for 0.0.0.0 at 2007-10-10 14:15:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"index", "controller"=>"structure_templates"}
+  [4;36;1mStructureTemplate Load (0.000611)[0m   [0;1mSELECT * FROM structure_templates [0m
+Rendering actionindexcontent_typetext/htmllayoutfalse within layouts/application
+Rendering structure_templates/index
+Completed in 0.00560 (178 reqs/sec) | Rendering: 0.00435 (77%) | DB: 0.00092 (16%) | 200 OK [http://test.host/structure_templates]
+  [4;35;1mSQL (0.000212)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000105)[0m   [0;1mBEGIN[0m
+
+
+Processing StructureTemplatesController#new (for 0.0.0.0 at 2007-10-10 14:15:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"new", "controller"=>"structure_templates"}
+Rendering  within layouts/application
+Rendering structure_templates/new
+Completed in 0.00321 (312 reqs/sec) | Rendering: 0.00306 (95%) | DB: 0.00032 (9%) | 200 OK [http://test.host/structure_templates/new]
+  [4;35;1mSQL (0.000152)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000104)[0m   [0;1mBEGIN[0m
+
+
+Processing StructureTemplatesController#show (for 0.0.0.0 at 2007-10-10 14:15:15) [GET]
+  Session ID: 
+  Parameters: {"action"=>"show", "id"=>"1", "controller"=>"structure_templates"}
+  [4;35;1mStructureTemplate Load (0.000468)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+Rendering actionshowcontent_typetext/htmllayoutfalse within layouts/application
+Rendering structure_templates/show
+  [4;36;1mAttr Load (0.000863)[0m   [0;1mSELECT * FROM attrs WHERE (attrs.structure_template_id = 1) ORDER BY position[0m
+  [4;35;1mTextField Columns (0.001054)[0m   [0mSHOW FIELDS FROM text_fields[0m
+  [4;36;1mTextField Load (0.000412)[0m   [0;1mSELECT * FROM text_fields WHERE (text_fields.`id` = 1) [0m
+Completed in 0.01718 (58 reqs/sec) | Rendering: 0.01363 (79%) | DB: 0.00305 (17%) | 200 OK [http://test.host/structure_templates/1]
+  [4;35;1mSQL (0.000154)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000091)[0m   [0;1mBEGIN[0m
+
+
+Processing StructureTemplatesController#update (for 0.0.0.0 at 2007-10-10 14:15:15) [PUT]
+  Session ID: 
+  Parameters: {"action"=>"update", "id"=>"1", "controller"=>"structure_templates", "structure_template"=>{}}
+  [4;35;1mStructureTemplate Load (0.000429)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;36;1mStructureTemplate Update (0.000265)[0m   [0;1mUPDATE structure_templates SET `template_schema_id` = NULL, `parent_id` = NULL, `name` = 'Person' WHERE `id` = 1[0m
+Redirected to http://test.host/structure_templates/1
+Completed in 0.00310 (322 reqs/sec) | DB: 0.00094 (30%) | 302 Found [http://test.host/structure_templates/1?structure_template=]
+  [4;35;1mSQL (0.000150)[0m   [0mROLLBACK[0m
