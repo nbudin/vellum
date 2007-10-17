@@ -13,7 +13,9 @@
   <% @structure_template.attrs.each do |attr| -%>
     <tr>
       <td><i><%=attr.attr_configuration.class.name%></i></td>
-      <td><b><%=attr.name%></b></td>       
+      <td><b><%=attr.name%></b></td>
+      <td><%= link_to "Delete", attr_path(@template_schema, @structure_template, attr),
+                :confirm => "Are you sure?", :method => :delete %></td>
     </tr>
   <% end -%>
   <% if @structure_template.attrs.count == 0 -%>

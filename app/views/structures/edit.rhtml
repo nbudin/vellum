@@ -1,0 +1,12 @@
+<h1>Editing structure</h1>
+
+<%= error_messages_for :structure %>
+
+<% form_for(:structure, :url => structure_path(@structure), :html => { :method => :put }) do |f| %>
+  <p>
+    <%= submit_tag "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', structure_path(@structure) %> |
+<%= link_to 'Back', structures_path %>

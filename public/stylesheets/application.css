@@ -100,4 +100,14 @@ div.authbox {
 
 body {
   margin-top: 2.5em;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+div.attribute_name {
+  width: 150px;
+  float: left;
+}
+
+.required {
+  font-weight: bold;
 }

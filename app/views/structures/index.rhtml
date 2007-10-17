@@ -1,0 +1,18 @@
+<h1>Listing structures</h1>
+
+<table>
+  <tr>
+  </tr>
+  
+<% for structure in @structures %>
+  <tr>
+    <td><%= link_to 'Show', structure_path(structure) %></td>
+    <td><%= link_to 'Edit', edit_structure_path(structure) %></td>
+    <td><%= link_to 'Destroy', structure_path(structure), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New structure', new_structure_path %>

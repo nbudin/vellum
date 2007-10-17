@@ -6846,3 +6846,125 @@ Processing StructureTemplatesController#update (for 0.0.0.0 at 2007-10-10 14:15:
 Redirected to http://test.host/structure_templates/1
 Completed in 0.00310 (322 reqs/sec) | DB: 0.00094 (30%) | 302 Found [http://test.host/structure_templates/1?structure_template=]
   [4;35;1mSQL (0.000150)[0m   [0mROLLBACK[0m
+Rails final load path: .
+Rails final dependency load path: /home/nbudin/vellum/config/../vendor/plugins/engines/lib
+enginizing plugin: acts_as_versioned from /home/nbudin/vellum/config/../vendor/plugins/acts_as_versioned
+Plugin 'acts_as_versioned': starting load.
+Plugin 'acts_as_versioned': loaded.
+enginizing plugin: engines from /home/nbudin/vellum/config/../vendor/plugins/engines
+Plugin 'engines': starting load.
+Plugin 'engines': loaded.
+plugins is now: acts_as_versioned, engines
+engines has started.
+loading plugin from /home/nbudin/vellum/config/../vendor/plugins/jipe with engine additions
+Plugin 'jipe': starting load.
+Attempting to copy plugin plugin asset files from '/home/nbudin/vellum/config/../vendor/plugins/jipe/assets' to '/home/nbudin/vellum/config/../public/plugin_assets'
+Plugin 'jipe': loaded.
+checking plugin 'acts_as_versioned' for 'application_helper'
+checking plugin 'engines' for 'application_helper'
+checking plugin 'jipe' for 'application_helper'
+loading from application: application_helper
+  [4;36;1mSQL (0.000123)[0m   [0;1mSET SQL_AUTO_IS_NULL=0[0m
+  [4;35;1mSQL (0.000160)[0m   [0mBEGIN[0m
+  [4;36;1mStructureTemplate Columns (0.001565)[0m   [0;1mSHOW FIELDS FROM structure_templates[0m
+  [4;35;1mAttr Columns (0.001569)[0m   [0mSHOW FIELDS FROM attrs[0m
+  [4;36;1mAttr Load (0.000768)[0m   [0;1mSELECT * FROM attrs WHERE (attrs.name IS NULL AND attrs.structure_template_id IS NULL) LIMIT 1[0m
+  [4;35;1mSQL (0.000246)[0m   [0mINSERT INTO structure_templates (`name`, `template_schema_id`, `parent_id`) VALUES(NULL, NULL, NULL)[0m
+  [4;36;1mAttr Load (0.000862)[0m   [0;1mSELECT * FROM attrs WHERE (structure_template_id = 1) ORDER BY position DESC LIMIT 1[0m
+  [4;35;1mSQL (0.000235)[0m   [0mINSERT INTO attrs (`name`, `attr_configuration_id`, `position`, `required`, `structure_template_id`, `attr_configuration_type`) VALUES(NULL, NULL, 2, 1, 1, NULL)[0m
+  [4;36;1mStructureTemplate Update (0.000241)[0m   [0;1mUPDATE structure_templates SET `template_schema_id` = NULL, `parent_id` = NULL, `name` = NULL WHERE `id` = 1[0m
+  [4;35;1mStructureTemplate Load (0.000538)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;36;1mStructure Columns (0.001271)[0m   [0;1mSHOW FIELDS FROM structures[0m
+  [4;35;1mAttr Load (0.000785)[0m   [0mSELECT * FROM attrs WHERE (attrs.structure_template_id = 1 AND (required = 1)) [0m
+  [4;36;1mSQL (0.000380)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000124)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.000107)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000141)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.000109)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000122)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.000106)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000127)[0m   [0mBEGIN[0m
+  [4;36;1mStructureTemplate Load (0.000565)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;35;1mRelationshipType Columns (0.001544)[0m   [0mSHOW FIELDS FROM relationship_types[0m
+  [4;36;1mRelationshipType Load (0.000880)[0m   [0;1mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 1) [0m
+  [4;35;1mRelationship Columns (0.001183)[0m   [0mSHOW FIELDS FROM relationships[0m
+  [4;36;1mSQL (0.000160)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000110)[0m   [0mBEGIN[0m
+  [4;36;1mRelationshipType Load (0.000623)[0m   [0;1mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 1) [0m
+  [4;35;1mStructureTemplate Load (0.000435)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;36;1mSQL (0.000141)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000109)[0m   [0mBEGIN[0m
+  [4;36;1mStructureTemplate Load (0.000452)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;35;1mSQL (0.000129)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000107)[0m   [0;1mBEGIN[0m
+  [4;35;1mStructureTemplate Load (0.000434)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;36;1mAttr Load (0.000761)[0m   [0;1mSELECT * FROM attrs WHERE (attrs.structure_template_id = 1 AND (required = 1)) [0m
+  [4;35;1mSQL (0.000235)[0m   [0mINSERT INTO structures (`project_id`, `structure_template_id`) VALUES(NULL, 1)[0m
+  [4;36;1mSQL (0.000201)[0m   [0;1mINSERT INTO structures (`project_id`, `structure_template_id`) VALUES(NULL, 1)[0m
+  [4;35;1mRelationshipType Load (0.000634)[0m   [0mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 1) [0m
+  [4;36;1mSQL (0.000232)[0m   [0;1mINSERT INTO relationships (`relationship_type_id`, `left_id`, `right_id`) VALUES(1, 1, 2)[0m
+  [4;35;1mSQL (0.000589)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000129)[0m   [0;1mBEGIN[0m
+  [4;35;1mStructureTemplate Load (0.000561)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;36;1mRelationshipType Load (0.000815)[0m   [0;1mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 2) [0m
+  [4;35;1mSQL (0.000143)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000106)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.000220)[0m   [0mINSERT INTO structure_templates (`name`, `template_schema_id`, `parent_id`) VALUES('Carrot', NULL, NULL)[0m
+  [4;36;1mSQL (0.000360)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000131)[0m   [0mBEGIN[0m
+  [4;36;1mSQL (0.000225)[0m   [0;1mINSERT INTO structure_templates (`name`, `template_schema_id`, `parent_id`) VALUES('Vegetable', NULL, NULL)[0m
+  [4;35;1mSQL (0.000193)[0m   [0mINSERT INTO structure_templates (`name`, `template_schema_id`, `parent_id`) VALUES('Lettuce', NULL, 4)[0m
+  [4;36;1mStructureTemplate Update (0.000227)[0m   [0;1mUPDATE structure_templates SET `template_schema_id` = NULL, `parent_id` = NULL, `name` = 'Vegetable' WHERE `id` = 4[0m
+  [4;35;1mStructureTemplate Load (0.000625)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 5) [0m
+  [4;36;1mStructureTemplate Load (0.000506)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 4) [0m
+  [4;35;1mStructureTemplate Load (0.000518)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.parent_id = 4) [0m
+  [4;36;1mStructureTemplate Load (0.000499)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 4) [0m
+  [4;35;1mSQL (0.000805)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000120)[0m   [0;1mBEGIN[0m
+  [4;35;1mStructureTemplate Load (0.000577)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 1) [0m
+  [4;36;1mAttr Load (0.000580)[0m   [0;1mSELECT * FROM attrs WHERE (attrs.structure_template_id = 1 AND (required = 1)) [0m
+  [4;35;1mSQL (0.000219)[0m   [0mINSERT INTO structures (`project_id`, `structure_template_id`) VALUES(NULL, 1)[0m
+  [4;36;1mAttr Load (0.000798)[0m   [0;1mSELECT attrs.* FROM attrs INNER JOIN attr_value_metadatas ON attrs.id = attr_value_metadatas.attr_id WHERE ((attr_value_metadatas.structure_id = 3)) AND (attrs.`name` = 'Name') LIMIT 1[0m
+  [4;35;1mAttr Load (0.000754)[0m   [0mSELECT * FROM attrs WHERE (attrs.structure_template_id = 1) AND (attrs.`name` = 'Name') LIMIT 1[0m
+  [4;36;1mAttrValueMetadata Columns (0.001267)[0m   [0;1mSHOW FIELDS FROM attr_value_metadatas[0m
+  [4;35;1mAttrValueMetadata Load (0.000620)[0m   [0mSELECT * FROM attr_value_metadatas WHERE (attr_value_metadatas.attr_id = 1 AND attr_value_metadatas.structure_id = 3) LIMIT 1[0m
+  [4;36;1mSQL (0.000239)[0m   [0;1mINSERT INTO attr_value_metadatas (`structure_id`, `value_type`, `attr_id`, `value_id`) VALUES(3, NULL, 1, NULL)[0m
+  [4;35;1mAttrValueMetadata Load (0.000612)[0m   [0mSELECT * FROM attr_value_metadatas WHERE (attr_value_metadatas.structure_id = 3) AND (attr_value_metadatas.`attr_id` = 1) LIMIT 1[0m
+  [4;36;1mAttr Load (0.000796)[0m   [0;1mSELECT * FROM attrs WHERE (attrs.`id` = 1) [0m
+  [4;35;1mTextField Columns (0.001085)[0m   [0mSHOW FIELDS FROM text_fields[0m
+  [4;36;1mTextField Load (0.000457)[0m   [0;1mSELECT * FROM text_fields WHERE (text_fields.`id` = 1) [0m
+  [4;35;1mTextValue Columns (0.001097)[0m   [0mSHOW FIELDS FROM text_values[0m
+  [4;36;1mSQL (0.000225)[0m   [0;1mINSERT INTO text_values (`value`) VALUES(NULL)[0m
+  [4;35;1mAttrValueMetadata Load (0.000684)[0m   [0mSELECT * FROM attr_value_metadatas WHERE (attr_value_metadatas.attr_id = 1 AND attr_value_metadatas.structure_id = 3 AND attr_value_metadatas.id <> 3) LIMIT 1[0m
+  [4;36;1mAttrValueMetadata Update (0.000261)[0m   [0;1mUPDATE attr_value_metadatas SET `value_id` = 1, `structure_id` = 3, `attr_id` = 1, `value_type` = 'TextValue' WHERE `id` = 3[0m
+  [4;35;1mTextValue Update (0.000220)[0m   [0mUPDATE text_values SET `value` = 'Bob' WHERE `id` = 1[0m
+  [4;36;1mStructure Load (0.000455)[0m   [0;1mSELECT * FROM structures WHERE (structures.`id` = 3) [0m
+  [4;35;1mAttr Load (0.000775)[0m   [0mSELECT attrs.* FROM attrs INNER JOIN attr_value_metadatas ON attrs.id = attr_value_metadatas.attr_id WHERE ((attr_value_metadatas.structure_id = 3)) AND (attrs.`name` = 'Name') LIMIT 1[0m
+  [4;36;1mAttrValueMetadata Load (0.000582)[0m   [0;1mSELECT * FROM attr_value_metadatas WHERE (attr_value_metadatas.structure_id = 3) AND (attr_value_metadatas.`attr_id` = 1) LIMIT 1[0m
+  [4;35;1mTextValue Load (0.000420)[0m   [0mSELECT * FROM text_values WHERE (text_values.`id` = 1) [0m
+  [4;36;1mSQL (0.000413)[0m   [0;1mROLLBACK[0m
+  [4;35;1mSQL (0.000125)[0m   [0mBEGIN[0m
+  [4;36;1mStructureTemplate Load (0.000552)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 2) [0m
+  [4;35;1mAttr Load (0.000692)[0m   [0mSELECT * FROM attrs WHERE (attrs.structure_template_id = 2 AND (required = 1)) [0m
+  [4;36;1mSQL (0.000189)[0m   [0;1mINSERT INTO structures (`project_id`, `structure_template_id`) VALUES(NULL, 2)[0m
+  [4;35;1mSQL (0.000228)[0m   [0mINSERT INTO structures (`project_id`, `structure_template_id`) VALUES(NULL, 2)[0m
+  [4;36;1mRelationshipType Load (0.000728)[0m   [0;1mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 2) [0m
+  [4;35;1mSQL (0.000179)[0m   [0mINSERT INTO relationships (`relationship_type_id`, `left_id`, `right_id`) VALUES(2, 4, 5)[0m
+  [4;36;1mStructure Load (0.000421)[0m   [0;1mSELECT * FROM structures WHERE (structures.`id` = 4) [0m
+  [4;35;1mStructure Load (0.000411)[0m   [0mSELECT * FROM structures WHERE (structures.`id` = 5) [0m
+  [4;36;1mRelationship Load (0.000481)[0m   [0;1mSELECT * FROM relationships WHERE (relationships.left_id = 4) [0m
+  [4;35;1mRelationship Load (0.000419)[0m   [0mSELECT * FROM relationships WHERE (relationships.right_id = 4) [0m
+  [4;36;1mRelationshipType Load (0.000589)[0m   [0;1mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 2) [0m
+  [4;35;1mRelationship Load (0.000432)[0m   [0mSELECT * FROM relationships WHERE (relationships.left_id = 5) [0m
+  [4;36;1mRelationship Load (0.000460)[0m   [0;1mSELECT * FROM relationships WHERE (relationships.right_id = 5) [0m
+  [4;35;1mRelationshipType Load (0.000589)[0m   [0mSELECT * FROM relationship_types WHERE (relationship_types.`id` = 2) [0m
+  [4;36;1mStructure Load (0.000416)[0m   [0;1mSELECT * FROM structures WHERE (structures.`id` = 4) [0m
+  [4;35;1mStructure Load (0.000388)[0m   [0mSELECT * FROM structures WHERE (structures.`id` = 5) [0m
+  [4;36;1mStructure Load (0.000385)[0m   [0;1mSELECT * FROM structures WHERE (structures.`id` = 4) [0m
+  [4;35;1mSQL (0.000360)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000122)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.000106)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000121)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.000106)[0m   [0mROLLBACK[0m
+  [4;36;1mSQL (0.000128)[0m   [0;1mBEGIN[0m
+  [4;35;1mSQL (0.000105)[0m   [0mROLLBACK[0m
