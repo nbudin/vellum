@@ -1,0 +1,18 @@
+<p><%= link_to "<- Back to #{@project.name}", project_path(@project) %></p>
+
+<h1>New <%=h @structure.structure_template.name %></h1>
+
+<%= error_messages_for :structure %>
+
+<% form_for(:structure, :url => structures_path) do |f| -%>
+  <%= hidden_field_tag "template_id", @structure.structure_template.id %>
+  <% @structure.structure_template.attrs.each do |a| -%>
+    <div class="attribute">
+      <div class="attribute_name<% if a.required %> required<%end%>">
+	<%=h a.name %>
+      </div>
+      <%= text_field_tag "attrs[#{a.id}]" %>
+    </div>
+  <% end -%>
+  <%= submit_tag "Create New #{@structure.structure_template.name}" %>
+<% end -%>

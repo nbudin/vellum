@@ -1,5 +1,6 @@
 class Structure < ActiveRecord::Base
   belongs_to :structure_template
+  belongs_to :project
   has_many :attr_value_metadatas
   has_many :template_attrs, :through => :structure_template, :source => :attrs
   has_many :attrs, :through => :attr_value_metadatas
@@ -14,6 +15,15 @@ class Structure < ActiveRecord::Base
       end
     end
   }
+  
+  def name
+    name_attr = attr("Name")
+    if name_attr.nil?
+      return "#{structure_template.name} #{id}"
+    else
+      return attr_value(name_attr).value
+    end
+  end
 
   def attr_values
     attr_value_metadatas.collect { |m| m.value }
@@ -32,15 +42,16 @@ class Structure < ActiveRecord::Base
   # If this attribute's value is uninitialized, create an AVM implicitly.
   def attr(name)
     if name.kind_of? Attr
-      return name
+      a = name
     else
       a = attrs.find_by_name(name)
-      if a.nil? and (ta = structure_template.attr(name))
-        avm = attr_value_metadatas.create :structure => self, :attr => ta
-        return ta
-      else
-        return a
-      end
+    end
+    
+    if a.nil? and (ta = structure_template.attr(name))
+      avm = attr_value_metadatas.create :structure => self, :attr => ta
+      return ta
+    else
+      return a
     end
   end
 end
