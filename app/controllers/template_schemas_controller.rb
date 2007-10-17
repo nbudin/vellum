@@ -17,7 +17,7 @@ class TemplateSchemasController < ApplicationController
 
     respond_to do |format|
       format.html # show.rhtml
-      format.xml  { render :xml => @template_schema.to_xml }
+      format.xml  { render :xml => @template_schema.to_xml(:include => [:structure_templates]) }
       format.json { render :json => @template_schema.to_json }
     end
   end

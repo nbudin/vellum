@@ -7,7 +7,6 @@ class StructureTemplatesController < ApplicationController
     @structure_templates = @template_schema.structure_templates
 
     respond_to do |format|
-      format.html # index.rhtml
       format.xml  { render :xml => @structure_templates.to_xml }
     end
   end
@@ -19,7 +18,7 @@ class StructureTemplatesController < ApplicationController
 
     respond_to do |format|
       format.html # show.rhtml
-      format.xml  { render :xml => @structure_template.to_xml }
+      format.xml  { render :xml => @structure_template.to_xml(:include => [:attrs]) }
       format.json  { render :json => @structure_template.to_json }
     end
   end
@@ -37,7 +36,6 @@ class StructureTemplatesController < ApplicationController
 
     respond_to do |format|
       if @structure_template.save
-        flash[:notice] = 'StructureTemplate was successfully created.'
         format.html { redirect_to structure_template_url(@template_schema, @structure_template) }
         format.xml  { head :created, :location => structure_template_url(@template_schema, @structure_template) }
       else
@@ -54,7 +52,6 @@ class StructureTemplatesController < ApplicationController
 
     respond_to do |format|
       if @structure_template.update_attributes(params[:structure_template])
-        flash[:notice] = 'StructureTemplate was successfully updated.'
         format.html { redirect_to structure_template_url(@template_schema, @structure_template) }
         format.xml  { head :ok }
         format.json { head :ok }
@@ -73,7 +70,7 @@ class StructureTemplatesController < ApplicationController
     @structure_template.destroy
 
     respond_to do |format|
-      format.html { redirect_to structure_templates_url }
+      format.html { redirect_to template_schema_url(@template_schema) }
       format.xml  { head :ok }
     end
   end

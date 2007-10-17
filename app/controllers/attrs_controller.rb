@@ -7,8 +7,8 @@ class AttrsController < ApplicationController
     @attrs = @structure_template.attrs
 
     respond_to do |format|
-      format.html # index.rhtml
       format.xml  { render :xml => @attrs.to_xml }
+      format.json { render :json => @attrs.to_json }
     end
   end
 
@@ -18,19 +18,14 @@ class AttrsController < ApplicationController
     @attr = Attr.find(params[:id])
 
     respond_to do |format|
-      format.html # show.rhtml
       format.xml  { render :xml => @attr.to_xml }
+      format.json { render :json => @attr.to_json }
     end
   end
 
   # GET /attrs/new
   def new
     @attr = Attr.new
-  end
-
-  # GET /attrs/1;edit
-  def edit
-    @attr = Attr.find(params[:id])
   end
 
   # POST /attrs
@@ -55,12 +50,13 @@ class AttrsController < ApplicationController
 
     respond_to do |format|
       if @attr.save
-        flash[:notice] = 'Attr was successfully created.'
         format.html { redirect_to structure_template_url(@template_schema, @structure_template) }
         format.xml  { head :created, :location => attr_url(@template_schema, @structure_template, @attr) }
+        format.json { head :created, :location => attr_url(@template_schema, @structure_template, @attr) }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @attr.errors.to_xml }
+        format.json { render :json => @attr.errors.to_json }
       end
     end
   end
@@ -72,12 +68,11 @@ class AttrsController < ApplicationController
 
     respond_to do |format|
       if @attr.update_attributes(params[:attr])
-        flash[:notice] = 'Attr was successfully updated.'
-        format.html { redirect_to attr_url(@template_schema, @structure_template, @attr) }
         format.xml  { head :ok }
+        format.json { head :ok }
       else
-        format.html { render :action => "edit" }
         format.xml  { render :xml => @attr.errors.to_xml }
+        format.json { render :json => @attr.errors.to_json }
       end
     end
   end
@@ -89,8 +84,8 @@ class AttrsController < ApplicationController
     @attr.destroy
 
     respond_to do |format|
-      format.html { redirect_to attrs_url }
       format.xml  { head :ok }
+      format.json { render :json => @attr.errors.to_json }
     end
   end
   

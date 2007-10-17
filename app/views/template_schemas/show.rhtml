@@ -6,12 +6,27 @@
 
 <h1><%= jipe_editor(@template_schema, "name") %></h1>
 
+<p>
+    <% if @template_schema.projects.count > 0 -%>
+        Used by projects:
+        <%= @template_schema.projects.collect { |p|
+            link_to p.name, project_url(p)
+        }.join(", ") %>
+    <% else -%>
+        <i>Not used by any projects.</i>
+    <% end -%>
+</p>
+
 <h2>Templates</h2>
 
 <ul>
     <% @template_schema.structure_templates.each do |t| -%>
-        <li><%= link_to(t.name,
-                        structure_template_url(@template_schema, t)) %></li>
+        <li>
+            <%= link_to(t.name,
+                        structure_template_path(@template_schema, t)) %>
+            (<td><%= link_to 'Delete', structure_template_path(@template_schema, t),
+                     :confirm => 'Are you sure?', :method => :delete %></td>)
+        </li>
     <% end -%>
     <% if @template_schema.structure_templates.count == 0 -%>
         <li><i>No templates.</i></li>
