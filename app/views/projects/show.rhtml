@@ -1,0 +1,15 @@
+<script type="text/javascript">
+  Base.model("Project", {format: 'json'});
+</script>
+
+<p><%= link_to '<- Back to projects', projects_path %></p>
+
+<h1><%= jipe_editor(@project, "name") %></h1>
+
+<p>
+  <b>Template schema:</b>
+  <%=link_to @project.template_schema.name,
+      template_schema_url(@project.template_schema) %>
+</p>
+
+

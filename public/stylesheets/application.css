@@ -72,3 +72,32 @@ div.progressBar div.background {
   width: 0%;
 }
 
+div.topbar {
+  background-color: #ff8;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  border-bottom: 1px black solid;
+}
+
+div.app_name {
+  float: left;
+  font-weight: bold;
+  clear: none;
+}
+
+div.nav_links {
+  text-align: center;
+  clear: none;
+}
+
+div.authbox {
+  font-style: italic;
+  float: right;
+  clear: none;
+}
+
+body {
+  margin-top: 2.5em;
+}
