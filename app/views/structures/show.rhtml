@@ -1,1 +1,13 @@
 <p><%= link_to "<- Back to #{@project.name}", project_path(@project) %></p>
+
+<p style="margin-top: 2em;"><h1 style="display: inline;"><%=h @structure.name %></h1>
+    (<%=h @structure.structure_template.name %>)</p>
+    
+<table style="margin-top: .75em;">
+    <% @structure.attr_value_metadatas.each do |avm| -%>
+        <tr>
+            <td><b><%=h avm.attr.name %></b></td>
+            <td><%=h avm.value.value %></td>
+        </tr>
+    <% end -%>
+</table>

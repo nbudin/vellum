@@ -61,7 +61,6 @@ class StructuresController < ApplicationController
 
     respond_to do |format|
       if (struct_ok) and (@attr_errors.length == 0)
-        flash[:notice] = 'Structure was successfully created.'
         format.html { redirect_to structure_url(@project, @structure) }
         format.xml  { head :created, :location => structure_url(@project, @structure) }
       else
@@ -78,7 +77,6 @@ class StructuresController < ApplicationController
 
     respond_to do |format|
       if @structure.update_attributes(params[:structure])
-        flash[:notice] = 'Structure was successfully updated.'
         format.html { redirect_to structure_url(@project, @structure) }
         format.xml  { head :ok }
       else
@@ -95,7 +93,7 @@ class StructuresController < ApplicationController
     @structure.destroy
 
     respond_to do |format|
-      format.html { redirect_to structures_url(@project) }
+      format.html { redirect_to project_url(@project) }
       format.xml  { head :ok }
     end
   end

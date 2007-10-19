@@ -31,6 +31,7 @@ class Structure < ActiveRecord::Base
 
   def attr_value(a)
     a = self.attr(a)
+    logger.debug "#{a.name} has id #{a.id}"
     attr_value_metadatas.find_by_attr_id(a.id).value
   end
 
@@ -42,12 +43,13 @@ class Structure < ActiveRecord::Base
   # If this attribute's value is uninitialized, create an AVM implicitly.
   def attr(name)
     if name.kind_of? Attr
-      a = name
+      a = attrs.find_by_id(name.id)
     else
       a = attrs.find_by_name(name)
     end
     
     if a.nil? and (ta = structure_template.attr(name))
+      logger.info "Template attr #{name} does not exist for structure #{self.id}; autocreating"
       avm = attr_value_metadatas.create :structure => self, :attr => ta
       return ta
     else

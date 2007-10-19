@@ -19,6 +19,7 @@
     <tr>
       <td><%= link_to s.name, structure_path(@project, s) %></td>
       <td><%=h s.structure_template.name %></td>
+      <td><%= link_to 'Delete', structure_path(@project, s), :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>
   <% end -%>
 </table>
