@@ -28884,3 +28884,204 @@ Name has id 5
   [4;36;1mStructureTemplate Load (0.000424)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 6) [0m
   [4;35;1mStructureTemplate Load (0.000489)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.template_schema_id = 1) [0m
 Completed in 0.11062 (9 reqs/sec) | Rendering: 0.07612 (68%) | DB: 0.02579 (23%) | 200 OK [http://localhost/projects/3]
+Rails final load path: .
+Rails final dependency load path: script/../config/../vendor/plugins/engines/lib
+enginizing plugin: acts_as_versioned from script/../config/../vendor/plugins/acts_as_versioned
+Plugin 'acts_as_versioned': starting load.
+Plugin 'acts_as_versioned': loaded.
+enginizing plugin: engines from script/../config/../vendor/plugins/engines
+Plugin 'engines': starting load.
+Plugin 'engines': loaded.
+plugins is now: acts_as_versioned, engines
+engines has started.
+  [4;36;1mSQL (0.000140)[0m   [0;1mSET SQL_AUTO_IS_NULL=0[0m
+  [4;35;1mSQL (0.023874)[0m   [0mSELECT version FROM schema_info[0m
+loading plugin from script/../config/../vendor/plugins/jipe with engine additions
+Plugin 'jipe': starting load.
+Attempting to copy plugin plugin asset files from 'script/../config/../vendor/plugins/jipe/assets' to 'script/../config/../public/plugin_assets'
+Plugin 'jipe': loaded.
+checking plugin 'acts_as_versioned' for 'application_helper'
+checking plugin 'engines' for 'application_helper'
+checking plugin 'jipe' for 'application_helper'
+loading from application: application_helper
+checking plugin 'acts_as_versioned' for 'projects_controller'
+checking plugin 'engines' for 'projects_controller'
+checking plugin 'jipe' for 'projects_controller'
+loading from application: projects_controller
+checking plugin 'acts_as_versioned' for 'projects_helper'
+checking plugin 'engines' for 'projects_helper'
+checking plugin 'jipe' for 'projects_helper'
+loading from application: projects_helper
+
+
+Processing ProjectsController#index (for 127.0.0.1 at 2007-10-22 11:16:12) [GET]
+  Session ID: 9154e55b26adbf059b85e2dbd42f4225
+  Parameters: {"action"=>"index", "controller"=>"projects"}
+  [4;36;1mProject Load (0.022798)[0m   [0;1mSELECT * FROM projects [0m
+Rendering layoutfalseactionindexcontent_typetext/html within layouts/application
+Rendering projects/index
+  [4;35;1mProject Columns (0.001428)[0m   [0mSHOW FIELDS FROM projects[0m
+Completed in 0.09618 (10 reqs/sec) | Rendering: 0.04184 (43%) | DB: 0.04824 (50%) | 200 OK [http://localhost/]
+checking plugin 'acts_as_versioned' for 'application_helper'
+checking plugin 'engines' for 'application_helper'
+checking plugin 'jipe' for 'application_helper'
+loading from application: application_helper
+checking plugin 'acts_as_versioned' for 'projects_controller'
+checking plugin 'engines' for 'projects_controller'
+checking plugin 'jipe' for 'projects_controller'
+loading from application: projects_controller
+checking plugin 'acts_as_versioned' for 'projects_helper'
+checking plugin 'engines' for 'projects_helper'
+checking plugin 'jipe' for 'projects_helper'
+loading from application: projects_helper
+
+
+Processing ProjectsController#show (for 127.0.0.1 at 2007-10-22 11:16:15) [GET]
+  Session ID: 9154e55b26adbf059b85e2dbd42f4225
+  Parameters: {"action"=>"show", "id"=>"3", "controller"=>"projects"}
+  [4;36;1mProject Columns (0.001252)[0m   [0;1mSHOW FIELDS FROM projects[0m
+  [4;35;1mProject Load (0.000604)[0m   [0mSELECT * FROM projects WHERE (projects.`id` = 3) [0m
+Rendering layoutfalseactionshowcontent_typetext/html within layouts/application
+Rendering projects/show
+  [4;36;1mTemplateSchema Columns (0.025816)[0m   [0;1mSHOW FIELDS FROM template_schemas[0m
+  [4;35;1mTemplateSchema Load (0.000721)[0m   [0mSELECT * FROM template_schemas WHERE (template_schemas.`id` = 1) [0m
+  [4;36;1mStructure Load (0.019726)[0m   [0;1mSELECT * FROM structures WHERE (structures.project_id = 3) [0m
+  [4;35;1mStructure Columns (0.001459)[0m   [0mSHOW FIELDS FROM structures[0m
+  [4;36;1mAttr Columns (0.002014)[0m   [0;1mSHOW FIELDS FROM attrs[0m
+  [4;35;1mAttr Load (0.001693)[0m   [0mSELECT attrs.* FROM attrs INNER JOIN attr_value_metadatas ON attrs.id = attr_value_metadatas.attr_id WHERE ((attr_value_metadatas.structure_id = 15)) AND (attrs.`name` = 'Name') LIMIT 1[0m
+  [4;36;1mAttr Load (0.001164)[0m   [0;1mSELECT attrs.* FROM attrs INNER JOIN attr_value_metadatas ON attrs.id = attr_value_metadatas.attr_id WHERE ((attr_value_metadatas.structure_id = 15)) AND (attrs.`id` = 5) LIMIT 1[0m
+Name has id 5
+  [4;35;1mAttrValueMetadata Columns (0.001672)[0m   [0mSHOW FIELDS FROM attr_value_metadatas[0m
+  [4;36;1mAttrValueMetadata Load (0.001072)[0m   [0;1mSELECT * FROM attr_value_metadatas WHERE (attr_value_metadatas.structure_id = 15) AND (attr_value_metadatas.`attr_id` = 5) LIMIT 1[0m
+  [4;35;1mTextValue Columns (0.001686)[0m   [0mSHOW FIELDS FROM text_values[0m
+  [4;36;1mTextValue Load (0.000637)[0m   [0;1mSELECT * FROM text_values WHERE (text_values.`id` = 10) [0m
+  [4;35;1mStructureTemplate Columns (0.020306)[0m   [0mSHOW FIELDS FROM structure_templates[0m
+  [4;36;1mStructureTemplate Load (0.001563)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 6) [0m
+  [4;35;1mAttr Load (0.001315)[0m   [0mSELECT attrs.* FROM attrs INNER JOIN attr_value_metadatas ON attrs.id = attr_value_metadatas.attr_id WHERE ((attr_value_metadatas.structure_id = 16)) AND (attrs.`name` = 'Name') LIMIT 1[0m
+  [4;36;1mAttr Load (0.001285)[0m   [0;1mSELECT attrs.* FROM attrs INNER JOIN attr_value_metadatas ON attrs.id = attr_value_metadatas.attr_id WHERE ((attr_value_metadatas.structure_id = 16)) AND (attrs.`id` = 5) LIMIT 1[0m
+Name has id 5
+  [4;35;1mAttrValueMetadata Load (0.001206)[0m   [0mSELECT * FROM attr_value_metadatas WHERE (attr_value_metadatas.structure_id = 16) AND (attr_value_metadatas.`attr_id` = 5) LIMIT 1[0m
+  [4;36;1mTextValue Load (0.001808)[0m   [0;1mSELECT * FROM text_values WHERE (text_values.`id` = 14) [0m
+  [4;35;1mStructureTemplate Load (0.000628)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 6) [0m
+  [4;36;1mAttr Load (0.001169)[0m   [0;1mSELECT attrs.* FROM attrs INNER JOIN attr_value_metadatas ON attrs.id = attr_value_metadatas.attr_id WHERE ((attr_value_metadatas.structure_id = 17)) AND (attrs.`name` = 'Name') LIMIT 1[0m
+  [4;35;1mAttr Load (0.001196)[0m   [0mSELECT attrs.* FROM attrs INNER JOIN attr_value_metadatas ON attrs.id = attr_value_metadatas.attr_id WHERE ((attr_value_metadatas.structure_id = 17)) AND (attrs.`id` = 5) LIMIT 1[0m
+Name has id 5
+  [4;36;1mAttrValueMetadata Load (0.000948)[0m   [0;1mSELECT * FROM attr_value_metadatas WHERE (attr_value_metadatas.structure_id = 17) AND (attr_value_metadatas.`attr_id` = 5) LIMIT 1[0m
+  [4;35;1mTextValue Load (0.000800)[0m   [0mSELECT * FROM text_values WHERE (text_values.`id` = 15) [0m
+  [4;36;1mStructureTemplate Load (0.000555)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 6) [0m
+  [4;35;1mStructureTemplate Load (0.001378)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.template_schema_id = 1) [0m
+Completed in 0.38666 (2 reqs/sec) | Rendering: 0.28473 (73%) | DB: 0.09367 (24%) | 200 OK [http://localhost/projects/3]
+checking plugin 'acts_as_versioned' for 'application_helper'
+checking plugin 'engines' for 'application_helper'
+checking plugin 'jipe' for 'application_helper'
+loading from application: application_helper
+checking plugin 'acts_as_versioned' for 'template_schemas_controller'
+checking plugin 'engines' for 'template_schemas_controller'
+checking plugin 'jipe' for 'template_schemas_controller'
+loading from application: template_schemas_controller
+checking plugin 'acts_as_versioned' for 'template_schemas_helper'
+checking plugin 'engines' for 'template_schemas_helper'
+checking plugin 'jipe' for 'template_schemas_helper'
+loading from application: template_schemas_helper
+
+
+Processing TemplateSchemasController#show (for 127.0.0.1 at 2007-10-22 11:16:39) [GET]
+  Session ID: 9154e55b26adbf059b85e2dbd42f4225
+  Parameters: {"action"=>"show", "id"=>"1", "controller"=>"template_schemas"}
+  [4;36;1mTemplateSchema Columns (0.001261)[0m   [0;1mSHOW FIELDS FROM template_schemas[0m
+  [4;35;1mTemplateSchema Load (0.000450)[0m   [0mSELECT * FROM template_schemas WHERE (template_schemas.`id` = 1) [0m
+Rendering layoutfalseactionshowcontent_typetext/html within layouts/application
+Rendering template_schemas/show
+  [4;36;1mProject Columns (0.001326)[0m   [0;1mSHOW FIELDS FROM projects[0m
+  [4;35;1mSQL (0.000484)[0m   [0mSELECT count(*) AS count_all FROM projects WHERE (projects.template_schema_id = 1) [0m
+  [4;36;1mProject Load (0.000554)[0m   [0;1mSELECT * FROM projects WHERE (projects.template_schema_id = 1) [0m
+  [4;35;1mStructureTemplate Load (0.000935)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.template_schema_id = 1) [0m
+  [4;36;1mStructureTemplate Columns (0.001266)[0m   [0;1mSHOW FIELDS FROM structure_templates[0m
+  [4;35;1mSQL (0.000514)[0m   [0mSELECT count(*) AS count_all FROM structure_templates WHERE (structure_templates.template_schema_id = 1) [0m
+  [4;36;1mRelationshipType Load (0.019852)[0m   [0;1mSELECT * FROM relationship_types WHERE (relationship_types.template_schema_id = 1) [0m
+  [4;35;1mRelationshipType Columns (0.001899)[0m   [0mSHOW FIELDS FROM relationship_types[0m
+  [4;36;1mSQL (0.000487)[0m   [0;1mSELECT count(*) AS count_all FROM relationship_types WHERE (relationship_types.template_schema_id = 1) [0m
+Completed in 0.18973 (5 reqs/sec) | Rendering: 0.15140 (79%) | DB: 0.02903 (15%) | 200 OK [http://localhost/template_schemas/1]
+checking plugin 'acts_as_versioned' for 'application_helper'
+checking plugin 'engines' for 'application_helper'
+checking plugin 'jipe' for 'application_helper'
+loading from application: application_helper
+checking plugin 'acts_as_versioned' for 'structure_templates_controller'
+checking plugin 'engines' for 'structure_templates_controller'
+checking plugin 'jipe' for 'structure_templates_controller'
+loading from application: structure_templates_controller
+checking plugin 'acts_as_versioned' for 'structure_templates_helper'
+checking plugin 'engines' for 'structure_templates_helper'
+checking plugin 'jipe' for 'structure_templates_helper'
+loading from application: structure_templates_helper
+
+
+Processing StructureTemplatesController#show (for 127.0.0.1 at 2007-10-22 11:16:42) [GET]
+  Session ID: 9154e55b26adbf059b85e2dbd42f4225
+  Parameters: {"template_schema_id"=>"1", "action"=>"show", "id"=>"6", "controller"=>"structure_templates"}
+  [4;35;1mTemplateSchema Columns (0.001369)[0m   [0mSHOW FIELDS FROM template_schemas[0m
+  [4;36;1mTemplateSchema Load (0.000400)[0m   [0;1mSELECT * FROM template_schemas WHERE (template_schemas.`id` = 1) [0m
+  [4;35;1mStructureTemplate Columns (0.001414)[0m   [0mSHOW FIELDS FROM structure_templates[0m
+  [4;36;1mStructureTemplate Load (0.000471)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 6) [0m
+Rendering layoutfalseactionshowcontent_typetext/html within layouts/application
+Rendering structure_templates/show
+  [4;35;1mAttr Load (0.001060)[0m   [0mSELECT * FROM attrs WHERE (attrs.structure_template_id = 6) ORDER BY position[0m
+  [4;36;1mAttr Columns (0.001431)[0m   [0;1mSHOW FIELDS FROM attrs[0m
+  [4;35;1mTextField Columns (0.014228)[0m   [0mSHOW FIELDS FROM text_fields[0m
+  [4;36;1mTextField Load (0.000843)[0m   [0;1mSELECT * FROM text_fields WHERE (text_fields.`id` = 8) [0m
+  [4;35;1mSQL (0.000498)[0m   [0mSELECT count(*) AS count_all FROM attrs WHERE (attrs.structure_template_id = 6) [0m
+Completed in 0.17548 (5 reqs/sec) | Rendering: 0.06005 (34%) | DB: 0.02171 (12%) | 200 OK [http://localhost/template_schemas/1/structure_templates/6]
+checking plugin 'acts_as_versioned' for 'application_helper'
+checking plugin 'engines' for 'application_helper'
+checking plugin 'jipe' for 'application_helper'
+loading from application: application_helper
+checking plugin 'acts_as_versioned' for 'attrs_controller'
+checking plugin 'engines' for 'attrs_controller'
+checking plugin 'jipe' for 'attrs_controller'
+loading from application: attrs_controller
+checking plugin 'acts_as_versioned' for 'attrs_helper'
+checking plugin 'engines' for 'attrs_helper'
+checking plugin 'jipe' for 'attrs_helper'
+loading from application: attrs_helper
+
+
+Processing AttrsController#new (for 127.0.0.1 at 2007-10-22 11:34:02) [GET]
+  Session ID: 9154e55b26adbf059b85e2dbd42f4225
+  Parameters: {"template_schema_id"=>"1", "action"=>"new", "controller"=>"attrs", "structure_template_id"=>"6"}
+  [4;36;1mStructureTemplate Columns (0.001345)[0m   [0;1mSHOW FIELDS FROM structure_templates[0m
+  [4;35;1mStructureTemplate Load (0.000463)[0m   [0mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 6) [0m
+  [4;36;1mTemplateSchema Columns (0.001230)[0m   [0;1mSHOW FIELDS FROM template_schemas[0m
+  [4;35;1mTemplateSchema Load (0.000451)[0m   [0mSELECT * FROM template_schemas WHERE (template_schemas.`id` = 1) [0m
+  [4;36;1mAttr Columns (0.001524)[0m   [0;1mSHOW FIELDS FROM attrs[0m
+Rendering  within layouts/application
+Rendering attrs/new
+Completed in 0.04237 (23 reqs/sec) | Rendering: 0.00629 (14%) | DB: 0.00501 (11%) | 200 OK [http://localhost/template_schemas/1/structure_templates/6/attrs/new]
+checking plugin 'acts_as_versioned' for 'application_helper'
+checking plugin 'engines' for 'application_helper'
+checking plugin 'jipe' for 'application_helper'
+loading from application: application_helper
+checking plugin 'acts_as_versioned' for 'structure_templates_controller'
+checking plugin 'engines' for 'structure_templates_controller'
+checking plugin 'jipe' for 'structure_templates_controller'
+loading from application: structure_templates_controller
+checking plugin 'acts_as_versioned' for 'structure_templates_helper'
+checking plugin 'engines' for 'structure_templates_helper'
+checking plugin 'jipe' for 'structure_templates_helper'
+loading from application: structure_templates_helper
+
+
+Processing StructureTemplatesController#show (for 127.0.0.1 at 2007-10-22 11:34:13) [GET]
+  Session ID: 9154e55b26adbf059b85e2dbd42f4225
+  Parameters: {"template_schema_id"=>"1", "action"=>"show", "id"=>"6", "controller"=>"structure_templates"}
+  [4;35;1mTemplateSchema Columns (0.001242)[0m   [0mSHOW FIELDS FROM template_schemas[0m
+  [4;36;1mTemplateSchema Load (0.000381)[0m   [0;1mSELECT * FROM template_schemas WHERE (template_schemas.`id` = 1) [0m
+  [4;35;1mStructureTemplate Columns (0.001422)[0m   [0mSHOW FIELDS FROM structure_templates[0m
+  [4;36;1mStructureTemplate Load (0.000485)[0m   [0;1mSELECT * FROM structure_templates WHERE (structure_templates.`id` = 6) [0m
+Rendering layoutfalseactionshowcontent_typetext/html within layouts/application
+Rendering structure_templates/show
+  [4;35;1mAttr Load (0.000735)[0m   [0mSELECT * FROM attrs WHERE (attrs.structure_template_id = 6) ORDER BY position[0m
+  [4;36;1mAttr Columns (0.001447)[0m   [0;1mSHOW FIELDS FROM attrs[0m
+  [4;35;1mTextField Columns (0.001138)[0m   [0mSHOW FIELDS FROM text_fields[0m
+  [4;36;1mTextField Load (0.000302)[0m   [0;1mSELECT * FROM text_fields WHERE (text_fields.`id` = 8) [0m
+  [4;35;1mSQL (0.000288)[0m   [0mSELECT count(*) AS count_all FROM attrs WHERE (attrs.structure_template_id = 6) [0m
+Completed in 0.05517 (18 reqs/sec) | Rendering: 0.02224 (40%) | DB: 0.00744 (13%) | 200 OK [http://localhost/template_schemas/1/structure_templates/6]
