@@ -4,7 +4,6 @@
 
 <% form_for(:attr, :url => attrs_path(@template_schema, @structure_template)) do |f| %>
   <p>
-    <%= select_tag "config_class", options_for_select(["TextField"]) %>
     <%= f.text_field "name" %>
     <%= submit_tag "Create" %>
   </p>

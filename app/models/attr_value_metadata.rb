@@ -15,7 +15,7 @@ class AttrValueMetadata < ActiveRecord::Base
     if v
       return v
     else
-      v = attr.attr_configuration.value_class.create
+      v = attr.attr_configuration.class.value_class.create
       self.value = v
       save
       return v

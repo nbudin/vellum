@@ -25,4 +25,9 @@
   <% end -%>
 </table>
 
-<p><%= link_to "New attribute", new_attr_path(@template_schema, @structure_template) %></p>
+<p>Create new
+<% Attr.attr_classes.each do |cls| -%>
+  <%= link_to cls.name,
+    new_attr_path(@template_schema, @structure_template) %>
+<% end -%>
+</p>
