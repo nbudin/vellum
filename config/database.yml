@@ -37,3 +37,13 @@ production:
   password: 
   host: 127.0.0.1
   port: 3306
+
+users:
+  adapter: mysql
+  host: localhost
+  username: root
+  password: 
+  database: musette_development
+  host: 127.0.0.1
+  port: 3306
+  
