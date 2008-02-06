@@ -9,12 +9,13 @@
   <%= javascript_include_tag :defaults %>
   <%= javascript_include_tag 'jester', :plugin => 'jipe' %>
   <%= javascript_include_tag 'jipe', :plugin => 'jipe' %>
+  <%= ae_form_stylesheet %>
 </head>
 <body>
   
 <div class="topbar">
   <div class="app_name">Vellum</div>
-  <div class="authbox">auth box goes here</div>
+  <%= render :partial => "auth/mini_auth_form" %>
   <div class="nav_links">
     <%= link_to "Projects", projects_path() %>
     <%= link_to "Template Schemas", template_schemas_path() %>

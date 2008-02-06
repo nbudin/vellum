@@ -79,12 +79,19 @@ div.topbar {
   left: 0px;
   width: 100%;
   border-bottom: 1px black solid;
+  padding-bottom: 1px;
+  padding-top: 1px;
+}
+
+div.topbar img {
+  vertical-align: middle;
 }
 
 div.app_name {
   float: left;
   font-weight: bold;
   clear: none;
+  padding-left: 1px;
 }
 
 div.nav_links {
@@ -96,6 +103,7 @@ div.authbox {
   font-style: italic;
   float: right;
   clear: none;
+  padding-right: 1px;
 }
 
 body {
