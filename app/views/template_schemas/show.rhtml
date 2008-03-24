@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  Base.model("TemplateSchema", {format: 'json'});
+  Resource.model("TemplateSchema", {format: 'json'});
 </script>
 
 <p><%= link_to "<- Back to template schemas", template_schemas_path() %></p>
@@ -23,8 +23,8 @@
     <% @template_schema.structure_templates.each do |t| -%>
         <li>
             <%= link_to(t.name,
-                        structure_template_path(@template_schema, t)) %>
-            (<td><%= link_to 'Delete', structure_template_path(@template_schema, t),
+                        template_schema_structure_template_path(@template_schema, t)) %>
+            (<td><%= link_to 'Delete', template_schema_structure_template_path(@template_schema, t),
                      :confirm => 'Are you sure?', :method => :delete %></td>)
         </li>
     <% end -%>
@@ -33,18 +33,18 @@
     <% end -%>
 </ul>
 
-<p><%= link_to "New template", new_structure_template_path(@template_schema) %></p>
+<p><%= link_to "New template", new_template_schema_structure_template_path(@template_schema) %></p>
 
 <h2>Relationship Types</h2>
 
 <ul>
     <% @template_schema.relationship_types.each do |typ| -%>
         <li><%= link_to(typ.name,
-                        relationship_type_url(@template_schema, typ)) %></li>
+                        template_schema_relationship_type_path(@template_schema, typ)) %></li>
     <% end -%>
     <% if @template_schema.relationship_types.count == 0 -%>
         <li><i>No relationship types.</i></li>
     <% end -%>
 </ul>
 
-<p><%= link_to "New relationship type", new_relationship_type_path(@template_schema) %></p>
+<p><%= link_to "New relationship type", new_template_schema_relationship_type_path(@template_schema) %></p>
