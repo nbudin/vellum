@@ -4,7 +4,7 @@ module AttrField
   end
 
   # This needs to be overridden by subclasses.
-  def value_class
+  def AttrField.value_class
     raise "This is an abstract method."
   end
    
