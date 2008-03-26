@@ -91,7 +91,7 @@ div.app_name {
   float: left;
   font-weight: bold;
   clear: none;
-  padding-left: 1px;
+  padding-left: 3px;
 }
 
 div.nav_links {
@@ -99,11 +99,20 @@ div.nav_links {
   clear: none;
 }
 
+div.nav_links a.selected {
+  border: 1px black solid;
+  padding: 2px;
+  position: relative;
+  background-color: white;
+  border-bottom: 1px white solid;
+  padding-bottom: 3px;
+}
+
 div.authbox {
   font-style: italic;
   float: right;
   clear: none;
-  padding-right: 1px;
+  padding-right: 3px;
 }
 
 body {
