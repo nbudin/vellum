@@ -1,4 +1,6 @@
 class ProjectsController < ApplicationController
+  rest_permissions
+  
   # GET /projects
   # GET /projects.xml
   def index
@@ -23,20 +25,15 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # GET /projects/new
-  def new
-    @project = Project.new
-  end
-
   # POST /projects
   # POST /projects.xml
+  require_login :only => [:create]
   def create
     @project = Project.new(params[:project])
-    @project.template_schema = TemplateSchema.find(params[:template_schema])
 
     respond_to do |format|
       if @project.save
-        flash[:notice] = 'Project was successfully created.'
+        @project.grant(logged_in_person)
         format.html { redirect_to project_url(@project) }
         format.xml  { head :created, :location => project_url(@project) }
         format.json { head :created, :location => project_url(@project) }
