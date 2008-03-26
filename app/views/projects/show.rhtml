@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  Base.model("Project", {format: 'json'});
+  Resource.model("Project", {format: 'json'});
 </script>
 
 <p><%= link_to '<- Back to projects', projects_path %></p>
@@ -11,6 +11,10 @@
   <%=link_to @project.template_schema.name,
       template_schema_url(@project.template_schema) %>
 </p>
+
+<h2>Restrictions</h2>
+
+<%= render :partial => "permission/show", :locals => { :item => @project } %>
 
 <h2>Contents</h2>
 

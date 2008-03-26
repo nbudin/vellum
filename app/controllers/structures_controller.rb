@@ -1,4 +1,5 @@
 class StructuresController < ApplicationController
+  rest_permissions :class_name => "Project", :id_param => "project_id"
   before_filter :get_project
   
   # GET /structures
@@ -16,6 +17,7 @@ class StructuresController < ApplicationController
   # GET /structures/1.xml
   def show
     @structure = Structure.find(params[:id])
+    check_forged_url
 
     respond_to do |format|
       format.html # show.rhtml
@@ -32,6 +34,7 @@ class StructuresController < ApplicationController
   # GET /structures/1;edit
   def edit
     @structure = Structure.find(params[:id])
+    check_forged_url
   end
 
   # POST /structures
@@ -74,6 +77,7 @@ class StructuresController < ApplicationController
   # PUT /structures/1.xml
   def update
     @structure = Structure.find(params[:id])
+    check_forged_url
 
     respond_to do |format|
       if @structure.update_attributes(params[:structure])
@@ -90,6 +94,7 @@ class StructuresController < ApplicationController
   # DELETE /structures/1.xml
   def destroy
     @structure = Structure.find(params[:id])
+    check_forged_url
     @structure.destroy
 
     respond_to do |format|
@@ -98,7 +103,15 @@ class StructuresController < ApplicationController
     end
   end
   
+  private
   def get_project
     @project = Project.find(params[:project_id])
+  end
+  
+  def check_forged_url
+    if not @structure.project == @project
+      flash[:error_messages] = "That structure does not belong to that project."
+      redirect_to project_url(@project)
+    end
   end
 end
