@@ -43,7 +43,6 @@ users:
   host: localhost
   username: root
   password: 
-  database: musette_development
+  database: ae_users
   host: 127.0.0.1
   port: 3306
-  

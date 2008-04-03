@@ -22,6 +22,17 @@
   </div>
 </div>
 
+<% if flash[:error_messages] and flash[:error_messages].length > 0 -%>
+  <div class="error_messages">
+    <p>There were some errors processing your request:</p>
+    <ul>
+      <% flash[:error_messages].each do |msg| -%>
+        <li><%= msg%></li>
+      <% end -%>
+    </ul>
+  </div>
+<% end -%>
+
 <p style="color: green"><%= flash[:notice] %></p>
 
 <%= yield  %>
