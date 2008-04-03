@@ -3,6 +3,12 @@
 <p style="margin-top: 2em;"><h1 style="display: inline;"><%=h @structure.name %></h1>
     (<%=h @structure.structure_template.name %>)</p>
     
+<% if logged_in? and logged_in_person.permitted?(@project, "edit") -%>
+<p>
+  <%= link_to "Edit", edit_project_structure_path(@project, @structure) %>
+</p>
+<% end -%>
+    
 <table style="margin-top: .75em;">
     <% @structure.attr_value_metadatas.each do |avm| -%>
         <tr>
@@ -11,3 +17,4 @@
         </tr>
     <% end -%>
 </table>
+

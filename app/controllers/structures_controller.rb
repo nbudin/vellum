@@ -78,9 +78,27 @@ class StructuresController < ApplicationController
   def update
     @structure = Structure.find(params[:id])
     check_forged_url
+    
+    flash[:error_messages] = []
+    flash[:error_attrs] = []
+    
+    if params[:attr_values]
+      @structure.attr_values.each do |v|
+        logger.debug "Checking for update on attr_value #{v.id}"
+        if params[:attr_values].has_key?(v.id.to_s)
+          logger.debug "Updating attr_value #{v.id}"
+          v.value = params[:attr_values][v.id.to_s]
+          if not v.save
+            v.errors.each do |err|
+              flash[:error_messages].push("#{err[0]} #{err[1]}")
+            end
+          end
+        end
+      end
+    end
 
     respond_to do |format|
-      if @structure.update_attributes(params[:structure])
+      if flash[:error_messages].length == 0
         format.html { redirect_to project_structure_url(@project, @structure) }
         format.xml  { head :ok }
       else
