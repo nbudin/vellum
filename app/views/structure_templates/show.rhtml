@@ -28,6 +28,6 @@
 <p>Create new
 <% Attr.attr_classes.each do |cls| -%>
   <%= link_to cls.name,
-    new_template_schema_structure_template_attr_path(@template_schema, @structure_template) %>
+    new_template_schema_structure_template_attr_path(@template_schema, @structure_template, :config_class => cls.name) %>
 <% end -%>
 </p>

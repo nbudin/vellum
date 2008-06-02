@@ -10,4 +10,16 @@ module AttrValue
   def field
     attr.attr_configuration
   end
+  
+  def string_rep
+    "This attribute cannot be represented as a string"
+  end
+  
+  def html_rep
+    ERB::Util.html_escape(string_rep)
+  end
+  
+  def has_value?
+    return false
+  end
 end
