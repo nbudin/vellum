@@ -10,11 +10,14 @@
 <% end -%>
     
 <table style="margin-top: .75em;">
-    <% @structure.attr_value_metadatas.each do |avm| -%>
-        <tr>
-            <td><b><%=h avm.attr.name %></b></td>
-            <td><%=h avm.value.value %></td>
-        </tr>
+    <% @structure.structure_template.attrs.each do |attr| -%>
+        <% av = @structure.attr_value(attr) -%>
+        <% if av and av.has_value? %>
+          <tr>
+              <td><b><%=h attr.name %></b></td>
+              <td><%= av.html_rep %></td>
+          </tr>
+        <% end -%>
     <% end -%>
 </table>
 
