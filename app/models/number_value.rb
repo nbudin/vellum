@@ -1,6 +1,8 @@
 class NumberValue < ActiveRecord::Base
   include AttrValue
   
+  validates_numericality_of :value
+  
   def string_rep
     val = read_attribute(:value) || field.default
     if val.to_i == val
