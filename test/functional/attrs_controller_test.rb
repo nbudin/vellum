@@ -5,7 +5,7 @@ require 'attrs_controller'
 class AttrsController; def rescue_action(e) raise e end; end
 
 class AttrsControllerTest < Test::Unit::TestCase
-  fixtures :attrs
+  fixtures :attrs, :structure_templates, :template_schemas
 
   def setup
     @controller = AttrsController.new
@@ -14,26 +14,35 @@ class AttrsControllerTest < Test::Unit::TestCase
   end
 
   def test_should_get_index
-    get :index
+    tmpl = structure_templates(:person)
+    get :index, :structure_template_id => tmpl.id, 
+      :template_schema_id => tmpl.template_schema.id
     assert_response :success
     assert assigns(:attrs)
   end
 
   def test_should_get_new
-    get :new
+    tmpl = structure_templates(:person)
+    get :new, :structure_template_id => tmpl.id, 
+      :template_schema_id => tmpl.template_schema.id
     assert_response :success
   end
   
   def test_should_create_attr
     old_count = Attr.count
-    post :create, :attr => { }
+    tmpl = structure_templates(:person)
+    post :create, :attr => { :name => "test" }, :structure_template_id => tmpl.id, 
+      :template_schema_id => tmpl.template_schema.id, :config_class => "TextField"
     assert_equal old_count+1, Attr.count
     
-    assert_redirected_to attr_path(assigns(:attr))
+    assert_redirected_to template_schema_structure_template_path(tmpl.template_schema, tmpl)
   end
 
   def test_should_show_attr
-    get :show, :id => 1
+    attr = attrs(:name)
+    get :show, :id => attr.id, 
+      :template_schema_id => attr.structure_template.template_schema.id,
+      :structure_template_id => attr.structure_template.id
     assert_response :success
   end
 
@@ -43,15 +52,23 @@ class AttrsControllerTest < Test::Unit::TestCase
   end
   
   def test_should_update_attr
-    put :update, :id => 1, :attr => { }
-    assert_redirected_to attr_path(assigns(:attr))
+    attr = attrs(:name)
+    put :update, :id => attr.id, :attr => { :name => "SomethingElse" },
+      :template_schema_id => attr.structure_template.template_schema.id,
+      :structure_template_id => attr.structure_template.id
+    assert_redirected_to template_schema_structure_template_path(attr.structure_template.template_schema.id,
+      attr.structure_template.id)
   end
   
   def test_should_destroy_attr
     old_count = Attr.count
-    delete :destroy, :id => 1
+    attr = attrs(:name)
+    delete :destroy, :id => attr.id, 
+      :structure_template_id => attr.structure_template.id, 
+      :template_schema_id => attr.structure_template.template_schema.id
     assert_equal old_count-1, Attr.count
     
-    assert_redirected_to attrs_path
+    assert_redirected_to template_schema_structure_template_path(attr.structure_template.template_schema,
+      attr.structure_template)
   end
 end

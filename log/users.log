@@ -1,0 +1,10 @@
+# Logfile created on Thu Mar 27 12:30:40 -0400 2008Attempting to copy plugin assets from '/home/nbudin/vellum/vendor/plugins/ae_users/assets' to '/home/nbudin/vellum/public/plugin_assets'
+checking plugin 'engines' for '/home/nbudin/vellum/vendor/plugins/auto_complete/lib/auto_complete_macros_helper'
+checking plugin 'acts_as_list' for '/home/nbudin/vellum/vendor/plugins/auto_complete/lib/auto_complete_macros_helper'
+checking plugin 'acts_as_tree' for '/home/nbudin/vellum/vendor/plugins/auto_complete/lib/auto_complete_macros_helper'
+checking plugin 'acts_as_versioned' for '/home/nbudin/vellum/vendor/plugins/auto_complete/lib/auto_complete_macros_helper'
+checking plugin 'ae_forms' for '/home/nbudin/vellum/vendor/plugins/auto_complete/lib/auto_complete_macros_helper'
+checking plugin 'ae_users' for '/home/nbudin/vellum/vendor/plugins/auto_complete/lib/auto_complete_macros_helper'
+(file not found in application)
+Attempting to copy plugin assets from '/home/nbudin/vellum/vendor/plugins/jipe/assets' to '/home/nbudin/vellum/public/plugin_assets'
+  [4;36;1mSQL (0.000106)[0m   [0;1mSET SQL_AUTO_IS_NULL=0[0m
