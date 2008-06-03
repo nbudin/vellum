@@ -6,7 +6,7 @@ class AttrValueMetadata < ActiveRecord::Base
   validates_uniqueness_of :attr_id, :scope => :structure_id
   validate do |avm|
     if avm.attr and avm.value
-      if not avm.value.class.kind_of?(avm.attr.attr_configuration.class.value_class)
+      if not avm.value.kind_of?(avm.attr.attr_configuration.class.value_class)
         avm.errors.add_to_base("Value is a #{avm.value.class} but needs to be a #{avm.attr.attr_configuration.class.value_class}")
       end
     end

@@ -1,7 +1,19 @@
 module AttrValue
   def AttrValue.included(c)
-    c.class_eval "has_one :attr_value_metadata, :as => :value"
-    c.class_eval "validates_associated :attr_value_metadata"
+    c.class_eval do
+      has_one :attr_value_metadata, :as => :value
+      
+      # validate AVM and pass along errors
+      validate do |av|
+        if av.attr_value_metadata
+          if not av.attr_value_metadata.valid?
+            av.attr_value_metadata.errors.each do |attr, msg|
+              av.errors.add(av.attr.name + " " + attr, msg)
+            end
+          end
+        end
+      end
+    end
   end
 
   def attr
