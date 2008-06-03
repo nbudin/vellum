@@ -4,6 +4,13 @@ class AttrValueMetadata < ActiveRecord::Base
   belongs_to :value, :polymorphic => true
 
   validates_uniqueness_of :attr_id, :scope => :structure_id
+  validate do |avm|
+    if avm.attr and avm.value
+      if not avm.value.class.kind_of?(avm.attr.attr_configuration.class.value_class)
+        avm.errors.add_to_base("Value is a #{avm.value.class} but needs to be a #{avm.attr.attr_configuration.class.value_class}")
+      end
+    end
+  end
 
   # Get the value pointed to by this AVM.  If it doesn't yet exist, create
   # a nil value and return it.

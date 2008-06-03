@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 14) do
+ActiveRecord::Schema.define(:version => 16) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -46,6 +46,18 @@ ActiveRecord::Schema.define(:version => 14) do
     t.integer  "structure_template_id"
     t.integer  "version"
     t.integer  "project_id"
+  end
+
+  create_table "number_fields", :force => true do |t|
+    t.float    "default"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "number_values", :force => true do |t|
+    t.float    "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "open_id_authentication_associations", :force => true do |t|

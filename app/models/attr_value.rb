@@ -1,6 +1,7 @@
 module AttrValue
   def AttrValue.included(c)
     c.class_eval "has_one :attr_value_metadata, :as => :value"
+    c.class_eval "validates_associated :attr_value_metadata"
   end
 
   def attr

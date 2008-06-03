@@ -84,7 +84,7 @@ class AttrsController < ApplicationController
     @attr.destroy
 
     respond_to do |format|
-      format.html { redirect_to structure_template_url(@template_schema, @structure_template) }
+      format.html { redirect_to template_schema_structure_template_url(@template_schema, @structure_template) }
       format.xml  { head :ok }
       format.json { render :json => @attr.errors.to_json }
     end

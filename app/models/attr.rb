@@ -17,3 +17,4 @@ class Attr < ActiveRecord::Base
 end
 
 Attr.register_attr_class(TextField)
+Attr.register_attr_class(NumberField)
