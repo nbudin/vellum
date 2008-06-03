@@ -2,6 +2,7 @@
 person:
   id: 1
   name: Person
+  template_schema_id: 1
 
 worker:
   id: 2
