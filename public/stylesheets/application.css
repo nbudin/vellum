@@ -99,13 +99,20 @@ div.nav_links {
   clear: none;
 }
 
+div.nav_links a {
+  padding: 2px;
+  padding-bottom: 3px;
+}
+
 div.nav_links a.selected {
   border: 1px black solid;
-  padding: 2px;
   position: relative;
   background-color: white;
   border-bottom: 1px white solid;
-  padding-bottom: 3px;
+}
+
+div.nav_links a.selected:hover {
+  background-color: #000;
 }
 
 div.authbox {
