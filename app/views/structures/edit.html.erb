@@ -11,8 +11,7 @@
       <div class="attribute_name<% if attr.required %> required<%end%>">
 	<%=h attr.name %>
       </div>
-      <% av = @structure.attr_value(attr.name) -%>
-      <%= text_field_tag "attr_values[#{av.id}]", av.value %>
+      <%= render :partial => "field_types/edit_#{attr.attr_configuration.class.value_class.name.tableize.singularize}", :locals => { :attr => attr } %>
     </div>
   <% end -%>
   <%= submit_tag %>
