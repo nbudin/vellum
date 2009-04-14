@@ -9,7 +9,6 @@ RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
-require File.join(File.dirname(__FILE__), '../vendor/plugins/engines/boot')
 
 Rails::Initializer.run do |config|
   config.action_controller.session = { :session_key => "_vellum_session", :secret => "63ea170329157855f848f779804184d8aff7f7582478f4b75baddef6a803e94f616c39ede4db43c15a73a4d2d63ed282f30dc0cfb14dcaf8aab852a8f6256112" }
