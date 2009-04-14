@@ -21,14 +21,14 @@
 <table>
   <% @project.structures.each do |s| -%>
     <tr>
-      <td><%= link_to s.name, project_structure_path(@project, s) %></td>
+      <td><%= link_to s.name, structure_path(@project, s) %></td>
       <td><%=h s.structure_template.name %></td>
-      <td><%= link_to 'Delete', project_structure_path(@project, s), :confirm => 'Are you sure?', :method => :delete %></td>
+      <td><%= link_to 'Delete', structure_path(@project, s), :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>
   <% end -%>
 </table>
 
-<% form_for(:structure, :url => new_project_structure_path(@project), :html => { :method => :get }) do |f| -%>
+<% form_for(:structure, :url => new_structure_path(@project), :html => { :method => :get }) do |f| -%>
   <%= select_tag "template_id",
       options_for_select(@project.template_schema.structure_templates.find(:all).collect { |t|
           [ t.name, t.id ] } ) %>

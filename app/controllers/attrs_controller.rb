@@ -50,9 +50,9 @@ class AttrsController < ApplicationController
 
     respond_to do |format|
       if @attr.save
-        format.html { redirect_to template_schema_structure_template_url(@template_schema, @structure_template) }
-        format.xml  { head :created, :location => template_schema_structure_template_attr_url(@template_schema, @structure_template, @attr) }
-        format.json { head :created, :location => template_schema_structure_template_attr_url(@template_schema, @structure_template, @attr) }
+        format.html { redirect_to structure_template_url(@template_schema, @structure_template) }
+        format.xml  { head :created, :location => attr_url(@template_schema, @structure_template, @attr) }
+        format.json { head :created, :location => attr_url(@template_schema, @structure_template, @attr) }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @attr.errors.to_xml }
@@ -84,7 +84,7 @@ class AttrsController < ApplicationController
     @attr.destroy
 
     respond_to do |format|
-      format.html { redirect_to template_schema_structure_template_url(@template_schema, @structure_template) }
+      format.html { redirect_to structure_template_url(@template_schema, @structure_template) }
       format.xml  { head :ok }
       format.json { render :json => @attr.errors.to_json }
     end

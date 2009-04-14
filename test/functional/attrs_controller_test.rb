@@ -4,7 +4,7 @@ require 'attrs_controller'
 # Re-raise errors caught by the controller.
 class AttrsController; def rescue_action(e) raise e end; end
 
-class AttrsControllerTest < Test::Unit::TestCase
+class AttrsControllerTest < ActionController::TestCase
   fixtures :attrs, :structure_templates, :template_schemas
 
   def setup
@@ -35,7 +35,7 @@ class AttrsControllerTest < Test::Unit::TestCase
       :template_schema_id => tmpl.template_schema.id, :config_class => "TextField"
     assert_equal old_count+1, Attr.count
     
-    assert_redirected_to template_schema_structure_template_path(tmpl.template_schema, tmpl)
+    assert_redirected_to structure_template_path(tmpl.template_schema, tmpl)
   end
 
   def test_should_show_attr
@@ -46,18 +46,13 @@ class AttrsControllerTest < Test::Unit::TestCase
     assert_response :success
   end
 
-  def test_should_get_edit
-    get :edit, :id => 1
-    assert_response :success
-  end
-  
   def test_should_update_attr
     attr = attrs(:name)
     put :update, :id => attr.id, :attr => { :name => "SomethingElse" },
       :template_schema_id => attr.structure_template.template_schema.id,
-      :structure_template_id => attr.structure_template.id
-    assert_redirected_to template_schema_structure_template_path(attr.structure_template.template_schema.id,
-      attr.structure_template.id)
+      :structure_template_id => attr.structure_template.id,
+      :format => :xml
+    assert_response :success
   end
   
   def test_should_destroy_attr
@@ -68,7 +63,7 @@ class AttrsControllerTest < Test::Unit::TestCase
       :template_schema_id => attr.structure_template.template_schema.id
     assert_equal old_count-1, Attr.count
     
-    assert_redirected_to template_schema_structure_template_path(attr.structure_template.template_schema,
+    assert_redirected_to structure_template_path(attr.structure_template.template_schema,
       attr.structure_template)
   end
 end

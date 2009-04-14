@@ -1,15 +1,15 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :projects do |projects|
-    projects.resources :structures
-    projects.resources :relationships
-    projects.resources :documents
+    projects.resources :structures, :name_prefix => nil
+    projects.resources :relationships, :name_prefix => nil
+    projects.resources :documents, :name_prefix => nil
   end
   
   map.resources :template_schemas do |schemas|
-    schemas.resources :structure_templates do |templates|
-      templates.resources :attrs
+    schemas.resources :structure_templates, :name_prefix => nil do |templates|
+      templates.resources :attrs, :name_prefix => nil
     end
-    schemas.resources :relationship_types
+    schemas.resources :relationship_types, :name_prefix => nil
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -35,4 +35,5 @@ ActionController::Routing::Routes.draw do |map|
   # Install the default route as the lowest priority.
   map.connect ':controller/:action/:id.:format'
   map.connect ':controller/:action/:id'
+  map.connect ':controller/:action.:format'
 end

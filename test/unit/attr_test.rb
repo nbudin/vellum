@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class AttrTest < Test::Unit::TestCase
+class AttrTest < ActiveSupport::TestCase
   fixtures :attrs
 
   def test_required_attrs

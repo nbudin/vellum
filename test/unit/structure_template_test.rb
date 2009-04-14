@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class StructureTemplateTest < Test::Unit::TestCase
+class StructureTemplateTest < ActiveSupport::TestCase
   fixtures :structure_templates
 
   def test_new_template
