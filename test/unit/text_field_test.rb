@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class TextFieldTest < Test::Unit::TestCase
+class TextFieldTest < ActiveSupport::TestCase
   fixtures :text_fields
 
   # Replace this with your real tests.

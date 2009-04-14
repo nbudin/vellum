@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 16) do
+ActiveRecord::Schema.define(:version => 20090414165310) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -26,6 +26,16 @@ ActiveRecord::Schema.define(:version => 16) do
     t.integer "position"
     t.boolean "required"
   end
+
+  create_table "auth_tickets", :force => true do |t|
+    t.string   "secret"
+    t.integer  "person_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "expires_at"
+  end
+
+  add_index "auth_tickets", ["secret"], :name => "index_auth_tickets_on_secret", :unique => true
 
   create_table "document_versions", :force => true do |t|
     t.integer  "document_id"
@@ -77,6 +87,26 @@ ActiveRecord::Schema.define(:version => 16) do
   create_table "open_id_authentication_settings", :force => true do |t|
     t.string "setting"
     t.binary "value"
+  end
+
+  create_table "permission_caches", :force => true do |t|
+    t.integer "person_id"
+    t.integer "permissioned_id"
+    t.string  "permissioned_type"
+    t.string  "permission_name"
+    t.boolean "result"
+  end
+
+  add_index "permission_caches", ["permission_name"], :name => "index_permission_caches_on_permission_name"
+  add_index "permission_caches", ["permissioned_id", "permissioned_type"], :name => "index_permission_caches_on_permissioned_id_and_permissioned_type"
+  add_index "permission_caches", ["person_id"], :name => "index_permission_caches_on_person_id"
+
+  create_table "permissions", :force => true do |t|
+    t.integer "role_id"
+    t.integer "person_id"
+    t.string  "permission"
+    t.integer "permissioned_id"
+    t.string  "permissioned_type"
   end
 
   create_table "projects", :force => true do |t|

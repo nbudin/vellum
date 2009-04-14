@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class RelationshipTypeTest < Test::Unit::TestCase
+class RelationshipTypeTest < ActiveSupport::TestCase
   fixtures :relationship_types, :structure_templates
 
   def test_illegal_type

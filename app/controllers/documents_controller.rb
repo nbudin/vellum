@@ -1,4 +1,6 @@
 class DocumentsController < ApplicationController
+  before_filter :get_project
+
   # GET /documents
   # GET /documents.xml
   def index
@@ -34,13 +36,13 @@ class DocumentsController < ApplicationController
   # POST /documents
   # POST /documents.xml
   def create
-    @document = Document.new(params[:document])
+    @document = Document.new(params[:document].update(:project_id => @project.id))
 
     respond_to do |format|
       if @document.save
         flash[:notice] = 'Document was successfully created.'
-        format.html { redirect_to document_url(@document) }
-        format.xml  { head :created, :location => document_url(@document) }
+        format.html { redirect_to document_url(@project, @document) }
+        format.xml  { head :created, :location => document_url(@project, @document) }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @document.errors.to_xml }
@@ -56,7 +58,7 @@ class DocumentsController < ApplicationController
     respond_to do |format|
       if @document.update_attributes(params[:document])
         flash[:notice] = 'Document was successfully updated.'
-        format.html { redirect_to document_url(@document) }
+        format.html { redirect_to document_url(@project, @document) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -72,8 +74,14 @@ class DocumentsController < ApplicationController
     @document.destroy
 
     respond_to do |format|
-      format.html { redirect_to documents_url }
+      format.html { redirect_to documents_url(@project) }
       format.xml  { head :ok }
     end
+  end
+
+  private
+  
+  def get_project
+    @project = Project.find(params[:project_id])
   end
 end

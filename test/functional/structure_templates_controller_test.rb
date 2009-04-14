@@ -4,7 +4,7 @@ require 'structure_templates_controller'
 # Re-raise errors caught by the controller.
 class StructureTemplatesController; def rescue_action(e) raise e end; end
 
-class StructureTemplatesControllerTest < Test::Unit::TestCase
+class StructureTemplatesControllerTest < ActionController::TestCase
   fixtures :structure_templates
 
   def setup

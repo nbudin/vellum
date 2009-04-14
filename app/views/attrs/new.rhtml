@@ -2,7 +2,7 @@
 
 <%= error_messages_for :attr %>
 
-<% form_for(:attr, :url => template_schema_structure_template_attrs_path(@template_schema, @structure_template)) do |f| %>
+<% form_for(:attr, :url => attrs_path(@template_schema, @structure_template)) do |f| %>
   <%= hidden_field_tag "config_class", params[:config_class] %>
   <p>
     <%= f.text_field "name" %>
@@ -10,4 +10,4 @@
   </p>
 <% end %>
 
-<%= link_to 'Cancel', template_schema_structure_template_path(@template_schema, @structure_template) %>
+<%= link_to 'Cancel', structure_template_path(@template_schema, @structure_template) %>

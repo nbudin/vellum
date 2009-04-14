@@ -4,7 +4,7 @@ require 'template_schemas_controller'
 # Re-raise errors caught by the controller.
 class TemplateSchemasController; def rescue_action(e) raise e end; end
 
-class TemplateSchemasControllerTest < Test::Unit::TestCase
+class TemplateSchemasControllerTest < ActionController::TestCase
   fixtures :template_schemas
 
   def setup

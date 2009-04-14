@@ -2,11 +2,11 @@
 
 <%= error_messages_for :structure_template %>
 
-<% form_for(:structure_template, :url => template_schema_structure_templates_path(@template_schema)) do |f| %>
+<% form_for(:structure_template, :url => structure_templates_path(@template_schema)) do |f| %>
   <p>
     <%= f.text_field "name" %>
     <%= submit_tag "Create" %>
   </p>
 <% end %>
 
-<%= link_to 'Back', template_schema_structure_templates_path(@template_schema) %>
+<%= link_to 'Back', structure_templates_path(@template_schema) %>
