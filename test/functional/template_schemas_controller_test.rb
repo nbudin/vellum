@@ -37,11 +37,6 @@ class TemplateSchemasControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  def test_should_get_edit
-    get :edit, :id => 1
-    assert_response :success
-  end
-  
   def test_should_update_template_schema
     put :update, :id => 1, :template_schema => { }
     assert_redirected_to template_schema_path(assigns(:template_schema))
