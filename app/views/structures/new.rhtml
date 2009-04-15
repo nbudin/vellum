@@ -4,7 +4,7 @@
 
 <%= error_messages_for :structure %>
 
-<% form_for(:structure, :url => project_structures_path(@project)) do |f| -%>
+<% form_for(:structure, :url => structures_path(@project)) do |f| -%>
   <%= hidden_field_tag "template_id", @structure.structure_template.id %>
   <% @structure.structure_template.attrs.each do |a| -%>
     <div class="attribute">
