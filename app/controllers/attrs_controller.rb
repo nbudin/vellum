@@ -89,6 +89,33 @@ class AttrsController < ApplicationController
       format.json { render :json => @attr.errors.to_json }
     end
   end
+
+  def show_config
+    @attr = Attr.find(params[:id])
+    @config = @attr.attr_configuration
+
+    respond_to do |format|
+      format.xml  { render :xml => @config.to_xml }
+      format.json { render :json => @config.to_json }
+    end
+  end
+
+  def update
+    @attr = Attr.find(params[:id])
+    @config = @attr.attr_configuration
+
+    respond_to do |format|
+      if @config.update_attributes(params[:config])
+        format.xml  { head :ok }
+        format.json { head :ok }
+      else
+        format.xml  { render :xml => @config.errors.to_xml }
+        format.json { render :json => @config.errors.to_json }
+      end
+    end
+  end
+
+  private
   
   def get_template_and_schema
     @structure_template = StructureTemplate.find(params[:structure_template_id])

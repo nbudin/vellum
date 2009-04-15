@@ -47,7 +47,7 @@ class StructuresController < ApplicationController
     struct_ok = @structure.save
     @attr_errors = {}
     
-    if struct_ok
+    if struct_ok and params[:attrs]
       params[:attrs].each do |id, value|
         val = @structure.attr_value(Attr.find(id))
         val.value = value
@@ -99,7 +99,7 @@ class StructuresController < ApplicationController
 
     respond_to do |format|
       if flash[:error_messages].length == 0
-        format.html { redirect_to project_structure_url(@project, @structure) }
+        format.html { redirect_to structure_url(@project, @structure) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
