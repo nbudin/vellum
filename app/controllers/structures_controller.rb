@@ -64,8 +64,8 @@ class StructuresController < ApplicationController
 
     respond_to do |format|
       if (struct_ok) and (@attr_errors.length == 0)
-        format.html { redirect_to project_structure_url(@project, @structure) }
-        format.xml  { head :created, :location => project_structure_url(@project, @structure) }
+        format.html { redirect_to structure_url(@project, @structure) }
+        format.xml  { head :created, :location => structure_url(@project, @structure) }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @structure.errors.to_xml }

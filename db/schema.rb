@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090414165310) do
+ActiveRecord::Schema.define(:version => 20090415140802) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(:version => 20090414165310) do
 
   add_index "auth_tickets", ["secret"], :name => "index_auth_tickets_on_secret", :unique => true
 
-  create_table "document_versions", :force => true do |t|
-    t.integer  "document_id"
+  create_table "doc_versions", :force => true do |t|
+    t.integer  "doc_id"
     t.integer  "version"
     t.text     "title"
     t.text     "content"
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(:version => 20090414165310) do
     t.integer  "project_id"
   end
 
-  create_table "documents", :force => true do |t|
+  create_table "docs", :force => true do |t|
     t.text     "title"
     t.text     "content"
     t.datetime "created_at"

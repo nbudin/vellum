@@ -35,7 +35,7 @@ class StructureTemplatesControllerTest < ActionController::TestCase
     post :create, :template_schema_id => @schema.id, :structure_template => { }
     assert_equal old_count+1, StructureTemplate.count
     
-    assert_redirected_to structure_template_path(assigns(:structure_template))
+    assert_redirected_to structure_template_path(@schema, assigns['structure_template'])
   end
 
   def test_should_show_structure_template
@@ -45,7 +45,7 @@ class StructureTemplatesControllerTest < ActionController::TestCase
 
   def test_should_update_structure_template
     put :update, :template_schema_id => @schema.id, :id => 1, :structure_template => { }
-    assert_redirected_to structure_template_path(assigns(:structure_template))
+    assert_redirected_to structure_template_path(@schema, assigns['structure_template'])
   end
   
   def test_should_destroy_structure_template

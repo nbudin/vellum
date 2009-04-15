@@ -2,7 +2,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :projects do |projects|
     projects.resources :structures, :name_prefix => nil
     projects.resources :relationships, :name_prefix => nil
-    projects.resources :documents, :name_prefix => nil
+    projects.resources :docs, :name_prefix => nil
   end
   
   map.resources :template_schemas do |schemas|

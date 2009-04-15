@@ -1,0 +1,20 @@
+<h1>Listing docs</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+  </tr>
+  
+<% for doc in @docs %>
+  <tr>
+    <td><%=h doc.title %></td>
+    <td><%= link_to 'Show', doc_path(@project, doc) %></td>
+    <td><%= link_to 'Edit', edit_doc_path(@project, doc) %></td>
+    <td><%= link_to 'Destroy', doc_path(@project, doc), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New doc', new_doc_path(@project) %>
