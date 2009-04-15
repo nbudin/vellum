@@ -1,6 +1,9 @@
 <script type="text/javascript">
-  Base.model("StructureTemplate", {format: 'json',
-             prefix: '<%= template_schema_url(@template_schema) %>'});
+Resource.model("StructureTemplate", {prefix: '<%= template_schema_url(@template_schema) %>'});
+Resource.model("Attr", { prefix: '<%= structure_template_url(@template_schema, @structure_template) %>'});
+Resource.model("Config", {prefix: '<%= structure_template_url(@template_schema, @structure_template) %>/attrs/:attr_id',
+			  urls: { 'show': "/config.json", 'update': "/config.json" },
+			  format: 'json' });
 </script>
   
 <p><%= link_to "<- Back to #{@template_schema.name}",
@@ -9,21 +12,41 @@
 <h1><%= jipe_editor(@structure_template, "name") %></h1>
 
 <h2>Attributes</h2>
-<table>
-  <% @structure_template.attrs.each do |attr| -%>
-    <tr>
-      <td><i><%=attr.attr_configuration.class.name%></i></td>
-      <td><b><%=attr.name%></b></td>
-      <td><%= link_to "Delete", attr_path(@template_schema, @structure_template, attr),
-                :confirm => "Are you sure?", :method => :delete %></td>
-    </tr>
-  <% end -%>
-  <% if @structure_template.attrs.count == 0 -%>
-    <tr>
-      <td colspan="2"><i>No attributes.</i></td>
-    </tr>
-  <% end -%>
-</table>
+<% @structure_template.attrs.each do |attr| -%>
+  <div class="attr">
+    <div class="metadata">
+      <div class="type"><%=h attr.attr_configuration.class.name%></div>
+      <div class="name"><%=h attr.name%></div>
+      <div class="showhide">
+        <%= link_to_function("Show details", update_page { |p| 
+	    p["attr_#{attr.id}_details"].show
+	    p["hide_attr_#{attr.id}_details"].show
+	    p["show_attr_#{attr.id}_details"].hide
+	  }, 
+	  :id => "show_attr_#{attr.id}_details") %>
+        <%= link_to_function("Hide details", update_page { |p| 
+	    p["attr_#{attr.id}_details"].hide 
+	    p["show_attr_#{attr.id}_details"].show
+	    p["hide_attr_#{attr.id}_details"].hide
+          }, 
+	  :id => "hide_attr_#{attr.id}_details", :style => "display: none;") %>
+      </div>
+    </div>
+    <div class="clear"></div>
+    <div id="attr_<%=attr.id%>_details" style="display: none;">
+      <%= render_attr_editor attr %>
+      <ul class="actions">
+        <li><%= link_to "Delete", attr_path(@template_schema, @structure_template, attr),
+                  :confirm => "Are you sure?", :method => :delete %></li>
+      </ul>
+    </div>
+  </div>
+<% end -%>
+
+<% if @structure_template.attrs.count == 0 -%>
+<p><i>No attributes.</i></p>
+<% end -%>
+
 
 <p>Create new
 <% Attr.attr_classes.each do |cls| -%>

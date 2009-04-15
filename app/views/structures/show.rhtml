@@ -5,7 +5,7 @@
     
 <% if logged_in? and logged_in_person.permitted?(@project, "edit") -%>
 <p>
-  <%= link_to "Edit", edit_project_structure_path(@project, @structure) %>
+  <%= link_to "Edit", edit_structure_path(@project, @structure) %>
 </p>
 <% end -%>
     

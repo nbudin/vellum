@@ -12,6 +12,17 @@ ActionController::Routing::Routes.draw do |map|
     schemas.resources :relationship_types, :name_prefix => nil
   end
 
+  map.connect('template_schemas/:template_schema_id/structure_templates/:structure_template_id/attrs/:id/config.:format',
+              :condition => { :method => :get },
+              :controller => 'attrs',
+              :action => 'show_config')
+              
+  map.connect('template_schemas/:template_schema_id/structure_templates/:structure_template_id/attrs/:id/config.:format',
+              :condition => { :method => :post },
+              :controller => 'attrs',
+              :action => 'update_config')
+              
+
   # The priority is based upon order of creation: first created -> highest priority.
   
   # Sample of regular route:
