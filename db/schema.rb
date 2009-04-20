@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090415140802) do
+ActiveRecord::Schema.define(:version => 20090420191350) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -37,6 +37,18 @@ ActiveRecord::Schema.define(:version => 20090415140802) do
 
   add_index "auth_tickets", ["secret"], :name => "index_auth_tickets_on_secret", :unique => true
 
+  create_table "doc_fields", :force => true do |t|
+    t.boolean  "allow_linking"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "doc_values", :force => true do |t|
+    t.integer  "doc_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "doc_versions", :force => true do |t|
     t.integer  "doc_id"
     t.integer  "version"
@@ -46,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20090415140802) do
     t.datetime "updated_at"
     t.integer  "structure_template_id"
     t.integer  "project_id"
+    t.integer  "author_id"
   end
 
   create_table "docs", :force => true do |t|
@@ -56,6 +69,7 @@ ActiveRecord::Schema.define(:version => 20090415140802) do
     t.integer  "structure_template_id"
     t.integer  "version"
     t.integer  "project_id"
+    t.integer  "author_id"
   end
 
   create_table "number_fields", :force => true do |t|
@@ -146,7 +160,9 @@ ActiveRecord::Schema.define(:version => 20090415140802) do
   end
 
   create_table "text_fields", :force => true do |t|
-    t.string "default"
+    t.string   "default"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "text_values", :force => true do |t|

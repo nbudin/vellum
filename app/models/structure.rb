@@ -21,7 +21,7 @@ class Structure < ActiveRecord::Base
     if name_attr.nil?
       return "#{structure_template.name} #{id}"
     else
-      return attr_value(name_attr).value
+      return attr_value(name_attr).string_rep
     end
   end
 
@@ -49,7 +49,7 @@ class Structure < ActiveRecord::Base
     end
     
     if a.nil? and (ta = structure_template.attr(name))
-      logger.info "Template attr #{name} does not exist for structure #{self.id}; autocreating"
+      logger.info "Template attr #{ta.name} does not exist for structure #{self.id}; autocreating"
       avm = attr_value_metadatas.create :structure => self, :attr => ta
       return ta
     else

@@ -8,6 +8,7 @@ class CreateNumberFields < ActiveRecord::Migration
   end
 
   def self.down
+    Attr.destroy_all(:attr_configuration_type => 'NumberField')
     drop_table :number_fields
   end
 end

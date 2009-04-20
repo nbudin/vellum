@@ -1,10 +1,13 @@
 class NumberValue < ActiveRecord::Base
   include AttrValue
   
-  validates_numericality_of :value
+  validates_numericality_of :value, :allow_nil => true
   
   def string_rep
-    val = read_attribute(:value) || field.default
+    val = read_attribute(:value)
+    if val.blank?
+      val = field.default
+    end
     if val.to_i == val
       return val.to_i.to_s
     else
@@ -13,6 +16,6 @@ class NumberValue < ActiveRecord::Base
   end
   
   def has_value?
-    read_attribute(:value)
+    not read_attribute(:value).blank?
   end
 end

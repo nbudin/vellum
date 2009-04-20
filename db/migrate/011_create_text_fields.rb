@@ -7,6 +7,7 @@ class CreateTextFields < ActiveRecord::Migration
   end
 
   def self.down
+    Attr.destroy_all(:attr_configuration_type => 'TextField')
     drop_table :text_fields
   end
 end

@@ -17,11 +17,11 @@ module AttrValue
   end
 
   def attr
-    attr_value_metadata.attr
+    attr_value_metadata && attr_value_metadata.attr
   end
 
   def field
-    attr.attr_configuration
+    attr && attr.attr_configuration
   end
   
   def string_rep

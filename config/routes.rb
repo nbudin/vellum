@@ -13,12 +13,12 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.connect('template_schemas/:template_schema_id/structure_templates/:structure_template_id/attrs/:id/config.:format',
-              :condition => { :method => :get },
+              :conditions => { :method => :get },
               :controller => 'attrs',
               :action => 'show_config')
               
   map.connect('template_schemas/:template_schema_id/structure_templates/:structure_template_id/attrs/:id/config.:format',
-              :condition => { :method => :post },
+              :conditions => { :method => :put },
               :controller => 'attrs',
               :action => 'update_config')
               

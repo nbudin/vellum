@@ -1,0 +1,65 @@
+.clear {
+    clear: both;
+}
+
+.metadata {
+    font-size: 115%;
+    min-height: 14px;
+    width: 100%;
+    position: relative;
+}
+
+.attr {
+    border: 1px #00f solid;
+    background-color: #eef;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.attr .metadata {
+    background-color: #ccf;
+}
+
+.showhide {
+    font-color: #333;
+    font-size: 90%;
+    margin-left: 2em;
+    display: inline-block;
+}
+
+.type {
+    float: right;
+    padding: 2px;
+}
+
+.attr .type {
+    background-color: #aaf;
+}
+
+.name {
+    padding: 2px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.actions {
+    clear: both;
+    background-color: black;
+    color: white;
+    width: 100%;
+    text-align: right;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.actions li {
+    margin: 0;
+    padding: 2px;
+    display: inline-block;
+    list-style-type: none;
+}
+
+.actions li a {
+    color: white;
+}

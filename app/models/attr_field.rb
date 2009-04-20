@@ -15,4 +15,8 @@ module AttrField
   def AttrField.config_partial
     return "config_" + partial
   end
+
+  def attr_id
+    attr.id
+  end
 end

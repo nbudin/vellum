@@ -1,6 +1,18 @@
 class StructuresController < ApplicationController
   rest_permissions :class_name => "Project", :id_param => "project_id"
   before_filter :get_project
+  uses_tiny_mce :options => {
+    :theme => 'advanced',
+    :theme_advanced_buttons1 => 'bold, italic, underline, strikethrough, separator, undo, redo',
+    :theme_advanced_buttons2 => '',
+    :theme_advanced_buttons3 => '',
+    :theme_advanced_toolbar_location => 'top',
+    :theme_advanced_toolbar_align => 'left',
+    :theme_advanced_resizing => true,
+    :theme_advanced_resize_horizontal => false,
+    :theme_advanced_statusbar_location => 'bottom',
+    :content_css => '/stylesheets/document.css'
+  }
   
   # GET /structures
   # GET /structures.xml
@@ -49,11 +61,13 @@ class StructuresController < ApplicationController
     
     if struct_ok and params[:attrs]
       params[:attrs].each do |id, value|
-        val = @structure.attr_value(Attr.find(id))
-        val.value = value
-        attr_ok = val.save
-        if not attr_ok
-          @attr_errors[id] = val.errors
+        if not value.blank?
+          val = @structure.attr_value(Attr.find(id))
+          val.value = value
+          attr_ok = val.save
+          if not attr_ok
+            @attr_errors[id] = val.errors
+          end
         end
       end
     end
@@ -67,6 +81,7 @@ class StructuresController < ApplicationController
         format.html { redirect_to structure_url(@project, @structure) }
         format.xml  { head :created, :location => structure_url(@project, @structure) }
       else
+        flash[:error_messages] = @structure.errors.full_messages + @attr_errors.values.collect { |errs| errs.full_messages }.flatten
         format.html { render :action => "new" }
         format.xml  { render :xml => @structure.errors.to_xml }
       end
@@ -87,7 +102,13 @@ class StructuresController < ApplicationController
         logger.debug "Checking for update on attr_value #{v.id}"
         if params[:attr_value].has_key?(v.id.to_s)
           logger.debug "Updating attr_value #{v.id}"
-          v.attributes = params[:attr_value][v.id.to_s]
+          params[:attr_value][v.id.to_s].each do |key, value|
+            if v.respond_to? key
+              v.send("#{key}=", value)
+            else
+              logger.debug("Warning, user is trying to set nonexistent attribute #{key} on #{v}")
+            end
+          end
           if not v.save
             v.errors.each do |err|
               flash[:error_messages].push("#{err[0]} #{err[1]}")

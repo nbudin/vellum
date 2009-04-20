@@ -1,7 +1,7 @@
 <script type="text/javascript">
-Resource.model("StructureTemplate", {prefix: '<%= template_schema_url(@template_schema) %>'});
-Resource.model("Attr", { prefix: '<%= structure_template_url(@template_schema, @structure_template) %>'});
-Resource.model("Config", {prefix: '<%= structure_template_url(@template_schema, @structure_template) %>/attrs/:attr_id',
+Resource.model("StructureTemplate", {prefix: '<%= template_schema_path(@template_schema) %>'});
+Resource.model("Attr", { prefix: '<%= structure_template_path(@template_schema, @structure_template) %>'});
+Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema, @structure_template) %>/attrs/:attr_id',
 			  urls: { 'show': "/config.json", 'update': "/config.json" },
 			  format: 'json' });
 </script>
