@@ -135,3 +135,7 @@ div.attribute_name {
 .required {
   font-weight: bold;
 }
+
+textarea, .document_content {
+    width: 60em;
+}

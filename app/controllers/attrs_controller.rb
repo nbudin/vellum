@@ -95,17 +95,19 @@ class AttrsController < ApplicationController
     @config = @attr.attr_configuration
 
     respond_to do |format|
-      format.xml  { render :xml => @config.to_xml }
-      format.json { render :json => @config.to_json }
+      format.xml  { render :xml => @config.to_xml(:methods => [:attr_id]) }
+      format.json { render :json => @config.to_json(:methods => [:attr_id]) }
     end
   end
 
-  def update
+  def update_config
     @attr = Attr.find(params[:id])
     @config = @attr.attr_configuration
 
+    new_config = params[:config]
+    new_config.delete(:attr_id)
     respond_to do |format|
-      if @config.update_attributes(params[:config])
+      if @config.update_attributes(new_config)
         format.xml  { head :ok }
         format.json { head :ok }
       else

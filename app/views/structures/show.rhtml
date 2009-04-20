@@ -12,10 +12,10 @@
 <table style="margin-top: .75em;">
     <% @structure.structure_template.attrs.each do |attr| -%>
         <% av = @structure.attr_value(attr) -%>
-        <% if av and av.has_value? %>
+        <% if av %>
           <tr>
               <td><b><%=h attr.name %></b></td>
-              <td><%= av.html_rep %></td>
+              <td><%= av.html_rep %><% if not av.has_value? and not av.html_rep.blank? %><i> (default value)</i><%end%></td>
           </tr>
         <% end -%>
     <% end -%>
