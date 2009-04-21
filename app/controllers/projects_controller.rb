@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  rest_permissions
+  #rest_permissions
   
   # GET /projects
   # GET /projects.xml
@@ -22,6 +22,7 @@ class ProjectsController < ApplicationController
       format.html # show.rhtml
       format.xml  { render :xml => @project.to_xml }
       format.json { render :json => @project.to_json }
+      format.vproj { render :xml => @project.to_vproj(:all_doc_versions => params[:all_doc_versions]) }
     end
   end
 

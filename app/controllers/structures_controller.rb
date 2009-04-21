@@ -3,7 +3,7 @@ class StructuresController < ApplicationController
   before_filter :get_project
   uses_tiny_mce :options => {
     :theme => 'advanced',
-    :theme_advanced_buttons1 => 'bold, italic, underline, strikethrough, separator, undo, redo',
+    :theme_advanced_buttons1 => 'formatselect, bold, italic, underline, strikethrough, separator, undo, redo',
     :theme_advanced_buttons2 => '',
     :theme_advanced_buttons3 => '',
     :theme_advanced_toolbar_location => 'top',
@@ -105,6 +105,10 @@ class StructuresController < ApplicationController
           params[:attr_value][v.id.to_s].each do |key, value|
             if v.respond_to? key
               v.send("#{key}=", value)
+              if v.kind_of? DocValue and key == "doc_content"
+                v.doc.author = logged_in_person
+                v.doc.save
+              end
             else
               logger.debug("Warning, user is trying to set nonexistent attribute #{key} on #{v}")
             end

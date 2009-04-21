@@ -63,3 +63,16 @@
 .actions li a {
     color: white;
 }
+
+table.structure td p:first-child {
+    margin-top: 0;
+}
+
+table.structure td p:last-child {
+    margin-bottom: 0;
+}
+
+table.structure .document_content {
+    padding: 0.5em;
+    background-color: #e9e9e9;
+}

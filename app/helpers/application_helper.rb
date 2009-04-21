@@ -27,16 +27,32 @@ module ApplicationHelper
     "field_types/edit_#{klass.name.tableize.singularize}"
   end
 
+  def show_attr_template_name(attr)
+    show_attr_template_name(attr.attr_configuration.class)
+  end
+
   def edit_attr_template_name(attr)
     edit_class_template_name(attr.attr_configuration.class)
+  end
+
+  def show_attr_value_template_name(value)
+    show_class_template_name(value.class)
   end
 
   def edit_attr_value_template_name(value)
     edit_class_template_name(value.class)
   end
 
+  def render_attr(attr)
+    render :partial => show_attr_value_template_name(attr), :locals => { :field => attr.attr_configuration }
+  end
+
   def render_attr_editor(attr)
     render :partial => edit_attr_template_name(attr), :locals => { :field => attr.attr_configuration }
+  end
+
+  def render_attr_value(value)
+    render :partial => show_attr_value_template_name(value), :locals => { :value => value }
   end
 
   def render_attr_value_editor(value)

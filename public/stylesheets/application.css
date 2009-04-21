@@ -138,4 +138,9 @@ div.attribute_name {
 
 textarea, .document_content {
     width: 60em;
+    min-height: 20em;
+}
+
+.document_content, .document_content p {
+    font-family: serif;
 }

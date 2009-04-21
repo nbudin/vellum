@@ -9,13 +9,13 @@
 </p>
 <% end -%>
     
-<table style="margin-top: .75em;">
+<table style="margin-top: .75em;" class="structure">
     <% @structure.structure_template.attrs.each do |attr| -%>
         <% av = @structure.attr_value(attr) -%>
         <% if av %>
           <tr>
-              <td><b><%=h attr.name %></b></td>
-              <td><%= av.html_rep %><% if not av.has_value? and not av.html_rep.blank? %><i> (default value)</i><%end%></td>
+              <td style="vertical-align: top;"><b><%=h attr.name %></b></td>
+              <td><%= render_attr_value(av) %></td>
           </tr>
         <% end -%>
     <% end -%>
