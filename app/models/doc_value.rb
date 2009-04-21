@@ -3,6 +3,8 @@ class DocValue < ActiveRecord::Base
 
   belongs_to :doc
 
+  validate :check_doc_in_project
+
   def html_rep
     doc ? doc.content : ""
   end
@@ -16,6 +18,20 @@ class DocValue < ActiveRecord::Base
       build_doc
     end
     doc.content = content
-    doc.save
+  end
+
+  private
+  def check_doc_in_project
+    myproj = structure and structure.project
+    if myproj
+      if doc.project
+        unless doc.project == myproj
+          errors.add("doc", "Doc does not belong to the same project as this DocValue")
+        end
+      else
+        doc.project = myproj
+        doc.save
+      end
+    end
   end
 end
