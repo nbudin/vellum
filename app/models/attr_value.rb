@@ -23,6 +23,10 @@ module AttrValue
   def field
     attr && attr.attr_configuration
   end
+
+  def structure
+    attr_value_metadata && attr_value_metadata.structure
+  end
   
   def string_rep
     "This attribute cannot be represented as a string"

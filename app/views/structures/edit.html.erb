@@ -14,5 +14,5 @@
       <%= render_attr_value_editor(@structure.attr_value(attr.name)) %>
     </div>
   <% end -%>
-  <%= submit_tag %>
+  <%= submit_tag "Save changes", :class => "save" %>
 <% end -%>

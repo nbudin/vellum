@@ -1,0 +1,12 @@
+<h1>Editing relationship_type</h1>
+
+<% form_for(@relationship_type) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @relationship_type %> |
+<%= link_to 'Back', relationship_types_path %>

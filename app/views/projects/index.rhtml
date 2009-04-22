@@ -1,25 +1,23 @@
-<h1>Listing projects</h1>
+<h1>Projects</h1>
 
-<table>
-  
-<% for project in @projects %>
-  <tr>
-    <td><%= link_to project.name, project_path(project) %></td>
-    <td><%= link_to 'Delete', project_path(project), :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<h2>Create new project</h2>
-
-<% if not logged_in? -%>
-  <p>In order to create projects, you must be <%= link_to "logged in", :controller => 'auth', :action => 'login' %>.
-<% else -%>
-  <% ae_form_for(:project, @project, :url => projects_path, :html => {:style => "max-width: 400px;"}) do |f| %>
-    <%= f.text_field :name %>
-    <%= f.select :template_schema_id, TemplateSchema.find(:all).collect { |s| [ s.name, s.id ]} %>
-    <%= submit_tag "Create" %>
+<ul class="itemlist">
+  <% itemlist_items(@projects, :delete_path => projects_path) do |project| %>
+    <% link_to(project_path(project)) do -%>
+      <%= image_tag "project.png" %>
+      <%= project.name %>
+    <% end -%>
   <% end %>
-<% end -%>
+  <li>
+    <% form_for(:project, :url => projects_path) do |f| %>
+    <div style="float: right;">
+      <button class="new">
+        <%= image_tag "project_add.png" %>
+        Create project...
+      </button>
+    </div>
+    <%= f.text_field "name" %>
+    using
+    <%= f.select :template_schema_id, TemplateSchema.find(:all).collect { |s| [ s.name, s.id ]} %>
+    <% end -%>
+  </li>
+</ul>

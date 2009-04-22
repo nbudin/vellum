@@ -76,3 +76,92 @@ table.structure .document_content {
     padding: 0.5em;
     background-color: #e9e9e9;
 }
+
+form.button-to, form.button-to div {
+    display: inline;
+}
+
+button, a.button, input[type=submit] {
+    border: 1px black solid;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 0.3em;
+    padding-right: 0.3em;
+    font-weight: bold;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background-image: url(/images/button-bg.png);
+    background-position: 50% 50%;
+    background-repeat: repeat-x;
+}
+
+
+input[type=submit]:hover, input[type=submit]:focus, a.button:hover, a.button:focus, button:hover, button:focus {
+    background-image: url(/images/button-bg-prelight.png);
+}
+
+input[type=submit]:active, a.button:active, button:active {
+    background-image: url(/images/button-bg-pressed.png);
+}
+
+input[type=submit]::-moz-focus-inner, a.button::-moz-focus-inner, button::-moz-focus-inner {
+    border: 0;
+}
+
+a.button {
+    text-decoration: none;
+    color: #000;
+    cursor: default;
+}
+
+.new {
+    background-color: #6f6 !important;
+}
+
+.delete {
+    background-color: #f66 !important;
+}
+
+.edit {
+    background-color: #fc6 !important;
+}
+
+.save {
+    background-color: #ccf !important;
+}
+
+ul.itemlist {
+    z-index: 1;
+    max-width: 60em;
+    list-style-position: inside;
+    list-style-type: none;
+}
+
+ul.itemlist li {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+ul.itemlist li.even {
+    background-color: #eee;
+}
+
+ul.itemlist li.odd {
+    background-color: #ddd;
+}
+
+ul.itemlist a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+ul.itemlist a:hover {
+    color: #fff;
+}
+
+button img {
+    vertical-align: middle;
+    padding-right: 0.3em;
+}

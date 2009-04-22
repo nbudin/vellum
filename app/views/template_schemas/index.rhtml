@@ -1,17 +1,21 @@
-<h1>Viewing all template schemas</h1>
+<h1>Template schemas</h1>
 
-<table>
-  <tr>
-  </tr>
-  
-<% for template_schema in @template_schemas %>
-  <tr>
-    <td><%= link_to template_schema.name, template_schema_path(template_schema) %></td>
-    <td><%= link_to 'Destroy', template_schema_path(template_schema), :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New template schema', new_template_schema_path %>
+<ul class="itemlist">
+  <% itemlist_items(@template_schemas, :delete_path => template_schemas_path) do |template_schema| %>
+    <% link_to(template_schema_path(template_schema)) do -%>
+      <%= image_tag "schema.png" %>
+      <%= template_schema.name %>
+    <% end -%>
+  <% end %>
+  <li>
+    <% form_for(:template_schema, :url => template_schemas_path) do |f| %>
+    <div style="float: right;">
+      <button class="new">
+        <%= image_tag "schema_add.png" %>
+        Create template schema...
+      </button>
+    </div>
+    <%= f.text_field "name" %>
+    <% end -%>
+  </li>
+</ul>

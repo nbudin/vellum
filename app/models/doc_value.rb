@@ -22,11 +22,11 @@ class DocValue < ActiveRecord::Base
 
   private
   def check_doc_in_project
-    myproj = structure and structure.project
+    myproj = structure ? structure.project : nil
     if myproj
       if doc.project
-        unless doc.project == myproj
-          errors.add("doc", "Doc does not belong to the same project as this DocValue")
+        unless doc.project.id == myproj.id
+          errors.add("doc", "is in project #{doc.project.name}, but #{structure.name} is in #{myproj.name}")
         end
       else
         doc.project = myproj

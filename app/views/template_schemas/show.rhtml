@@ -8,43 +8,34 @@
 
 <p>
     <% if @template_schema.projects.count > 0 -%>
-        Used by projects:
-        <%= @template_schema.projects.collect { |p|
-            link_to p.name, project_url(p)
-        }.join(", ") %>
+        Used by
+        <%= @template_schema.projects.collect do |p|
+            "<a href=\"#{project_url(p)}\">#{image_tag("project.png")} #{p.name}</a>"
+        end.join(", ") %>
     <% else -%>
         <i>Not used by any projects.</i>
     <% end -%>
 </p>
 
-<h2>Templates</h2>
-
-<ul>
-    <% @template_schema.structure_templates.each do |t| -%>
-        <li>
-            <%= link_to(t.name,
-                        structure_template_path(@template_schema, t)) %>
-            (<td><%= link_to 'Delete', structure_template_path(@template_schema, t),
-                     :confirm => 'Are you sure?', :method => :delete %></td>)
-        </li>
+<ul class="itemlist">
+  <% itemlist_items(@template_schema.structure_templates, 
+                    :delete_path => structure_templates_path(@template_schema)) do |t| %>
+    <% link_to(structure_template_path(@template_schema, t)) do -%>
+      <%= image_tag "template.png" %>
+      <%= t.name %>
     <% end -%>
-    <% if @template_schema.structure_templates.count == 0 -%>
-        <li><i>No templates.</i></li>
+  <% end %>
+  <li>
+    <% form_for(:structure_template, :url => structure_templates_path(@template_schema)) do |f| %>
+    <div style="float: right;">
+      <button class="new">
+        <%= image_tag "template_add.png" %>
+        Create template...
+      </button>
+    </div>
+    <%= f.text_field "name" %>
     <% end -%>
+  </li>
 </ul>
 
-<p><%= link_to "New template", new_structure_template_path(@template_schema) %></p>
 
-<h2>Relationship Types</h2>
-
-<ul>
-    <% @template_schema.relationship_types.each do |typ| -%>
-        <li><%= link_to(typ.name,
-                        relationship_type_path(@template_schema, typ)) %></li>
-    <% end -%>
-    <% if @template_schema.relationship_types.count == 0 -%>
-        <li><i>No relationship types.</i></li>
-    <% end -%>
-</ul>
-
-<p><%= link_to "New relationship type", new_relationship_type_path(@template_schema) %></p>
