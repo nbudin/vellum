@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  #rest_permissions
+  rest_permissions
   
   # GET /projects
   # GET /projects.xml
