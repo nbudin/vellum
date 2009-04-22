@@ -5,7 +5,9 @@
     
 <% if logged_in? and logged_in_person.permitted?(@project, "edit") -%>
 <p>
-  <%= link_to "Edit", edit_structure_path(@project, @structure) %>
+  <% link_to edit_structure_path(@project, @structure), :class => "button edit" do -%>
+    <%= image_tag "structure_edit.png" %> Edit <%= @structure.name %>...
+  <% end -%>
 </p>
 <% end -%>
     

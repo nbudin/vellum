@@ -48,9 +48,38 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
 <% end -%>
 
 
-<p>Create new
+<ul class="inline">
 <% Attr.attr_classes.each do |cls| -%>
-  <%= link_to cls.name,
-    new_attr_path(@template_schema, @structure_template, :config_class => cls.name) %>
+  <li>
+    <% link_to new_attr_path(@template_schema, @structure_template, :config_class => cls.name), :class => "button new" do %>
+      <%= image_tag "attr_add.png" %> Add <%=cls.name %>
+    <% end %>
+  </li>
 <% end -%>
-</p>
+</ul>
+
+<h2>Relationship Types</h2>
+
+<ul class="itemlist">
+  <% itemlist_items(@template_schema.relationship_types, :delete_path => relationship_types_path(@template_schema)) do |typ| -%>
+          <% link_to(relationship_type_path(@template_schema, typ)) do -%>
+	    <%= image_tag "relationship_type.png" %>
+	    <%= typ.description %>
+	  <% end -%>
+  <% end -%>
+
+    <li>
+      <% form_for(:relationship_type, :url => relationship_types_path(@template_schema)) do |f| %>
+      <div style="float: right;">
+	<button class="new">
+	  <%= image_tag "relationship_type.png" %>
+	  Create relationship type...
+	</button>
+      </div>
+      <%= hidden_field_tag "relationship_type[left_template_id]", @structure_template.id %>
+      <%= @structure_template.name %>
+      <%= f.text_field "left_description" %>
+      <%= f.select "right_template_id", @template_schema.structure_templates.reject {|t| t == @structure_template }.collect { |t| [t.name, t.id] } %>
+      <% end -%>
+    </li>
+</ul>

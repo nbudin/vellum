@@ -58,4 +58,48 @@ module ApplicationHelper
   def render_attr_value_editor(value)
     render :partial => edit_attr_value_template_name(value), :locals => { :value => value }
   end
+
+  def item_actions(item, options={})
+    html = ""
+    if options[:delete_path]
+      html << button_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",
+                        :method => :delete, :class => "delete")
+    end
+    return html
+  end
+
+  def itemlist_items(items, options={}, &block)
+    full_html = items.collect do |item|
+      content_tag(:li, :class => cycle("odd", "even")) do
+        html = ""
+        html << content_tag(:div, :style => "float: right;") do
+          item_actions(item, options)
+        end
+        if options[:partial]
+          html << render(:partial => options[:partial], :locals => { :item => item })
+        end
+        if block_given?
+          html << block.call(item)
+        end
+        html << tag(:div, :style => "clear: both;")
+        html
+      end
+    end.join("\n")
+    if block_given?
+      concat(full_html)
+    else
+      full_html
+    end
+  end
+
+  def itemlist(items, options={}, &block)
+    html = content_tag(:ul, :class => "itemlist") do
+      itemlist_items(items, options, &block)
+    end
+    if block_given?
+      concat html
+    else
+      html
+    end
+  end
 end

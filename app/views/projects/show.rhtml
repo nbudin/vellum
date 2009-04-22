@@ -7,9 +7,11 @@
 <h1><%= jipe_editor(@project, "name") %></h1>
 
 <p>
-  <b>Template schema:</b>
-  <%=link_to @project.template_schema.name,
-      template_schema_url(@project.template_schema) %>
+  Using
+  <% link_to template_schema_url(@project.template_schema) do %>
+    <%= image_tag "schema.png" %>
+    <%= @project.template_schema.name %>
+  <% end %>
 </p>
 
 <h2>Restrictions</h2>
@@ -18,19 +20,20 @@
 
 <h2>Contents</h2>
 
-<table>
-  <% @project.structures.each do |s| -%>
-    <tr>
-      <td><%= link_to s.name, structure_path(@project, s) %></td>
-      <td><%=h s.structure_template.name %></td>
-      <td><%= link_to 'Delete', structure_path(@project, s), :confirm => 'Are you sure?', :method => :delete %></td>
-    </tr>
+<% itemlist(@project.structures, :delete_path => structures_path(@project)) do |structure| %>
+  <% link_to(structure_path(@project, structure)) do -%>
+    <%= image_tag "structure.png" %>
+    <%= structure.name %>
+    (<%= structure.structure_template.name %>)
   <% end -%>
-</table>
+<% end %>
 
-<% form_for(:structure, :url => new_structure_path(@project), :html => { :method => :get }) do |f| -%>
-  <%= select_tag "template_id",
-      options_for_select(@project.template_schema.structure_templates.find(:all).collect { |t|
-          [ t.name, t.id ] } ) %>
-  <%= submit_tag "Create New" %>
-<% end -%>
+<ul class="inline">
+  <% @project.template_schema.structure_templates.each do |t| -%>
+    <li>
+      <% link_to new_structure_path(@project, :template_id => t.id), :class => "button new" do -%>
+        <%= image_tag "structure_add.png" %> Add <%= t.name %>
+      <% end -%>
+    </li>
+  <% end -%>
+</ul>
