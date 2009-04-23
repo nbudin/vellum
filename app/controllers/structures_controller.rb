@@ -17,11 +17,15 @@ class StructuresController < ApplicationController
   # GET /structures
   # GET /structures.xml
   def index
-    @structures = Structure.find(:all)
+    conds = {}
+    if params[:template_id]
+      conds[:structure_template_id] = @project.template_schema.structure_templates.find(params[:template_id]).id
+    end
+    @structures = Structure.find(:all, :conditions => conds)
 
     respond_to do |format|
       format.html # index.rhtml
-      format.xml  { render :xml => @structures.to_xml }
+      format.xml  { render :xml => @structures.to_xml(:methods => [:name]) }
     end
   end
 

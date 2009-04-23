@@ -1,21 +1,15 @@
 class Structure < ActiveRecord::Base
   belongs_to :structure_template
   belongs_to :project
-  has_many :attr_value_metadatas
+  has_many :attr_value_metadatas, :dependent => :destroy
   has_many :template_attrs, :through => :structure_template, :source => :attrs
   has_many :attrs, :through => :attr_value_metadatas
-  has_many :outward_relationships, :foreign_key => :left_id, :class_name => "Relationship"
-  has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship"
+  has_many :outward_relationships, :foreign_key => :left_id, :class_name => "Relationship", :dependent => :destroy
+  has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship", :dependent => :destroy
 
   validates_associated :attr_value_metadatas
-  validate { |s|
-    s.structure_template.required_attrs.each do |ta|
-      if not s.attrs.include?(ta)
-        s.errors.add_to_base("Required attribute #{ta.name} is not populated.")
-      end
-    end
-  }
-  
+  validate :check_required_attrs
+
   def name
     name_attr = attr("Name")
     if name_attr.nil?
@@ -54,6 +48,15 @@ class Structure < ActiveRecord::Base
       return ta
     else
       return a
+    end
+  end
+
+  private
+  def check_required_attrs
+    structure_template.required_attrs.each do |ta|
+      if not attrs.include?(ta)
+        errors.add_to_base("Required attribute #{ta.name} is not populated.")
+      end
     end
   end
 end

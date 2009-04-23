@@ -96,6 +96,13 @@ button, a.button, input[type=submit] {
     background-repeat: repeat-x;
 }
 
+button[disabled], a.button.disabled, input[type=submit][disabled] {
+    background-image: none !important;
+    background-color: #aaa !important;
+    color: #666;
+    border-color: #666;
+}
+
 
 input[type=submit]:hover, input[type=submit]:focus, a.button:hover, a.button:focus, button:hover, button:focus {
     background-image: url(/images/button-bg-prelight.png);
