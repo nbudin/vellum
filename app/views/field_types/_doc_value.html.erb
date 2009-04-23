@@ -1,3 +1,5 @@
 <div class="document_content">
-  <%= sanitize value.doc.content %>
+  <% if value.doc -%>
+    <%= sanitize value.doc.content %>
+  <% end -%>
 </div>

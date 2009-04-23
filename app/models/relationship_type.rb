@@ -24,6 +24,27 @@ class RelationshipType < ActiveRecord::Base
     end
   end
 
+  def direction_of(template)
+    if template == left_template
+      :left
+    elsif template == right_template
+      :right
+    else
+      nil
+    end
+  end
+
+  def description_for(template)
+    dir = direction_of template
+    if dir == :left
+      return left_description
+    elsif dir == :right
+      return right_description
+    else
+      return name
+    end
+  end
+
   def left_name
     if left_template and right_template and right_description
       "#{left_template.name} #{left_description} #{right_template.name}"

@@ -1,15 +1,48 @@
+<script type="text/javascript">
+Resource.model("RelationshipType", {prefix: '<%=template_schema_path(@project.template_schema)%>'});
+Resource.model("Structure", {prefix: '<%=project_path(@project)%>'});
+Resource.model("StructureTemplate", {prefix: '<%=template_schema_path(@project.template_schema)%>'});
+</script>
+
 <p><%= link_to "<- Back to #{@project.name}", project_path(@project) %></p>
 
 <p style="margin-top: 2em;"><h1 style="display: inline;"><%=h @structure.name %></h1>
     (<%=h @structure.structure_template.name %>)</p>
-    
-<% if logged_in? and logged_in_person.permitted?(@project, "edit") -%>
-<p>
-  <% link_to edit_structure_path(@project, @structure), :class => "button edit" do -%>
-    <%= image_tag "structure_edit.png" %> Edit <%= @structure.name %>...
+
+<div class="jumpbox">
+  <h2><%= @structure.name %></h2>
+  <p>
+    <b>Template:</b> 
+    <% link_to structure_template_path(@structure.project.template_schema, @structure.structure_template) do -%>
+      <%= image_tag "template.png" %>
+      <%= @structure.structure_template.name %>
+    <% end -%>
+  </p>
+  <% if logged_in? and logged_in_person.permitted?(@project, "edit") -%>
+  <p>
+    <% link_to edit_structure_path(@project, @structure), :class => "button edit" do -%>
+      <%= image_tag "structure_edit.png" %> Edit <%= @structure.name %>...
+    <% end -%>
+  </p>
   <% end -%>
-</p>
-<% end -%>
+
+  <h2>Relationships</h2>
+  <div id="relationships">
+    <%= @structure.name %>...
+    <ul class="itemlist">
+      <% itemlist_items(@structure.relationships, :delete_path => relationships_path(@project)) do |rel| -%>
+	<% if rel.left == @structure -%>
+	<%=rel.left_description(:skip_left => true) %>
+	<% else -%>
+	<%=rel.right_description(:skip_right => true) %>
+	<% end -%>
+      <% end -%>
+      <li>
+	<%= render :partial => 'new_relationship', :locals => { :structure => @structure } %>
+      </li>
+    </ul>
+  </div>
+</div>
     
 <table style="margin-top: .75em;" class="structure">
     <% @structure.structure_template.attrs.each do |attr| -%>
