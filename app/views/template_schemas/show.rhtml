@@ -17,6 +17,12 @@
     <% end -%>
 </p>
 
+<h2>Restrictions</h2>
+
+<%= render :partial => "permission/show", :locals => { :item => @template_schema } %>
+
+<h2>Templates</h2>
+
 <ul class="itemlist">
   <% itemlist_items(@template_schema.structure_templates, 
                     :delete_path => structure_templates_path(@template_schema)) do |t| %>
