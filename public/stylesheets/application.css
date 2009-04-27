@@ -22,32 +22,27 @@ a:hover { color: #fff; background-color:#000; }
   display: table;
 }
 
-#errorExplanation {
-  width: 400px;
+.error_messages {
   border: 2px solid red;
-  padding: 7px;
-  padding-bottom: 12px;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
+  background-color: #fee;
+  border-radius: 5px;
+  padding: 0.5em;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
 }
 
-#errorExplanation h2 {
+.error_messages h2 {
   text-align: left;
   font-weight: bold;
-  padding: 5px 5px 5px 15px;
   font-size: 12px;
-  margin: -7px;
-  background-color: #c00;
-  color: #fff;
+  color: #600;
 }
 
-#errorExplanation p {
-  color: #333;
-  margin-bottom: 0;
-  padding: 5px;
+.error_messages p {
+  color: #300;
 }
 
-#errorExplanation ul li {
+.error_messages ul li {
   font-size: 12px;
   list-style: square;
 }

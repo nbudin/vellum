@@ -2,20 +2,13 @@
 
 </script>
 
-<% form_for :relationship, :url => relationships_path(structure.project) do |f| -%>
-<div style="float: right;">
-  <button class="new" disabled="disabled">
-    <%= image_tag "relationship_add.png" %>
-    Add
-  </button>
-</div>
 <span id="relationship_builder"></span>
 <%= javascript_include_tag 'relationship_builder' %>
 <script type="text/javascript">
-    var rb = new RelationshipBuilder('relationship_builder');
+    var rb = new RelationshipBuilder('relationship_builder', <%=structure.id%>, 
+	'<%=relationships_path(@project)%>', '<%= image_path "relationship_add.png" %>');
     <% structure.structure_template.relationship_types.each do |typ| -%>
     rb.addRelationshipType(<%=typ.id%>, '<%=typ.direction_of(structure.structure_template)%>', 
 			   '<%= escape_javascript(typ.description_for(structure.structure_template)) %>');
     <% end -%>
 </script>
-<% end -%>

@@ -1,7 +1,7 @@
 <script type="text/javascript">
-Resource.model("RelationshipType", {prefix: '<%=template_schema_path(@project.template_schema)%>'});
-Resource.model("Structure", {prefix: '<%=project_path(@project)%>'});
-Resource.model("StructureTemplate", {prefix: '<%=template_schema_path(@project.template_schema)%>'});
+    Resource.model("RelationshipType", {prefix: '<%=template_schema_path(@project.template_schema)%>', format: 'json'});
+    Resource.model("Structure", {prefix: '<%=project_path(@project)%>', format: 'json'});
+    Resource.model("StructureTemplate", {prefix: '<%=template_schema_path(@project.template_schema)%>', format: 'json'});
 </script>
 
 <p><%= link_to "<- Back to #{@project.name}", project_path(@project) %></p>
@@ -32,9 +32,9 @@ Resource.model("StructureTemplate", {prefix: '<%=template_schema_path(@project.t
     <ul class="itemlist">
       <% itemlist_items(@structure.relationships, :delete_path => relationships_path(@project)) do |rel| -%>
 	<% if rel.left == @structure -%>
-	<%=rel.left_description(:skip_left => true) %>
+	<%=rel.left_description %> <%=link_to rel.right.name, structure_path(@project, rel.right)%>
 	<% else -%>
-	<%=rel.right_description(:skip_right => true) %>
+	<%=rel.right_description %> <%=link_to rel.left.name, structure_path(@project, rel.left)%>
 	<% end -%>
       <% end -%>
       <li>

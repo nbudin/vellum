@@ -24,6 +24,7 @@ class AttrValueMetadata < ActiveRecord::Base
       v = attr.attr_configuration.class.value_class.create
       self.value = v
       save
+      v.reload
       return v
     end
   end

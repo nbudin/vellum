@@ -26,6 +26,7 @@ class StructuresController < ApplicationController
     respond_to do |format|
       format.html # index.rhtml
       format.xml  { render :xml => @structures.to_xml(:methods => [:name]) }
+      format.json { render :json => @structures.to_json(:methods => [:name]) }
     end
   end
 
@@ -38,6 +39,7 @@ class StructuresController < ApplicationController
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @structure.to_xml }
+      format.json { render :json => @structure.to_json }
     end
   end
 
@@ -83,11 +85,13 @@ class StructuresController < ApplicationController
     respond_to do |format|
       if (struct_ok) and (@attr_errors.length == 0)
         format.html { redirect_to structure_url(@project, @structure) }
-        format.xml  { head :created, :location => structure_url(@project, @structure) }
+        format.xml  { head :created, :location => structure_url(@project, @structure, :format => "xml" ) }
+        format.json { head :created, :location => structure_url(@project, @structure, :format => "json") }
       else
         flash[:error_messages] = @structure.errors.full_messages + @attr_errors.values.collect { |errs| errs.full_messages }.flatten
         format.html { render :action => "new" }
         format.xml  { render :xml => @structure.errors.to_xml }
+        format.json { render :json => @structure.errors.to_json }
       end
     end
   end
@@ -130,9 +134,11 @@ class StructuresController < ApplicationController
       if flash[:error_messages].length == 0
         format.html { redirect_to structure_url(@project, @structure) }
         format.xml  { head :ok }
+        format.json { head :ok }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @structure.errors.to_xml }
+        format.json { render :json => @structure.errors.to_json }
       end
     end
   end
@@ -147,6 +153,7 @@ class StructuresController < ApplicationController
     respond_to do |format|
       format.html { redirect_to project_url(@project) }
       format.xml  { head :ok }
+      format.json { head :ok }
     end
   end
   
