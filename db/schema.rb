@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090420191350) do
+ActiveRecord::Schema.define(:version => 20090427165632) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(:version => 20090420191350) do
     t.integer "relationship_type_id"
     t.integer "left_id"
     t.integer "right_id"
+    t.integer "project_id"
   end
 
   create_table "structure_templates", :force => true do |t|

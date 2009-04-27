@@ -1,4 +1,5 @@
 class DocsController < ApplicationController
+  rest_permissions :class_name => "Project", :id_param => "project_id"
   before_filter :get_project
 
   # GET /docs

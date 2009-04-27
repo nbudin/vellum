@@ -1,4 +1,5 @@
 class RelationshipTypesController < ApplicationController
+  rest_permissions :class_name => "TemplateSchema", :id_param => "template_schema_id"
   before_filter :get_template_schema
 
   # GET /relationship_types/1

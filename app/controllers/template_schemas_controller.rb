@@ -1,4 +1,7 @@
 class TemplateSchemasController < ApplicationController
+  require_login
+  rest_permissions
+  
   # GET /template_schemas
   # GET /template_schemas.xml
   def index
@@ -35,7 +38,7 @@ class TemplateSchemasController < ApplicationController
 
     respond_to do |format|
       if @template_schema.save
-        flash[:notice] = 'TemplateSchema was successfully created.'
+        @template_schema.grant(logged_in_person)
         format.html { redirect_to template_schema_url(@template_schema) }
         format.xml  { head :created, :location => template_schema_url(@template_schema) }
         format.json { head :created, :location => template_schema_url(@template_schema) }

@@ -1,5 +1,5 @@
 .jumpbox {
-    width: 20em;
+    width: 25em;
     float: right;
     background-color: #ff8;
     padding: 0.3em;
@@ -21,4 +21,12 @@
 .jumpbox ul.itemlist {
     margin-left: 0;
     padding-left: 0;
+}
+
+.jumpbox ul.itemlist li.odd {
+    background-color: #dd6;
+}
+
+.jumpbox ul.itemlist li.even {
+    background-color: #ee7;
 }

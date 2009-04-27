@@ -1,4 +1,5 @@
 class StructureTemplatesController < ApplicationController
+  rest_permissions :class_name => "TemplateSchema", :id_param => "template_schema_id"
   before_filter :get_schema
   
   # GET /structure_templates

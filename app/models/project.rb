@@ -2,8 +2,9 @@ class Project < ActiveRecord::Base
   belongs_to :template_schema
   has_many :docs, :dependent => :destroy
   has_many :structures, :dependent => :destroy
+  has_many :relationships, :dependent => :destroy
   
-  acts_as_permissioned :permission_names => [:view, :edit]
+  acts_as_permissioned
 
   def authors
     ids = docs.collect { |doc| doc.versions.collect { |version| version.author_id }.uniq }.flatten.uniq
