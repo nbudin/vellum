@@ -1,6 +1,6 @@
 class CreateDocuments < ActiveRecord::Migration
   def self.up
-    create_table :documents do |t|
+    create_table :docs do |t|
       t.column :title, :text
       t.column :content, :text
       t.column :created_at, :datetime
@@ -8,11 +8,11 @@ class CreateDocuments < ActiveRecord::Migration
       t.column :structure_template_id, :integer
       t.column :version, :integer
     end
-    Document.create_versioned_table
+    Doc.create_versioned_table
   end
 
   def self.down
-    Document.drop_versioned_table
-    drop_table :documents
+    Doc.drop_versioned_table
+    drop_table :docs
   end
 end
