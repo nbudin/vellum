@@ -63,6 +63,17 @@ class RelationshipType < ActiveRecord::Base
     end
   end
 
+  def other_template(template)
+    dir = direction_of(template)
+    if dir == :left
+      right_template
+    elsif dir == :right
+      left_template
+    else
+      nil
+    end
+  end
+
   private
   def check_templates_in_schema
     if left_template

@@ -67,11 +67,14 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
 
 <h2>Relationship Types</h2>
 
+<p><%= @structure_template.name %>...</p>
+
 <ul class="itemlist">
-  <% itemlist_items(@template_schema.relationship_types, :delete_path => relationship_types_path(@template_schema)) do |typ| -%>
+  <% itemlist_items(@relationship_types, :delete_path => relationship_types_path(@template_schema)) do |typ| -%>
           <% link_to(relationship_type_path(@template_schema, typ)) do -%>
 	    <%= image_tag "relationship_type.png" %>
-	    <%= typ.description %>
+	    <%= typ.description_for(@structure_template) %>
+	    <%= typ.other_template(@structure_template).name %>
 	  <% end -%>
   <% end -%>
 
@@ -84,7 +87,6 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
 	</button>
       </div>
       <%= hidden_field_tag "relationship_type[left_template_id]", @structure_template.id %>
-      <%= @structure_template.name %>
       <%= f.text_field "left_description" %>
       <%= f.select "right_template_id", @template_schema.structure_templates.reject {|t| t == @structure_template }.collect { |t| [t.name, t.id] } %>
       <% end -%>

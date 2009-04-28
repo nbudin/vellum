@@ -16,6 +16,7 @@ class StructureTemplatesController < ApplicationController
   # GET /structure_templates/1.xml
   def show
     @structure_template = StructureTemplate.find(params[:id])
+    @relationship_types = @structure_template.outward_relationship_types + @structure_template.inward_relationship_types
 
     respond_to do |format|
       format.html # show.rhtml
