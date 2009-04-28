@@ -172,3 +172,15 @@ button img {
     vertical-align: middle;
     padding-right: 0.3em;
 }
+
+ul.sortlist {
+    list-style-type: none;
+    margin-left: 20px;
+    padding-left: 0px;
+}
+
+img.sort_handle {
+    margin-left: -20px;
+    float: left;
+    cursor: move;
+}

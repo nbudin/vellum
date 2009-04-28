@@ -7,7 +7,7 @@ ActionController::Routing::Routes.draw do |map|
   
   map.resources :template_schemas do |schemas|
     schemas.resources :structure_templates, :name_prefix => nil do |templates|
-      templates.resources :attrs, :name_prefix => nil
+      templates.resources :attrs, :collection => { :sort => :post }, :name_prefix => nil
     end
     schemas.resources :relationship_types, :name_prefix => nil
   end

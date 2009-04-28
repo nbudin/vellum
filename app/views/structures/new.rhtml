@@ -11,8 +11,18 @@
       <div class="attribute_name<% if a.required %> required<%end%>">
 	<%=h a.name %>
       </div>
-      <%= text_field_tag "attrs[#{a.id}]" %>
+      <% # this is seriously hackish, but will make our editing templates return
+         # params in the form that StructuresController#create wants them
+
+	 av = a.attr_configuration.class.value_class.new
+	 av.id = a.id -%>
+      <%= render_attr_value_editor(av) %>
     </div>
   <% end -%>
-  <%= submit_tag "Create New #{@structure.structure_template.name}" %>
+  <p>
+    <button class="new">
+    <%= image_tag "structure_add.png" %>
+    Create New <%=@structure.structure_template.name%>
+    </button>
+  </p>
 <% end -%>

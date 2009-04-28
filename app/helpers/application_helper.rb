@@ -5,18 +5,42 @@ module ApplicationHelper
   end
   
   def page_title
-    ret = if controller.action_name == 'index'
-      "List"
-    else
-      controller.action_name.capitalize
+    noun = nil
+    if params[:id]
+      klass = eval(controller.controller_name.classify.singularize)
+      if klass.kind_of? Class and klass.respond_to? 'find'
+        obj = klass.find(params[:id])
+        if obj.respond_to? 'name'
+          noun = obj.name
+        end
+      end
     end
-    ret += " "
-    if controller.action_name != 'index'
-      ret += controller.controller_name.humanize.singularize.downcase
-    else
-      ret += controller.controller_name.humanize.downcase
+    
+    if noun.nil?
+      # fallback - we couldn't get the current object's name
+      noun = controller.controller_name.humanize
+      unless controller.action_name == 'index'
+        noun = noun.singularize
+      end
     end
-    return ret
+
+    if controller.action_name == 'edit'
+      verbnoun = "Editing #{noun}"
+    elsif controller.action_name == 'new'
+      verbnoun = "New #{noun}"
+    else
+      verbnoun = noun
+    end
+
+    if params[:project_id]
+      proj = Project.find(params[:project_id])
+      return "#{verbnoun} - #{proj.name}"
+    elsif params[:template_schema_id]
+      ts = TemplateSchema.find(params[:template_schema_id])
+      return "#{verbnoun} - #{ts.name}"
+    else
+      return verbnoun
+    end
   end
 
   def show_class_template_name(klass)

@@ -12,7 +12,11 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
 <h1><%= jipe_editor(@structure_template, "name") %></h1>
 
 <h2>Attributes</h2>
+
+<ul id="attrs" class="sortlist">
 <% @structure_template.attrs.each do |attr| -%>
+<li id="attr_<%= attr.id %>">
+  <%= image_tag "sort_handle.png", :class => "sort_handle" %>
   <div class="attr">
     <div class="metadata">
       <div class="type"><%=h attr.attr_configuration.class.name%></div>
@@ -41,7 +45,10 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
       </ul>
     </div>
   </div>
+</li>
 <% end -%>
+</ul>
+<%= sortable_element "attrs", :handle => "sort_handle", :url => attrs_path(@template_schema, @structure_template) + '/sort' %>
 
 <% if @structure_template.attrs.count == 0 -%>
 <p><i>No attributes.</i></p>

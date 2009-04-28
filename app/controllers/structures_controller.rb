@@ -17,14 +17,13 @@ class StructuresController < ApplicationController
   # GET /structures
   # GET /structures.xml
   def index
-    conds = {}
+    conds = {:project_id => @project.id}
     if params[:template_id]
       conds[:structure_template_id] = @project.template_schema.structure_templates.find(params[:template_id]).id
     end
     @structures = Structure.find(:all, :conditions => conds)
 
     respond_to do |format|
-      format.html # index.rhtml
       format.xml  { render :xml => @structures.to_xml(:methods => [:name]) }
       format.json { render :json => @structures.to_json(:methods => [:name]) }
     end
@@ -65,11 +64,11 @@ class StructuresController < ApplicationController
     struct_ok = @structure.save
     @attr_errors = {}
     
-    if struct_ok and params[:attrs]
-      params[:attrs].each do |id, value|
+    if struct_ok and params[:attr_value]
+      params[:attr_value].each do |id, value|
         if not value.blank?
           val = @structure.attr_value(Attr.find(id))
-          val.value = value
+          val.update_attributes(value)
           attr_ok = val.save
           if not attr_ok
             @attr_errors[id] = val.errors

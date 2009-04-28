@@ -1,5 +1,8 @@
 class AttrsController < ApplicationController
-  rest_permissions :class_name => "TemplateSchema", :id_param => "template_schema_id"
+  perm_options = { :class_name => "TemplateSchema", :id_param => "template_schema_id" }
+  rest_permissions perm_options
+  require_permission "show", {:only => [:show_config]}.update(perm_options)
+  require_permission "edit", {:only => [:sort, :update_config]}.update(perm_options)
   before_filter :get_template_and_schema
   
   # GET /attrs
@@ -89,6 +92,15 @@ class AttrsController < ApplicationController
       format.xml  { head :ok }
       format.json { render :json => @attr.errors.to_json }
     end
+  end
+
+  def sort
+    @attrs = @structure_template.attrs
+    @attrs.each do |attr|
+      attr.position = params['attrs'].index(attr.id.to_s) + 1
+      attr.save!
+    end
+    head :ok
   end
 
   def show_config
