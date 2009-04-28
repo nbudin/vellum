@@ -5,8 +5,9 @@ class StructureTemplate < ActiveRecord::Base
   has_many :attr_configurations, :through => :attrs
   belongs_to :template_schema
   has_many :projects, :through => :template_schema
-  has_many :outward_relationship_types, :foreign_key => :left_template_id, :class_name => "RelationshipType"
-  has_many :inward_relationship_types, :foreign_key => :right_template_id, :class_name => "RelationshipType"
+  has_many :outward_relationship_types, :foreign_key => :left_template_id, :class_name => "RelationshipType", :dependent => :destroy
+  has_many :inward_relationship_types, :foreign_key => :right_template_id, :class_name => "RelationshipType", :dependent => :destroy
+  has_many :structures, :dependent => :destroy
 
   def relationship_types
     outward_relationship_types + inward_relationship_types
