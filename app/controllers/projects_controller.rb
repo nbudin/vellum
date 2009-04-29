@@ -19,7 +19,13 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
 
     respond_to do |format|
-      format.html # show.rhtml
+      format.html do
+        @templates = @project.template_schema.structure_templates.find(:all, :order => "name")
+        @structures = {}
+        @templates.each do |tmpl|
+          @structures[tmpl] = @project.structures.find(:all, :conditions => ["structure_template_id = ?", tmpl.id])
+        end
+      end
       format.xml  { render :xml => @project.to_xml }
       format.json { render :json => @project.to_json }
       format.vproj { render :xml => @project.to_vproj(:all_doc_versions => params[:all_doc_versions]) }

@@ -20,20 +20,38 @@
 
 <h2>Contents</h2>
 
-<% itemlist(@project.structures, :delete_path => structures_path(@project)) do |structure| %>
-  <% link_to(structure_path(@project, structure)) do -%>
-    <%= image_tag "structure.png" %>
-    <%= structure.name %>
-    (<%= structure.structure_template.name %>)
-  <% end -%>
-<% end %>
+<ul id="template_tabs" class="tabstrip">
+<% @templates.each do |tmpl| -%>
+  <li class="tab"><%= link_to tmpl.name, "#structures_#{tmpl.id}" %></li>
+<% end -%>
+</ul>
+
+<% @templates.each do |tmpl| -%>
+  <ul id="structures_<%= tmpl.id %>" class="itemlist">
+    <% itemlist_items(@structures[tmpl], :delete_path => structures_path(@project)) do |structure| %>
+      <% link_to(structure_path(@project, structure)) do -%>
+        <%= image_tag "structure.png" %>
+        <%= structure.name %>
+      <% end -%>
+    <% end %> 
+    <% if @structures[tmpl].size == 0 -%>
+      <li class="odd"><i>No <%= tmpl.name.pluralize %> in project.</i></li>
+    <% end -%>
+    <li>
+      <% link_to new_structure_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
+        <%= image_tag "structure_add.png" %> Add <%= tmpl.name %>
+      <% end -%>
+    </li>
+  </ul>
+<% end -%>
 
 <ul class="inline">
   <% @project.template_schema.structure_templates.each do |t| -%>
-    <li>
-      <% link_to new_structure_path(@project, :template_id => t.id), :class => "button new" do -%>
-        <%= image_tag "structure_add.png" %> Add <%= t.name %>
-      <% end -%>
-    </li>
   <% end -%>
 </ul>
+
+<%= javascript_include_tag "livepipe-ui/src/livepipe" %>
+<%= javascript_include_tag "livepipe-ui/src/tabs" %>
+<script type="text/javascript">
+    new Control.Tabs('template_tabs');
+</script>

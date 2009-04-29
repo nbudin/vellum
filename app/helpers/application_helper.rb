@@ -117,7 +117,7 @@ module ApplicationHelper
   end
 
   def itemlist(items, options={}, &block)
-    html = content_tag(:ul, :class => "itemlist") do
+    html = content_tag(:ul, {:class => "itemlist"}.update(options)) do
       itemlist_items(items, options, &block)
     end
     if block_given?

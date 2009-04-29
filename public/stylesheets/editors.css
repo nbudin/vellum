@@ -143,6 +143,7 @@ ul.itemlist {
     max-width: 60em;
     list-style-position: inside;
     list-style-type: none;
+    margin-top: 0;
 }
 
 ul.itemlist li {
@@ -183,4 +184,47 @@ img.sort_handle {
     margin-left: -20px;
     float: left;
     cursor: move;
+}
+
+ul.tabstrip {
+    list-style-type: none;
+    margin-bottom: 0;
+}
+
+li.tab {
+    display: inline-block;
+    padding-bottom: 0.5em;
+}
+
+li.tab a {
+    background-color: #a6f;
+    background-image: url(/images/button-bg.png);
+    background-position: 50% 50%;
+    background-repeat: repeat-x;
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    border: 1px black solid;
+    border-bottom: none;
+    padding: 0.5em;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    -moz-border-radius-topleft: 10px;
+    -moz-border-radius-topright: 10px;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
+}
+
+li.tab a:focus {
+    -moz-outline: 0;
+    background-image: url(/images/button-bg-prelight.png);
+}
+
+li.tab a:hover {
+    background-image: url(/images/button-bg-prelight.png);
+}
+
+li.tab a.active {
+    background-image: url(/images/button-bg-prelight.png);
+    background-color: #c9f;
 }
