@@ -1,8 +1,0 @@
-<li id="person_<%=person.id%>"><%= image_tag "ae_users/user.png" %>
-  <%=h person.name %>
-  <%= link_to_remote "Remove",
-            { :url => { :controller => "permission", :action => "remove_role_member", :id => person.id, :role => @role.id },
-            :success => "$('person_#{person.id}').remove();",
-            :confirm => "Are you sure you want to remove that member from this role?" },
-            { :class => "permission_action" } %>
-</li>
