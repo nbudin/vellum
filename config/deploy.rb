@@ -1,5 +1,5 @@
 set :application, "vellum"
-set :repository,  "http://svn.aegames.org/svn/vellum"
+set :repository,  "git://github.com/nbudin/vellum.git"
 
 set :deploy_to, "/var/www/vellum.aegames.org"
 
@@ -9,7 +9,9 @@ role :db,  "sakai.natbudin.com", :primary => true
 
 set :checkout, "export"
 set :user, "www-data"
-set :scm, "subversion"
+set :scm, "git"
+set :deploy_via, :remote_cache
+set :git_enable_submodules, 1
 
 namespace :deploy do
   desc "Tell Passenger to restart this app"
