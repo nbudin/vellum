@@ -1,0 +1,47 @@
+JIPE: In-Place Editing Components for Jester
+============================================
+
+JIPE stands for Jester In-Place Editing.  It started out as a replacement for
+Rails' built-in in_place_editor helper function using Eric Mill's Jester
+library, but is beginning to add additional editing widgets as well.
+
+The upshot of this is that if you have RESTful controllers in your Rails app,
+then JIPE can very quickly help you set up in-place editing for your RESTful
+objects.
+
+Setup
+=====
+
+To begin using JIPE in your project, run:
+
+script/generate jipe
+
+This will copy the JIPE icons into your public/images directory.
+
+Usage
+=====
+
+To use JIPE, you'll need to include the Javascripts in your layout:
+
+<%= javascript_include_tag 'jipe/jester' %>
+<%= javascript_include_tag 'jipe/jipe' %>
+
+This requires Rails 2.3, since it makes use of the Engines-like features.  For
+older versions of Rails, you will need to either install the Engines plugin,
+or copy the Javascripts into your public/javascript directory yourself.
+
+You'll also need to tell Jester how to access your REST resources, like so:
+
+<script type="text/javascript">
+Resource.model("Post");
+</script>
+
+Now that you've done that, creating in-place editing fields is easy:
+
+Title: <%= jipe_editor @post, "title" %><br/>
+<%= jipe_editor @post, "body", :rows => 4 %>
+
+In addition to textbox-style in-place editors, JIPE lets you do clickable image
+toggles for boolean fields.  For example:
+
+Mood: <%= jipe_image_toggle @post, "is_happy", "smiley.png", "frowny.png" %>

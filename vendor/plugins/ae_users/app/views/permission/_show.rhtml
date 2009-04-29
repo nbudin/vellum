@@ -1,0 +1,78 @@
+<style type="text/css">
+div.auto_complete {
+  z-index: 1000;
+}
+
+.permission_action {
+  font-size: 80%; 
+  text-transform: uppercase; 
+  text-decoration: none;
+  color: #444;
+  background-color: #ffc;
+}
+</style>
+<%= auto_complete_stylesheet %>
+
+<% div_for item, :permissions do %>
+  <ul>
+  <% permission_names(item).each do |perm| -%>
+    <li><b><%=h(perm.to_s.humanize)%></b>:
+    <% grants = permission_grants(item, perm) -%>
+    <% if all_permitted?(item, perm) -%>
+      everybody
+    <% elsif grants.length == 0 -%>
+      <span id="<%= perm %>_nobody">nobody</span>
+    <% else -%>
+      <% grants.each_index do |i| -%>
+        <% grant = grants[i] -%>
+        <span id="grant_<%=grant.id%>">
+          <% if grant.grantee.kind_of? Role -%>
+            <%= image_tag "ae_users/group.png" %>
+          <% elsif grant.grantee.kind_of? Person -%>
+            <%= image_tag "ae_users/user.png" %>
+          <% end -%>
+          <% if grant.grantee -%>
+            <%= h(grant.grantee.name) %>
+          <% else -%>
+            Unknown entity
+          <% end -%>
+          <% if logged_in? and logged_in_person.permitted?(item, "change_permissions") -%>
+            <%= link_to_remote "Remove",
+                { :url => { :controller => "permission", :action => "revoke", :id => grant.id },
+                :success => "$('grant_#{grant.id}').remove();",
+                :confirm => "Are you sure you want to revoke that permission?" },
+                { :class => "permission_action" } %>
+          <% end -%>
+
+          <% if i < grants.length - 1 %>, <% end %>
+        </span>
+      <% end -%>
+    <% end -%>
+    <% if logged_in? and logged_in_person.permitted?(item, "change_permissions") -%>
+      <div id="<%= perm %>_insert_grants_here" style="display: inline;"></div>
+      | <span id="grant_open_<%=perm%>">
+          <%= link_to_function "Add", "$('grant_open_#{perm}').toggle(); $('grant_#{perm}').toggle(); $('#{perm}_grantee_shim').focus();",
+            :class => "permission_action" %>
+        </span>
+        <span id="grant_<%=perm %>" style="display: none;">
+        <%= link_to_function "&laquo;", "$('grant_open_#{perm}').toggle(); $('grant_#{perm}').toggle();",
+            :class => "permission_action" %>
+          <%= user_picker "#{perm}_grantee", :roles => true,
+            :callback => "nobody = $('#{perm}_nobody');
+                if (nobody) {
+                  nobody.remove();
+                }
+                new Ajax.Updater('#{perm}_insert_grants_here', '#{url_for :controller => 'permission', :action => 'grant', :perm => full_permission_name(item, perm), 
+                  :item_klass => item.class.name, :item_id => item.id, :escape => false}',
+                  {
+                    parameters: { 'klass': klass, 'id': id },
+                    insertion: Insertion.Bottom,
+                  }
+                );" %>
+        </span>
+      <% end -%>
+    </li>
+  <% end -%>
+  </ul>
+<% end %>
+

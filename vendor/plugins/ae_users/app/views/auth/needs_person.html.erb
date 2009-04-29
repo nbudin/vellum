@@ -1,0 +1,26 @@
+<h2>Welcome!</h2>
+
+<p>This is the first time you've visited this site.  We just need a few pieces of information
+from you before we can log you in.  We've attempted to get as much of it as possible from your
+OpenID provider, but some of it may be missing and/or incorrect.  Please check the following form
+before pressing "Save changes" below.</p>
+
+<% ae_form_for("person", @person, :url => {:action => 'needs_person'}, 
+	:html => {:id => 'edit_profile_form', :style => "max-width: 800px;"}) do |f| %>
+  <%= hidden_field_tag "return_to", params[:return_to] %>
+  <%= render :partial => 'account/personal_info', :locals => {:f => f} %>
+  <label for="email">Email:</label>
+  <%= text_field_tag "email", params[:email] %>
+  <% if @app_profile -%>
+  
+  <% ae_form_for("app_profile", @app_profile) do |profile_form| %>
+          <%= render :partial => "account/#{@app_profile.class.name.tableize.singularize}", 
+				:locals => {:f => profile_form}%>
+          <label></label>
+          <%= submit_tag %>
+      <% end %>
+  <% else -%>
+      <label></label>
+      <%= submit_tag %>
+  <% end -%>
+<% end %>

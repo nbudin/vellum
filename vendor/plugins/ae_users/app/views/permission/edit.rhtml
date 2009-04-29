@@ -1,0 +1,9 @@
+<h1>
+  <% if @item.kind_of? ActiveRecord::Base -%>
+    Permissions for <%=h @item.name %>
+  <% else -%>
+    Base permissions for all <%=h @item.name.pluralize %>
+  <% end -%>
+</h1>
+
+<%= render :partial => "show", :locals => { :item => @item } %>

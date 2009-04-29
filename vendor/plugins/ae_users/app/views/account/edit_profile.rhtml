@@ -1,0 +1,99 @@
+<h1>Edit your profile</h1>
+
+<style type="text/css">
+form {
+	max-width: 640px;
+}
+</style>
+
+<% if @person.account -%>
+  <% ae_form_for("password", nil, :url => {:action => 'change_password'}, 
+          :html => {:id => 'change_password_form'}) do |f| %>
+    <h2>Change password</h2>
+    <%= f.password_field "password1", :label => "New password" %>
+    <%= f.password_field "password2", :label => "Confirm new password" %>
+    <%= submit_tag "Change password" %>
+  <% end %>
+<% end -%>
+
+<h2>OpenID Identities</h2>
+
+<p>OpenID is a free and easy way to use a single digital identity across the Internet.  For more information,
+<%= link_to "visit the OpenID web site", "http://www.openid.net" %>.</p>
+
+<table>
+  <% @person.open_id_identities.each do |id| -%>
+    <tr>
+      <td></td>
+      <td>
+        <%= image_tag "ae_users/openid.gif" %>
+        <i><%=h id.identity_url %></i>
+      </td>
+      <td><%= button_to "Delete", {:action => "delete_openid", :id => id.id}, {:confirm => "Are you sure you wish to remove this OpenID?"} %></td>
+    </tr>
+  <% end -%>
+  <tr>
+    <% ae_form_for("add_openid", nil, :url => {:action => "add_openid"}) do |f| -%>
+      <td>Add new OpenID:</td>
+      <td><%= text_field_tag "openid_url", @openid_url, :style => "background: #FFFFFF url('#{image_path "ae_users/openid.gif"}') no-repeat scroll 0pt 50%; padding-left: 18px; width: 60%;" %></td>
+      <td><%= submit_tag "Add" %></td>
+    <% end -%>
+  </tr>
+</table>
+
+<% ae_form_for("email_addresses", nil, :url => {:action => 'edit_email_addresses'}, 
+	:html => {:id => 'edit_email_addresses_form'}) do |f| %>
+    
+  <h2>Edit email addresses</h2>
+    
+  <p>Note: every account must have one "primary" email address.  This is the one the site will use
+    to send you email (for example, if you forget your password).</p>
+    
+  <table>
+    <tr>
+      <th></th>
+      <th>Address</th>
+      <th>Primary</th>
+      <th>Delete</th>
+    </tr>
+      <% @person.email_addresses.each do |addr| -%>
+        <tr>
+          <td></td>
+          <td>
+            <i><%= addr.address %></i>
+          </td>
+          <td>
+            <%= radio_button_tag "primary", addr.id, addr.primary %>
+          </td>
+          <td>
+            <%= check_box_tag "delete", addr.id %>
+          </td>
+        </tr>
+      <% end -%>
+      <tr>
+        <td>Add new address:</td>
+        <td>
+          <%= text_field_tag "new_address", "", :style => "width: 100%" %>
+        </td>
+        <td>
+          <%= radio_button_tag "primary", "new" %>
+        </td>
+      </tr>
+    </table>
+  <%= submit_tag "Edit email addresses" %>
+<% end %>
+
+<% ae_form_for("person", @person, :url => {:action => 'edit_profile'}, 
+	:html => {:id => 'edit_profile_form'}) do |f| %>
+  <%= render :partial => 'personal_info', :locals => {:f => f} %>
+  <% if @app_profile -%>
+  
+  <% ae_form_for("app_profile", @app_profile) do |profile_form| %>
+          <%= render :partial => "account/#{@app_profile.class.name.tableize.singularize}", 
+				:locals => {:f => profile_form}%>
+          <%= submit_tag "Edit profile" %>
+      <% end %>
+  <% else -%>
+      <%= submit_tag "Edit profile" %>
+  <% end -%>
+<% end %>

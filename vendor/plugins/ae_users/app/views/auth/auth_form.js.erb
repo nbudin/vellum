@@ -1,0 +1,39 @@
+<% if AeUsers.js_framework == "jquery" -%>
+function chooseLoginType(loginType) {
+    $('select.login_type').each(function(e) { this.value = loginType; });
+    if (loginType == 'account') {
+        $('span.login_type_openid').hide();
+        $('span.login_type_account').show();
+    }
+    if (loginType == 'openid') {
+        $('span.login_type_account').hide();
+        $('span.login_type_openid').show();
+    }
+}
+
+$(document).ready(function () {
+    <% if @openid_url or params[:openid_url] -%>
+      $('#login_type').val('openid');
+    <% end -%>
+    chooseLoginType($('#login_type').val());
+});
+<% else -%>
+function chooseLoginType(loginType) {
+    $$('select.login_type').each(function(e) { e.value = loginType; });
+    if (loginType == 'account') {
+        $$('span.login_type_openid').each(function(e) { e.hide() });
+        $$('span.login_type_account').each(function(e) { e.show() });
+    }
+    if (loginType == 'openid') {
+        $$('span.login_type_account').each(function(e) { e.hide() });
+        $$('span.login_type_openid').each(function(e) { e.show() });
+    }
+}
+
+Event.observe(window, 'load', function () {
+    <% if @openid_url or params[:openid_url] -%>
+      $('login_type').value = 'openid';
+    <% end -%>
+    chooseLoginType($F('login_type'));
+});
+<% end -%>

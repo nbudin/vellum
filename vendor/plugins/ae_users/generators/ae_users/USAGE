@@ -1,0 +1,14 @@
+Description:
+    Copies the ae_users resource files into the correct place in your Rails working directory.
+
+Example:
+    ./script/generate ae_users
+
+    This will create:
+      public/images/ae_users/add.png
+      public/images/ae_users/admin.png
+      public/images/ae_users/group.png
+      public/images/ae_users/logout.png
+      public/images/ae_users/openid.gif
+      public/images/ae_users/remove.png
+      public/images/ae_users/user.png

@@ -1,0 +1,63 @@
+<h1>Editing role <%= @role.name %></h1>
+
+<h2>Members</h2>
+
+<style type="text/css">
+div.auto_complete {
+  z-index: 1000;
+}
+
+.permission_action {
+  font-size: 80%; 
+  text-transform: uppercase; 
+  text-decoration: none;
+  color: #444;
+  background-color: #ffc;
+}
+</style>
+<%= auto_complete_stylesheet %>
+
+<ul style="list-style-type: none;" id="members_list">
+  <% @role.people.each do |person| -%>
+    <%= render :partial => "role_member", :locals => {:person => person} %>
+  <% end -%>
+  <span id="add_member_open">
+    <%= link_to_function "Add member", "$('add_member_open').toggle(); $('add_member').toggle();",
+      :class => "permission_action" %>
+  </span>
+  <span id="add_member" style="display: none;">
+  <%= link_to_function "&laquo;", "$('add_member_open').toggle(); $('add_member').toggle();",
+      :class => "permission_action" %>
+    <%= user_picker "member_to_add",
+      :callback => "new Ajax.Updater('members_list', '#{url_for :controller => 'permission', :action => 'add_role_member',
+            :role => @role.id, :escape => false}',
+            {
+              parameters: { 'klass': klass, 'id': id },
+              insertion: Insertion.Top,
+            }
+          );" %>
+</ul>
+
+<h2>Permissions</h2>
+
+<ul>
+  <% @role.permissions.each do |perm| -%>
+    <li>
+      <% if perm.permission.nil? -%>
+        Global superadmin
+      <% else -%>
+        <%=h perm.permission.humanize %>
+        <% if not perm.permissioned.nil? -%>
+          <%=h perm.permissioned.class %>
+          <% if perm.permissioned.respond_to? "name" %>
+            "<%=h perm.permissioned.name %>"
+          <% elsif perm.permissioned.respond_to? "title" %>
+            "<%=h perm.permissioned.title %>"
+          <% else -%>
+            #<%= perm.permissioned.id %>
+          <% end -%>
+        <% end -%>
+      <% end -%>
+    </li>
+  <% end -%>
+</ul>

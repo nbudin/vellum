@@ -1,0 +1,5 @@
+<h2>Personal Information</h2>
+<%= f.text_field "firstname", :label => "First name" %>
+<%= f.text_field "lastname", :label => "Last name" %>
+<%= f.date_select "birthdate", :include_blank => true, :start_year => Date.today.year, :end_year => 1900, :order => [:month, :day, :year] %>
+<%= f.select "gender", ["", "male", "female"] %>

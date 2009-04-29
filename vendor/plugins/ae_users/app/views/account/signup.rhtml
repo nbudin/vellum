@@ -1,0 +1,26 @@
+<% ae_form_for("person", @person, :url => {:action => 'signup'},
+	:html => {:id => 'signup_form'}) do |f| -%>
+  <h1>Sign up</h1>
+  <p>Thanks for creating an account!  We just need a few pieces of information from you before we can complete your
+    signup process.</p>
+    
+  <h2>Account Info</h2>
+        <label for="email" class="required">Email address:</label>
+        <%= text_field_tag "email", params[:email] %>
+        <label for="password1" class="required">Password:</label>
+        <%= password_field_tag "password1", params[:password1] %>
+        <label for="password2" class="required">Re-enter password:</label>
+        <%= password_field_tag "password2", params[:password2] %>
+
+  <%= render :partial => "account/personal_info", :locals => {:f => f} %>
+  
+  <% if @app_profile -%>
+      <% ae_form_for("app_profile", @app_profile) do |profile_form| %>
+          <%= render :partial => "account/#{@app_profile.class.name.tableize.singularize}", 
+				:locals => {:f => profile_form}%>
+          <%= submit_tag "Complete registration" %>
+      <% end %>
+  <% else -%>
+      <%= submit_tag "Complete registration" %>
+  <% end -%>
+<% end -%>

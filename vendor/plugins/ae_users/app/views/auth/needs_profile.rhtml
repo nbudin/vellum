@@ -1,0 +1,12 @@
+<h1>Update your profile</h1>
+
+<p>Hello!  It appears this is the first time you've logged into this site.  Before you log in,
+    please take a moment to update your personal information below.</p>
+  
+<% ae_form_for("app_profile", @app_profile) do |profile_form| %>
+    <%= hidden_field_tag "return_to", params[:return_to] %>
+    <%= hidden_field_tag "person", @person.id %>
+    <%= render :partial => "account/#{@app_profile.class.name.tableize.singularize}", 
+		:locals => {:f => profile_form}%>
+    <%= submit_tag "Update your profile" %>
+<% end %>
