@@ -21,7 +21,7 @@
 }
 
 .showhide {
-    font-color: #333;
+    color: #333;
     font-size: 90%;
     margin-left: 2em;
     display: inline-block;
@@ -128,6 +128,11 @@ a.button {
 
 .delete {
     background-color: #f66 !important;
+    border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    -webkit-border-radius: 0px !important;
+    text-transform: uppercase;
+    font-size: 90%;
 }
 
 .edit {
@@ -149,6 +154,7 @@ ul.itemlist {
 ul.itemlist li {
     padding-top: 2px;
     padding-bottom: 2px;
+    overflow: auto;
 }
 
 ul.itemlist li.even {

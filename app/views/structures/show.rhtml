@@ -4,8 +4,6 @@
     Resource.model("StructureTemplate", {prefix: '<%=template_schema_path(@project.template_schema)%>', format: 'json'});
 </script>
 
-<p><%= link_to "<- Back to #{@project.name}", project_path(@project) %></p>
-
 <p style="margin-top: 2em;"><h1 style="display: inline;"><%=h @structure.name %></h1>
     (<%=h @structure.structure_template.name %>)</p>
 
@@ -42,6 +40,9 @@
       </li>
     </ul>
   </div>
+  
+  <h2>Navigation</h2>
+  <p><%= link_to "Back to #{@project.name}", project_path(@project) %></p>
 </div>
     
 <table style="margin-top: .75em;" class="structure">

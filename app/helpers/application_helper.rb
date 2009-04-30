@@ -105,7 +105,6 @@ module ApplicationHelper
         if block_given?
           html << block.call(item)
         end
-        html << tag(:div, :style => "clear: both;")
         html
       end
     end.join("\n")

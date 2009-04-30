@@ -24,6 +24,7 @@ class ProjectsController < ApplicationController
         @structures = {}
         @templates.each do |tmpl|
           @structures[tmpl] = @project.structures.find(:all, :conditions => ["structure_template_id = ?", tmpl.id])
+          @structures[tmpl].sort! { |a, b| a.name <=> b.name }
         end
       end
       format.xml  { render :xml => @project.to_xml }
