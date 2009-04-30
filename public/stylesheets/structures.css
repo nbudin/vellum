@@ -1,5 +1,6 @@
 table.structure {
     min-width: 30em;
+    margin-right: 0;
 }
 
 table.structure tr td {
