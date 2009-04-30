@@ -35,3 +35,7 @@ body > * {
 .jumpbox ul.itemlist li.even {
     background-color: #ee7;
 }
+
+.jumpbox .navigation {
+    overflow: hidden;
+}

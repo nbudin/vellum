@@ -141,10 +141,28 @@ a.button:hover {
 
 .edit {
     background-color: #fc6 !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    -moz-border-radius-topleft: 0px !important;
+    -moz-border-radius-bottomleft: 0px !important;
+    -webkit-border-top-left-radius: 0px !important;
+    -webkit-border-bottom-left-radius: 0px !important;
+    float: right;
 }
 
 .save {
     background-color: #ccf !important;
+}
+
+.back {
+    background-color: #7fc !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    -moz-border-radius-topright: 0px !important;
+    -moz-border-radius-bottomright: 0px !important;
+    -webkit-border-top-right-radius: 0px !important;
+    -webkit-border-bottom-right-radius: 0px !important;
+    float: left;
 }
 
 ul.itemlist {

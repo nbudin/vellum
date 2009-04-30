@@ -5,6 +5,19 @@
 <h1><%= jipe_editor(@project, "name") %></h1>
 
 <div class="jumpbox">
+  <div class="navigation">
+    <% link_to projects_path, :class => "button back" do %>
+      <%= image_tag "arrow_left.png" %>
+      Projects
+    <% end -%>
+    <% if logged_in_person.permitted?(@project, "edit") -%>
+      <% link_to edit_project_path(@project), :class => "button edit" do -%>
+        Properties
+        <%= image_tag "project_edit.png" %>
+      <% end -%>
+    <% end -%>
+  </div>
+
   <h2><%=h @project.name %></h2>
   <p>
     Using
@@ -16,9 +29,6 @@
   <h3>Restrictions</h3>
   
   <%= render :partial => "permission/show", :locals => { :item => @project } %>
-
-  <h2>Navigation</h2>
-  <%= link_to 'Back to project list', projects_path %>
 </div>
 
 <h2>Contents</h2>

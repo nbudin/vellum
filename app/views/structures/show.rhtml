@@ -8,6 +8,19 @@
     (<%=h @structure.structure_template.name %>)</p>
 
 <div class="jumpbox">
+  <div class="navigation">
+    <% link_to project_path(@project), :class => "button back" do -%>
+      <%= image_tag "arrow_left.png" %>
+      <%=h @project.name %>
+    <% end -%>
+    <% if logged_in? and logged_in_person.permitted?(@project, "edit") -%>
+      <% link_to edit_structure_path(@project, @structure), :class => "button edit" do -%>
+        Edit
+        <%= image_tag "structure_edit.png" %>
+      <% end -%>
+    <% end -%>
+  </div>
+
   <h2><%= @structure.name %></h2>
   <p>
     <b>Template:</b> 
@@ -16,13 +29,6 @@
       <%= @structure.structure_template.name %>
     <% end -%>
   </p>
-  <% if logged_in? and logged_in_person.permitted?(@project, "edit") -%>
-  <p>
-    <% link_to edit_structure_path(@project, @structure), :class => "button edit" do -%>
-      <%= image_tag "structure_edit.png" %> Edit <%= @structure.name %>...
-    <% end -%>
-  </p>
-  <% end -%>
 
   <h2>Relationships</h2>
   <div id="relationships">
@@ -39,10 +45,7 @@
 	<%= render :partial => 'new_relationship', :locals => { :structure => @structure } %>
       </li>
     </ul>
-  </div>
-  
-  <h2>Navigation</h2>
-  <p><%= link_to "Back to #{@project.name}", project_path(@project) %></p>
+  </div>  
 </div>
     
 <table style="margin-top: .75em;" class="structure">
