@@ -122,6 +122,10 @@ a.button {
     cursor: default;
 }
 
+a.button:hover {
+    color: #000 !important;
+}
+
 .new {
     background-color: #6f6 !important;
 }

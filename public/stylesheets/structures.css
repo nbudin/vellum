@@ -1,0 +1,12 @@
+table.structure {
+    min-width: 30em;
+}
+
+table.structure tr td {
+    width: 100%:
+}
+
+table.structure tr td:first-child {
+    width: 10em;
+}
+

@@ -4,7 +4,7 @@
     Resource.model("StructureTemplate", {prefix: '<%=template_schema_path(@project.template_schema)%>', format: 'json'});
 </script>
 
-<p style="margin-top: 2em;"><h1 style="display: inline;"><%=h @structure.name %></h1>
+<p style="margin-top: 2em;"><span style="font-weight: bold; font-size: 200%;"><%=h @structure.name %></span>
     (<%=h @structure.structure_template.name %>)</p>
 
 <div class="jumpbox">
