@@ -12,10 +12,14 @@ class Structure < ActiveRecord::Base
 
   def name
     name_attr = attr("Name")
-    if name_attr.nil?
+    name = nil
+    if name_attr
+      name = attr_value(name_attr).string_rep
+    end
+    if name.blank?
       return "#{structure_template.name} #{id}"
     else
-      return attr_value(name_attr).string_rep
+      return name
     end
   end
 
