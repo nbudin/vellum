@@ -86,8 +86,10 @@ module ApplicationHelper
   def item_actions(item, options={})
     html = ""
     if options[:delete_path]
-      html << button_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",
-                        :method => :delete, :class => "delete")
+      if (not item.respond_to? "permitted?") or (logged_in? and logged_in_person.permitted?(item, "destroy"))
+        html << button_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",
+                          :method => :delete, :class => "delete")
+      end
     end
     return html
   end

@@ -5,8 +5,8 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.xml
   def index
-    @projects = Project.find(:all)
-    @template_schemas = TemplateSchema.find(:all).select { |s| logged_in_person.permitted?(s, "view") }
+    @projects = Project.find(:all).select { |p| logged_in_person.permitted?(p, "show") }
+    @template_schemas = TemplateSchema.find(:all).select { |s| logged_in_person.permitted?(s, "show") }
 
     respond_to do |format|
       format.html # index.rhtml

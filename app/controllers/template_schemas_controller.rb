@@ -5,7 +5,7 @@ class TemplateSchemasController < ApplicationController
   # GET /template_schemas
   # GET /template_schemas.xml
   def index
-    @template_schemas = TemplateSchema.find(:all)
+    @template_schemas = TemplateSchema.find(:all).select { |s| logged_in_person.permitted?(s, "show") }
 
     respond_to do |format|
       format.html # index.rhtml
