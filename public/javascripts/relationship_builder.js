@@ -74,7 +74,7 @@ RelationshipBuilder = Class.create({
 			this.targetSelect.appendChild(blankOption);
 
 			var newOption = new Element('option', {'value': 'new'});
-			newOption.update("New "+otherTemplate.name+"...");
+			newOption.update("<b>New "+otherTemplate.name+"...</b>");
 			this.targetSelect.appendChild(newOption);
 
 			structures.each(function(structure) {

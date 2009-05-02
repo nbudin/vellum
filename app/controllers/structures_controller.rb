@@ -11,7 +11,8 @@ class StructuresController < ApplicationController
     :theme_advanced_resizing => true,
     :theme_advanced_resize_horizontal => false,
     :theme_advanced_statusbar_location => 'bottom',
-    :content_css => '/stylesheets/document.css'
+    :content_css => '/stylesheets/document.css',
+    :width => "700"
   }
   
   # GET /structures
@@ -21,7 +22,7 @@ class StructuresController < ApplicationController
     if params[:template_id]
       conds[:structure_template_id] = @project.template_schema.structure_templates.find(params[:template_id]).id
     end
-    @structures = Structure.find(:all, :conditions => conds)
+    @structures = Structure.find(:all, :conditions => conds).sort_by {|s| s.name.sort_normalize }
 
     respond_to do |format|
       format.xml  { render :xml => @structures.to_xml(:methods => [:name]) }
@@ -34,7 +35,12 @@ class StructuresController < ApplicationController
   def show
     @structure = Structure.find(params[:id])
     check_forged_url
-
+    @relationships = @structure.relationships.sort_by do |rel|
+      other = rel.other(@structure)
+      "#{rel.relationship_type.description_for(@structure)} #{other.name.sort_normalize}"
+    end
+    @relationship_types = @structure.structure_template.relationship_types.sort_by {|t| t.name.sort_normalize}
+    
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @structure.to_xml }

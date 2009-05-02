@@ -34,7 +34,7 @@
   <div id="relationships">
     <%= @structure.name %>...
     <ul class="itemlist">
-      <% itemlist_items(@structure.relationships, :delete_path => relationships_path(@project)) do |rel| -%>
+      <% itemlist_items(@relationships, :delete_path => relationships_path(@project)) do |rel| -%>
 	<% if rel.left == @structure -%>
 	<%=rel.left_description %> <%=link_to rel.right.name, structure_path(@project, rel.right)%>
 	<% else -%>

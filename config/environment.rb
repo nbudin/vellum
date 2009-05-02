@@ -62,3 +62,4 @@ Mime::Type.register "text/vellum-project+xml", :vproj
 Mime::Type.register "text/vellum-schema+xml", :vschema
 
 # Include your application configuration below
+require 'string_extensions'

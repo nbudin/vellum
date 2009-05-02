@@ -1,10 +1,12 @@
 class ProjectsController < ApplicationController
   rest_permissions
+  before_filter :check_login
   
   # GET /projects
   # GET /projects.xml
   def index
     @projects = Project.find(:all)
+    @template_schemas = TemplateSchema.find(:all).select { |s| logged_in_person.permitted?(s, "view") }
 
     respond_to do |format|
       format.html # index.rhtml
@@ -24,13 +26,17 @@ class ProjectsController < ApplicationController
         @structures = {}
         @templates.each do |tmpl|
           @structures[tmpl] = @project.structures.find(:all, :conditions => ["structure_template_id = ?", tmpl.id])
-          @structures[tmpl].sort! { |a, b| a.name <=> b.name }
+          @structures[tmpl] = @structures[tmpl].sort_by { |s| s.name.sort_normalize }
         end
       end
       format.xml  { render :xml => @project.to_xml }
       format.json { render :json => @project.to_json }
       format.vproj { render :xml => @project.to_vproj(:all_doc_versions => params[:all_doc_versions]) }
     end
+  end
+  
+  def edit
+    @project = Project.find(params[:id])
   end
 
   # POST /projects
@@ -82,6 +88,13 @@ class ProjectsController < ApplicationController
       format.html { redirect_to projects_url }
       format.xml  { head :ok }
       format.json { head :ok }
+    end
+  end
+  
+  private
+  def check_login
+    if not logged_in?
+      redirect_to :controller => "about", :action => "index"
     end
   end
 end

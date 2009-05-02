@@ -3,11 +3,13 @@ table.structure {
     margin-right: 0;
 }
 
-table.structure tr td {
+table.structure > tbody > tr > td {
     width: 100%:
 }
 
-table.structure tr td:first-child {
+table.structure > tbody > tr > td:first-child {
     width: 10em;
+    vertical-align: top;
+    border-top: 1px #666 dashed;
 }
 

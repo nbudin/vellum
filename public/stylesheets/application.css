@@ -133,6 +133,7 @@ div.attribute_name {
 
 textarea, .document_content {
     max-width: 60em;
+    min-width: 30em;
     width: auto;
     min-height: 20em;
 }

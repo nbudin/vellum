@@ -1,0 +1,14 @@
+<h1>Properties for <%=h @project.name %></h1>
+
+<div class="jumpbox">
+  <div class="navigation">
+    <% link_to project_path(@project), :class => "button back" do %>
+      <%= image_tag "arrow_left.png" %>
+      Back to <%=h @project.name %>
+    <% end -%>
+  </div>
+</div>
+
+<h3>Restrictions</h3>
+
+<%= render :partial => "permission/show", :locals => { :item => @project } %>

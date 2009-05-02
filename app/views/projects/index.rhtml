@@ -7,17 +7,19 @@
       <%= project.name %>
     <% end -%>
   <% end %>
-  <li>
-    <% form_for(:project, :url => projects_path) do |f| %>
-    <div style="float: right;">
-      <button class="new">
-        <%= image_tag "project_add.png" %>
-        Create project...
-      </button>
-    </div>
-    <%= f.text_field "name" %>
-    using
-    <%= f.select :template_schema_id, TemplateSchema.find(:all).collect { |s| [ s.name, s.id ]} %>
-    <% end -%>
-  </li>
+  <% if @template_schemas.size > 0 -%>
+    <li style="overflow: hidden;">
+      <% form_for(:project, :url => projects_path) do |f| %>
+      <div style="float: right;">
+        <button class="new">
+          <%= image_tag "project_add.png" %>
+          Create project...
+        </button>
+      </div>
+      <%= f.text_field "name" %>
+      using
+      <%= f.select :template_schema_id, @template_schemas.collect { |s| [ s.name, s.id ]} %>
+      <% end -%>
+    </li>
+  <% end -%>
 </ul>

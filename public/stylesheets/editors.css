@@ -165,6 +165,17 @@ a.button:hover {
     float: left;
 }
 
+.cancel {
+    background-color: #f66 !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    -moz-border-radius-topright: 0px !important;
+    -moz-border-radius-bottomright: 0px !important;
+    -webkit-border-top-right-radius: 0px !important;
+    -webkit-border-bottom-right-radius: 0px !important;
+    float: left;
+}
+
 ul.itemlist {
     z-index: 1;
     max-width: 60em;

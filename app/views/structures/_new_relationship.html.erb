@@ -7,7 +7,7 @@
 <script type="text/javascript">
     var rb = new RelationshipBuilder('relationship_builder', <%=structure.id%>, 
 	'<%=relationships_path(@project)%>', '<%= image_path "relationship_add.png" %>');
-    <% structure.structure_template.relationship_types.each do |typ| -%>
+    <% @relationship_types.each do |typ| -%>
     rb.addRelationshipType(<%=typ.id%>, '<%=typ.direction_of(structure.structure_template)%>', 
 			   '<%= escape_javascript(typ.description_for(structure.structure_template)) %>');
     <% end -%>

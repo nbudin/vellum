@@ -1,0 +1,9 @@
+<h1>Welcome to Vellum</h1>
+
+<p>Vellum is a collaborative online writing application.</p>
+
+<% if not logged_in? -%>
+  <% link_to :controller => "auth", :action => "login", :return_to => projects_url do -%>
+    To get started, click here to log in.
+  <% end -%>
+<% end -%>

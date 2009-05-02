@@ -1,18 +1,36 @@
-<p><%= link_to "<- Back to #{@project.name}", project_path(@project) %></p>
-
-<p style="margin-top: 2em;"><h1 style="display: inline;"><%=h @structure.name %></h1>
+<p style="margin-top: 2em;"><span style="font-size: 200%; font-weight: bold;"><%=h @structure.name %></span>
     (<%=h @structure.structure_template.name %>)</p>
+
+<div class="jumpbox">
+  <div class="navigation">
+    <% link_to structure_path(@project, @structure), :class => "button cancel" do -%>
+      <%= image_tag "arrow_left.png" %>
+      Cancel editing
+    <% end -%>
+  </div>
+    
+  <h2><%= @structure.name %></h2>
+  <p>
+    <b>Template:</b> 
+    <% link_to structure_template_path(@structure.project.template_schema, @structure.structure_template) do -%>
+      <%= image_tag "template.png" %>
+      <%= @structure.structure_template.name %>
+    <% end -%>
+  </p>
+</div>
 
 <%= error_messages_for :structure %>
 
 <% form_for(:structure, :url => structure_path(@project, @structure), :html => {:method => 'put'}) do |f| -%>
-  <% @structure.structure_template.attrs.each do |attr| -%>
-    <div class="attribute">
-      <div class="attribute_name<% if attr.required %> required<%end%>">
-	<%=h attr.name %>
-      </div>
-      <%= render_attr_value_editor(@structure.attr_value(attr.name)) %>
-    </div>
-  <% end -%>
+  <table class="structure">
+    <% @structure.structure_template.attrs.each do |attr| -%>
+      <tr>
+        <td <% if attr.required %>class="required"<% end %>><%=h attr.name %></td>
+        <td>
+          <%= render_attr_value_editor(@structure.attr_value(attr.name)) %>
+        </td>
+      </tr>
+    <% end -%>
+  </table>
   <%= submit_tag "Save changes", :class => "save" %>
 <% end -%>
