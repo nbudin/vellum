@@ -46,7 +46,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(params[:project])
 
     respond_to do |format|
-      if @project.save
+      if logged_in_person.permitted?(@project.template_schema, "show") and @project.save
         @project.grant(logged_in_person)
         format.html { redirect_to project_url(@project) }
         format.xml  { head :created, :location => project_url(@project) }
