@@ -10,6 +10,7 @@ role :db,  "sakai.natbudin.com", :primary => true
 set :checkout, "export"
 set :user, "www-data"
 set :scm, "git"
+set :use_sudo, false
 set :deploy_via, :remote_cache
 set :git_enable_submodules, 1
 
