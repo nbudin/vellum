@@ -1,0 +1,25 @@
+<h1>Site settings</h1>
+
+<% form_for @site_settings, :url => {:action => "update_settings"} do |f| -%>
+  <table>
+    <tr>
+      <th>Site name</th>
+      <td><%= f.text_field :site_name %></td>
+    </tr>
+    <tr>
+      <th>Site color</th>
+      <td><%= f.text_field :site_color %></td>
+    </tr>
+    <tr>
+      <th>Site administrator</th>
+      <td><%= user_picker "site_settings[admin_kid]", :default => @site_settings.admin, :clear_after => false %></td>
+    </tr>
+    <tr>
+      <th>Welcome page</th>
+      <td>
+        <%= text_area_tag "site_settings[welcome_doc_content]", @site_settings.welcome_doc_content, :class => "mceEditor" %>
+      </td>
+    </tr>
+  </table>
+  <%= submit_tag "Save changes", :class => "save" %>
+<% end -%>

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090427165632) do
+ActiveRecord::Schema.define(:version => 20090503032629) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -61,6 +61,8 @@ ActiveRecord::Schema.define(:version => 20090427165632) do
     t.integer  "author_id"
   end
 
+  add_index "doc_versions", ["doc_id"], :name => "index_doc_versions_on_doc_id"
+
   create_table "docs", :force => true do |t|
     t.text     "title"
     t.text     "content"
@@ -70,6 +72,16 @@ ActiveRecord::Schema.define(:version => 20090427165632) do
     t.integer  "version"
     t.integer  "project_id"
     t.integer  "author_id"
+  end
+
+  create_table "documents", :force => true do |t|
+    t.text     "title"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "structure_template_id"
+    t.integer  "version"
+    t.integer  "project_id"
   end
 
   create_table "number_fields", :force => true do |t|
@@ -142,6 +154,15 @@ ActiveRecord::Schema.define(:version => 20090427165632) do
     t.integer "left_id"
     t.integer "right_id"
     t.integer "project_id"
+  end
+
+  create_table "site_settings", :force => true do |t|
+    t.string   "site_name"
+    t.string   "site_color"
+    t.integer  "welcome_doc_id"
+    t.integer  "admin_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "structure_templates", :force => true do |t|
