@@ -231,6 +231,7 @@ ul.tabstrip {
 }
 
 li.tab {
+    display: -moz-inline-block;
     display: inline-block;
     padding-bottom: 0.5em;
 }
