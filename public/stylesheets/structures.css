@@ -4,7 +4,7 @@ table.structure {
 }
 
 table.structure > tbody > tr > td {
-    width: 100%:
+    width: 100%;
 }
 
 table.structure > tbody > tr > td:first-child {
