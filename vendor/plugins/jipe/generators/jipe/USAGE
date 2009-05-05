@@ -1,0 +1,8 @@
+Description:
+    Copies the JIPE resource files into the correct place in your Rails working directory.
+
+Example:
+    ./script/generate jipe
+
+    This will create:
+      public/images/jipe/edit-field.png
