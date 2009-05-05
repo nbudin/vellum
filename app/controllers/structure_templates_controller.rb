@@ -51,9 +51,11 @@ class StructureTemplatesController < ApplicationController
   # PUT /structure_templates/1.xml
   def update
     @structure_template = StructureTemplate.find(params[:id])
+    update_params = params[:structure_template].dup
+    update_params.delete(:attrs)
 
     respond_to do |format|
-      if @structure_template.update_attributes(params[:structure_template])
+      if @structure_template.update_attributes(update_params)
         format.html { redirect_to structure_template_url(@template_schema, @structure_template) }
         format.xml  { head :ok }
         format.json { head :ok }
