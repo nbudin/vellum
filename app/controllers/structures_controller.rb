@@ -13,7 +13,10 @@ class StructuresController < ApplicationController
 
     respond_to do |format|
       format.xml  { render :xml => @structures.to_xml(:methods => [:name]) }
-      format.json { render :json => @structures.to_json(:methods => [:name]) }
+      format.json { 
+        # We have to do this to work around the json gem overriding to_json
+        render :json => ActiveSupport::JSON.encode(@structures, :methods => [:name]) 
+      }
     end
   end
 

@@ -109,7 +109,9 @@ class AttrsController < ApplicationController
 
     respond_to do |format|
       format.xml  { render :xml => @config.to_xml(:methods => [:attr_id]) }
-      format.json { render :json => @config.to_json(:methods => [:attr_id]) }
+      format.json { 
+        render :json => ActiveSupport::JSON.encode(@config, :methods => [:attr_id]) 
+      }
     end
   end
 
