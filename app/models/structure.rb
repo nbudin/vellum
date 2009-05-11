@@ -14,7 +14,10 @@ class Structure < ActiveRecord::Base
     name_attr = attr("Name")
     name = nil
     if name_attr
-      name = attr_value(name_attr).string_rep
+      begin
+        name = attr_value(name_attr).string_rep
+      rescue
+      end
     end
     if name.blank?
       return "#{structure_template.name} #{id}"

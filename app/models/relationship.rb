@@ -45,7 +45,9 @@ class Relationship < ActiveRecord::Base
       [:left, :right].each do |dir|
         struct = self.send(dir)
         if struct
-          unless struct.project == project
+          if struct.project.nil?
+            errors.add(dir, "belongs to no project, but this relationship is part of #{project.name}")
+          elsif struct.project != project
             errors.add(dir, "belongs to project #{struct.project.name}, but this relationship is part of #{project.name}")
           end
         end
@@ -54,7 +56,7 @@ class Relationship < ActiveRecord::Base
   end
 
   def check_duplicate
-    if left and right and relationship_type
+    if left and right and relationship_type and not (left.new_record? or right.new_record?)
       conds = {:left_id => left.id, :right_id => right.id, :relationship_type_id => relationship_type.id}
       other = nil
       if id

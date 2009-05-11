@@ -14,7 +14,7 @@ class RelationshipTest < ActiveSupport::TestCase
     assert p2.save
 
     r = Relationship.new(:relationship_type => relationship_types(:parent), :left => p1, :right => p2, :project => @project)
-    assert r.save
+    assert r.save, r.errors.full_messages.join("\n")
   end
 
   def test_circular_relationship
