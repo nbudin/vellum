@@ -1,5 +1,4 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-one:
+people:
   id: 1
-two:
-  id: 2
+  template_schema: people_templates

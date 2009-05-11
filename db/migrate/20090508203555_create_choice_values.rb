@@ -11,8 +11,8 @@ class CreateChoiceValues < ActiveRecord::Migration
       t.integer :choice_value_id
     end
     
-    create_index :choice_values_choices, :choice_id
-    create_index :choice_values_choices, :choice_value_id
+    add_index :choice_values_choices, :choice_id
+    add_index :choice_values_choices, :choice_value_id
   end
 
   def self.down

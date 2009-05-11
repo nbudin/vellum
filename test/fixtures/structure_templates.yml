@@ -8,3 +8,4 @@ worker:
   id: 2
   name: Worker
   parent_id: 1
+  template_schema_id: 1

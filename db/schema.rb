@@ -57,6 +57,9 @@ ActiveRecord::Schema.define(:version => 20090508203555) do
     t.integer "choice_value_id"
   end
 
+  add_index "choice_values_choices", ["choice_id"], :name => "index_choice_values_choices_on_choice_id"
+  add_index "choice_values_choices", ["choice_value_id"], :name => "index_choice_values_choices_on_choice_value_id"
+
   create_table "choices", :force => true do |t|
     t.string   "value"
     t.integer  "choice_field_id"
