@@ -16,6 +16,19 @@ class ChoiceValueTest < ActiveSupport::TestCase
     v.choices.push choices(:single)
     v.save
     assert v.valid?
+    assert_equal v.value, "single"
+  end
+
+  test "nil_value" do
+    v = build_value(choice_fields(:filingstatus))
+    assert v.valid?
+    assert_nil v.value
+  end
+  
+  test "nil_value_multiple" do
+    v = build_value(choice_fields(:toppings))
+    assert v.valid?
+    assert_equal [], v.value
   end
 
   test "invalid_choice" do
@@ -31,7 +44,9 @@ class ChoiceValueTest < ActiveSupport::TestCase
     v.choices.push choices(:mayo)
     v.save
     assert v.valid?
-    assert_equal v.choices.count, 2
+    assert_equal 2, v.choices.count
+    assert v.value.include? "mayo"
+    assert v.value.include? "ketchup"
   end
 
   test "invalid_multiple" do
