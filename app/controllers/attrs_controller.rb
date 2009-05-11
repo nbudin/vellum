@@ -106,11 +106,15 @@ class AttrsController < ApplicationController
   def show_config
     @attr = Attr.find(params[:id])
     @config = @attr.attr_configuration
+    @methods = [:attr_id]
+    if @config.respond_to? :extra_methods
+      @methods.push(*@config.extra_methods)
+    end
 
     respond_to do |format|
       format.xml  { render :xml => @config.to_xml(:methods => [:attr_id]) }
       format.json { 
-        render :json => ActiveSupport::JSON.encode(@config, :methods => [:attr_id]) 
+        render :json => ActiveSupport::JSON.encode(@config, :methods => @methods)
       }
     end
   end

@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(:version => 20090508203555) do
   create_table "choices", :force => true do |t|
     t.string   "value"
     t.integer  "choice_field_id"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
