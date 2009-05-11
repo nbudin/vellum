@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090503032629) do
+ActiveRecord::Schema.define(:version => 20090508203555) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -36,6 +36,35 @@ ActiveRecord::Schema.define(:version => 20090503032629) do
   end
 
   add_index "auth_tickets", ["secret"], :name => "index_auth_tickets_on_secret", :unique => true
+
+  create_table "choice_fields", :force => true do |t|
+    t.integer  "default_choice_id"
+    t.string   "display_type"
+    t.boolean  "multiple"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "choice_values", :force => true do |t|
+    t.integer  "choice_id"
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "choice_values_choices", :id => false, :force => true do |t|
+    t.integer "choice_id"
+    t.integer "choice_value_id"
+  end
+
+  create_table "choices", :force => true do |t|
+    t.string   "value"
+    t.integer  "choice_field_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "choices", ["choice_field_id"], :name => "index_choices_on_choice_field_id"
 
   create_table "doc_fields", :force => true do |t|
     t.boolean  "allow_linking"

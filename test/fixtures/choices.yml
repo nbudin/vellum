@@ -1,7 +1,21 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
-# one:
-#   column: value
-#
-# two:
-#   column: value
+single:
+  value: single
+  choice_field: filingstatus
+married:
+  value: married
+  choice_field: filingstatus
+marriedfilingseparately:
+  value: married, filing separately
+  choice_field: filingstatus
+
+ketchup:
+  value: ketchup
+  choice_field: toppings
+mustard:
+  value: mustard
+  choice_field: toppings
+mayo:
+  value: mayo
+  choice_field: toppings
