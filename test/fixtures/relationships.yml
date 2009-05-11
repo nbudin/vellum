@@ -1,12 +1,1 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-i_am_your_father:
-  id: 1
-  relationship_type_id: 1
-  left_id: 1
-  right_id: 2
-
-commander:
-  id: 2
-  relationship_type_id: 2
-  left_id: 1
-  right_id: 2

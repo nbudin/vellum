@@ -11,8 +11,9 @@ class DocsControllerTest < ActionController::TestCase
     @controller = DocsController.new
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
+    @request.session[:person] = Person.find(:first).id
 
-    @project = projects(:one)
+    @project = projects(:people)
   end
 
   def teardown
@@ -22,7 +23,7 @@ class DocsControllerTest < ActionController::TestCase
   def test_should_get_index
     get :index, :project_id => @project.id
     assert_response :success
-    assert assigns(:docs)
+    assert assigns['docs']
   end
 
   def test_should_get_new
@@ -50,7 +51,7 @@ class DocsControllerTest < ActionController::TestCase
   
   def test_should_update_doc
     put :update, :project_id => @project.id, :id => 1, :doc => { }
-    assert_redirected_to doc_path(assigns(:doc))
+    assert_redirected_to doc_path(@project.id, assigns['doc'])
   end
   
   def test_should_destroy_doc
