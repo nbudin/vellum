@@ -5,7 +5,7 @@ class DocsController < ApplicationController
   # GET /docs
   # GET /docs.xml
   def index
-    @docs = Doc.find(:all)
+    @docs = @project.docs.all
 
     respond_to do |format|
       format.html # index.rhtml
@@ -16,7 +16,7 @@ class DocsController < ApplicationController
   # GET /docs/1
   # GET /docs/1.xml
   def show
-    @doc = Doc.find(params[:id])
+    @doc = @project.docs.find(params[:id])
 
     respond_to do |format|
       format.html # show.rhtml
@@ -26,19 +26,18 @@ class DocsController < ApplicationController
 
   # GET /docs/new
   def new
-    @doc = Doc.new
+    @doc = @project.docs.build
   end
 
   # GET /docs/1;edit
   def edit
-    @doc = Doc.find(params[:id])
+    @doc = @project.docs.find(params[:id])
   end
 
   # POST /docs
   # POST /docs.xml
   def create
-    @doc = Doc.new(params[:doc])
-    @doc.project = @project
+    @doc = @project.docs.build(params[:doc])
 
     respond_to do |format|
       if @doc.save
@@ -55,7 +54,7 @@ class DocsController < ApplicationController
   # PUT /docs/1
   # PUT /docs/1.xml
   def update
-    @doc = Doc.find(params[:id])
+    @doc = @project.docs.find(params[:id])
 
     respond_to do |format|
       if @doc.update_attributes(params[:doc])
@@ -72,7 +71,7 @@ class DocsController < ApplicationController
   # DELETE /docs/1
   # DELETE /docs/1.xml
   def destroy
-    @doc = Doc.find(params[:id])
+    @doc = @project.docs.find(params[:id])
     @doc.destroy
 
     respond_to do |format|
