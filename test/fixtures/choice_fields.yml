@@ -1,8 +1,7 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 filingstatus:
-  multiple: false
   display_type: radio
 
 toppings:
-  multiple: true
+  display_type: multiple

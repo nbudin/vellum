@@ -40,7 +40,6 @@ ActiveRecord::Schema.define(:version => 20090508203555) do
   create_table "choice_fields", :force => true do |t|
     t.integer  "default_choice_id"
     t.string   "display_type"
-    t.boolean  "multiple"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

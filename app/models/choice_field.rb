@@ -5,6 +5,14 @@ class ChoiceField < ActiveRecord::Base
   def self.value_class
     ChoiceValue
   end
+  
+  def multiple
+    display_type == "multiple"
+  end
+
+  def display_type=(typ)
+    write_attribute(:display_type, typ)
+  end
 
   def choice_values
     choices.collect { |c| c.value }.join(", ")
@@ -13,7 +21,7 @@ class ChoiceField < ActiveRecord::Base
   def choice_values=(values)
     cvs = choices.collect { |c| c.value }
     nvs = values.split(/\s*,\s*/)
-    nvs.each do |value, i|
+    nvs.each_with_index do |value, i|
       unless cvs.include? value
         choices.create :value => value
       end
