@@ -293,6 +293,75 @@ Jipe.InPlaceEditor.prototype = {
   }
 };
 
+  Jipe.SelectField = Class.create();
+  Jipe.SelectField.prototype = {
+      initialize: function(element, model, recordId, field, options) {
+	  this.model = model;
+	  this.recordId = recordId;
+	  this.field = field;
+	  this.element = $(element);
+	  
+	  this.options = Object.extend({
+	      onComplete: function(transport, element) {
+		  new Effect.Highlight(element, {startcolor: this.options.highlightcolor});
+	      },
+	      onFailure: function(transport) {
+		  alert("Error communicating with the server: " + transport.responseText.stripTags());
+	      },
+	      savingClassName: 'selectfield-saving',
+	      loadingClassName: 'selectfield-loading',
+	      highlightcolor: Jipe.ImageToggle.defaultHighlightColor,
+	      highlightendcolor: "#FFFFFF",
+	      ajaxOptions: {},
+	      evalScripts: false
+	  }, options || {});
+
+	  this.originalBackground = Element.getStyle(this.element, 'background-color');
+	  if (!this.originalBackground) {
+	      this.originalBackground = "transparent";
+	  }
+
+	  this.changeListener = function (event) { this.setState(this.element.value); }.bindAsEventListener(this);
+	  Event.observe(this.element, 'change', this.changeListener);
+	  
+	  //this.loadExternalState();
+	  this.element.disabled = false;
+      },
+      loadExternalState: function() {
+	  this.model.find(this.recordId,
+			  this.options.ajaxOptionsOnLoad || this.options.ajaxOptions,
+			  this.onLoadedExternalState.bind(this));
+      },
+      onLoadedExternalState: function(obj) {
+	  this.record = obj;
+	  this.setSelectValue(obj[this.field]); 
+      },
+      setSelectValue: function(value) {
+	  this.element.value = value;
+      },
+      onComplete: function(transport) {
+	  this.element.disabled = false;
+	  this.options.onComplete.bind(this)();
+      },
+      setState: function(state) {
+	  this.element.disabled = true;
+	  this.desiredState = state;
+	  this.setSelectValue(this.desiredState);
+	  this.model.find(this.recordId,
+			  this.options.ajaxOptionsOnLoad || this.options.ajaxOptions,
+			  this.setStateInner.bind(this));
+      },
+      setStateInner: function(record) {
+	  this.record = record;
+	  if (this.record[this.field] != this.desiredState) {
+	      this.record[this.field] = this.desiredState;
+	      this.record.save(this.onComplete.bind(this));
+	  } else {
+	      this.onComplete();
+	  }
+      }
+  };
+
 Jipe.ImageToggle = Class.create();
 Jipe.ImageToggle.defaultHighlightColor = "#FFFF99";
 Jipe.ImageToggle.prototype = {

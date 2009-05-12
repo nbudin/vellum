@@ -69,6 +69,40 @@ module Jipe
     end
     return outstr
   end
+
+  def jipe_select_field(record, field, choices, options = {}, html_options = {})
+    options = {
+      :class => record.class.to_s,
+      :on_complete => nil,
+    }.update(options || {})
+  
+    rclass = options.delete(:class)
+    value = record.send(field)
+    id = jipe_id_for(record, field, options)
+
+    js_options = {}
+    js_options['onComplete'] = options.delete(:on_complete) if options[:on_complete]
+    if protect_against_forgery?
+      js_options["authenticityToken"] = form_authenticity_token
+    end
+    options.each do |k, v|
+      if v.nil?
+        options.delete(k)
+      elsif v.kind_of? String
+        options[k] = "'#{escape_javascript(v)}'"
+      end
+    end
+    js_options['ajaxOptions'] = options_for_javascript(options)
+
+    outstr = <<-ENDDOC
+    #{select_tag id, options_for_select(choices, value), html_options}
+    <script type="text/javascript">
+      new Jipe.SelectField('#{id}', #{rclass}, #{record.id}, #{field.to_json},
+        #{options_for_javascript js_options});
+    </script>
+    ENDDOC
+    return outstr
+  end
   
   def jipe_image_toggle(record, field, true_image, false_image, options = {})
     options = {
