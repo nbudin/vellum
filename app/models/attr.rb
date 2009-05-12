@@ -19,3 +19,4 @@ end
 Attr.register_attr_class(TextField)
 Attr.register_attr_class(NumberField)
 Attr.register_attr_class(DocField)
+Attr.register_attr_class(ChoiceField)
