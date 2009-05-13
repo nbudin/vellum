@@ -1,7 +1,7 @@
 class ChoiceField < ActiveRecord::Base
   include AttrField
   has_many :choices, :dependent => :destroy, :order => :position
-
+  
   def self.value_class
     ChoiceValue
   end
@@ -9,9 +9,14 @@ class ChoiceField < ActiveRecord::Base
   def multiple
     display_type == "multiple"
   end
-
-  def display_type=(typ)
-    write_attribute(:display_type, typ)
+  
+  def display_type
+    dt = read_attribute :display_type
+    if %w{ radio dropdown multiple }.include? dt
+      dt
+    else
+      "radio"
+    end
   end
 
   def choice_values
@@ -38,5 +43,12 @@ class ChoiceField < ActiveRecord::Base
 
   def extra_methods
     [:choice_values]
+  end
+  
+  private
+  def default_display_type
+    if display_type.blank?
+      display_type = "radio"
+    end
   end
 end
