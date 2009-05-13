@@ -14,6 +14,14 @@ class ChoiceValue < ActiveRecord::Base
       nil
     end
   end
+  
+  def value=(newval)
+    if field.multiple
+      choices = field.choices.collect { |c| newval.include? c.value }
+    else
+      choices = field.choices.collect { |c| newval == c.value }
+    end
+  end
 
   private
   def check_valid_choice
