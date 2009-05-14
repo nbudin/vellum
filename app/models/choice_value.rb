@@ -17,9 +17,9 @@ class ChoiceValue < ActiveRecord::Base
   
   def value=(newval)
     if field.multiple
-      choices = field.choices.collect { |c| newval.include? c.value }
+      self.choices = field.choices.select { |c| newval.include? c.value }
     else
-      choices = field.choices.collect { |c| newval == c.value }
+      self.choices = field.choices.select { |c| newval == c.value }
     end
   end
 

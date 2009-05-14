@@ -5,6 +5,10 @@
     <% end -%>
   </ul>
 <% elsif value.field.display_type == "dropdown" -%>
-  <%= select_tag "attr_value[#{value.id}][value]", options_for_select([""] + value.field.choices.collect { |c| c.value }, value.value) %>
+  <%= select_tag("attr_value[#{value.id}][value]", 
+                 options_for_select([""] + value.field.choices.collect { |c| c.value }, value.value)) %>
 <% elsif value.field.display_type == "multiple" -%>
+  <%= select_tag("attr_value[#{value.id}][value]", 
+                 options_for_select(value.field.choices.collect { |c| c.value }, value.value),
+                 :multiple => true) %>
 <% end -%>
