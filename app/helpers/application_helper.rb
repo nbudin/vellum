@@ -7,12 +7,18 @@ module ApplicationHelper
   def page_title
     noun = nil
     if params[:id]
-      klass = eval(controller.controller_name.classify.singularize)
-      if klass.kind_of? Class and klass.respond_to? 'find'
-        obj = klass.find(params[:id])
-        if obj.respond_to? 'name'
-          noun = obj.name
+      obj = nil
+      var_name = "@#{controller.controller_name.tableize.singularize}"
+      if instance_variable_defined?(var_name)
+        obj = instance_variable_get var_name
+      else
+        klass = eval(controller.controller_name.classify.singularize)
+        if klass.kind_of? Class and klass.respond_to? 'find'
+          obj = klass.find(params[:id])
         end
+      end
+      if obj and obj.respond_to? 'name'
+        noun = obj.name
       end
     end
     
@@ -33,10 +39,18 @@ module ApplicationHelper
     end
 
     if params[:project_id]
-      proj = Project.find(params[:project_id])
+      proj = if instance_variable_defined?(:@project)
+               @project
+             else
+               Project.find(params[:project_id])
+             end
       return "#{verbnoun} - #{proj.name}"
     elsif params[:template_schema_id]
-      ts = TemplateSchema.find(params[:template_schema_id])
+      ts = if instance_variable_defined?(:@template_schema)
+             @template_schema
+           else
+             TemplateSchema.find(params[:template_schema_id])
+           end
       return "#{verbnoun} - #{ts.name}"
     else
       return verbnoun

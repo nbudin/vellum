@@ -5,8 +5,8 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.xml
   def index
-    @projects = Project.find(:all).select { |p| logged_in_person.permitted?(p, "show") }
-    @template_schemas = TemplateSchema.find(:all).select { |s| logged_in_person.permitted?(s, "show") }
+    @projects = Project.find(:all, :include => :permissions).select { |p| logged_in_person.permitted?(p, "show") }
+    @template_schemas = TemplateSchema.find(:all, :include => :permissions).select { |s| logged_in_person.permitted?(s, "show") }
 
     respond_to do |format|
       format.html # index.rhtml
@@ -18,14 +18,14 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.xml
   def show
-    @project = Project.find(params[:id])
+    @project = Project.find(params[:id], :include => [:structures, :template_schema])
 
     respond_to do |format|
       format.html do
-        @templates = @project.template_schema.structure_templates.find(:all, :order => "name")
+        @templates = @project.template_schema.structure_templates.sort_by { |ts| ts.name.sort_normalize }
         @structures = {}
         @templates.each do |tmpl|
-          @structures[tmpl] = @project.structures.find(:all, :conditions => ["structure_template_id = ?", tmpl.id])
+          @structures[tmpl] = @project.structures.select { |s| s.structure_template == tmpl }
           @structures[tmpl] = @structures[tmpl].sort_by { |s| s.name.sort_normalize }
         end
       end

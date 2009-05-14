@@ -30,7 +30,7 @@ class ChoiceField < ActiveRecord::Base
       unless cvs.include? value
         choices.create :value => value
       end
-      c = choices.find_by_value(value)
+      c = choices.select {|choice| choice.value == value}
       c.position = i + 1
       c.save
     end

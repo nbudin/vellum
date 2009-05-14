@@ -6,7 +6,7 @@ class StructureTest < ActiveSupport::TestCase
   def test_create_structure
     bob = Structure.new :structure_template => structure_templates(:person)
     assert bob.save
-    assert name = bob.attr_value("Name")
+    assert name = bob.obtain_attr_value("Name")
     name.value = "Bob"
     name.save
 

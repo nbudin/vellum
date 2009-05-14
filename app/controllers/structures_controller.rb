@@ -23,7 +23,7 @@ class StructuresController < ApplicationController
   # GET /structures/1
   # GET /structures/1.xml
   def show
-    @structure = Structure.find(params[:id])
+    @structure = Structure.find(params[:id], :include => [:structure_template, :attr_value_metadatas, :inward_relationships, :outward_relationships])
     check_forged_url
     @relationships = @structure.relationships.sort_by do |rel|
       other = rel.other(@structure)
@@ -63,7 +63,7 @@ class StructuresController < ApplicationController
     if struct_ok and params[:attr_value]
       params[:attr_value].each do |id, value|
         if not value.blank?
-          val = @structure.attr_value(Attr.find(id))
+          val = @structure.obtain_attr_value(Attr.find(id))
           val.update_attributes(value)
           attr_ok = val.save
           if not attr_ok

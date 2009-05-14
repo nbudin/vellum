@@ -23,7 +23,7 @@ class DocValue < ActiveRecord::Base
   private
   def check_doc_in_project
     myproj = structure ? structure.project : nil
-    if myproj
+    if myproj and doc
       if doc.project
         unless doc.project.id == myproj.id
           errors.add("doc", "is in project #{doc.project.name}, but #{structure.name} is in #{myproj.name}")

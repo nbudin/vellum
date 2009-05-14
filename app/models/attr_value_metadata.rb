@@ -7,25 +7,14 @@ class AttrValueMetadata < ActiveRecord::Base
   validate :check_attr_in_template
   validate :check_value_class
 
-  # Get the value pointed to by this AVM.  If it doesn't yet exist, create
-  # a nil value and return it.
-  def value
-    v = nil
-    if value_type and value_id
-      begin
-        v = eval(value_type).find(value_id)
-      rescue ActiveRecord::RecordNotFound
-        v = nil
-      end
-    end
-    if v
-      return v
+  def obtain_value
+    if value
+      return value
+    elsif attr.attr_configuration
+      attr.attr_configuration.class.value_class.create :attr_value_metadata => self
+      return value(:force_reload => true)
     else
-      v = attr.attr_configuration.class.value_class.create
-      self.value = v
-      save
-      v.reload
-      return v
+      return nil
     end
   end
 

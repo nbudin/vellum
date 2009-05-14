@@ -1,7 +1,7 @@
 class Relationship < ActiveRecord::Base
   belongs_to :relationship_type
-  belongs_to :left, :class_name => "Structure", :foreign_key => "left_id"
-  belongs_to :right, :class_name => "Structure", :foreign_key => "right_id"
+  belongs_to :left, :class_name => "Structure", :foreign_key => "left_id", :include => [:attrs, :structure_template, :attr_value_metadatas]
+  belongs_to :right, :class_name => "Structure", :foreign_key => "right_id", :include => [:attrs, :structure_template, :attr_value_metadatas]
   belongs_to :project
 
   validate :check_associations
@@ -57,15 +57,12 @@ class Relationship < ActiveRecord::Base
 
   def check_duplicate
     if left and right and relationship_type and not (left.new_record? or right.new_record?)
-      conds = {:left_id => left.id, :right_id => right.id, :relationship_type_id => relationship_type.id}
-      other = nil
-      if id
-        conds[:id] = id
-        other = Relationship.find(:first, :conditions => ["left_id = :left_id and right_id = :right_id and relationship_type = :relationship_type_id and id <> :id", conds])
-      else
-        other = Relationship.find(:first, :conditions => conds)
+      others = left.outward_relationships.select do |rel| 
+        ((self.new_record? or rel.id != self.id) and
+         rel.right == right and
+         relationship_type == relationship_type)
       end
-      if other
+      if others.size > 0
         errors.add_to_base("#{left.name} already #{relationship_type.left_description} #{right.name}")
       end
     end
