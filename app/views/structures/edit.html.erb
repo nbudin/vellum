@@ -27,7 +27,7 @@
       <tr>
         <td <% if attr.required %>class="required"<% end %>><%=h attr.name %></td>
         <td>
-          <%= render_attr_value_editor(@structure.attr_value(attr.name)) %>
+          <%= render_attr_value_editor(@structure.obtain_attr_value(attr.name)) %>
         </td>
       </tr>
     <% end -%>
