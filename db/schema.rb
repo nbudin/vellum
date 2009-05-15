@@ -223,6 +223,33 @@ ActiveRecord::Schema.define(:version => 20090515154656) do
     t.text "value"
   end
 
+  create_table "workflow_status_versions", :force => true do |t|
+    t.integer  "workflow_status_id"
+    t.integer  "version"
+    t.integer  "structure_id"
+    t.integer  "workflow_step_id"
+    t.integer  "assignee_id"
+    t.integer  "transitioner_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "workflow_status_versions", ["workflow_status_id"], :name => "index_workflow_status_versions_on_workflow_status_id"
+
+  create_table "workflow_statuses", :force => true do |t|
+    t.integer  "structure_id"
+    t.integer  "workflow_step_id"
+    t.integer  "assignee_id"
+    t.integer  "transitioner_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "version"
+  end
+
+  add_index "workflow_statuses", ["assignee_id"], :name => "index_workflow_statuses_on_assignee_id"
+  add_index "workflow_statuses", ["structure_id"], :name => "index_workflow_statuses_on_structure_id"
+  add_index "workflow_statuses", ["workflow_step_id"], :name => "index_workflow_statuses_on_workflow_step_id"
+
   create_table "workflow_steps", :force => true do |t|
     t.string   "name"
     t.integer  "position"
@@ -232,31 +259,6 @@ ActiveRecord::Schema.define(:version => 20090515154656) do
   end
 
   add_index "workflow_steps", ["workflow_id"], :name => "index_workflow_steps_on_workflow_id"
-
-  create_table "workflow_structure_state_versions", :force => true do |t|
-    t.integer  "workflow_structure_state_id"
-    t.integer  "version"
-    t.integer  "structure_id"
-    t.integer  "workflow_step_id"
-    t.integer  "assignee_id"
-    t.integer  "transitioner_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "workflow_structure_states", :force => true do |t|
-    t.integer  "structure_id"
-    t.integer  "workflow_step_id"
-    t.integer  "assignee_id"
-    t.integer  "transitioner_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "version"
-  end
-
-  add_index "workflow_structure_states", ["assignee_id"], :name => "index_workflow_structure_states_on_assignee_id"
-  add_index "workflow_structure_states", ["structure_id"], :name => "index_workflow_structure_states_on_structure_id"
-  add_index "workflow_structure_states", ["workflow_step_id"], :name => "index_workflow_structure_states_on_workflow_step_id"
 
   create_table "workflow_transitions", :force => true do |t|
     t.string   "name"
