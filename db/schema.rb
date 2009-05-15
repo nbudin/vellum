@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090508203555) do
+ActiveRecord::Schema.define(:version => 20090515154656) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -221,6 +221,57 @@ ActiveRecord::Schema.define(:version => 20090508203555) do
 
   create_table "text_values", :force => true do |t|
     t.text "value"
+  end
+
+  create_table "workflow_steps", :force => true do |t|
+    t.string   "name"
+    t.integer  "position"
+    t.integer  "workflow_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "workflow_steps", ["workflow_id"], :name => "index_workflow_steps_on_workflow_id"
+
+  create_table "workflow_structure_state_versions", :force => true do |t|
+    t.integer  "workflow_structure_state_id"
+    t.integer  "version"
+    t.integer  "structure_id"
+    t.integer  "workflow_step_id"
+    t.integer  "assignee_id"
+    t.integer  "transitioner_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "workflow_structure_states", :force => true do |t|
+    t.integer  "structure_id"
+    t.integer  "workflow_step_id"
+    t.integer  "assignee_id"
+    t.integer  "transitioner_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "version"
+  end
+
+  add_index "workflow_structure_states", ["assignee_id"], :name => "index_workflow_structure_states_on_assignee_id"
+  add_index "workflow_structure_states", ["structure_id"], :name => "index_workflow_structure_states_on_structure_id"
+  add_index "workflow_structure_states", ["workflow_step_id"], :name => "index_workflow_structure_states_on_workflow_step_id"
+
+  create_table "workflow_transitions", :force => true do |t|
+    t.string   "name"
+    t.integer  "from_id"
+    t.integer  "to_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "workflow_transitions", ["from_id"], :name => "index_workflow_transitions_on_from_id"
+
+  create_table "workflows", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

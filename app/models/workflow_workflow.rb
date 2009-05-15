@@ -1,2 +1,2 @@
-class Workflow::Workflow < ActiveRecord::Base
+class Workflow < ActiveRecord::Base
 end

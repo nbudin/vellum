@@ -1,12 +1,12 @@
-class CreateWorkflowWorkflows < ActiveRecord::Migration
+class CreateWorkflows < ActiveRecord::Migration
   def self.up
-    create_table :workflow_workflows do |t|
-
+    create_table :workflows do |t|
+      t.string :name
       t.timestamps
     end
   end
 
   def self.down
-    drop_table :workflow_workflows
+    drop_table :workflows
   end
 end
