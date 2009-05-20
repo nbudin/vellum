@@ -1,7 +1,12 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  def nav_link_to(label, destination)
-    link_to label, destination, {:class => request.path =~ /^#{destination}/ ? "selected" : "" }
+  def nav_link_to(label, destination, image_path=nil)
+    label_html = if image_path
+                   "#{image_tag(image_path, :alt => label)} #{h label}"
+                 else
+                   h(label)
+                 end
+    link_to(label_html, destination, {:class => request.path =~ /^#{destination}/ ? "selected" : "" })
   end
   
   def page_title
