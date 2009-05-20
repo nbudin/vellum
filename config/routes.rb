@@ -1,5 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :workflows
+  map.resources :workflows do |workflows|
+    workflows.resources :workflow_steps, :name_prefix => nil, :collection => { :sort => :post }
+  end
 
   map.resources :projects do |projects|
     projects.resources :structures, :name_prefix => nil

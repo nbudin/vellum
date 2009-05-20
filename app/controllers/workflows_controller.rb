@@ -1,8 +1,11 @@
 class WorkflowsController < ApplicationController
+  rest_permissions
+  before_filter :check_login
+  
   # GET /workflows
   # GET /workflows.xml
   def index
-    @workflows = Workflow.all
+    @workflows = Workflow.find(:all, :include => :permissions).select { |w| logged_in_person.permitted?(w, "show") }
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,21 +16,10 @@ class WorkflowsController < ApplicationController
   # GET /workflows/1
   # GET /workflows/1.xml
   def show
-    @workflow = Workflow.find(params[:id])
+    @workflow = Workflow.find(params[:id], :include => [:workflow_steps, :start_step])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @workflow }
-    end
-  end
-
-  # GET /workflows/new
-  # GET /workflows/new.xml
-  def new
-    @workflow = Workflow.new
-
-    respond_to do |format|
-      format.html # new.html.erb
       format.xml  { render :xml => @workflow }
     end
   end
@@ -44,12 +36,14 @@ class WorkflowsController < ApplicationController
 
     respond_to do |format|
       if @workflow.save
-        flash[:notice] = 'Workflow was successfully created.'
+        @workflow.grant(logged_in_person)
         format.html { redirect_to(@workflow) }
-        format.xml  { render :xml => @workflow, :status => :created, :location => @workflow }
+        format.xml  { head :created, :location => @workflow }
+        format.json { head :created, :location => @workflow }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @workflow.errors, :status => :unprocessable_entity }
+        format.json { render :json => @workflow.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -80,6 +74,13 @@ class WorkflowsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to(workflows_url) }
       format.xml  { head :ok }
+    end
+  end
+
+  private
+  def check_login
+    if not logged_in?
+      redirect_to :controller => "about", :action => "index"
     end
   end
 end

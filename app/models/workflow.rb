@@ -1,4 +1,6 @@
 class Workflow < ActiveRecord::Base
+  acts_as_permissioned
+
   has_many :workflow_steps, :include => [:entering_transitions, :leaving_transitions]
   has_many :structure_templates
   belongs_to :start_step, :class_name => "WorkflowStep"

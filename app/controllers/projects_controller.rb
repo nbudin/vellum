@@ -41,7 +41,6 @@ class ProjectsController < ApplicationController
 
   # POST /projects
   # POST /projects.xml
-  require_login :only => [:create]
   def create
     @project = Project.new(params[:project])
 

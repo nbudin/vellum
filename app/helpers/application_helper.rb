@@ -146,4 +146,79 @@ module ApplicationHelper
       html
     end
   end
+
+  def sortlist(items, list_id, options={}, &block)
+    url = options.delete(:url)
+    html = content_tag(:ul, {:class => "sortlist", :id => list_id}.update(options)) do
+      items.collect do |item|
+        content_tag(:li, :id => "#{list_id.singularize}_#{item.id}") do
+          inner_html = image_tag("sort_handle.png", :class => "sort_handle")
+          if block_given?
+            inner_html << block.call(item)
+          end
+          inner_html
+        end
+      end.join("\n")
+    end
+    html << sortable_element(list_id, :handle => "sort_handle", :url => url)
+    if block_given?
+      concat html
+    else
+      html
+    end
+  end
+
+  def complex_item(options={}, &block)
+    item_id = options.delete(:id) || "complex_item"
+    delete_path = options.delete(:delete_path)
+    md_type = options.delete(:type)
+    md_name = options.delete(:name)
+    html = content_tag(:div, {:class => "complex_item", :id => item_id}.update(options)) do
+      item_html = content_tag(:div, {:class => "metadata"}) do
+        metadata_html = ""
+        if md_type
+          metadata_html << content_tag(:div, md_type, :class => "type")
+        end
+        if md_name
+          metadata_html << content_tag(:div, md_name, :class => "name")
+        end
+        metadata_html << content_tag(:div, :class => "showhide") do
+          (link_to_function("Show details", update_page do |p|
+                              p["#{item_id}_details"].show
+                              p["hide_#{item_id}_details"].show
+                              p["show_#{item_id}_details"].hide
+                            end,
+                            :id => "show_#{item_id}_details") +
+           link_to_function("Hide details", update_page do |p|
+                              p["#{item_id}_details"].hide
+                              p["show_#{item_id}_details"].hide
+                              p["hide_#{item_id}_details"].show
+                            end,
+                            :id => "hide_#{item_id}_details", :style => "display: none;"))
+        end
+      end
+      item_html << content_tag(:div, "", {:class => "clear"})
+      item_html << content_tag(:div, { :id => "#{item_id}_details", :style => "display: none;" }) do
+        details_html = ""
+        if block_given?
+          details_html << block.call
+        end
+        if delete_path
+          details_html << content_tag(:ul, :class => "actions") do
+            actions_html = ""
+            if delete_path
+              actions_html << content_tag(:li) do
+                link_to("Delete", delete_path, :confirm => "Are you sure?", :method => :delete, :class => "button delete")
+              end
+            end
+          end
+        end
+      end
+    end
+    if block_given?
+      concat html
+    else
+      html
+    end
+  end
 end

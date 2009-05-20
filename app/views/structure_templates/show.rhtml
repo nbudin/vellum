@@ -13,42 +13,12 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
 
 <h2>Attributes</h2>
 
-<ul id="attrs" class="sortlist">
-<% @structure_template.attrs.each do |attr| -%>
-<li id="attr_<%= attr.id %>">
-  <%= image_tag "sort_handle.png", :class => "sort_handle" %>
-  <div class="attr">
-    <div class="metadata">
-      <div class="type"><%=h attr.attr_configuration.class.name%></div>
-      <div class="name"><%=h attr.name%></div>
-      <div class="showhide">
-        <%= link_to_function("Show details", update_page { |p| 
-	    p["attr_#{attr.id}_details"].show
-	    p["hide_attr_#{attr.id}_details"].show
-	    p["show_attr_#{attr.id}_details"].hide
-	  }, 
-	  :id => "show_attr_#{attr.id}_details") %>
-        <%= link_to_function("Hide details", update_page { |p| 
-	    p["attr_#{attr.id}_details"].hide 
-	    p["show_attr_#{attr.id}_details"].show
-	    p["hide_attr_#{attr.id}_details"].hide
-          }, 
-	  :id => "hide_attr_#{attr.id}_details", :style => "display: none;") %>
-      </div>
-    </div>
-    <div class="clear"></div>
-    <div id="attr_<%=attr.id%>_details" style="display: none;">
-      <%= render_attr_editor attr %>
-      <ul class="actions">
-        <li><%= link_to "Delete", attr_path(@template_schema, @structure_template, attr),
-                  :confirm => "Are you sure?", :method => :delete %></li>
-      </ul>
-    </div>
-  </div>
-</li>
+<% sortlist(@structure_template.attrs, "attrs", :url => attrs_path(@template_schema, @structure_template) + '/sort') do |attr| -%>
+  <% complex_item(:id => "attr_#{attr.id}", :type => h(attr.attr_configuration.class.name), :name => h(attr.name),
+                  :delete_path => attr_path(@template_schema, @structure_template, attr)) do %>
+    <%= render_attr_editor attr %>
+  <% end -%>
 <% end -%>
-</ul>
-<%= sortable_element "attrs", :handle => "sort_handle", :url => attrs_path(@template_schema, @structure_template) + '/sort' %>
 
 <% if @structure_template.attrs.count == 0 -%>
 <p><i>No attributes.</i></p>

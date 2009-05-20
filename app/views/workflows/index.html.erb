@@ -1,7 +1,7 @@
 <h1>Workflows</h1>
 
 <ul class="itemlist">
-  <% itemlist_items(@workflows, :delete_path => workflows_path) do |project| %>
+  <% itemlist_items(@workflows, :delete_path => workflows_path) do |workflow| %>
     <% link_to(workflow_path(workflow)) do -%>
       <%= image_tag "workflow.png" %>
       <%= workflow.name %>
