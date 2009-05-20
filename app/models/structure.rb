@@ -6,6 +6,8 @@ class Structure < ActiveRecord::Base
   has_many :attrs, :through => :attr_value_metadatas
   has_many :outward_relationships, :foreign_key => :left_id, :class_name => "Relationship", :dependent => :destroy, :include => [:relationship_type, :right]
   has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship", :dependent => :destroy, :include => [:relationship_type, :left]
+  has_one :workflow_status
+  has_one :assignee, :through => :workflow_status
 
   validates_associated :attr_value_metadatas
   validate :check_required_attrs
@@ -72,6 +74,13 @@ class Structure < ActiveRecord::Base
     else
       return a
     end
+  end
+
+  def obtain_workflow_status
+    if workflow_status.nil?
+      create_workflow_status :workflow_step => structure_template.workflow.start_step
+    end
+    workflow_status
   end
 
   private

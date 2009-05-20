@@ -9,3 +9,8 @@ worker:
   name: Worker
   parent_id: 1
   template_schema_id: 1
+
+feature_spec:
+  name: Feature Spec
+  template_schema: foobarcorp
+  workflow: manager_approval

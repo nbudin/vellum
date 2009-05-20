@@ -40,8 +40,14 @@
   <ul id="structures_<%= tmpl.id %>" class="itemlist">
     <% itemlist_items(@structures[tmpl], :delete_path => structures_path(@project)) do |structure| %>
       <% link_to(structure_path(@project, structure)) do -%>
-        <%= image_tag "structure.png" %>
-        <%= structure.name %>
+        <span style="width: 50%; display: -moz-inline-block; display: inline-block;">
+          <%= image_tag "structure.png" %>
+          <%= structure.name %>
+        </span>
+	<% if tmpl.workflow -%>
+	  <% ws = structure.obtain_workflow_status -%>
+	  <%= ws.assignee.name -%>
+	<% end -%>
       <% end -%>
     <% end %> 
     <% if @structures[tmpl].size == 0 -%>

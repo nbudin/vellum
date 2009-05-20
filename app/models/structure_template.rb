@@ -8,6 +8,7 @@ class StructureTemplate < ActiveRecord::Base
   has_many :outward_relationship_types, :foreign_key => :left_template_id, :class_name => "RelationshipType", :dependent => :destroy
   has_many :inward_relationship_types, :foreign_key => :right_template_id, :class_name => "RelationshipType", :dependent => :destroy
   has_many :structures, :dependent => :destroy
+  belongs_to :workflow
 
   def plural_name
     # later we may want to add the possibility to override this

@@ -1,3 +1,6 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 people_templates:
   id: 1
+
+foobarcorp:
+  name: FooBarCorp templates

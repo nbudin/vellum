@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :workflows
+
   map.resources :projects do |projects|
     projects.resources :structures, :name_prefix => nil
     projects.resources :relationships, :name_prefix => nil

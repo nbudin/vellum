@@ -2,3 +2,6 @@
 people:
   id: 1
   template_schema: people_templates
+
+foobarcorp:
+  template_schema: foobarcorp
