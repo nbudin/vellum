@@ -25,7 +25,7 @@
 
 <% sortlist(@workflow.workflow_steps, "workflow_steps", :url => workflow_steps_path(@workflow) + '/sort') do |step| -%>
   <% complex_item(:id => "workflow_step_#{step.id}", :name => "#{image_tag 'workflow_step.png'} #{h(step.name)}", 
-  				  :delete_path => @workflow) do %>
+  				  :delete_path => workflow_step_path(@workflow, step)) do %>
     <ul class="itemlist">
       <% itemlist_items(step.leaving_transitions, :delete_path => workflow_transitions_path(@workflow, step)) do |transition| -%>
         <span style="display: -moz-inline-block; display: inline-block; width: 50%;">
