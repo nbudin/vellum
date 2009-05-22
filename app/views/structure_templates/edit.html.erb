@@ -1,0 +1,27 @@
+<h1><%=h @structure_template.name %> properties</h1>
+
+<div class="jumpbox">
+  <div class="navigation">
+    <% link_to structure_template_path(@template_schema, @structure_template), :class => "button cancel" do -%>
+      <%= image_tag "arrow_left.png" %>
+      Cancel editing
+    <% end -%>
+  </div>
+    
+  <h2><%= @structure_template.name %></h2>
+</div>
+
+<%= error_messages_for :structure %>
+
+<% form_for(:structure_template, :url => @structure_template, :html => {:method => 'put'}) do |f| -%>
+  <table>
+    <tr>
+      <th>Workflow</th>
+      <td><%= f.select :workflow_id, [["", ""]] + @workflows.collect { |w| [w.name, w.id] } %></td>
+    </tr>
+    <tr>
+      <th></th>
+      <td><%= submit_tag "Save changes", :class => "save" %></td>
+    </tr>
+  </table>
+<% end -%>
