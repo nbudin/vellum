@@ -1,0 +1,12 @@
+<h1>Editing workflow_action</h1>
+
+<% form_for(@workflow_action) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @workflow_action %> |
+<%= link_to 'Back', workflow_actions_path %>
