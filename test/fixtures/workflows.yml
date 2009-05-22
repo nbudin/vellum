@@ -2,4 +2,3 @@
 
 manager_approval:
   name: Require Manager Approval
-  start_step: draft

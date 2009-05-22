@@ -6,10 +6,42 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
 			  format: 'json' });
 </script>
   
-<p><%= link_to "<- Back to #{@template_schema.name}",
-               template_schema_path(@template_schema) %></p>
-
 <h1><%= jipe_editor(@structure_template, "name") %></h1>
+
+<div class="jumpbox">
+  <div class="navigation">
+    <% link_to workflows_path, :class => "button back" do %>
+      <%= image_tag "arrow_left.png" %>
+      <%=h @template_schema.name %>
+    <% end -%>
+    <% if logged_in_person.permitted?(@structure_template, "edit") -%>
+      <% link_to edit_structure_template_path(@template_schema, @structure_template), :class => "button edit" do -%>
+        Properties
+        <%= image_tag "template_edit.png" %>
+      <% end -%>
+    <% end -%>
+  </div>
+
+  <h2><%=h @structure_template.name %></h2>
+
+  <p>
+    Part of
+    <% link_to @template_schema do %>
+      <%= image_tag "schema.png" %>
+      <%=h @template_schema.name %>
+    <% end -%>
+    <br/>
+    Uses
+    <% if @structure_template.workflow -%>
+      <% link_to @structure_template.workflow do %>
+        <%= image_tag "workflow.png" %>
+	<%=h @structure_template.workflow.name %>
+      <% end -%>
+    <% else -%>
+      no workflow
+    <% end -%>
+  </p>
+</div>
 
 <h2>Attributes</h2>
 

@@ -23,13 +23,17 @@ class StructuresController < ApplicationController
   # GET /structures/1
   # GET /structures/1.xml
   def show
-    @structure = Structure.find(params[:id], :include => [:structure_template, :attr_value_metadatas, :inward_relationships, :outward_relationships])
+    @structure = Structure.find(params[:id], :include =>
+        [:structure_template, :attr_value_metadatas, :inward_relationships, :outward_relationships])
     check_forged_url
     @relationships = @structure.relationships.sort_by do |rel|
       other = rel.other(@structure)
       "#{rel.relationship_type.description_for(@structure)} #{other.name.sort_normalize}"
     end
     @relationship_types = @structure.structure_template.relationship_types.sort_by {|t| t.name.sort_normalize}
+    if @structure.structure_template.workflow
+      @workflow_status = @structure.obtain_workflow_status
+    end
     
     respond_to do |format|
       format.html # show.rhtml
@@ -149,6 +153,34 @@ class StructuresController < ApplicationController
       format.html { redirect_to project_url(@project) }
       format.xml  { head :ok }
       format.json { head :ok }
+    end
+  end
+  
+  def transition
+    @structure = @project.structures.find(params[:id])
+    @status = @structure.obtain_workflow_status
+    @transition = @status.workflow_step.leaving_transitions.find(params[:workflow_transition_id])
+    @required_options = @transition.required_options
+    
+    params[:options] ||= {}
+    ready_to_go = true
+    @required_options.each do |action, reqs|
+      logger.debug "Checking required options for action #{action.id}"
+      logger.debug "Required options are #{reqs.join(", ")}"
+      params[:options][action.id.to_s] ||= {}
+      unless reqs.none? { |opt| params[:options][action.id.to_s][opt].blank? }
+        ready_to_go = false
+      end
+    end
+    
+    if ready_to_go
+      @transition.execute(@structure, params[:options])
+      
+      respond_to do |format|
+        format.html { redirect_to structure_url(@project, @structure) }
+        format.xml  { head :ok }
+        format.json { head :ok }
+      end
     end
   end
   

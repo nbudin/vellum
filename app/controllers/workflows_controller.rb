@@ -16,7 +16,7 @@ class WorkflowsController < ApplicationController
   # GET /workflows/1
   # GET /workflows/1.xml
   def show
-    @workflow = Workflow.find(params[:id], :include => [:workflow_steps, :start_step])
+    @workflow = Workflow.find(params[:id], :include => [:workflow_steps])
 
     respond_to do |format|
       format.html # show.html.erb

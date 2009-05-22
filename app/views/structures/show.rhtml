@@ -29,6 +29,26 @@
       <%= @structure.structure_template.name %>
     <% end -%>
   </p>
+  
+  <% if @workflow_status -%>
+    <h2>Workflow</h2>
+    <p>
+      <% if @workflow_status.assignee -%>
+        Assigned to <b><%= @workflow_status.assignee.name %></b><br/>
+      <% end -%>
+      <b><%= image_tag "workflow_step.png" %> <%= @workflow_status.workflow_step.name %></b>
+    </p>
+    <ul class="inline">
+      <% @workflow_status.workflow_step.leaving_transitions.each do |transition| -%>
+        <li>
+          <% link_to structure_path(@project, @structure) + "/transition?workflow_transition_id=#{transition.id}", :class => "button transition", :method => "post" do %>
+            <%= image_tag "workflow_transition.png" %>
+            <%=h transition.name %>
+          <% end -%>
+        </li>
+      <% end -%>
+    </ul>
+  <% end -%>
 
   <h2>Relationships</h2>
   <div id="relationships">

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090515202854) do
+ActiveRecord::Schema.define(:version => 20090522143811) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -227,9 +227,9 @@ ActiveRecord::Schema.define(:version => 20090515202854) do
   create_table "workflow_actions", :force => true do |t|
     t.integer  "workflow_transition_id"
     t.string   "type"
-    t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "whom"
   end
 
   add_index "workflow_actions", ["workflow_transition_id"], :name => "index_workflow_actions_on_workflow_transition_id"
@@ -285,7 +285,6 @@ ActiveRecord::Schema.define(:version => 20090515202854) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "start_step_id"
   end
 
 end

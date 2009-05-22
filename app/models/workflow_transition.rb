@@ -6,17 +6,26 @@ class WorkflowTransition < ActiveRecord::Base
   class WorkflowException < Exception
   end
 
-  def execute(structure, person=nil)
+  def execute(structure, options={})
     status = structure.workflow_status
     if not status.workflow_step == from
       raise WorkflowException.new("This is not a valid transition for #{structure.name}, because it is in the #{status.workflow_step.name} step.")
     end
     status.workflow_step = to
-    status.transitioner = person
+    status.transitioner = options[:transitioner]
     status.save
     workflow_actions.each do |action|
-      action.execute(structure, self)
+      options[action.id] ||= {}
+      action.execute(structure, options[action.id.to_s].update(:transition => self))
     end
+  end
+  
+  def required_options
+    reqs = {}
+    workflow_actions.each do |action|
+      reqs[action] = action.required_options
+    end
+    return reqs
   end
 
   private

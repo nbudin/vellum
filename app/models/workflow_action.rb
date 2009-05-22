@@ -2,6 +2,8 @@ class WorkflowAction < ActiveRecord::Base
   belongs_to :workflow_transition
   self.store_full_sti_class = true
 
+  validates_uniqueness_of :type, :scope => "workflow_transition_id"
+
   def self.description
     "Do nothing"
   end
@@ -14,8 +16,12 @@ class WorkflowAction < ActiveRecord::Base
   def self.action_types
     @@action_types
   end
+  
+  def required_options
+    []
+  end
 
-  def execute(structure)
+  def execute(structure, options={})
   end
 end
 

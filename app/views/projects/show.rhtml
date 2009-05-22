@@ -39,16 +39,21 @@
 <% @templates.each do |tmpl| -%>
   <ul id="structures_<%= tmpl.id %>" class="itemlist">
     <% itemlist_items(@structures[tmpl], :delete_path => structures_path(@project)) do |structure| %>
-      <% link_to(structure_path(@project, structure)) do -%>
-        <span style="width: 50%; display: -moz-inline-block; display: inline-block;">
+      <span style="width: 50%; display: -moz-inline-block; display: inline-block;">
+        <% link_to(structure_path(@project, structure)) do -%>
           <%= image_tag "structure.png" %>
           <%= structure.name %>
-        </span>
-	<% if tmpl.workflow -%>
-	  <% ws = structure.obtain_workflow_status -%>
-	  <%= ws.assignee.name -%>
-	<% end -%>
-      <% end -%>
+        <% end -%>
+      </span>
+      <span class="workflow_status">
+      	<% if tmpl.workflow -%>
+	        <% ws = structure.obtain_workflow_status -%>
+	        <% if ws.assignee -%>
+  	        Assigned to <%=h ws.assignee_name -%>,
+  	      <% end -%>
+	        <%=h ws.workflow_step.name %>
+      	<% end -%>
+      </span>
     <% end %> 
     <% if @structures[tmpl].size == 0 -%>
       <li class="odd"><i>No <%= tmpl.name.pluralize %> in project.</i></li>

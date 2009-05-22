@@ -1,3 +1,49 @@
+<script type="text/javascript">
+  Resource.model("WorkflowAction", {format: 'json', prefix: '<%= workflow_transition_path(@workflow, @from, @workflow_transition) %>'});
+</script>
 
-<%= link_to 'Edit', edit_workflow_transition_path(@workflow_transition) %> |
-<%= link_to 'Back', workflow_transitions_path %>
+<h1><%=h @workflow_transition.name %></h1>
+
+<div class="jumpbox">
+  <div class="navigation">
+    <% link_to workflow_path(@workflow), :class => "button back" do %>
+      <%= image_tag "arrow_left.png" %>
+      <%=h @workflow.name %>
+    <% end -%>
+  </div>
+
+  <h2><%=h @workflow_transition.name %></h2>
+
+  <p>
+        Transitions from 
+          <%= image_tag "workflow_step.png" %>
+          <%=h @from.name %> 
+        <%= image_tag "arrow_right.png", :alt => "->" %> 
+	  <%= image_tag "workflow_step.png" %>
+          <%=h @workflow_transition.to.name %>
+  </p>
+</div>
+
+<h2>Actions</h2>
+
+<p>The following actions will be run when an item goes from "<%=h @from.name %>" to "<%=h @workflow_transition.to.name %>" using
+  this transition:</p>
+
+<% sortlist(@workflow_transition.workflow_actions, "workflow_actions", :url => workflow_actions_path(@workflow, @from, @workflow_transition) + '/sort') do |action| -%>
+  <% complex_item(:id => "workflow_action_#{action.id}", :name => h(action.class.description),
+                  :delete_path => workflow_action_path(@workflow, @from, @workflow_transition, action)) do %>
+    <%= render :partial => "workflow_actions/#{action.class.name.demodulize.tableize.singularize}", :locals => { :action => action } %>
+  <% end -%>
+<% end -%>
+
+<% if @workflow_transition.workflow_actions.size == 0 -%>
+  <p><i>No actions.</i></p>
+<% end -%>
+
+<% form_for(:workflow_action, :url => workflow_actions_path(@workflow, @from, @workflow_transition)) do |f| %>
+  <%= f.select "type", WorkflowAction.action_types.collect { |t| [t.description, t.name] } %>
+  <button class="new">
+    <%= image_tag "workflow_action_add.png" %>
+    Add action
+  </button>
+<% end -%>

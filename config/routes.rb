@@ -1,10 +1,14 @@
 ActionController::Routing::Routes.draw do |map|
   map.resources :workflows do |workflows|
-    workflows.resources :workflow_steps, :name_prefix => nil, :collection => { :sort => :post }
+    workflows.resources :workflow_steps, :name_prefix => nil, :collection => { :sort => :post } do |steps|
+      steps.resources :workflow_transitions, :name_prefix => nil do |transitions|
+        transitions.resources :workflow_actions, :name_prefix => nil, :collection => { :sort => :post }
+      end
+    end
   end
 
   map.resources :projects do |projects|
-    projects.resources :structures, :name_prefix => nil
+    projects.resources :structures, :name_prefix => nil, :member => { :transition => :post }
     projects.resources :relationships, :name_prefix => nil
     projects.resources :docs, :name_prefix => nil
   end

@@ -1,12 +1,10 @@
-<h1>Editing workflow_transition</h1>
+<p><h1 style="display: inline;"><%=h @workflow_transition.name %></h1>
+  (<%=h @from.name %> <%= image_tag "arrow_right.png", :alt => "->" %> <%=h @workflow_transition.to.name %>)</p>
 
-<% form_for(@workflow_transition) do |f| %>
+<% form_for(@workflow_transition, :url => workflow_transition_path(@workflow, @from, @workflow_transition)) do |f| %>
   <%= f.error_messages %>
 
   <p>
     <%= f.submit 'Update' %>
   </p>
 <% end %>
-
-<%= link_to 'Show', @workflow_transition %> |
-<%= link_to 'Back', workflow_transitions_path %>

@@ -3,8 +3,8 @@ class WorkflowActions::Unassign < WorkflowAction
     "Assign to nobody"
   end
 
-  def execute(structure)
-    status = structure.status
+  def execute(structure, options={})
+    status = structure.obtain_workflow_status
     status.assignee = nil
     status.save
   end
