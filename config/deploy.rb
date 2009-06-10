@@ -23,6 +23,6 @@ namespace :deploy do
   desc "Link in database config"
   task :after_update_code do
     run "ln -nfs #{deploy_to}/#{shared_dir}/config/database.yml #{release_path}/config/database.yml"
-    run "ln -nfs #{deploy_to}/#{shared_dir}/config/scout.yml #{release_path}/config/scout.yml"
+    run "ln -nfs #{deploy_to}/#{shared_dir}/config/newrelic.yml #{release_path}/config/newrelic.yml"
   end
 end
