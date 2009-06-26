@@ -3,21 +3,28 @@ require File.dirname(__FILE__) + '/../test_helper'
 class StructureTemplateTest < ActiveSupport::TestCase
   fixtures :structure_templates
 
-  def test_new_template
-    t = StructureTemplate.new :name => "Carrot"
-    assert t.save
-  end
-
-  def test_parent_template
-    veg = StructureTemplate.new :name => "Vegetable"
-    lettuce = StructureTemplate.new :name => "Lettuce", :parent => veg
-
-    assert lettuce.save
-    assert veg.save
-
-    assert lettuce = StructureTemplate.find(lettuce.id)
-    assert veg = StructureTemplate.find(veg.id)
-    assert !veg.children.index(lettuce).nil?
-    assert lettuce.parent == veg
+  context "A newly created StructureTemplate" do
+    setup do
+      @veg = StructureTemplate.new :name => "Vegetable"
+    end
+    
+    should "save cleanly" do
+      assert_save @veg
+    end
+    
+    context "with a child template" do
+      setup do
+        @lettuce = StructureTemplate.new :name => "Lettuce", :parent => @veg
+        assert_save @lettuce
+      end
+      
+      should "contain its child" do
+        assert !@veg.children.index(@lettuce).nil?
+      end
+      
+      should "have a backreference from the child" do
+        assert_equal @veg, @lettuce.parent
+      end
+    end
   end
 end
