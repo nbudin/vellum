@@ -98,16 +98,16 @@ module ApplicationHelper
     render :partial => show_attr_value_template_name(value), :locals => { :value => value }
   end
 
-  def render_attr_value_editor(value, substructure_fields=[])
+  def render_attr_value_editor(value, param_prefix_components=[])
     param_prefix = "structure[attr_values]"
-    substructure_fields.each do |ssf|
-      param_prefix << "[#{ssf.attr.id}]"
+    param_prefix_components.each do |comp|
+      param_prefix << "[#{comp}]"
     end
     param_prefix << "[#{value.attr.id}]"
     render :partial => edit_attr_value_template_name(value), :locals => { 
       :value => value, 
       :param_prefix => param_prefix,
-      :substructure_fields => substructure_fields
+      :param_prefix_components => param_prefix_components
     }
   end
 

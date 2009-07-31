@@ -1,5 +1,5 @@
 module StructuresHelper
-  def edit_attr_row(structure, a)
+  def edit_attr_row(structure, a, param_prefix_components=[])
     content_tag(:tr, :class => "attribute") do
       html = ""
       
@@ -18,7 +18,7 @@ module StructuresHelper
         structure.obtain_attr_value(a.name)
       end
       
-      html << content_tag(:td, render_attr_value_editor(av))
+      html << content_tag(:td, render_attr_value_editor(av, substructure_fields))
     end
   end
 end
