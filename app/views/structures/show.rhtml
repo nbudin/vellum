@@ -70,13 +70,7 @@
     
 <table style="margin-top: .75em;" class="structure">
     <% @structure.structure_template.attrs.each do |attr| -%>
-        <% av = @structure.obtain_attr_value(attr) -%>
-        <% if av %>
-          <tr>
-              <td style="vertical-align: top;"><b><%=h attr.name %></b></td>
-              <td><%= render_attr_value(av) %></td>
-          </tr>
-        <% end -%>
+		<%= attr_row(@structure, attr) %>
     <% end -%>
 </table>
 

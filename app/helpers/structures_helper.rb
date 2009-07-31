@@ -15,10 +15,23 @@ module StructuresHelper
         av = a.attr_configuration.class.value_class.new(:attr_value_metadata => avm)
         av
       else
-        structure.obtain_attr_value(a.name)
+        structure.obtain_attr_value(a)
       end
       
-      html << content_tag(:td, render_attr_value_editor(av, substructure_fields))
+      html << content_tag(:td, render_attr_value_editor(av, param_prefix_components))
+    end
+  end
+  
+  def attr_row(structure, attr)
+    av = structure.obtain_attr_value(attr)
+    if av
+      content_tag(:tr) do
+        html = ""
+        html << content_tag(:td, :style => "vertical-align: top; font-weight: bold;") do
+          h(attr.name)            
+        end
+        html << content_tag(:td, render_attr_value(av))
+      end
     end
   end
 end
