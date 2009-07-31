@@ -11,20 +11,35 @@ class Structure < ActiveRecord::Base
 
   validates_associated :attr_value_metadatas
   validate :check_required_attrs
+  
+  after_update :save_avms_and_attr_values
 
   def name
     name_attr = attr("Name")
-    name = nil
+    n = nil
     if name_attr
       begin
-        name = attr_value(name_attr).string_rep
+        n = attr_value(name_attr).string_rep
       rescue
       end
     end
-    if name.blank?
+    if n.blank?
       return "#{structure_template.name} #{id}"
     else
-      return name
+      return n
+    end
+  end
+  
+  def attr_values=(values)
+    values.each do |attr_id, value|
+      if not value.blank?       
+        a = obtain_attr(attr_id.to_i)
+        unless a
+          errors.add_to_base("Attribute #{attr_id} doesn't exist for #{structure_template.plural_name}")
+        end
+        av = obtain_attr_value(a)
+        av.attributes = value
+      end
     end
   end
 
@@ -34,12 +49,12 @@ class Structure < ActiveRecord::Base
 
   def avm_for_attr(a)
     a = self.attr(a)
-    attr_value_metadatas.select { |avm| avm.attr == a }[0]
+    attr_value_metadatas.select { |avm| avm.attr == a }.first
   end
 
   def obtain_avm_for_attr(a)
     a = self.obtain_attr(a)
-    attr_value_metadatas.select { |avm| avm.attr == a }[0]
+    attr_value_metadatas.select { |avm| avm.attr == a }.first || attr_value_metadatas.build(:attr => a, :structure => self)
   end
 
   def attr_value(a)
@@ -56,26 +71,27 @@ class Structure < ActiveRecord::Base
 
   def attr(name)
     if name.kind_of? Attr
-      attrs.select {|a| a.id == name.id }[0]
+      attrs.select {|a| a.id == name.id }.first
+    elsif name.kind_of? Fixnum
+      attrs.select {|a| a.id == name }.first
     else
-      attrs.select {|a| a.name == name }[0]
+      attrs.select {|a| a.name == name }.first
     end
   end    
 
   # Get the attribute (not the attribute value!) associated with this structure, by name.
-  # If this attribute's value is uninitialized, create an AVM implicitly.
+  # If this attribute's value is uninitialized, build a new (unsaved) AVM.
   def obtain_attr(name)
     a = attr(name)
     if a.nil? and (ta = structure_template.attr(name))
-      logger.info "Template attr #{ta.name} does not exist for structure #{self.id}; autocreating"
-      avm = attr_value_metadatas.create :structure => self, :attr => ta
+      avm = attr_value_metadatas.select { |avm| avm.attr == ta }.first || attr_value_metadatas.build(:structure => self, :attr => ta)
       avm.obtain_value
       return ta
     else
       return a
     end
   end
-
+  
   def obtain_workflow_status
     if workflow_status.nil?
       create_workflow_status :workflow_step => structure_template.workflow.start_step
@@ -88,6 +104,15 @@ class Structure < ActiveRecord::Base
     structure_template.required_attrs.each do |ta|
       if not attrs.include?(ta)
         errors.add_to_base("Required attribute #{ta.name} is not populated.")
+      end
+    end
+  end
+  
+  def save_avms_and_attr_values
+    attr_value_metadatas.each do |avm|
+      avm.save(false)
+      unless avm.value.nil?
+        avm.value.save(false)
       end
     end
   end

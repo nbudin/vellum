@@ -23,9 +23,8 @@ class StructuresController < ApplicationController
   # GET /structures/1
   # GET /structures/1.xml
   def show
-    @structure = Structure.find(params[:id], :include =>
+    @structure = @project.structures.find(params[:id], :include =>
         [:structure_template, :attr_value_metadatas, :inward_relationships, :outward_relationships])
-    check_forged_url
     @relationships = @structure.relationships.sort_by do |rel|
       other = rel.other(@structure)
       "#{rel.relationship_type.description_for(@structure)} #{other.name.sort_normalize}"
@@ -44,50 +43,30 @@ class StructuresController < ApplicationController
 
   # GET /structures/new
   def new
-    @structure = Structure.new
+    @structure = @project.structures.new
     @structure.structure_template = StructureTemplate.find(params[:template_id])
   end
 
   # GET /structures/1;edit
   def edit
-    @structure = Structure.find(params[:id])
-    check_forged_url
+    @structure = @project.structures.find(params[:id])
   end
 
   # POST /structures
   # POST /structures.xml
   def create
-    @structure = Structure.new(params[:structure])
-    @structure.structure_template = StructureTemplate.find(params[:template_id])
-    @structure.project = @project
-    
-    struct_ok = @structure.save
-    @attr_errors = {}
-    
-    if struct_ok and params[:attr_value]
-      params[:attr_value].each do |id, value|
-        if not value.blank?
-          val = @structure.obtain_attr_value(Attr.find(id))
-          val.update_attributes(value)
-          attr_ok = val.save
-          if not attr_ok
-            @attr_errors[id] = val.errors
-          end
-        end
-      end
-    end
-    
-    if @attr_errors.length > 0
-      @structure.destroy
-    end
+    # we need to set up the template before we can set the attrs
+    @structure_template = @project.template_schema.structure_templates.find(params[:template_id])
+    @structure = @project.structures.new(:structure_template => @structure_template)
+    @structure.update_attributes(params[:structure])
 
     respond_to do |format|
-      if (struct_ok) and (@attr_errors.length == 0)
+      if @structure.save
         format.html { redirect_to structure_url(@project, @structure) }
         format.xml  { head :created, :location => structure_url(@project, @structure, :format => "xml" ) }
         format.json { head :created, :location => structure_url(@project, @structure, :format => "json") }
       else
-        flash[:error_messages] = @structure.errors.full_messages + @attr_errors.values.collect { |errs| errs.full_messages }.flatten
+        flash[:error_messages] = @structure.errors.full_messages
         format.html { render :action => "new" }
         format.xml  { render :xml => @structure.errors.to_xml }
         format.json { render :json => @structure.errors.to_json }
@@ -98,39 +77,10 @@ class StructuresController < ApplicationController
   # PUT /structures/1
   # PUT /structures/1.xml
   def update
-    @structure = Structure.find(params[:id])
-    check_forged_url
+    @structure = @project.structures.find(params[:id])
     
-    flash[:error_messages] = []
-    flash[:error_attrs] = []
-    
-    if params[:attr_value]
-      @structure.attr_values.each do |v|
-        logger.debug "Checking for update on attr_value #{v.id}"
-        if params[:attr_value].has_key?(v.id.to_s)
-          logger.debug "Updating attr_value #{v.id}"
-          params[:attr_value][v.id.to_s].each do |key, value|
-            if v.respond_to? key
-              v.send("#{key}=", value)
-              if v.kind_of? DocValue and key == "doc_content"
-                v.doc.author = logged_in_person
-                v.doc.save
-              end
-            else
-              logger.debug("Warning, user is trying to set nonexistent attribute #{key} on #{v}")
-            end
-          end
-          if not v.save
-            v.errors.each do |err|
-              flash[:error_messages].push("#{err[0]} #{err[1]}")
-            end
-          end
-        end
-      end
-    end
-
     respond_to do |format|
-      if flash[:error_messages].length == 0
+      if @structure.update_attributes(params[:structure])
         format.html { redirect_to structure_url(@project, @structure) }
         format.xml  { head :ok }
         format.json { head :ok }
@@ -145,8 +95,7 @@ class StructuresController < ApplicationController
   # DELETE /structures/1
   # DELETE /structures/1.xml
   def destroy
-    @structure = Structure.find(params[:id])
-    check_forged_url
+    @structure = @project.structures.find(params[:id])
     @structure.destroy
 
     respond_to do |format|
@@ -187,12 +136,5 @@ class StructuresController < ApplicationController
   private
   def get_project
     @project = Project.find(params[:project_id])
-  end
-  
-  def check_forged_url
-    if not @structure.project == @project
-      flash[:error_messages] = "That structure does not belong to that project."
-      redirect_to project_url(@project)
-    end
   end
 end

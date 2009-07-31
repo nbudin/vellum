@@ -10,9 +10,9 @@ class AttrValueMetadata < ActiveRecord::Base
   def obtain_value
     if value
       return value
-    elsif attr.attr_configuration
-      attr.attr_configuration.class.value_class.create :attr_value_metadata => self
-      return value(:force_reload => true)
+    elsif attr && attr.attr_configuration
+      self.value = attr.attr_configuration.class.value_class.new :attr_value_metadata => self
+      return value
     else
       return nil
     end
@@ -21,8 +21,8 @@ class AttrValueMetadata < ActiveRecord::Base
   private
   def check_attr_in_template
     if attr and structure
-      if not structure.template_attrs.include?(attr)
-        errors.add("attr", "is not part of #{structure.name}'s template (#{structure.structure_template.name})")
+      if not structure.structure_template.attrs.include?(attr)
+        errors.add("attr", "(#{attr.name}) is not part of #{structure.name}'s template (#{structure.structure_template.name})")
       end
     end
   end

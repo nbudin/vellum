@@ -4,6 +4,8 @@ class DocValue < ActiveRecord::Base
   belongs_to :doc
 
   validate :check_doc_in_project
+  after_update :save_doc
+  validates_associated :doc
 
   def html_rep
     doc ? doc.content : ""
@@ -19,6 +21,14 @@ class DocValue < ActiveRecord::Base
     end
     doc.content = content
   end
+  
+  def author_id
+    doc.author.id
+  end
+  
+  def author_id=(author_id)
+    doc.author_id = author_id
+  end
 
   private
   def check_doc_in_project
@@ -33,5 +43,9 @@ class DocValue < ActiveRecord::Base
         doc.save
       end
     end
+  end
+  
+  def save_doc
+    doc.save(false)
   end
 end

@@ -23,7 +23,11 @@ class StructureTemplate < ActiveRecord::Base
     if name.kind_of? Attr
       name
     else
-      a = attrs.select {|attr| attr.name == name }[0]
+      a = if name.kind_of? Fixnum
+        attrs.select {|attr| attr.id == name }[0]
+      else
+        attrs.select {|attr| attr.name == name }[0]
+      end
       if a
         return a
       elsif not parent.nil?
