@@ -13,7 +13,6 @@ module StructuresHelper
         # construct shim value
         avm = structure.attr_value_metadatas.new(:attr => a, :structure => structure)
         av = a.attr_configuration.class.value_class.new(:attr_value_metadata => avm)
-        av.id = a.id
         av
       else
         structure.obtain_attr_value(a.name)
