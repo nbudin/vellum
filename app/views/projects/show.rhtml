@@ -19,8 +19,16 @@
   </div>
 
   <h2><%=h @project.name %></h2>
+  
+  <h3>Contents</h3>
+  <ol style="text-align: left;">
+  	<% @templates.each do |tmpl| -%>
+		<li><%= link_to tmpl.plural_name, "#template_#{tmpl.id}" %></li>
+	<% end -%>
+  </ol>
+  
+  <h3>See also</h3>
   <p>
-    Using
     <% link_to template_schema_url(@project.template_schema) do %>
     <%= image_tag "schema.png" %>
     <%= @project.template_schema.name %>
@@ -28,48 +36,31 @@
   </p>
 </div>
 
-<h2>Contents</h2>
-
-<ul id="template_tabs" class="tabstrip">
-<% @templates.each do |tmpl| -%>
-  <li class="tab"><%= link_to tmpl.plural_name, "#structures_#{tmpl.id}" %></li>
-<% end -%>
-</ul>
+<%= jipe_editor(@project, "blurb") %>
 
 <% @templates.each do |tmpl| -%>
-  <ul id="structures_<%= tmpl.id %>" class="itemlist">
-    <% itemlist_items(@structures[tmpl], :delete_path => structures_path(@project)) do |structure| %>
-      <span style="width: 50%; display: -moz-inline-block; display: inline-block;">
-        <% link_to(structure_path(@project, structure)) do -%>
-          <%= image_tag "structure.png" %>
-          <%= structure.name %>
-        <% end -%>
-      </span>
-      <span class="workflow_status">
-      	<% if tmpl.workflow -%>
+  <h2 style="border-bottom: 1px dotted black;"><%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a></h2>
+  <div style="margin-left: 1em;">
+	  <p>
+	    <% link_to new_structure_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
+		  <%= image_tag "structure_add.png" %> Add new <%= tmpl.name %>
+	    <% end -%>
+	  </p>
+	  <% @structures[tmpl].each do |structure| -%>
+	    <h3><%= structure.name %></h3>
+	    <% link_to(structure_path(@project, structure)) do -%>
+	      <%= image_tag "structure.png" %> Edit
+	    <% end -%>
+	    <span class="workflow_status">
+	  	  <% if tmpl.workflow -%>
 	        <% ws = structure.obtain_workflow_status -%>
-	        <% if ws.assignee -%>
-  	        Assigned to <%=h ws.assignee_name -%>,
-  	      <% end -%>
-	        <%=h ws.workflow_step.name %>
-      	<% end -%>
-      </span>
-    <% end %> 
-    <% if @structures[tmpl].size == 0 -%>
-      <li class="odd"><i>No <%= tmpl.name.pluralize %> in project.</i></li>
-    <% end -%>
-    <li style="overflow: hidden;">
-      <div style="float: right;">
-        <% link_to new_structure_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
-	  <%= image_tag "structure_add.png" %> Add <%= tmpl.name %>
-        <% end -%>
-      </div>
-    </li>
-  </ul>
+	        (<% if ws.assignee %>Assigned to <%=h ws.assignee_name -%>,<% end %><%=h ws.workflow_step.name %>)
+	  	  <% end -%>
+	    </span>
+		<%= jipe_editor structure, "blurb" %>
+	  <% end -%>
+	  <% if @structures[tmpl].size == 0 -%>
+	    <li class="odd"><i>No <%= tmpl.name.pluralize %> in project.</i></li>
+	  <% end -%>
+  </div>
 <% end -%>
-
-<%= javascript_include_tag "livepipe-ui/src/livepipe" %>
-<%= javascript_include_tag "livepipe-ui/src/tabs" %>
-<script type="text/javascript">
-    new Control.Tabs('template_tabs');
-</script>
