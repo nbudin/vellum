@@ -1,6 +1,8 @@
 module AttrField
   def AttrField.included(c)
-    c.class_eval "has_one :attr, :as => :attr_configuration"
+    c.class_eval do
+      has_one :attr, :as => :attr_configuration
+    end
   end
 
   # This needs to be overridden by subclasses.
@@ -18,5 +20,11 @@ module AttrField
 
   def attr_id
     attr.id
+  end
+  
+  def structure_template
+    if attr
+      attr.structure_template
+    end
   end
 end
