@@ -1,0 +1,6 @@
+  <table class="structure">
+    <% @structure.structure_template.attrs.each do |attr| -%>
+      <%= edit_attr_row(@structure, attr) %>
+    <% end -%>
+  </table>
+  <%= submit_tag "Save changes", :class => "save" %>

@@ -22,15 +22,5 @@
 <%= error_messages_for :structure %>
 
 <% form_for(:structure, :url => structure_path(@project, @structure), :html => {:method => 'put'}) do |f| -%>
-  <table class="structure">
-    <% @structure.structure_template.attrs.each do |attr| -%>
-      <tr>
-        <td <% if attr.required %>class="required"<% end %>><%=h attr.name %></td>
-        <td>
-          <%= render_attr_value_editor(@structure.obtain_attr_value(attr.name)) %>
-        </td>
-      </tr>
-    <% end -%>
-  </table>
-  <%= submit_tag "Save changes", :class => "save" %>
+  <%= render :partial => 'form' %>
 <% end -%>
