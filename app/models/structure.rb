@@ -12,7 +12,7 @@ class Structure < ActiveRecord::Base
   validates_associated :attr_value_metadatas
   validate :check_required_attrs
   
-  after_update :save_avms_and_attr_values
+  after_save :save_avms_and_attr_values
 
   def name
     name_attr = attr("Name")
