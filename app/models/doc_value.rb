@@ -46,6 +46,8 @@ class DocValue < ActiveRecord::Base
   end
   
   def save_doc
-    doc.save(false)
+    if doc
+      doc.save(false)
+    end
   end
 end
