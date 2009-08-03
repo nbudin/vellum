@@ -45,8 +45,8 @@ class ChoiceValueTest < ActiveSupport::TestCase
     v.save
     assert v.valid?
     assert_equal 2, v.choices.count
-    assert v.value.include? "mayo"
-    assert v.value.include? "ketchup"
+    assert v.value.include?("mayo")
+    assert v.value.include?("ketchup")
   end
 
   test "invalid_multiple" do
