@@ -136,10 +136,16 @@ class StructuresController < ApplicationController
   end
   
   def sort
-    @structures = @project.structures
-    @structures.each do |structure|
-      structure.position = params['structures'].index(structure.id.to_s) + 1
-      structure.save!
+    params.each do |k, v|
+      if k =~ /structures_(\d+)/
+        tmpl_id = $1
+        @structure_template = @project.template_schema.structure_templates.find(tmpl_id)
+        @structures = @project.structures.select { |s| s.structure_template == @structure_template }
+        @structures.each do |structure|
+          structure.position = v.index(structure.id.to_s) + 1
+          structure.save!
+        end
+      end
     end
     head :ok
   end
