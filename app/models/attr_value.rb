@@ -8,7 +8,7 @@ module AttrValue
         if av.attr_value_metadata
           if not av.attr_value_metadata.valid?
             av.attr_value_metadata.errors.each do |attr, msg|
-              av.errors.add(av.attr.name + " " + attr, msg)
+              av.errors.add("#{av.attr.name} #{attr}", msg)
             end
           end
         end
