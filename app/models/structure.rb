@@ -13,6 +13,10 @@ class Structure < ActiveRecord::Base
   validate :check_required_attrs
   
   after_save :save_avms_and_attr_values
+  
+  def to_param
+    "#{id}-#{name.parameterize}"
+  end
 
   def name
     name_attr = attr("Name")

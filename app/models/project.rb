@@ -10,6 +10,10 @@ class Project < ActiveRecord::Base
     ids = docs.collect { |doc| doc.versions.collect { |version| version.author_id }.uniq }.flatten.uniq
     ids.collect { |id| id and Person.find(id) }.compact
   end
+  
+  def to_param
+    return "#{id}-#{name.parameterize}"
+  end
 
   def to_vproj(options = {})
     options[:indent] ||= 2
