@@ -8,7 +8,8 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :projects do |projects|
-    projects.resources :structures, :name_prefix => nil, :member => { :transition => :post }
+    projects.resources :structures, :name_prefix => nil, :collection => { :sort => :post }, 
+                       :member => { :transition => :post }
     projects.resources :relationships, :name_prefix => nil
     projects.resources :docs, :name_prefix => nil
   end

@@ -8,6 +8,11 @@ class Structure < ActiveRecord::Base
   has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship", :dependent => :destroy, :include => [:relationship_type, :left]
   has_one :workflow_status
   has_one :assignee, :through => :workflow_status
+  acts_as_list
+  
+  def scope_condition
+    "project_id = #{project.id} and structure_template_id = #{structure_template.id}"
+  end
 
   validates_associated :attr_value_metadatas
   validate :check_required_attrs

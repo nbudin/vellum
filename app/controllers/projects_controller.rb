@@ -26,7 +26,7 @@ class ProjectsController < ApplicationController
         @structures = {}
         @templates.each do |tmpl|
           @structures[tmpl] = @project.structures.select { |s| s.structure_template == tmpl }
-          @structures[tmpl] = @structures[tmpl].sort_by { |s| s.name.sort_normalize }
+          @structures[tmpl] = @structures[tmpl].sort_by { |s| s.position }
         end
       end
       format.xml  { render :xml => @project.to_xml }

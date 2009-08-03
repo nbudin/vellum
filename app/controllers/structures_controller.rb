@@ -1,5 +1,7 @@
 class StructuresController < ApplicationController
-  rest_permissions :class_name => "Project", :id_param => "project_id"
+  perm_options = { :class_name => "Project", :id_param => "project_id" }
+  rest_permissions perm_options
+  require_permission "edit", {:only => [:sort]}.update(perm_options)
   before_filter :get_project
   
   # GET /structures
@@ -131,6 +133,15 @@ class StructuresController < ApplicationController
         format.json { head :ok }
       end
     end
+  end
+  
+  def sort
+    @structures = @project.structures
+    @structures.each do |structure|
+      structure.position = params['structures'].index(structure.id.to_s) + 1
+      structure.save!
+    end
+    head :ok
   end
   
   private
