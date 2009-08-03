@@ -65,7 +65,6 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.update_attributes(params[:project])
-        flash[:notice] = 'Project was successfully updated.'
         format.html { redirect_to project_url(@project) }
         format.xml  { head :ok }
         format.json { head :ok }
