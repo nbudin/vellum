@@ -1,4 +1,6 @@
 class StylesheetsController < ApplicationController
+  layout nil
+  
   def application
   end
   

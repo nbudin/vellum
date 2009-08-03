@@ -8,7 +8,6 @@ class AddBlurbs < ActiveRecord::Migration
       project.save
       project.structures.sort_by {|s| s.name.sort_normalize }.each_with_index do |structure, i|
         structure.position = i + 1
-        structure.blurb ||= "Click here to write a description."
         structure.save
       end
     end

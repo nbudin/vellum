@@ -1,5 +1,6 @@
 <script type="text/javascript">
   Resource.model("Project", {format: 'json'});
+  Resource.model("Structure", {prefix: '<%=project_path(@project)%>', format: 'json'})
 </script>
 
 <h1><%= jipe_editor(@project, "name") %></h1>
@@ -40,27 +41,17 @@
 
 <% @templates.each do |tmpl| -%>
   <h2 style="border-bottom: 1px dotted black;"><%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a></h2>
-  <div style="margin-left: 1em;">
+  <div style="margin-left: 20px;">
 	  <p>
 	    <% link_to new_structure_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
 		  <%= image_tag "structure_add.png" %> Add new <%= tmpl.name %>
 	    <% end -%>
 	  </p>
-	  <% @structures[tmpl].each do |structure| -%>
-	    <h3><%= structure.name %></h3>
-	    <% link_to(structure_path(@project, structure)) do -%>
-	      <%= image_tag "structure.png" %> Edit
-	    <% end -%>
-	    <span class="workflow_status">
-	  	  <% if tmpl.workflow -%>
-	        <% ws = structure.obtain_workflow_status -%>
-	        (<% if ws.assignee %>Assigned to <%=h ws.assignee_name -%>,<% end %><%=h ws.workflow_step.name %>)
-	  	  <% end -%>
-	    </span>
-		<%= jipe_editor structure, "blurb" %>
-	  <% end -%>
-	  <% if @structures[tmpl].size == 0 -%>
-	    <li class="odd"><i>No <%= tmpl.name.pluralize %> in project.</i></li>
+	  <% sortlist(@structures[tmpl], "structures_#{tmpl.id}",
+				  :url => sort_structures_path(@project)
+				  ) do |structure| -%>
+		<%= render :partial => 'structures/show_external', 
+			:locals => { :structure => structure } %>
 	  <% end -%>
   </div>
 <% end -%>
