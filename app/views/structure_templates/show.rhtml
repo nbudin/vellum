@@ -90,7 +90,7 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
       </div>
       <%= hidden_field_tag "relationship_type[left_template_id]", @structure_template.id %>
       <%= f.text_field "left_description" %>
-      <%= f.select "right_template_id", @template_schema.structure_templates.reject {|t| t == @structure_template }.collect { |t| [t.name, t.id] } %>
+      <%= f.select "right_template_id", @template_schema.structure_templates.collect { |t| [t.name, t.id] } %>
       <% end -%>
     </li>
 </ul>
