@@ -30,7 +30,7 @@ class AttrValueMetadata < ActiveRecord::Base
   def check_value_class
     if attr and value_type and value_id
       if not value.kind_of?(attr.attr_configuration.class.value_class)
-        avm.errors.add_to_base("Value is a #{value.class} but needs to be a #{attr.attr_configuration.class.value_class}")
+        errors.add_to_base("Value is a #{value.class} but needs to be a #{attr.attr_configuration.class.value_class}")
       end
     end
   end
