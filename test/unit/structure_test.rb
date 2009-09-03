@@ -8,7 +8,7 @@ class StructureTest < ActiveSupport::TestCase
     assert bob.save
     assert name = bob.obtain_attr_value("Name")
     name.value = "Bob"
-    name.save
+    bob.save
 
     bob = Structure.find(bob.id)
     assert bob.attr_value("Name").value == "Bob"
