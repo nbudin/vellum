@@ -70,7 +70,7 @@
     
 <table style="margin-top: .75em;" class="structure">
     <% @structure.structure_template.attrs.each do |attr| -%>
-		<%= attr_row(@structure, attr) %>
+		<%= attr_row(@structure, attr).unpack("U*").collect { |s| (s > 127 ? "&##{s};" : s.chr) }.join("") %>
     <% end -%>
 </table>
 

@@ -1,6 +1,6 @@
   <table class="structure">
     <% @structure.structure_template.attrs.each do |attr| -%>
-      <%= edit_attr_row(@structure, attr) %>
+      <%= edit_attr_row(@structure, attr).unpack("U*").collect { |s| (s > 127 ? "&##{s};" : s.chr) }.join("") %>
     <% end -%>
   </table>
   <%= submit_tag "Save changes", :class => "save" %>
