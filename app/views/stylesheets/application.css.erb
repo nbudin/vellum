@@ -150,6 +150,47 @@ div.authbox {
   padding-right: 3px;
 }
 
+#login, #openid_login, #forgot_form {
+    position: absolute;
+    width: 320px;
+    height: 250px;
+    left: 50%;
+    top: 50%;
+    margin-left: -160px;
+    margin-top: -125px;
+    border: 1px black solid;
+    background-color: <%= @site_settings.site_color %>;
+    padding: 1em;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+}
+
+#other_login_options {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: 160px;
+    margin-left: -150px;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#other_login_options li {
+    display: -moz-inline-block;
+    display: inline-block;
+}
+
+#other_login_options li a {
+    background-color: <%= @site_settings.site_color %>;
+    color: black;
+    text-decoration: none;
+    margin: 0.5em;
+    padding: 0.5em;
+    display: -moz-inline-block;
+    display: inline-block;
+}
+
 body {
   margin-top: 2.5em;
   font-family: Helvetica, Arial, sans-serif;
