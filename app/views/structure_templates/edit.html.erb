@@ -13,7 +13,7 @@
 
 <%= error_messages_for :structure %>
 
-<% form_for(:structure_template, :url => @structure_template, :html => {:method => 'put'}) do |f| -%>
+<% form_for(:structure_template, :url => structure_template_path(@template_schema, @structure_template), :html => {:method => 'put'}) do |f| -%>
   <table>
     <tr>
       <th>Workflow</th>
