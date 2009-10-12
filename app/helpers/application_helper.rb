@@ -230,4 +230,18 @@ module ApplicationHelper
       html
     end
   end
+  
+  def color_picker(f, field_name, options={})
+    html = f.hidden_field "color"
+    html << content_tag("button", "", :class => "color_swatch", :type => "button",
+                        :id => "#{f.object_name}_color_swatch")
+    html << javascript_tag (<<EOJS
+      new Control.ColorPicker("#{f.object_name}_color",
+                                      {
+                                        "swatch": "#{f.object_name}_color_swatch",
+                                        "IMAGE_BASE": "#{ url_for "/images/colorPicker/" }"
+                                      });
+EOJS
+)
+  end
 end

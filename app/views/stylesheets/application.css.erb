@@ -231,3 +231,31 @@ ul.inline li {
     display: inline-block;
     margin-right: 0.3em;
 }
+
+ol {
+  counter-reset: item;
+  list-style-type: none;
+  padding-left: 1em;
+}
+
+ol > li {
+  counter-increment: item;
+  font-weight: bold;
+}
+
+ol > li:before {
+  content: counter(item) ". ";
+}
+
+ol > li > ol {
+  counter-reset: subitem;
+}
+
+ol > li > ol > li {
+  counter-increment: subitem;
+  font-weight: normal;
+}
+
+ol > li > ol > li:before {
+  content: counter(item) "." counter(subitem) ". ";
+}

@@ -1,13 +1,6 @@
-<div class="structure_external">
-    <div style="margin-top: 0; overflow: auto;">
-		<h3 style="display: inline;"><%= structure.name %></h3>
-	    <span class="workflow_status">
-  	        <% if structure.structure_template.workflow -%>
-                <% ws = structure.obtain_workflow_status -%>
-                (<% if ws.assignee %>Assigned to <%=h ws.assignee_name -%>,<% end %><%=h ws.workflow_step.name %>)
-  	        <% end -%>
-        </span>
-		<div style="float: right;">
+<div class="external_view">
+    <div class="summary">
+		<div class="actions">
 	      <% link_to(structure_path(@project, structure), :class => "button edit") do -%>
 	            <%= image_tag "structure.png" %> Details
           <% end -%>
@@ -21,7 +14,14 @@
 		    	Add description
 		    </button>
 		  <% end -%>
-		</div>			
+		</div>	
+		<h3><%= structure.name %></h3>
+	    <span class="workflow_status">
+  	        <% if structure.structure_template.workflow -%>
+                <% ws = structure.obtain_workflow_status -%>
+                (<% if ws.assignee %>Assigned to <%=h ws.assignee_name -%>,<% end %><%=h ws.workflow_step.name %>)
+  	        <% end -%>
+        </span>
 	</div>
 	<div id="structure_<%=structure.id%>_blurb_display"
 		<% if structure.blurb.nil? -%>

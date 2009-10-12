@@ -3,6 +3,12 @@
   Resource.model("Structure", {prefix: '<%=project_path(@project)%>', format: 'json'})
 </script>
 
+<style type="text/css">
+h2 {
+   border-bottom: 1px dotted black;
+}
+</style>
+
 <h1><%= jipe_editor(@project, "name") %></h1>
 
 <div class="jumpbox">
@@ -21,11 +27,19 @@
 
   <h2><%=h @project.name %></h2>
   
-  <h3>Contents</h3>
   <ol style="text-align: left;">
-  	<% @templates.each do |tmpl| -%>
-		<li><%= link_to tmpl.plural_name, "#template_#{tmpl.id}" %></li>
-	<% end -%>
+	<li>Contents
+	  <ol>
+		<% @templates.each do |tmpl| -%>
+		  <li><%= link_to tmpl.plural_name, "#template_#{tmpl.id}" %></li>
+		<% end -%>
+	  </ol>
+	</li>
+	<li>Tools
+	  <ol>
+		<li><%= link_to "Maps", "#maps" %></li>
+	  </ol>
+	</li>
   </ol>
   
   <h3>See also</h3>
@@ -37,10 +51,10 @@
   </p>
 </div>
 
-<%= jipe_editor(@project, "blurb") %>
+<%= jipe_editor(@project, "blurb", :rows => 4) %>
 
 <% @templates.each do |tmpl| -%>
-  <h2 style="border-bottom: 1px dotted black;"><%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a></h2>
+  <h2><%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a></h2>
   <div style="margin-left: 20px;">
 	  <p>
 	    <% link_to new_structure_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
@@ -55,3 +69,22 @@
 	  <% end -%>
   </div>
 <% end -%>
+
+<h1 style="margin-top: 2em;">Tools</h1>
+
+<a name="maps"></a>
+<h2>Maps</h2>
+
+<div style="margin-left: 20px;">
+  <p>
+    <% form_for :map, :url => maps_path(@project) do -%>
+	  <button class="button new" type="submit">
+		<%= image_tag "map_add.png" %> Add new map
+	  </button>
+    <% end -%>
+  </p>
+  <% sortlist(@project.maps, "maps", :url => sort_maps_path(@project)) do |map| -%>
+	<%= render :partial => 'maps/show_external', :locals => { :map => map } %>
+  <% end -%>
+</div>
+

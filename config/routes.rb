@@ -12,6 +12,10 @@ ActionController::Routing::Routes.draw do |map|
                        :member => { :transition => :post }
     projects.resources :relationships, :name_prefix => nil
     projects.resources :docs, :name_prefix => nil
+    projects.resources :maps, :name_prefix => nil, :collection => { :sort => :post } do |maps|
+      maps.resources :mapped_structure_templates, :name_prefix => nil
+      maps.resources :mapped_relationship_types, :name_prefix => nil
+    end
   end
   
   map.resources :template_schemas do |schemas|
