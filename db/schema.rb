@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090731174320) do
+ActiveRecord::Schema.define(:version => 20091012152448) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -114,6 +114,29 @@ ActiveRecord::Schema.define(:version => 20090731174320) do
     t.integer  "structure_template_id"
     t.integer  "version"
     t.integer  "project_id"
+  end
+
+  create_table "mapped_relationship_types", :force => true do |t|
+    t.integer  "map_id"
+    t.integer  "relationship_type_id"
+    t.string   "color"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mapped_structure_templates", :force => true do |t|
+    t.integer  "map_id"
+    t.integer  "structure_template_id"
+    t.string   "color"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "maps", :force => true do |t|
+    t.string   "name"
+    t.integer  "project_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "number_fields", :force => true do |t|
