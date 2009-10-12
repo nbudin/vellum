@@ -14,6 +14,15 @@
 		    	Add description
 		    </button>
 		  <% end -%>
+		  <% if structure.structure_template.workflow -%>
+			<% structure.obtain_workflow_status.workflow_step.leaving_transitions.each do |transition| -%>
+			  <% link_to transition_structure_path(@project, structure, :workflow_transition_id => transition.id),
+						 :class => "button transition", :method => "post", :style => "margin-right: 0.5em; float: right;" do %>
+				<%= image_tag "workflow_transition.png" %>
+				<%=h transition.name %>
+  			  <% end -%>
+			<% end -%>
+		  <% end -%>
 		</div>	
 		<h3><%= structure.name %></h3>
 	    <span class="workflow_status">
