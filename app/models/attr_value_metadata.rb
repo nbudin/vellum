@@ -10,7 +10,7 @@ class AttrValueMetadata < ActiveRecord::Base
   def obtain_value
     if value
       return value
-    elsif attr.attr_configuration
+    elsif attr && attr.attr_configuration
       self.value = attr.attr_configuration.class.value_class.new :attr_value_metadata => self
       return self.value
     else
