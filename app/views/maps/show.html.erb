@@ -22,7 +22,7 @@
         <% itemlist_items(@map.mapped_structure_templates,
                           :delete_path => mapped_structure_templates_path(@project, @map)) do |mst| -%>
           <span style="font-weight: bold; color: <%= mst.color %>;">
-            <%=h mst.structure_template.plural_name %>
+            <%=h mst.structure_template && mst.structure_template.plural_name %>
           </span>
         <% end -%>
         <li>
@@ -49,7 +49,7 @@
         <% itemlist_items(@map.mapped_relationship_types,
                           :delete_path => mapped_relationship_types_path(@project, @map)) do |mrt| -%>
           <span style="font-weight: bold; color: <%= mrt.color %>;">
-            <%=h mrt.relationship_type.left_name %>
+            <%=h mrt.relationship_type && mrt.relationship_type.left_name %>
           </span>
         <% end -%>
         <li>
