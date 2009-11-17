@@ -235,7 +235,7 @@ module ApplicationHelper
     html = f.hidden_field "color"
     html << content_tag("button", "", :class => "color_swatch", :type => "button",
                         :id => "#{f.object_name}_color_swatch")
-    html << javascript_tag (<<EOJS
+    html << javascript_tag(<<EOJS
       new Control.ColorPicker("#{f.object_name}_color",
                                       {
                                         "swatch": "#{f.object_name}_color_swatch",
