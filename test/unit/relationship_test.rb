@@ -74,5 +74,13 @@ class RelationshipTest < ActiveSupport::TestCase
     should "be invalid" do
       assert !@r2.valid?
     end
+    
+    should "not prevent other relationships from being created" do
+      assert @rt2 = @t.template_schema.relationship_types.create(:left_template => @t, :right_template => @t)
+      @r3 = Factory.build(:relationship, :relationship_type => @rt2, :left => @s1, :right => @s2, :project => @p)
+      
+      assert @r3.valid?, @r.errors.full_messages.join("\n")
+      assert @r3.save
+    end
   end
 end
