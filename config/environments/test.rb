@@ -19,3 +19,4 @@ config.action_controller.perform_caching             = false
 config.action_mailer.delivery_method = :test
 
 config.gem 'thoughtbot-shoulda', :lib => "shoulda"
+config.gem 'thoughtbot-factory_girl', :lib => "factory_girl"
