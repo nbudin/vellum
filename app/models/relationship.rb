@@ -4,7 +4,7 @@ class Relationship < ActiveRecord::Base
   belongs_to :right, :class_name => "Structure", :foreign_key => "right_id", :include => [:structure_template, :attr_value_metadatas]
   belongs_to :project
 
-  validate :check_associations
+  validates_presence_of :left, :right, :relationship_type, :project
   validate :check_circular
   validate :check_project_membership
   validate :check_duplicate
@@ -26,14 +26,6 @@ class Relationship < ActiveRecord::Base
   end
 
   private
-  def check_associations
-    [:left, :right, :relationship_type, :project].each do |att|
-      if self.send(att).nil?
-        errors.add(att, "must be specified")
-      end
-    end
-  end
-
   def check_circular
     if left == right
       errors.add_to_base("This relationship is circular.")

@@ -3,48 +3,76 @@ require File.dirname(__FILE__) + '/../test_helper'
 class RelationshipTest < ActiveSupport::TestCase
   fixtures :relationships, :relationship_types, :structure_templates, :projects
   
+  def build_structure
+    Factory.build(:structure, :project => @p, :structure_template => @t)
+  end
+  
   def setup
-    @project = projects(:people)
+    @t = Factory.create(:structure_template)
+    @rt = @t.template_schema.relationship_types.create(:left_template => @t, :right_template => @t)
+    @p = Factory.build(:project, :template_schema => @t.template_schema)
   end
-
-  def test_valid_relationship
-    p1 = Structure.new(:structure_template => structure_templates(:person), :project => @project)
-    p2 = Structure.new(:structure_template => structure_templates(:person), :project => @project)
-    assert p1.save
-    assert p2.save
-
-    r = Relationship.new(:relationship_type => relationship_types(:parent), :left => p1, :right => p2, :project => @project)
-    assert r.save, r.errors.full_messages.join("\n")
+  
+  should_validate_presence_of :left, :right, :project, :relationship_type
+  
+  context "A new relationship" do
+    setup do
+      @s1 = build_structure
+      @s2 = build_structure
+      
+      @r = Factory.build(:relationship, :relationship_type => @rt, :left => @s1, :right => @s2, :project => @p)
+    end
+    
+    should "pass validation" do
+      assert @r.valid?, @r.errors.full_messages.join("\n")
+    end
   end
-
-  def test_circular_relationship
-    p = Structure.new(:structure_template => structure_templates(:person), :project => @project)
-
-    r = Relationship.new(:relationship_type => relationship_types(:parent), :left => p, :right => p, :project => @project)
-    assert !r.valid?
+  
+  context "A circular relationship" do
+    setup do
+      @s1 = build_structure
+      @r = Factory.build(:relationship, :relationship_type => @rt, :left => @s1, :right => @s1, :project => @p)
+    end
+    
+    should "be invalid" do
+      assert !@r.valid?
+    end
   end
-
-  def test_incomplete_relationships
-    r = Relationship.new(:relationship_type => relationship_types(:parent), :project => @project)
-    assert !r.valid?
-
-    p = Structure.new(:structure_template => structure_templates(:person), :project => @project)
-    r = Relationship.new(:relationship_type => relationship_types(:parent), :left => p, :project => @project)
-    assert !r.valid?
-
-    r = Relationship.new(:relationship_type => relationship_types(:parent), :right => p, :project => @project)
-    assert !r.valid?
-
-    p2 = Structure.new(:structure_template => structure_templates(:person), :project => @project)
-    r = Relationship.new(:relationship_type => relationship_types(:parent), :left => p, :right => p2)
-    assert !r.valid?
+  
+  context "A relationship from the wrong project" do
+    setup do
+      @s1 = build_structure
+      @s2 = build_structure
+      @p2 = Factory.build(:project, :template_schema => @t.template_schema)
+      
+      @r = Factory.build(:relationship, :relationship_type => @rt, :left => @s1, :right => @s2, :project => @p2)
+    end
+    
+    should "be invalid" do
+      assert !@r.valid?
+    end
   end
-
-  def test_untyped_relationships
-    p1 = Structure.new(:structure_template => structure_templates(:person), :project => @project)
-    p2 = Structure.new(:structure_template => structure_templates(:person), :project => @project)
-
-    r = Relationship.new(:left => p1, :right => p2, :project => @project)
-    assert !r.valid?
+  
+  context "A duplicate relationship" do
+    setup do
+      @p.save
+      
+      @s1 = build_structure
+      @s2 = build_structure
+      [@s1, @s2].each do |s|
+        s.save
+      end
+      
+      @r = Factory.create(:relationship, :relationship_type => @rt, :left => @s1, :right => @s2, :project => @p)
+      [@s1, @s2].each do |s|
+        s.reload
+      end
+      
+      @r2 = Factory.build(:relationship, :relationship_type => @rt, :left => @s1, :right => @s2, :project => @p)
+    end
+    
+    should "be invalid" do
+      assert !@r2.valid?
+    end
   end
 end
