@@ -5,15 +5,15 @@ class Doc < ActiveRecord::Base
   validates_presence_of :doc_value
   belongs_to :author, :class_name => "Person"
   
-  belongs_to :project
-  before_validation :set_project
-  validates_presence_of :project
-  non_versioned_columns << "project_id"
+  def project
+    doc_value.project
+  end
   
-  private
-  def set_project
-    if doc_value and doc_value.structure.project != project
-      self.project = doc_value.structure.project
+  def to_param
+    if doc_value && doc_value.field && doc_value.field.attr
+      "#{id}-#{doc_value.field.attr.name.parameterize}"
+    else
+      id.to_s
     end
   end
 end

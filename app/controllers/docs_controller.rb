@@ -1,6 +1,6 @@
 class DocsController < ApplicationController
   rest_permissions :class_name => "Project", :id_param => "project_id"
-  before_filter :get_project
+  before_filter :get_project_and_structure
 
   # GET /docs
   # GET /docs.xml
@@ -82,7 +82,8 @@ class DocsController < ApplicationController
 
   private
   
-  def get_project
+  def get_project_and_structure
     @project = Project.find(params[:project_id])
+    @structure = @project.structures.find(params[:structure_id])
   end
 end

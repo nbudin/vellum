@@ -28,6 +28,10 @@ module AttrValue
     attr_value_metadata && attr_value_metadata.structure
   end
   
+  def project
+    structure && structure.project
+  end
+  
   def string_rep
     "This attribute cannot be represented as a string"
   end

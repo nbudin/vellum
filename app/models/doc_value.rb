@@ -3,7 +3,6 @@ class DocValue < ActiveRecord::Base
 
   belongs_to :doc
   validates_uniqueness_of :doc_id, :allow_nil => true
-  validate :check_doc_in_project
   after_update :save_doc
 
   def html_rep
@@ -30,15 +29,6 @@ class DocValue < ActiveRecord::Base
   end
 
   private
-  def check_doc_in_project
-    myproj = structure ? structure.project : nil
-    if myproj and doc
-      unless doc.project.id == myproj.id
-        errors.add("doc", "is in project #{doc.project.name}, but #{structure.name} is in #{myproj.name}")
-      end
-    end
-  end
-  
   def save_doc
     if doc
       doc.save(false)

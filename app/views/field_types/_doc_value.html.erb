@@ -8,7 +8,7 @@
       by <%= value.doc.author.name %> &mdash;
     
       <% if value.doc.project -%>
-        <%= link_to "History", doc_path(value.doc.project, value.doc) %>
+        <%= link_to "History", doc_path(value.project, value.structure, value.doc) %>
       <% else -%>
         <%= link_to_function("???", "alert('History is not available for this doc. "+
               "Please tell the site administrator that the project ID appears to be missing for doc #{value.doc.id}.');") %>
