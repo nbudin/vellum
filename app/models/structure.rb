@@ -3,7 +3,6 @@ class Structure < ActiveRecord::Base
   belongs_to :project
   has_many :attr_value_metadatas, :dependent => :destroy, :include => [:value]
   has_many :template_attrs, :through => :structure_template, :source => :attrs
-  has_many :attrs, :through => :attr_value_metadatas
   has_many :outward_relationships, :foreign_key => :left_id, :class_name => "Relationship", :dependent => :destroy, :include => [:relationship_type, :right]
   has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship", :dependent => :destroy, :include => [:relationship_type, :left]
   has_one :workflow_status
@@ -81,19 +80,22 @@ class Structure < ActiveRecord::Base
   def relationships
     outward_relationships + inward_relationships
   end
+  
+  def attrs
+    attr_value_metadatas.collect { |avm| avm.attr }.flatten.compact
+  end
 
   def attr(name)
-    search_attrs = attrs.compact
     if name.kind_of? Attr
       if name.structure_template == self.structure_template
         name
       else
-        search_attrs.select {|a| a.id == name.id }.first
+        attrs.select {|a| a.id == name.id }.first
       end
     elsif name.kind_of? Fixnum
-      search_attrs.select {|a| a.id == name }.first
+      attrs.select {|a| a.id == name }.first
     else
-      search_attrs.select {|a| a.name == name }.first
+      attrs.select {|a| a.name == name }.first
     end
   end    
 
