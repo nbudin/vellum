@@ -2,10 +2,9 @@ class DocValue < ActiveRecord::Base
   include AttrValue
 
   belongs_to :doc
-
+  validates_uniqueness_of :doc_id, :allow_nil => true
   validate :check_doc_in_project
   after_update :save_doc
-  validates_associated :doc
 
   def html_rep
     doc ? doc.content : ""
@@ -17,7 +16,7 @@ class DocValue < ActiveRecord::Base
 
   def doc_content=(content)
     if doc.nil?
-      build_doc
+      self.doc = Doc.new :doc_value => self
     end
     doc.content = content
   end
@@ -34,13 +33,8 @@ class DocValue < ActiveRecord::Base
   def check_doc_in_project
     myproj = structure ? structure.project : nil
     if myproj and doc
-      if doc.project
-        unless doc.project.id == myproj.id
-          errors.add("doc", "is in project #{doc.project.name}, but #{structure.name} is in #{myproj.name}")
-        end
-      else
-        doc.project = myproj
-        doc.save
+      unless doc.project.id == myproj.id
+        errors.add("doc", "is in project #{doc.project.name}, but #{structure.name} is in #{myproj.name}")
       end
     end
   end
