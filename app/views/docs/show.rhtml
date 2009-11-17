@@ -5,9 +5,5 @@
 
 <p>
   <b>Content:</b>
-  <%=h @doc.content %>
+  <%=sanitize @doc.content %>
 </p>
-
-
-<%= link_to 'Edit', edit_doc_path(@doc) %> |
-<%= link_to 'Back', docs_path %>
