@@ -60,7 +60,7 @@ class StructuresController < ApplicationController
     # we need to set up the template before we can set the attrs
     @structure_template = @project.template_schema.structure_templates.find(params[:template_id])
     @structure = @project.structures.new(:structure_template => @structure_template)
-    @structure.update_attributes(params[:structure])
+    @structure.attributes = params[:structure]
 
     respond_to do |format|
       if @structure.save
