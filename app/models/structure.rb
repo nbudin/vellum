@@ -20,7 +20,11 @@ class Structure < ActiveRecord::Base
   after_save :save_avms_and_attr_values
   
   def to_param
-    "#{id}-#{name.parameterize}"
+    if name
+      "#{id}-#{name.parameterize}"
+    else
+      id.to_s
+    end
   end
 
   def name
@@ -79,12 +83,17 @@ class Structure < ActiveRecord::Base
   end
 
   def attr(name)
+    search_attrs = attrs.compact
     if name.kind_of? Attr
-      attrs.select {|a| a.id == name.id }.first
+      if name.structure_template == self.structure_template
+        name
+      else
+        search_attrs.select {|a| a.id == name.id }.first
+      end
     elsif name.kind_of? Fixnum
-      attrs.select {|a| a.id == name }.first
+      search_attrs.select {|a| a.id == name }.first
     else
-      attrs.select {|a| a.name == name }.first
+      search_attrs.select {|a| a.name == name }.first
     end
   end    
 
