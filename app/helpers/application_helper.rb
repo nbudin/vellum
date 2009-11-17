@@ -17,7 +17,11 @@ module ApplicationHelper
       if instance_variable_defined?(var_name)
         obj = instance_variable_get var_name
       else
-        klass = eval(controller.controller_name.classify.singularize)
+        begin
+          klass = eval(controller.controller_name.classify.singularize)
+        rescue
+        end
+        
         if klass.kind_of? Class and klass.respond_to? 'find'
           obj = klass.find(params[:id])
         end

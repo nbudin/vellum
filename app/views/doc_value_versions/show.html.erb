@@ -1,0 +1,14 @@
+<h1><%=h @doc_value.name %> &mdash; Version <%= @version.version %></h1>
+
+<div class="jumpbox">
+  <div class="navigation">
+    <% link_to doc_value_path(@project, @structure, @doc_value), :class => "button back" do -%>
+      <%= image_tag "arrow_left.png" %>
+      <%=h @doc_value.name %>
+    <% end -%>
+  </div>
+</div>
+
+<div class="document_content">
+  <%= sanitize @version.content %>
+</div>

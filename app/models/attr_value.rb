@@ -40,6 +40,10 @@ module AttrValue
     structure && structure.project
   end
   
+  def name
+    structure && field && field.attr && "#{structure.name} #{field.attr.name}"
+  end
+  
   def string_rep
     "This attribute cannot be represented as a string"
   end
