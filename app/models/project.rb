@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
   belongs_to :template_schema
   has_many :docs, :dependent => :destroy
-  has_many :structures, :dependent => :destroy, :include => [:attrs, :structure_template, :attr_value_metadatas]
+  has_many :structures, :dependent => :destroy, :include => [:structure_template, :attr_value_metadatas]
   has_many :relationships, :dependent => :destroy, :include => [:relationship_type]
   has_many :maps, :dependent => :destroy
   
