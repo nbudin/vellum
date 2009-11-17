@@ -76,15 +76,17 @@ class RelationshipType < ActiveRecord::Base
 
   private
   def check_templates_in_schema
-    if left_template
-      unless left_template.template_schema == template_schema
-        errors.add("left_template", "is not in template schema #{template_schema.name}")
+    if template_schema
+      if left_template
+        unless left_template.template_schema == template_schema
+          errors.add("left_template", "is not in template schema #{template_schema.name}")
+        end
       end
-    end
-
-    if right_template
-      unless right_template.template_schema == template_schema
-        errors.add("right_template", "is not in template schema #{template_schema.name}")
+  
+      if right_template
+        unless right_template.template_schema == template_schema
+          errors.add("right_template", "is not in template schema #{template_schema.name}")
+        end
       end
     end
   end

@@ -52,7 +52,7 @@ class Relationship < ActiveRecord::Base
       others = left.outward_relationships.select do |rel| 
         ((self.new_record? or rel.id != self.id) and
          rel.right == right and
-         relationship_type == relationship_type)
+         rel.relationship_type == relationship_type)
       end
       if others.size > 0
         errors.add_to_base("#{left.name} already #{relationship_type.left_description} #{right.name}")
