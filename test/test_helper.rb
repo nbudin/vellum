@@ -27,7 +27,8 @@ class ActiveSupport::TestCase
   # Add more helper methods to be used by all tests here...
   def build_schema_for_attr_value(field_type, value_type)
     @field = Factory.build(field_type)
-    @attr = @field.attr
+    @attr = Factory.build(:attr)
+    @attr.attr_configuration = @field
     @t = @attr.structure_template
     @schema = @t.template_schema
     @project = Factory.build(:project, :template_schema => @schema)
