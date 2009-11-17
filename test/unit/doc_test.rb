@@ -15,5 +15,9 @@ class DocTest < ActiveSupport::TestCase
     should "be valid" do
       assert_valid @doc
     end
+    
+    should "have its project set correctly" do
+      assert @doc.doc_value.project == @project
+    end
   end
 end
