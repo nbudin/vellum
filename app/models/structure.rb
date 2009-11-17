@@ -3,8 +3,8 @@ class Structure < ActiveRecord::Base
   belongs_to :project
   has_many :attr_value_metadatas, :dependent => :destroy, :include => [:value]
   has_many :template_attrs, :through => :structure_template, :source => :attrs
-  has_many :outward_relationships, :foreign_key => :left_id, :class_name => "Relationship", :dependent => :destroy, :include => [:relationship_type, :right]
-  has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship", :dependent => :destroy, :include => [:relationship_type, :left]
+  has_many :outward_relationships, :foreign_key => :left_id, :class_name => "Relationship", :dependent => :destroy
+  has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship", :dependent => :destroy
   has_one :workflow_status
   has_one :assignee, :through => :workflow_status
   acts_as_list
