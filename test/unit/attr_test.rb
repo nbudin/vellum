@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class AttrTest < ActiveSupport::TestCase
-  fixtures :attrs
-  
   context "A required attr" do
     setup do
       @attr = Factory.create(:attr, :required => true)

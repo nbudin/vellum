@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class StructureTest < ActiveSupport::TestCase
-  fixtures :structures, :structure_templates, :text_fields, :relationship_types, :projects
+  fixtures :structures, :structure_templates, :text_fields, :relationship_types, :projects, :attrs
 
   def test_create_structure
     bob = Structure.new(:structure_template => structure_templates(:person), :project => projects(:people))
