@@ -2,6 +2,14 @@ module AttrValue
   def AttrValue.included(c)
     c.class_eval do
       has_one :attr_value_metadata, :as => :value
+                
+      def to_param
+        if field && field.attr
+          "#{id}-#{field.attr.name.parameterize}"
+        else
+          id.to_s
+        end
+      end
       
       # validate AVM and pass along errors
       validate do |av|

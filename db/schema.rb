@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091012152448) do
+ActiveRecord::Schema.define(:version => 20091117202330) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -102,7 +102,6 @@ ActiveRecord::Schema.define(:version => 20091012152448) do
     t.datetime "updated_at"
     t.integer  "structure_template_id"
     t.integer  "version"
-    t.integer  "project_id"
     t.integer  "author_id"
   end
 
@@ -134,7 +133,9 @@ ActiveRecord::Schema.define(:version => 20091012152448) do
 
   create_table "maps", :force => true do |t|
     t.string   "name"
+    t.text     "blurb"
     t.integer  "project_id"
+    t.string   "graphviz_method"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -231,7 +232,7 @@ ActiveRecord::Schema.define(:version => 20091012152448) do
   create_table "structures", :force => true do |t|
     t.integer "structure_template_id"
     t.integer "project_id"
-    t.text    "blurb"
+    t.text    "blurb",                 :limit => 16777215
     t.integer "position"
   end
 
@@ -260,7 +261,7 @@ ActiveRecord::Schema.define(:version => 20091012152448) do
   end
 
   create_table "text_values", :force => true do |t|
-    t.text "value"
+    t.text "value", :limit => 16777215
   end
 
   create_table "workflow_actions", :force => true do |t|

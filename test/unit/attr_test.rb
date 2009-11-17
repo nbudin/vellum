@@ -18,8 +18,10 @@ class AttrTest < ActiveSupport::TestCase
     
       context "having had the attr set" do
         setup do
+          @project.save!
           @attr.attr_configuration = Factory.create(:text_field, :attr => @attr)
-          @structure.obtain_attr_value(@attr).save!
+          @structure.obtain_attr_value(@attr)
+          @structure.save
         end
         
         should "let the structure validate" do

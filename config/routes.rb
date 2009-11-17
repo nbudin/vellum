@@ -10,7 +10,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :projects do |projects|
     projects.resources :structures, :name_prefix => nil, :collection => { :sort => :post }, 
                        :member => { :transition => :post } do |structures|
-      structures.resources :docs, :name_prefix => nil
+      structures.resources :doc_values, :name_prefix => nil
     end
     projects.resources :relationships, :name_prefix => nil
     projects.resources :maps, :name_prefix => nil, :collection => { :sort => :post } do |maps|
