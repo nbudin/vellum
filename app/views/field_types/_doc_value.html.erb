@@ -2,4 +2,12 @@
   <% if value.doc -%>
     <%= sanitize value.doc.content %>
   <% end -%>
+  
+  <p style="text-align: right; font-style: italic; font-size: 90%; font-family: sans-serif;">
+    Version <%= value.doc.version %>,
+    last updated <%= time_ago_in_words value.doc.updated_at %> ago
+    by <%= value.doc.author.name %>.
+    
+    <%= link_to "History", doc_path(value.doc.project, value.doc) %>
+  </p>
 </div>
