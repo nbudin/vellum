@@ -40,6 +40,7 @@ class StructuresController < ApplicationController
       format.html # show.rhtml
       format.xml  { render :xml => @structure.to_xml }
       format.json { render :json => @structure.to_json }
+      format.fo   { render :layout => false }
     end
   end
 
