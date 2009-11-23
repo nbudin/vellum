@@ -18,5 +18,5 @@ config.action_controller.perform_caching             = false
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
 
-config.gem 'thoughtbot-shoulda', :lib => "shoulda"
-config.gem 'thoughtbot-factory_girl', :lib => "factory_girl"
+config.gem 'shoulda', :source => "http://gemcutter.org"
+config.gem 'factory_girl', :source => "http://gemcutter.org", :version => "~> 1.2.3"
