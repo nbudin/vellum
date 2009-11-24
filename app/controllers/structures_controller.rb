@@ -11,7 +11,7 @@ class StructuresController < ApplicationController
     if params[:template_id]
       conds[:structure_template_id] = @project.template_schema.structure_templates.find(params[:template_id]).id
     end
-    @structures = Structure.find(:all, :conditions => conds, :include => [:attr_value_metadatas, :attrs]).sort_by {|s| s.name.sort_normalize }
+    @structures = Structure.find(:all, :conditions => conds, :include => [:attr_value_metadatas]).sort_by {|s| s.name.sort_normalize }
 
     respond_to do |format|
       format.xml  { render :xml => @structures.to_xml(:methods => [:name]) }
