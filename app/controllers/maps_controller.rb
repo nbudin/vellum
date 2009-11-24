@@ -72,7 +72,7 @@ class MapsController < ApplicationController
     @map.destroy
 
     respond_to do |format|
-      format.html { redirect_to(maps_url(@project)) }
+      format.html { redirect_to(project_url(@project)) }
       format.xml  { head :ok }
       format.json { head :ok }
     end

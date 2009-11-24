@@ -28,6 +28,11 @@
       <%= image_tag "template.png" %>
       <%= @structure.structure_template.name %>
     <% end -%>
+	<% if logged_in? and logged_in_person.permitted?(@structure, "destroy") -%>
+		<br/>
+		<%= button_to "Delete", structure_path(@project, @structure), :method => "delete",
+			:class => "delete", :confirm => "Are you sure you want to delete #{@structure.name}?" %>
+	<% end -%>
   </p>
   
   <% if @workflow_status -%>
