@@ -24,6 +24,14 @@ class Relationship < ActiveRecord::Base
   def right_description
     relationship_type.right_description
   end
+  
+  def description_for(structure)
+    if structure == left
+      left_description
+    else
+      right_description
+    end
+  end
 
   private
   def check_circular

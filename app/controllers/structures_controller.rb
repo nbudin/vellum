@@ -29,9 +29,17 @@ class StructuresController < ApplicationController
         [:structure_template, :attr_value_metadatas, :inward_relationships, :outward_relationships])
     @relationships = @structure.relationships.sort_by do |rel|
       other = rel.other(@structure)
-      "#{rel.relationship_type.description_for(@structure)} #{other.name.sort_normalize}"
+      "#{rel.description_for(@structure)} #{other.name.sort_normalize}"
     end
-    @relationship_types = @structure.structure_template.relationship_types.sort_by {|t| t.name.sort_normalize}
+    @relationship_types = {}
+    @structure.structure_template.relationship_types.each do |typ|
+      next if @relationship_types.include? typ
+      if typ.same_template?
+        @relationship_types[typ] = [:left, :right]
+      else
+        @relationship_types[typ] = [typ.direction_of(@structure.structure_template)]
+      end
+    end
     if @structure.structure_template.workflow
       @workflow_status = @structure.obtain_workflow_status
     end
