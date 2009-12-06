@@ -1,11 +1,20 @@
 class Project < ActiveRecord::Base
   belongs_to :template_schema
-  has_many :docs, :dependent => :destroy
   has_many :structures, :dependent => :destroy, :include => [:structure_template, :attr_value_metadatas]
   has_many :relationships, :dependent => :destroy, :include => [:relationship_type]
   has_many :maps, :dependent => :destroy
   
   acts_as_permissioned
+
+  def docs
+    structures.collect do |struct|
+      struct.attr_values.collect do |av|
+        if av.kind_of? DocValue
+          av.doc
+        end
+      end
+    end.flatten.compact.uniq
+  end
 
   def authors
     ids = docs.collect { |doc| doc.versions.collect { |version| version.author_id }.uniq }.flatten.uniq
