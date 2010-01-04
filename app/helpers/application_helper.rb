@@ -1,5 +1,10 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  def jipe_editor_if_permitted(object, attr, options={})
+    options[:editing] = logged_in? && logged_in_person.permitted?(object, "edit")
+    jipe_editor(object, attr, options)
+  end
+  
   def nav_link_to(label, destination, image_path=nil)
     label_html = if image_path
                    "#{image_tag(image_path, :alt => label)} #{h label}"
