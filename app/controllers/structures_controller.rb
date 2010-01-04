@@ -25,8 +25,11 @@ class StructuresController < ApplicationController
   # GET /structures/1
   # GET /structures/1.xml
   def show
-    @structure = @project.structures.find(params[:id], :include =>
-        [:structure_template, :attr_value_metadatas, :inward_relationships, :outward_relationships])
+    @structure = @project.structures.find(params[:id], 
+      :include => { :structure_template => [], 
+                    :attr_value_metadatas => [ :value, :attr ], 
+                    :outward_relationships => { :left => [], :relationship_type => [:left_template, :right_template] }, 
+                    :inward_relationships => { :right => [], :relationship_type => [:left_template, :right_template] } })
     @relationships = @structure.relationships.sort_by do |rel|
       other = rel.other(@structure)
       "#{rel.relationship_type.description_for(@structure)} #{other.name.sort_normalize}"
@@ -51,7 +54,9 @@ class StructuresController < ApplicationController
 
   # GET /structures/1;edit
   def edit
-    @structure = @project.structures.find(params[:id])
+    @structure = @project.structures.find(params[:id],
+      :include => { :attr_value_metadatas => [:attr]
+      })
   end
 
   # POST /structures

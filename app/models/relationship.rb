@@ -1,7 +1,7 @@
 class Relationship < ActiveRecord::Base
   belongs_to :relationship_type
-  belongs_to :left, :class_name => "Structure", :foreign_key => "left_id", :include => [:attrs, :structure_template, :attr_value_metadatas]
-  belongs_to :right, :class_name => "Structure", :foreign_key => "right_id", :include => [:attrs, :structure_template, :attr_value_metadatas]
+  belongs_to :left, :class_name => "Structure", :foreign_key => "left_id"
+  belongs_to :right, :class_name => "Structure", :foreign_key => "right_id"
   belongs_to :project
 
   validate :check_associations

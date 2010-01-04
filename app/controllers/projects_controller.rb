@@ -18,7 +18,11 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.xml
   def show
-    @project = Project.find(params[:id], :include => [:structures, :template_schema])
+    @project = Project.find(params[:id], 
+      :include => { :structures => { :structure_template => :workflow, 
+                                     :workflow_status => [:workflow_step, :assignee] }, 
+                                     :template_schema => [],
+                                     :permissions => [] })
 
     respond_to do |format|
       format.html do

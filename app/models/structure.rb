@@ -1,5 +1,5 @@
 class Structure < ActiveRecord::Base
-  belongs_to :structure_template, :include => [:attrs]
+  belongs_to :structure_template
   belongs_to :project
   has_many :attr_value_metadatas, :dependent => :destroy, :include => [:value]
   has_many :template_attrs, :through => :structure_template, :source => :attrs
