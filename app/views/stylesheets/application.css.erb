@@ -69,7 +69,7 @@ div.progressBar div.background {
 
 div.topbar {
   background-color: <%= @site_settings.site_color %>;
-  position: absolute;
+  position: fixed;
   top: 0px;
   left: 0px;
   width: 100%;
@@ -80,6 +80,7 @@ div.topbar {
   background-image: url(/images/button-bg-prelight.png);
   background-position: 50% 50%;
   background-repeat: repeat-x;
+  z-index: 1000;
 }
 
 div.topbar img {
@@ -230,4 +231,32 @@ ul.inline {
 ul.inline li {
     display: inline-block;
     margin-right: 0.3em;
+}
+
+ol {
+  counter-reset: item;
+  list-style-type: none;
+  padding-left: 1em;
+}
+
+ol > li {
+  counter-increment: item;
+  font-weight: bold;
+}
+
+ol > li:before {
+  content: counter(item) ". ";
+}
+
+ol > li > ol {
+  counter-reset: subitem;
+}
+
+ol > li > ol > li {
+  counter-increment: subitem;
+  font-weight: normal;
+}
+
+ol > li > ol > li:before {
+  content: counter(item) "." counter(subitem) ". ";
 }

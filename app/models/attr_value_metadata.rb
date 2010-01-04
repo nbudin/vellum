@@ -10,9 +10,9 @@ class AttrValueMetadata < ActiveRecord::Base
   def obtain_value
     if value
       return value
-    elsif attr.attr_configuration
-      attr.attr_configuration.class.value_class.create! :attr_value_metadata => self
-      return value(:force_reload => true)
+    elsif attr && attr.attr_configuration
+      self.value = attr.attr_configuration.class.value_class.new :attr_value_metadata => self
+      return self.value
     else
       return nil
     end

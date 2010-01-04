@@ -1,5 +1,18 @@
 <div class="document_content">
   <% if value.doc -%>
     <%= sanitize value.doc.content %>
+    
+    <p style="text-align: right; font-style: italic; font-size: 90%; font-family: sans-serif;">
+      Version <%= value.doc.version %> &mdash;
+      last updated <%= time_ago_in_words value.doc.updated_at %> ago
+      by <%= value.doc.author.name %> &mdash;
+    
+      <% if value.doc.project -%>
+        <%= link_to "History", doc_value_path(value.project, value.structure, value) %>
+      <% else -%>
+        <%= link_to_function("???", "alert('History is not available for this doc. "+
+              "Please tell the site administrator that the project ID appears to be missing for doc #{value.doc.id}.');") %>
+      <% end -%>
+    </p>
   <% end -%>
 </div>

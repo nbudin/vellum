@@ -25,4 +25,15 @@ class ActiveSupport::TestCase
   self.use_instantiated_fixtures  = false
 
   # Add more helper methods to be used by all tests here...
+  def build_schema_for_attr_value(field_type, value_type)
+    @field = Factory.build(field_type)
+    @attr = Factory.build(:attr)
+    @attr.attr_configuration = @field
+    @t = @attr.structure_template
+    @schema = @t.template_schema
+    @project = Factory.build(:project, :template_schema => @schema)
+    @structure = Factory.build(:structure, :project => @project, :structure_template => @t)
+    @avm = Factory.build(:attr_value_metadata, :structure => @structure, :attr => @attr)
+    @value = Factory.build(value_type, :attr_value_metadata => @avm)
+  end
 end

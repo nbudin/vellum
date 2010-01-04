@@ -10,7 +10,7 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
 
 <div class="jumpbox">
   <div class="navigation">
-    <% link_to workflows_path, :class => "button back" do %>
+    <% link_to template_schema_path(@template_schema), :class => "button back" do %>
       <%= image_tag "arrow_left.png" %>
       <%=h @template_schema.name %>
     <% end -%>

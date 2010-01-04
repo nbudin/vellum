@@ -1,0 +1,88 @@
+<script type="text/javascript">
+    Resource.model("Map", {prefix: '<%=project_path(@project)%>', format: 'json'});
+</script>
+
+<h1><%=jipe_editor @map, "name" %></h1>
+
+<p><%= jipe_editor @map, "blurb", :rows => 4 %></p>
+
+<div class="jumpbox">
+  <div class="navigation">
+    <% link_to project_path(@project), :class => "button back" do -%>
+      <%= image_tag "arrow_left.png" %>
+      <%=h @project.name %>
+    <% end -%>
+  </div>
+  
+  <h2><%=h @map.name %></h2>  
+    <% if logged_in? and logged_in_person.permitted?(@map, "destroy") -%>
+        <%= button_to "Delete", map_path(@project, @map), :method => "delete",
+            :class => "delete", :confirm => "Are you sure you want to delete the #{@map.name} map?" %>
+    <% end -%>
+
+  <% if logged_in? and logged_in_person.permitted?(@project, "edit") -%>
+    <h2>Structures</h2>
+    <div id="structures">
+      Include all...
+      <ul class="itemlist">
+        <% itemlist_items(@map.mapped_structure_templates,
+                          :delete_path => mapped_structure_templates_path(@project, @map)) do |mst| -%>
+          <span style="font-weight: bold; color: <%= mst.color %>;">
+            <%=h mst.structure_template && mst.structure_template.plural_name %>
+          </span>
+        <% end -%>
+        <li>
+          <% form_for :mapped_structure_template, :url => mapped_structure_templates_path(@project, @map) do |f| -%>
+            <span style="float: right;">
+              <%= submit_tag "Add", :class => "new" %>
+            </span>
+            <%= f.select "structure_template_id",
+                         @project.template_schema.structure_templates.reject { |t|
+                              @map.structure_templates.include? t
+                          }.collect { |t|
+                              [t.plural_name, t.id]
+                          } %>
+            <%= color_picker(f, "color") %>
+          <% end -%>
+        </li>
+      </ul>
+    </div>
+    
+    <h2>Relationships</h2>
+    <div id="relationships">
+      Draw arrows for...
+      <ul class="itemlist">
+        <% itemlist_items(@map.mapped_relationship_types,
+                          :delete_path => mapped_relationship_types_path(@project, @map)) do |mrt| -%>
+          <span style="font-weight: bold; color: <%= mrt.color %>;">
+            <%=h mrt.relationship_type && mrt.relationship_type.left_name %>
+          </span>
+        <% end -%>
+        <li>
+          <% form_for :mapped_relationship_type, :url => mapped_relationship_types_path(@project, @map) do |f| -%>
+            <span style="float: right;">
+              <%= submit_tag "Add", :class => "new" %>
+            </span>
+            <%= f.select "relationship_type_id",
+                         @project.template_schema.relationship_types.reject { |t|
+                              @map.relationship_types.include? t
+                          }.collect { |t|
+                              [t.left_name, t.id]
+                          } %>
+            <%= color_picker(f, "color") %>
+          <% end -%>
+        </li>
+      </ul>
+    </div>
+  <% end -%>
+</div>
+    
+<!--[if IE]>
+<object src="<%=map_path(:format => "svg") %>" classid="image/svg+xml"
+        width="100%">
+<![endif]-->
+<!--[if !IE]-->
+<object data="<%=map_path(:format => "svg") %>" type="image/svg+xml"
+        width="100%">
+<!--<![endif]-->
+</object>

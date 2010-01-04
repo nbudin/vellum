@@ -22,7 +22,11 @@ module ApplicationHelper
       if instance_variable_defined?(var_name)
         obj = instance_variable_get var_name
       else
-        klass = eval(controller.controller_name.classify.singularize)
+        begin
+          klass = eval(controller.controller_name.classify.singularize)
+        rescue
+        end
+        
         if klass.kind_of? Class and klass.respond_to? 'find'
           obj = klass.find(params[:id])
         end
@@ -234,5 +238,19 @@ module ApplicationHelper
     else
       html
     end
+  end
+  
+  def color_picker(f, field_name, options={})
+    html = f.hidden_field "color"
+    html << content_tag("button", "", :class => "color_swatch", :type => "button",
+                        :id => "#{f.object_name}_color_swatch")
+    html << javascript_tag(<<EOJS
+      new Control.ColorPicker("#{f.object_name}_color",
+                                      {
+                                        "swatch": "#{f.object_name}_color_swatch",
+                                        "IMAGE_BASE": "#{ url_for "/images/colorPicker/" }"
+                                      });
+EOJS
+)
   end
 end

@@ -33,9 +33,13 @@ class RelationshipType < ActiveRecord::Base
       nil
     end
   end
+  
+  def same_template?
+    left_template == right_template
+  end
 
-  def description_for(template)
-    dir = direction_of template
+  def description_for(template, dir=nil)
+    dir ||= direction_of template
     if dir == :left
       return left_description
     elsif dir == :right
@@ -76,15 +80,17 @@ class RelationshipType < ActiveRecord::Base
 
   private
   def check_templates_in_schema
-    if left_template
-      unless left_template.template_schema == template_schema
-        errors.add("left_template", "is not in template schema #{template_schema.name}")
+    if template_schema
+      if left_template
+        unless left_template.template_schema == template_schema
+          errors.add("left_template", "is not in template schema #{template_schema.name}")
+        end
       end
-    end
-
-    if right_template
-      unless right_template.template_schema == template_schema
-        errors.add("right_template", "is not in template schema #{template_schema.name}")
+  
+      if right_template
+        unless right_template.template_schema == template_schema
+          errors.add("right_template", "is not in template schema #{template_schema.name}")
+        end
       end
     end
   end

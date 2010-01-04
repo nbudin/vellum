@@ -11,7 +11,7 @@ class StructuresController < ApplicationController
     if params[:template_id]
       conds[:structure_template_id] = @project.template_schema.structure_templates.find(params[:template_id]).id
     end
-    @structures = Structure.find(:all, :conditions => conds, :include => [:attr_value_metadatas, :attrs]).sort_by {|s| s.name.sort_normalize }
+    @structures = Structure.find(:all, :conditions => conds, :include => [:attr_value_metadatas]).sort_by {|s| s.name.sort_normalize }
 
     respond_to do |format|
       format.xml  { render :xml => @structures.to_xml(:methods => [:name]) }
@@ -32,9 +32,17 @@ class StructuresController < ApplicationController
                     :inward_relationships => { :right => [], :relationship_type => [:left_template, :right_template] } })
     @relationships = @structure.relationships.sort_by do |rel|
       other = rel.other(@structure)
-      "#{rel.relationship_type.description_for(@structure)} #{other.name.sort_normalize}"
+      "#{rel.description_for(@structure)} #{other.name.sort_normalize}"
     end
-    @relationship_types = @structure.structure_template.relationship_types.sort_by {|t| t.name.sort_normalize}
+    @relationship_types = {}
+    @structure.structure_template.relationship_types.each do |typ|
+      next if @relationship_types.include? typ
+      if typ.same_template?
+        @relationship_types[typ] = [:left, :right]
+      else
+        @relationship_types[typ] = [typ.direction_of(@structure.structure_template)]
+      end
+    end
     if @structure.structure_template.workflow
       @workflow_status = @structure.obtain_workflow_status
     end
@@ -43,6 +51,7 @@ class StructuresController < ApplicationController
       format.html # show.rhtml
       format.xml  { render :xml => @structure.to_xml }
       format.json { render :json => @structure.to_json }
+      format.fo   { render :layout => false }
     end
   end
 
@@ -65,7 +74,7 @@ class StructuresController < ApplicationController
     # we need to set up the template before we can set the attrs
     @structure_template = @project.template_schema.structure_templates.find(params[:template_id])
     @structure = @project.structures.new(:structure_template => @structure_template)
-    @structure.update_attributes(params[:structure])
+    @structure.attributes = params[:structure]
 
     respond_to do |format|
       if @structure.save

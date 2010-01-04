@@ -4,7 +4,7 @@ class Relationship < ActiveRecord::Base
   belongs_to :right, :class_name => "Structure", :foreign_key => "right_id"
   belongs_to :project
 
-  validate :check_associations
+  validates_presence_of :left, :right, :relationship_type, :project
   validate :check_circular
   validate :check_project_membership
   validate :check_duplicate
@@ -24,16 +24,16 @@ class Relationship < ActiveRecord::Base
   def right_description
     relationship_type.right_description
   end
-
-  private
-  def check_associations
-    [:left, :right, :relationship_type, :project].each do |att|
-      if self.send(att).nil?
-        errors.add(att, "must be specified")
-      end
+  
+  def description_for(structure)
+    if structure == left
+      left_description
+    else
+      right_description
     end
   end
 
+  private
   def check_circular
     if left == right
       errors.add_to_base("This relationship is circular.")
@@ -60,7 +60,7 @@ class Relationship < ActiveRecord::Base
       others = left.outward_relationships.select do |rel| 
         ((self.new_record? or rel.id != self.id) and
          rel.right == right and
-         relationship_type == relationship_type)
+         rel.relationship_type == relationship_type)
       end
       if others.size > 0
         errors.add_to_base("#{left.name} already #{relationship_type.left_description} #{right.name}")

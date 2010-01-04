@@ -16,6 +16,8 @@ Rails::Initializer.run do |config|
   config.gem "stephencelis-acts_as_singleton",
     :lib => "acts_as_singleton",
     :source => "http://gems.github.com"
+    
+  config.gem "ruby-graphviz", :lib => "graphviz"
   
   # Settings in config/environments/* take precedence over those specified here
   
@@ -64,6 +66,10 @@ end
 # Mime::Type.register "application/x-mobile", :mobile
 Mime::Type.register "text/vellum-project+xml", :vproj
 Mime::Type.register "text/vellum-schema+xml", :vschema
+Mime::Type.register "image/png", :png
+Mime::Type.register "image/svg+xml", :svg
+Mime::Type.register "application/xslfo+xml", :fo
+Mime::Type.register "application/pdf", :pdf
 
 # Include your application configuration below
 require 'string_extensions'

@@ -3,3 +3,4 @@ config/database.yml
 config/scout.yml
 .loadpath
 .project
+*.kpf

@@ -4,7 +4,7 @@ class ChoiceValueTest < ActiveSupport::TestCase
   fixtures :choices, :choice_fields
 
   def build_value(field)
-    attr = Attr.create :attr_configuration => field
+    attr = Factory.create(:attr, :attr_configuration => field)
     v = ChoiceValue.create
     avm = AttrValueMetadata.create :attr => attr, :value => v
     v.reload

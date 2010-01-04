@@ -29,6 +29,11 @@
       <%= image_tag "template.png" %>
       <%= @structure.structure_template.name %>
     <% end -%>
+	<% if logged_in? and logged_in_person.permitted?(@structure, "destroy") -%>
+		<br/>
+		<%= button_to "Delete", structure_path(@project, @structure), :method => "delete",
+			:class => "delete", :confirm => "Are you sure you want to delete #{@structure.name}?" %>
+	<% end -%>
   </p>
   
   <% if @workflow_status -%>
@@ -56,12 +61,9 @@
     <%= @structure.name %>...
     <ul class="itemlist">
       <% itemlist_items(@relationships, :delete_path => relationships_path(@project)) do |rel| -%>
-	<% if rel.left == @structure -%>
-	<%=rel.left_description %> <%=link_to rel.right.name, structure_path(@project, rel.right)%>
-	<% else -%>
-	<%=rel.right_description %> <%=link_to rel.left.name, structure_path(@project, rel.left)%>
-	<% end -%>
-      <% end -%>
+		<%= rel.description_for(@structure) %>
+		<%= link_to rel.other(@structure).name, structure_path(@project, rel.other(@structure)) %>
+	  <% end -%>
       <li>
 	<%= render :partial => 'new_relationship', :locals => { :structure => @structure } %>
       </li>

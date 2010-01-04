@@ -9,9 +9,16 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :projects do |projects|
     projects.resources :structures, :name_prefix => nil, :collection => { :sort => :post }, 
-                       :member => { :transition => :post }
+                       :member => { :transition => :post } do |structures|
+      structures.resources :doc_values, :name_prefix => nil do |doc_values|
+        doc_values.resources :versions, :controller => 'DocValueVersions', :name_prefix => 'doc_value_'
+      end
+    end
     projects.resources :relationships, :name_prefix => nil
-    projects.resources :docs, :name_prefix => nil
+    projects.resources :maps, :name_prefix => nil, :collection => { :sort => :post } do |maps|
+      maps.resources :mapped_structure_templates, :name_prefix => nil
+      maps.resources :mapped_relationship_types, :name_prefix => nil
+    end
   end
   
   map.resources :template_schemas do |schemas|
