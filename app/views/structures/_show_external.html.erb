@@ -24,7 +24,7 @@
 			<% end -%>
 		  <% end -%>
 		</div>	
-		<h3><%= jipe_editor_if_permitted structure, name %></h3>
+		<h3><%= jipe_editor_if_permitted structure, :name %></h3>
 	    <span class="workflow_status">
   	        <% if structure.structure_template.workflow -%>
                 <% ws = structure.obtain_workflow_status -%>
