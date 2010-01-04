@@ -23,7 +23,7 @@ class Structure < ActiveRecord::Base
     "#{id}-#{name.parameterize}"
   end
 
-  def name
+  def generated_name
     name_attr = attr("Name")
     n = nil
     if name_attr

@@ -3,7 +3,7 @@
   Resource.model("Structure", {prefix: '<%=project_path(@project)%>', format: 'json'})
 </script>
 
-<h1><%= jipe_editor(@project, "name") %></h1>
+<h1><%= jipe_editor_if_permitted(@project, "name") %></h1>
 
 <div class="jumpbox">
   <div class="navigation">

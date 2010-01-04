@@ -4,7 +4,8 @@
     Resource.model("StructureTemplate", {prefix: '<%=template_schema_path(@project.template_schema)%>', format: 'json'});
 </script>
 
-<p style="margin-top: 2em;"><span style="font-weight: bold; font-size: 200%;"><%=h @structure.name %></span>
+<p style="margin-top: 2em;">
+  <span style="font-weight: bold; font-size: 200%;"><%= jipe_editor_if_permitted @structure, "name" %></span>
     (<%=h @structure.structure_template.name %>)</p>
 
 <div class="jumpbox">
@@ -21,7 +22,7 @@
     <% end -%>
   </div>
 
-  <h2><%= @structure.name %></h2>
+  <h2><%=h @structure.name %></h2>
   <p>
     <b>Template:</b> 
     <% link_to structure_template_path(@structure.project.template_schema, @structure.structure_template) do -%>

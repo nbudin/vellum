@@ -1,5 +1,8 @@
-<p style="margin-top: 2em;"><span style="font-size: 200%; font-weight: bold;"><%=h @structure.name %></span>
-    (<%=h @structure.structure_template.name %>)</p>
+<% form_for(:structure, :url => structure_path(@project, @structure), :html => {:method => 'put'}) do |f| -%>
+
+<p style="margin-top: 2em;">
+  <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold;" %>
+  (<%=h @structure.structure_template.name %>)</p>
 
 <div class="jumpbox">
   <div class="navigation">
@@ -21,6 +24,5 @@
 
 <%= error_messages_for :structure %>
 
-<% form_for(:structure, :url => structure_path(@project, @structure), :html => {:method => 'put'}) do |f| -%>
   <%= render :partial => 'form' %>
 <% end -%>

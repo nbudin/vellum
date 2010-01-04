@@ -1,6 +1,6 @@
 <div class="structure_external">
     <div style="margin-top: 0; overflow: auto;">
-		<h3 style="display: inline;"><%= structure.name %></h3>
+		<h3 style="display: inline;"><%= jipe_editor_if_permitted(structure, "name") %></h3>
 	    <span class="workflow_status">
   	        <% if structure.structure_template.workflow -%>
                 <% ws = structure.obtain_workflow_status -%>

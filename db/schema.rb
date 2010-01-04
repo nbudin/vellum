@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090731174320) do
+ActiveRecord::Schema.define(:version => 20100104171720) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -102,7 +102,6 @@ ActiveRecord::Schema.define(:version => 20090731174320) do
     t.datetime "updated_at"
     t.integer  "structure_template_id"
     t.integer  "version"
-    t.integer  "project_id"
     t.integer  "author_id"
   end
 
@@ -114,6 +113,31 @@ ActiveRecord::Schema.define(:version => 20090731174320) do
     t.integer  "structure_template_id"
     t.integer  "version"
     t.integer  "project_id"
+  end
+
+  create_table "mapped_relationship_types", :force => true do |t|
+    t.integer  "map_id"
+    t.integer  "relationship_type_id"
+    t.string   "color"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mapped_structure_templates", :force => true do |t|
+    t.integer  "map_id"
+    t.integer  "structure_template_id"
+    t.string   "color"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "maps", :force => true do |t|
+    t.string   "name"
+    t.text     "blurb"
+    t.integer  "project_id"
+    t.string   "graphviz_method"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "number_fields", :force => true do |t|
@@ -208,21 +232,9 @@ ActiveRecord::Schema.define(:version => 20090731174320) do
   create_table "structures", :force => true do |t|
     t.integer "structure_template_id"
     t.integer "project_id"
-    t.text    "blurb"
+    t.text    "blurb",                 :limit => 16777215
     t.integer "position"
-  end
-
-  create_table "substructure_fields", :force => true do |t|
-    t.integer  "min"
-    t.integer  "max"
-    t.integer  "substructure_template_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "substructure_values", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string  "name"
   end
 
   create_table "template_schemas", :force => true do |t|
@@ -237,7 +249,7 @@ ActiveRecord::Schema.define(:version => 20090731174320) do
   end
 
   create_table "text_values", :force => true do |t|
-    t.text "value"
+    t.text "value", :limit => 16777215
   end
 
   create_table "workflow_actions", :force => true do |t|
