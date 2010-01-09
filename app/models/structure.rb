@@ -70,7 +70,8 @@ class Structure < ActiveRecord::Base
   end
 
   def attr_value(a)
-    avm_for_attr(a).value
+    avm = avm_for_attr(a)
+    avm && avm.value
   end
 
   def obtain_attr_value(a)
