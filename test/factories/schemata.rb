@@ -33,6 +33,10 @@ Factory.define :number_field do
 
 end
 
+Factory.define :choice_field do |f|
+  
+end
+
 Factory.define :doc_field do
   
 end

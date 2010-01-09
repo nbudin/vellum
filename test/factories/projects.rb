@@ -13,9 +13,5 @@ end
 Factory.define :doc do |doc|
 end
 
-Factory.define :choice_field do |f|
-  
-end
-
 Factory.define :relationship do |r|
 end
