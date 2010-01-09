@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100104171720) do
+ActiveRecord::Schema.define(:version => 20100106193635) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -195,6 +195,14 @@ ActiveRecord::Schema.define(:version => 20100104171720) do
     t.string  "name"
     t.integer "template_schema_id"
     t.text    "blurb"
+  end
+
+  create_table "publication_templates", :force => true do |t|
+    t.integer  "template_schema_id"
+    t.string   "name"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "relationship_types", :force => true do |t|

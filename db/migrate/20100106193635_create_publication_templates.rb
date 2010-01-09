@@ -1,7 +1,9 @@
 class CreatePublicationTemplates < ActiveRecord::Migration
   def self.up
     create_table :publication_templates do |t|
-
+      t.integer :template_schema_id
+      t.string :name
+      t.text :content
       t.timestamps
     end
   end
