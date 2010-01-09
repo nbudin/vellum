@@ -82,6 +82,23 @@ class Structure < ActiveRecord::Base
     outward_relationships + inward_relationships
   end
   
+  def related_structures(relationship_type, direction)
+    relationships = case direction.to_sym
+    when :inward
+      inward_relationships
+    when :outward
+      outward_relationships
+    end
+    
+    relationships.reject! { |r| r.relationship_type != relationship_type }
+    case direction.to_sym
+    when :inward
+      relationships.collect { |r| r.left }
+    when :outward
+      relationships.collect { |r| r.right }
+    end
+  end
+  
   def attrs
     attr_value_metadatas.collect { |avm| avm.attr }.flatten.compact
   end
