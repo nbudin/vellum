@@ -18,6 +18,7 @@ Rails::Initializer.run do |config|
     :source => "http://gems.github.com"
     
   config.gem "ruby-graphviz", :lib => "graphviz"
+  config.gem "radius"
   
   # Settings in config/environments/* take precedence over those specified here
   
