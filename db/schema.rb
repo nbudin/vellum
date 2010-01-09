@@ -200,6 +200,7 @@ ActiveRecord::Schema.define(:version => 20100106193635) do
   create_table "publication_templates", :force => true do |t|
     t.integer  "template_schema_id"
     t.string   "name"
+    t.string   "format"
     t.text     "content"
     t.datetime "created_at"
     t.datetime "updated_at"
