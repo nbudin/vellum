@@ -9,8 +9,8 @@ class DocValue < ActiveRecord::Base
     doc ? doc.content : ""
   end
 
-  def doc_content
-    doc ? doc.content : nil
+  def doc_content(format="html")
+    doc ? doc.content(format) : nil
   end
 
   def doc_content=(content)

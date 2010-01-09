@@ -11,9 +11,22 @@ class Doc < ActiveRecord::Base
     doc_value.project
   end
   
-  def write_fo(xml)
-    parser = REXML::Parsers::SAX2Parser.new(content)
-    parser.listen(:characters) {|text| xml.text!(text) }
+  def content(format='html')
+    html_content = read_attribute(:content)
+    
+    case (format && format.to_sym)
+    when :fo
+      html_to_fo(html_content)
+    else
+      html_content
+    end
+  end
+  
+  private
+  def html_to_fo(html)
+    xml = ""
+    parser = REXML::Parsers::SAX2Parser.new(html)
+    parser.listen(:characters) {|text| xml << text }
     
     parser.listen(:start_element, %w{ p }) do
       xml << "<block space-after.optimum=\"8pt\" widows=\"4\" orphans=\"4\">"
@@ -46,5 +59,7 @@ class Doc < ActiveRecord::Base
     end
     
     parser.parse
+    
+    return xml
   end
 end
