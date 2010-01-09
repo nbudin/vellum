@@ -1,10 +1,11 @@
 class StructureContext < Radius::Context
-  attr_reader :structure
+  attr_reader :structure, :format
   
   def initialize(structure)
     super()
     @structure = structure
     globals.structure = @structure
+    self.format = 'html'
     
     define_tag 'attr' do |tag|
       get_attr_value tag
@@ -37,7 +38,7 @@ class StructureContext < Radius::Context
     define_tag 'attr:doc:content' do |tag|
       get_attr_doc tag
       
-      tag.locals.doc.content(tag.attr['format'])
+      tag.locals.doc.content(tag.attr['format'] || @format)
     end
     
     define_tag 'each_related' do |tag|
@@ -67,6 +68,10 @@ class StructureContext < Radius::Context
     define_tag 'name' do |tag|
       tag.locals.structure.name
     end
+  end
+  
+  def format=(format)
+    @format = format
   end
   
   def get_attr_value(tag)

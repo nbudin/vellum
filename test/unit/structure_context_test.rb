@@ -75,6 +75,8 @@ class StructureContextTest < ActiveSupport::TestCase
       
       should "return the doc content in the specified format" do
         assert_equal @bob_notes.doc_content(:fo), @parser.parse('<v:attr:doc:content name="Notes" format="fo"/>')
+        @context.format = 'fo'
+        assert_equal @bob_notes.doc_content(:fo), @parser.parse('<v:attr:doc:content name="Notes"/>')
       end
     end
     
