@@ -1,5 +1,5 @@
 class PublicationTemplate < ActiveRecord::Base
-  belongs_to :template_schema
+  belongs_to :project
   
   def execute(structure)
     context = StructureContext.new(structure)
