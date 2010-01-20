@@ -15,3 +15,7 @@ end
 
 Factory.define :relationship do |r|
 end
+
+Factory.define(:publication_template) do |pt|
+  pt.association :project, :factory => :project
+end

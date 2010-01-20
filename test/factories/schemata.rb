@@ -54,6 +54,3 @@ Factory.define(:relationship_type) do |rt|
   rt.association :right, :factory => :structure_template
 end
 
-Factory.define(:publication_template) do |pt|
-  pt.association :template_schema, :factory => :template_schema
-end
