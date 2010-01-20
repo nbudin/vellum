@@ -22,7 +22,11 @@ class Project < ActiveRecord::Base
   end
   
   def to_param
-    return "#{id}-#{name.parameterize}"
+    if name
+      return "#{id}-#{name.parameterize}"
+    else
+      return "#{id}"
+    end
   end
 
   def to_vproj(options = {})
