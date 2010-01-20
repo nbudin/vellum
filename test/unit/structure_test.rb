@@ -7,70 +7,70 @@ class StructureTest < ActiveSupport::TestCase
     setup do
       @structure_template = Factory.create(:structure_template)
       @project = Factory.create(:project, :template_schema => @structure_template.template_schema)
-      @bob = Factory.build(:structure, :structure_template => @structure_template, :project => @project)
+      @bob = Factory.build(:structure, :structure_template => @structure_template, :project => @project, :name => "Bob")
     end
     
     should "save cleanly" do
       assert @bob.save
     end
     
-    context "with a name attr" do
+    should "return the right value for name" do
+      assert_equal "Bob", @bob.name
+    end
+    
+    context "with an attr" do
       setup do
         assert @bob.save
   
         @attr_configuration = TextField.create
-        @attr = @bob.structure_template.attrs.create(:name => "Name", :attr_configuration => @attr_configuration)
+        @attr_name = "Favorite Color"
+        @attr = @bob.structure_template.attrs.create(:name => @attr_name, :attr_configuration => @attr_configuration)
         @bob.reload
       end
       
       should "create attr instances in memory on obtain_attr" do
-        assert attr = @bob.obtain_attr("Name")
+        assert attr = @bob.obtain_attr(@attr_name)
         assert @bob.attrs.include?(attr), "attr doesn't appear in @bob.attrs"
-        assert_equal attr, @bob.attr("Name")
+        assert_equal attr, @bob.attr(@attr_name)
       end
     
       should "return the same attr on subsequent obtains" do
-        assert attr = @bob.obtain_attr("Name")
-        assert_equal attr, @bob.obtain_attr("Name")
+        assert attr = @bob.obtain_attr(@attr_name)
+        assert_equal attr, @bob.obtain_attr(@attr_name)
       end
       
       should "create AVM instances in memory on obtain_avm_for_attr" do
-        assert avm = @bob.obtain_avm_for_attr("Name")
+        assert avm = @bob.obtain_avm_for_attr(@attr_name)
         assert @bob.attr_value_metadatas.include?(avm)
       end
       
       should "return the same AVM instance on subsequent obtains" do
-        assert avm = @bob.obtain_avm_for_attr("Name")
-        assert_equal avm, @bob.obtain_avm_for_attr("Name")
+        assert avm = @bob.obtain_avm_for_attr(@attr_name)
+        assert_equal avm, @bob.obtain_avm_for_attr(@attr_name)
       end
       
       should "create attr value instances in memory on obtain_attr_value" do
-        assert av = @bob.obtain_attr_value("Name")
+        assert av = @bob.obtain_attr_value(@attr_name)
         assert @bob.attr_values.include?(av), "av doesn't appear in @bob.attr_values"
-        assert_equal av, @bob.attr_value("Name")
+        assert_equal av, @bob.attr_value(@attr_name)
       end
       
       should "return the same attr_value instance on subsequent obtains" do
-        assert av = @bob.obtain_attr_value("Name")
-        av.value = "Bob"
-        assert av2 = @bob.obtain_attr_value("Name")
+        assert av = @bob.obtain_attr_value(@attr_name)
+        av.value = "Green"
+        assert av2 = @bob.obtain_attr_value(@attr_name)
         assert_equal av, av2
         assert_equal av.value, av2.value
       end
       
       context "having a value" do
         setup do          
-          assert @attr_value = @bob.obtain_attr_value("Name")
-        end
-        
-        should "return the right value for name" do
-          @attr_value.value = "Bob"
-          assert_equal "Bob", @bob.name
+          assert @attr_value = @bob.obtain_attr_value(@attr_name)
         end
           
         should "return the right value for attr_value.value" do
-          @attr_value.value = "Jim"
-          assert_equal "Jim", @bob.attr_value("Name").value
+          @attr_value.value = "Yellow"
+          assert_equal "Yellow", @bob.attr_value(@attr_name).value
         end
       end
     end
