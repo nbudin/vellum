@@ -198,7 +198,7 @@ ActiveRecord::Schema.define(:version => 20100106193635) do
   end
 
   create_table "publication_templates", :force => true do |t|
-    t.integer  "template_schema_id"
+    t.integer  "project_id"
     t.string   "name"
     t.string   "format"
     t.text     "content"
@@ -244,6 +244,19 @@ ActiveRecord::Schema.define(:version => 20100106193635) do
     t.text    "blurb",                 :limit => 16777215
     t.integer "position"
     t.string  "name"
+  end
+
+  create_table "substructure_fields", :force => true do |t|
+    t.integer  "min"
+    t.integer  "max"
+    t.integer  "substructure_template_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "substructure_values", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "template_schemas", :force => true do |t|
