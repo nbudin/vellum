@@ -19,7 +19,7 @@ class AttrsController < ApplicationController
   # GET /attrs/1
   # GET /attrs/1.xml
   def show
-    @attr = Attr.find(params[:id])
+    @attr = @structure_template.attrs.find(params[:id])
 
     respond_to do |format|
       format.xml  { render :xml => @attr.to_xml }
@@ -139,7 +139,7 @@ class AttrsController < ApplicationController
   private
   
   def get_template_and_schema
-    @structure_template = StructureTemplate.find(params[:structure_template_id])
     @template_schema = TemplateSchema.find(params[:template_schema_id])
+    @structure_template = @template_schema.structure_templates.find(params[:structure_template_id])
   end
 end
