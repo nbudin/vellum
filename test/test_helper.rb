@@ -36,4 +36,9 @@ class ActiveSupport::TestCase
     @avm = Factory.build(:attr_value_metadata, :structure => @structure, :attr => @attr)
     @value = Factory.build(value_type, :attr_value_metadata => @avm)
   end
+
+  def create_logged_in_person
+    @person = Person.create
+    @request.session[:person] = @person.id
+  end
 end

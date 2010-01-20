@@ -8,8 +8,7 @@ class AttrsControllerTest < ActionController::TestCase
   fixtures :attrs, :structure_templates, :template_schemas
 
   def setup
-    @person = Person.create
-    @request.session[:person] = @person.id
+    create_logged_in_person
   end
 
   context "on GET to :index" do
