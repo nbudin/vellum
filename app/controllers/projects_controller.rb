@@ -55,7 +55,7 @@ class ProjectsController < ApplicationController
         format.xml  { head :created, :location => project_url(@project) }
         format.json { head :created, :location => project_url(@project) }
       else
-        format.html { render :action => "new" }
+        format.html { render :action => "index" }
         format.xml  { render :xml => @project.errors.to_xml }
         format.json { render :json => @project.errors.to_json }
       end

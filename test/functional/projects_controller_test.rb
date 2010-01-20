@@ -8,48 +8,105 @@ class ProjectsControllerTest < ActionController::TestCase
   fixtures :projects, :template_schemas
 
   def setup
-    @controller = ProjectsController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
-    @request.session[:person] = Person.find(:first).id
+    create_logged_in_person
+    @schema = Factory.create(:template_schema)
+    @schema.grant(@person)
   end
 
-  def test_should_get_index
-    get :index
-    assert_response :success
-    assert assigns(:projects)
-  end
-  
-  def test_should_create_project
-    old_count = Project.count
-    post :create, { :project => { :template_schema_id => template_schemas(:one).id } }
-    assert_equal old_count+1, Project.count
-    
-    assert_redirected_to project_path(assigns(:project))
+  context "on GET to :index" do
+    setup do
+      get :index
+    end
+
+    should_respond_with :success
+    should_assign_to :projects
+    should_render_template "index"
   end
 
-  def test_should_show_project
-    get :show, :id => 1
-    assert_response :success
+  context "on POST to :create with project" do
+    setup do
+      @old_count = Project.count
+      post :create, { :project => { :template_schema_id => @schema.id }}
+    end
+
+    should_respond_with :redirect
+    should_assign_to :project
+    should_not_set_the_flash
+
+    should "create a project" do
+      assert_equal @old_count + 1, Project.count
+    end
+
+    should "redirect to the project" do
+      assert_redirected_to project_url(assigns(:project))
+    end
+
+    should "grant permissions to the logged in user" do
+      assert @person.permitted?(assigns(:project), 'edit')
+    end
   end
 
-  def test_should_get_edit
-    get :edit, :id => 1
-    assert_response :success
-  end
-  
-  def test_should_update_project
-    put :update, :id => 1, :project => { }
-    assert_response :success
-  end
-  
-  def test_should_destroy_project
-    old_count = Project.count
-    proj = Project.find(:first)
-    proj.grant(Person.find(@request.session[:person]))
-    delete :destroy, { :id => proj.id }
-    assert_equal old_count-1, Project.count
-    
-    assert_redirected_to projects_path
+  context "with project" do
+    setup do
+      @project = Factory.create(:project, :template_schema => @schema)
+      @project.grant(@person)
+    end
+
+    context "on GET to :show" do
+      setup do
+        get :show, :id => @project.id
+      end
+
+      should_respond_with :success
+      should_render_template :show
+      should_assign_to :project
+    end
+
+    context "on GET to :edit" do
+      setup do
+        get :edit, :id => @project.id
+      end
+
+      should_respond_with :success
+      should_render_template :edit
+      should_assign_to :project
+    end
+
+    context "on PUT to :update" do
+      setup do
+        put :update, :id => @project.id, :project => { :name => "New name" }
+      end
+
+      should_respond_with :redirect
+      should_assign_to :project
+      should_not_set_the_flash
+
+      should "update the project" do
+        assert_equal "New name", assigns(:project).name
+      end
+
+      should "redirect back to the project" do
+        assert_redirected_to project_url(assigns(:project))
+      end
+    end
+
+    context "on DELETE to :destroy" do
+      setup do
+        @old_count = Project.count
+        delete :destroy, :id => @project.id
+      end
+
+      should_respond_with :redirect
+      should_assign_to :project
+      should_not_set_the_flash
+
+      should "destroy the project" do
+        assert_equal @old_count - 1, Project.count
+      end
+
+      should "redirect back to the project list" do
+        assert_redirected_to projects_url
+      end
+    end
   end
 end
