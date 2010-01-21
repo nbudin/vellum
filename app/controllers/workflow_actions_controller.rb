@@ -31,7 +31,6 @@ class WorkflowActionsController < ApplicationController
 
     respond_to do |format|
       if @workflow_action.update_attributes(params[:workflow_action])
-        flash[:notice] = 'WorkflowAction was successfully updated.'
         format.html { redirect_to(@workflow_action) }
         format.xml  { head :ok }
       else
