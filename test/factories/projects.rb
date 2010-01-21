@@ -19,3 +19,7 @@ end
 Factory.define(:publication_template) do |pt|
   pt.association :project, :factory => :project
 end
+
+Factory.define :map do |map|
+  
+end
