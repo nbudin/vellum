@@ -18,16 +18,6 @@ class StructureTemplatesControllerTest < ActionController::TestCase
     should_respond_with_json
   end
 
-  context "on GET to :new" do
-    setup do
-      get :new, :template_schema_id => @schema.id
-    end
-
-    should_respond_with :success
-    should_assign_to :structure_template
-    should_render_template "new"
-  end
-
   context "on POST to :create" do
     setup do
       @old_count = StructureTemplate.count
