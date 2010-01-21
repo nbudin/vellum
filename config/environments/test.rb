@@ -18,5 +18,6 @@ config.action_controller.perform_caching             = false
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
 
+config.gem 'test-unit', :lib => "test/unit"
 config.gem 'shoulda', :source => "http://gemcutter.org"
 config.gem 'factory_girl', :source => "http://gemcutter.org", :version => "~> 1.2.3"
