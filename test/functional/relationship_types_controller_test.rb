@@ -1,45 +1,89 @@
 require 'test_helper'
 
 class RelationshipTypesControllerTest < ActionController::TestCase
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:relationship_types)
+  def setup
+    create_logged_in_person
+
+    @schema = Factory.create(:template_schema)
+    @schema.grant(@person)
   end
 
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
+  context "on POST to :create" do
+    setup do
+      @a = @schema.structure_templates.create(:name => "A")
+      @b = @schema.structure_templates.create(:name => "B")
 
-  test "should create relationship_type" do
-    assert_difference('RelationshipType.count') do
-      post :create, :relationship_type => { }
+      @old_count = RelationshipType.count
+      post :create, :template_schema_id => @schema.id, :relationship_type => {
+        :left_template_id => @a.id,
+        :right_template_id => @b.id,
+        :left_description => "is related to"
+      }
     end
 
-    assert_redirected_to relationship_type_path(assigns(:relationship_type))
-  end
+    should_assign_to :relationship_type
+    should_respond_with :redirect
+    should_not_set_the_flash
 
-  test "should show relationship_type" do
-    get :show, :id => relationship_types(:one).to_param
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, :id => relationship_types(:one).to_param
-    assert_response :success
-  end
-
-  test "should update relationship_type" do
-    put :update, :id => relationship_types(:one).to_param, :relationship_type => { }
-    assert_redirected_to relationship_type_path(assigns(:relationship_type))
-  end
-
-  test "should destroy relationship_type" do
-    assert_difference('RelationshipType.count', -1) do
-      delete :destroy, :id => relationship_types(:one).to_param
+    should "create a relationship type" do
+      assert_equal @old_count + 1, RelationshipType.count
     end
 
-    assert_redirected_to relationship_types_path
+    should "redirect to the new relationship type" do
+      assert_redirected_to relationship_type_path(@schema, assigns(:relationship_type))
+    end
+  end
+
+  context "with a relationship type" do
+    setup do
+      @rt = Factory.create(:relationship_type, :template_schema => @schema)
+    end
+
+    context "on GET to :show" do
+      setup do
+        get :show, :id => @rt.id, :template_schema_id => @schema.id
+      end
+
+      should_assign_to :relationship_type
+      should_respond_with :success
+      should_render_template "show"
+    end
+
+    context "on PUT to :update" do
+      setup do
+        @new_desc = "is taller than"
+        put :update, :id => @rt.id, :template_schema_id => @schema.id,
+          :relationship_type => { :left_description => @new_desc }
+      end
+
+      should_assign_to :relationship_type
+      should_respond_with :redirect
+      should_not_set_the_flash
+
+      should "update the relationship type" do
+        assert_equal @new_desc, assigns(:relationship_type).left_description
+        @rt.reload
+        assert_equal @new_desc, @rt.left_description
+      end
+
+      should "redirect to the relationship type" do
+        assert_redirected_to relationship_type_path(@schema, @rt)
+      end
+    end
+
+    context "on DELETE to :destroy" do
+      setup do
+        @old_count = RelationshipType.count
+        delete :destroy, :id => @rt.id, :template_schema_id => @schema.id
+      end
+
+      should_assign_to :relationship_type
+      should_respond_with :redirect
+      should_not_set_the_flash
+
+      should "destroy a relationship type" do
+        assert_equal @old_count - 1, RelationshipType.count
+      end
+    end
   end
 end
