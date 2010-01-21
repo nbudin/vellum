@@ -9,6 +9,8 @@ class StructureTest < ActiveSupport::TestCase
       @project = Factory.create(:project, :template_schema => @structure_template.template_schema)
       @bob = Factory.build(:structure, :structure_template => @structure_template, :project => @project, :name => "Bob")
     end
+
+    should_belong_to :assignee
     
     should "save cleanly" do
       assert @bob.save
@@ -16,6 +18,10 @@ class StructureTest < ActiveSupport::TestCase
     
     should "return the right value for name" do
       assert_equal "Bob", @bob.name
+    end
+
+    should "not start out assigned to anyone" do
+      assert_nil @bob.assignee
     end
     
     context "with an attr" do

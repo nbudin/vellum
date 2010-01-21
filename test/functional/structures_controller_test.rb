@@ -129,6 +129,19 @@ class StructuresControllerTest < ActionController::TestCase
       end
     end
 
+    context "on PUT to :update with new assignee" do
+      setup do
+        put :update, :id => @structure.id, :project_id => @project.id,
+          :structure => { :assignee_id => @person.id }
+      end
+
+      should_assign_to :structure
+
+      should "reassign the structure" do
+        assert_equal @person.id, assigns(:structure).assignee.id
+      end
+    end
+
     context "on DELETE to :destroy" do
       setup do
         @old_count = Structure.count

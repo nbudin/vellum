@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100106193635) do
+ActiveRecord::Schema.define(:version => 20100121203756) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -244,6 +244,7 @@ ActiveRecord::Schema.define(:version => 20100106193635) do
     t.text    "blurb",                 :limit => 16777215
     t.integer "position"
     t.string  "name"
+    t.integer "assignee_id"
   end
 
   create_table "substructure_fields", :force => true do |t|
@@ -274,43 +275,6 @@ ActiveRecord::Schema.define(:version => 20100106193635) do
     t.text "value", :limit => 16777215
   end
 
-  create_table "workflow_actions", :force => true do |t|
-    t.integer  "workflow_transition_id"
-    t.string   "type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "whom"
-  end
-
-  add_index "workflow_actions", ["workflow_transition_id"], :name => "index_workflow_actions_on_workflow_transition_id"
-
-  create_table "workflow_status_versions", :force => true do |t|
-    t.integer  "workflow_status_id"
-    t.integer  "version"
-    t.integer  "structure_id"
-    t.integer  "workflow_step_id"
-    t.integer  "assignee_id"
-    t.integer  "transitioner_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "workflow_status_versions", ["workflow_status_id"], :name => "index_workflow_status_versions_on_workflow_status_id"
-
-  create_table "workflow_statuses", :force => true do |t|
-    t.integer  "structure_id"
-    t.integer  "workflow_step_id"
-    t.integer  "assignee_id"
-    t.integer  "transitioner_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "version"
-  end
-
-  add_index "workflow_statuses", ["assignee_id"], :name => "index_workflow_statuses_on_assignee_id"
-  add_index "workflow_statuses", ["structure_id"], :name => "index_workflow_statuses_on_structure_id"
-  add_index "workflow_statuses", ["workflow_step_id"], :name => "index_workflow_statuses_on_workflow_step_id"
-
   create_table "workflow_steps", :force => true do |t|
     t.string   "name"
     t.integer  "position"
@@ -320,21 +284,5 @@ ActiveRecord::Schema.define(:version => 20100106193635) do
   end
 
   add_index "workflow_steps", ["workflow_id"], :name => "index_workflow_steps_on_workflow_id"
-
-  create_table "workflow_transitions", :force => true do |t|
-    t.string   "name"
-    t.integer  "from_id"
-    t.integer  "to_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "workflow_transitions", ["from_id"], :name => "index_workflow_transitions_on_from_id"
-
-  create_table "workflows", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
 end

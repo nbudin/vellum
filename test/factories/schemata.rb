@@ -2,21 +2,8 @@ Factory.define(:template_schema) do |schema|
   schema.name "My awesome templates"
 end
 
-Factory.define(:workflow) do |workflow|
-end
-
-Factory.define(:workflow_step) do |step|
-  step.association :workflow, :factory => :workflow
-end
-
-Factory.define(:workflow_transition) do |trans|
-  trans.association :from, :factory => :workflow_step
-  trans.association :to, :factory => :workflow_step
-end
-
 Factory.define(:structure_template) do |t|
   t.association :template_schema, :factory => :template_schema
-  t.association :workflow, :factory => :workflow
   t.name "A structure template"
 end
 
