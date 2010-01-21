@@ -5,8 +5,6 @@ require 'projects_controller'
 class ProjectsController; def rescue_action(e) raise e end; end
 
 class ProjectsControllerTest < ActionController::TestCase
-  fixtures :projects, :template_schemas
-
   def setup
     create_logged_in_person
     @schema = Factory.create(:template_schema)
