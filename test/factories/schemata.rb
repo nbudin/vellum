@@ -50,7 +50,12 @@ Factory.define :radio_choice_field do |f|
 end
 
 Factory.define(:relationship_type) do |rt|
-  rt.association :left, :factory => :structure_template
-  rt.association :right, :factory => :structure_template
+  rt.association :template_schema, :factory => :template_schema
+  rt.after_build do |t|
+    %w{left_template right_template}.each do |m|
+      tmpl = Factory.build(:structure_template, :template_schema => t.template_schema) 
+      t.send("#{m}=", tmpl)
+    end
+  end
 end
 
