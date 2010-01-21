@@ -4,3 +4,4 @@ config/scout.yml
 .loadpath
 .project
 *.kpf
+nbproject/*
