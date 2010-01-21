@@ -1,8 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class StructureTest < ActiveSupport::TestCase
-  fixtures :structures, :structure_templates, :text_fields, :relationship_types, :projects, :attrs
-  
   context "A new structure" do
     setup do
       @structure_template = Factory.create(:structure_template)
