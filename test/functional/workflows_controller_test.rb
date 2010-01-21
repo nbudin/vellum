@@ -1,45 +1,95 @@
 require 'test_helper'
 
 class WorkflowsControllerTest < ActionController::TestCase
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:workflows)
+  def setup
+    create_logged_in_person
   end
 
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
-  test "should create workflow" do
-    assert_difference('Workflow.count') do
-      post :create, :workflow => { }
+  context "on GET to :index" do
+    setup do
+      get :index
     end
 
-    assert_redirected_to workflow_path(assigns(:workflow))
+    should_respond_with :success
+    should_assign_to :workflows
+    should_render_template "index"
   end
 
-  test "should show workflow" do
-    get :show, :id => workflows(:one).to_param
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, :id => workflows(:one).to_param
-    assert_response :success
-  end
-
-  test "should update workflow" do
-    put :update, :id => workflows(:one).to_param, :workflow => { }
-    assert_redirected_to workflow_path(assigns(:workflow))
-  end
-
-  test "should destroy workflow" do
-    assert_difference('Workflow.count', -1) do
-      delete :destroy, :id => workflows(:one).to_param
+  context "on POST to :create" do
+    setup do
+      @old_count = Workflow.count
+      @name = "My super cool workflow"
+      post :create, :workflow => { :name => @name }
     end
 
-    assert_redirected_to workflows_path
+    should_respond_with :redirect
+    should_assign_to :workflow
+    should_not_set_the_flash
+
+    should "create a workflow with permissions for the logged in person" do
+      assert_equal @old_count + 1, Workflow.count
+      assert @person.permitted?(assigns(:workflow), "edit")
+    end
+
+    should "redirect to the new workflow" do
+      assert_redirected_to assigns(:workflow)
+    end
+  end
+
+  context "with a workflow" do
+    setup do
+      @workflow = Factory.create(:workflow)
+      @workflow.grant(@person)
+    end
+
+    context "on GET to :show" do
+      setup do
+        get :show, :id => @workflow.id
+      end
+
+      should_respond_with :success
+      should_assign_to :workflow
+      should_render_template "show"
+    end
+
+    context "on PUT to :update" do
+      setup do
+        @new_name = "Less awesome, more work"
+        put :update, :id => @workflow.id, :workflow => { :name => @new_name }
+      end
+
+      should_respond_with :redirect
+      should_assign_to :workflow
+      should_not_set_the_flash
+
+      should "update the workflow" do
+        assert_equal @new_name, assigns(:workflow).name
+        @workflow.reload
+        assert_equal @new_name, @workflow.name
+      end
+
+      should "redirect back to the workflow" do
+        assert_redirected_to @workflow
+      end
+    end
+
+    context "on DELETE to :destroy" do
+      setup do
+        @old_count = Workflow.count
+        delete :destroy, :id => @workflow.id
+      end
+
+      should_respond_with :redirect
+      should_assign_to :workflow
+      should_not_set_the_flash
+
+      should "destroy a workflow" do
+        assert_equal @old_count - 1, Workflow.count
+      end
+
+      should "redirect back to the workflow list" do
+        assert_redirected_to workflows_path
+      end
+    end
   end
 end
