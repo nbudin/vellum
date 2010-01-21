@@ -42,7 +42,7 @@ class RelationshipTypesController < ApplicationController
 
     respond_to do |format|
       if @relationship_type.update_attributes(params[:relationship_type])
-        format.html { redirect_to(@relationship_type) }
+        format.html { redirect_to(relationship_type_url(@template_schema, @relationship_type)) }
         format.xml  { head :ok }
         format.json { head :ok }
       else
