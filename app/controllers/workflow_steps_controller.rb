@@ -2,44 +2,6 @@ class WorkflowStepsController < ApplicationController
   rest_permissions :class_name => "Workflow", :id_param => "workflow_id"
   before_filter :get_workflow
 
-  # GET /workflow_steps
-  # GET /workflow_steps.xml
-  def index
-    @workflow_steps = WorkflowStep.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @workflow_steps }
-    end
-  end
-
-  # GET /workflow_steps/1
-  # GET /workflow_steps/1.xml
-  def show
-    @workflow_step = WorkflowStep.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @workflow_step }
-    end
-  end
-
-  # GET /workflow_steps/new
-  # GET /workflow_steps/new.xml
-  def new
-    @workflow_step = WorkflowStep.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @workflow_step }
-    end
-  end
-
-  # GET /workflow_steps/1/edit
-  def edit
-    @workflow_step = WorkflowStep.find(params[:id])
-  end
-
   # POST /workflow_steps
   # POST /workflow_steps.xml
   def create

@@ -2,17 +2,6 @@ class WorkflowTransitionsController < ApplicationController
   rest_permissions :class_name => "Workflow", :id_param => "workflow_id"
   before_filter :get_workflow_and_from
 
-  # GET /workflow_transitions
-  # GET /workflow_transitions.xml
-  def index
-    @workflow_transitions = @from.leaving_transitions
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @workflow_transitions }
-    end
-  end
-
   # GET /workflow_transitions/1
   # GET /workflow_transitions/1.xml
   def show
