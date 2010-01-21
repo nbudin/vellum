@@ -26,11 +26,6 @@ class TemplateSchemasController < ApplicationController
     end
   end
 
-  # GET /template_schemas/new
-  def new
-    @template_schema = TemplateSchema.new
-  end
-
   # POST /template_schemas
   # POST /template_schemas.xml
   def create

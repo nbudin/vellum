@@ -25,11 +25,6 @@ class StructureTemplatesController < ApplicationController
       format.json  { render :json => @structure_template.to_json }
     end
   end
-
-  # GET /structure_templates/new
-  def new
-    @structure_template = StructureTemplate.new
-  end
   
   # GET /structure_templates/1/edit
   def edit
