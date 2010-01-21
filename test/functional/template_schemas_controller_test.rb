@@ -1,52 +1,95 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require 'template_schemas_controller'
-
-# Re-raise errors caught by the controller.
-class TemplateSchemasController; def rescue_action(e) raise e end; end
+require 'test_helper'
 
 class TemplateSchemasControllerTest < ActionController::TestCase
-  fixtures :template_schemas
-
   def setup
-    @controller = TemplateSchemasController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+    create_logged_in_person
   end
 
-  def test_should_get_index
-    get :index
-    assert_response :success
-    assert assigns(:template_schemas)
+  context "on GET to :index" do
+    setup do
+      get :index
+    end
+
+    should_respond_with :success
+    should_assign_to :template_schemas
+    should_render_template "index"
   end
 
-  def test_should_get_new
-    get :new
-    assert_response :success
-  end
-  
-  def test_should_create_template_schema
-    old_count = TemplateSchema.count
-    post :create, :template_schema => { }
-    assert_equal old_count+1, TemplateSchema.count
-    
-    assert_redirected_to template_schema_path(assigns(:template_schema))
+  context "on POST to :create" do
+    setup do
+      @old_count = TemplateSchema.count
+      @name = "My super cool templates"
+      post :create, :template_schema => { :name => @name }
+    end
+
+    should_respond_with :redirect
+    should_assign_to :template_schema
+    should_not_set_the_flash
+
+    should "create a schema with permissions for the logged in person" do
+      assert_equal @old_count + 1, TemplateSchema.count
+      assert @person.permitted?(assigns(:template_schema), "edit")
+    end
+
+    should "redirect to the new schema" do
+      assert_redirected_to assigns(:template_schema)
+    end
   end
 
-  def test_should_show_template_schema
-    get :show, :id => 1
-    assert_response :success
-  end
+  context "with a schema" do
+    setup do
+      @schema = Factory.create(:template_schema)
+      @schema.grant(@person)
+    end
 
-  def test_should_update_template_schema
-    put :update, :id => 1, :template_schema => { }
-    assert_redirected_to template_schema_path(assigns(:template_schema))
-  end
-  
-  def test_should_destroy_template_schema
-    old_count = TemplateSchema.count
-    delete :destroy, :id => 1
-    assert_equal old_count-1, TemplateSchema.count
-    
-    assert_redirected_to template_schemas_path
+    context "on GET to :show" do
+      setup do
+        get :show, :id => @schema.id
+      end
+
+      should_respond_with :success
+      should_assign_to :template_schema
+      should_render_template "show"
+    end
+
+    context "on PUT to :update" do
+      setup do
+        @new_name = "Less awesome, more templates"
+        put :update, :id => @schema.id, :template_schema => { :name => @new_name }
+      end
+
+      should_respond_with :redirect
+      should_assign_to :template_schema
+      should_not_set_the_flash
+
+      should "update the schema" do
+        assert_equal @new_name, assigns(:template_schema).name
+        @schema.reload
+        assert_equal @new_name, @schema.name
+      end
+
+      should "redirect back to the schema" do
+        assert_redirected_to @schema
+      end
+    end
+
+    context "on DELETE to :destroy" do
+      setup do
+        @old_count = TemplateSchema.count
+        delete :destroy, :id => @schema.id
+      end
+
+      should_respond_with :redirect
+      should_assign_to :template_schema
+      should_not_set_the_flash
+
+      should "destroy a schema" do
+        assert_equal @old_count - 1, TemplateSchema.count
+      end
+
+      should "redirect back to the schema list" do
+        assert_redirected_to template_schemas_path
+      end
+    end
   end
 end
