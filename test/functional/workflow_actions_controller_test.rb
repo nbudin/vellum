@@ -8,6 +8,7 @@ class WorkflowActionsControllerTest < ActionController::TestCase
     @workflow.grant(@person)
     @start = @workflow.workflow_steps.create(:name => "Start", :position => 1)
     @end = @workflow.workflow_steps.create(:name => "End", :position => 2)
+    @transition = @start.leaving_transitions.create(:to => @end, :name => "Finish")
   end
 
   test "should get index" do
