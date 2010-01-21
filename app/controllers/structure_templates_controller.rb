@@ -25,12 +25,6 @@ class StructureTemplatesController < ApplicationController
       format.json  { render :json => @structure_template.to_json }
     end
   end
-  
-  # GET /structure_templates/1/edit
-  def edit
-    @structure_template = @template_schema.structure_templates.find(params[:id])
-    @workflows = Workflow.find(:all, :include => [:permissions]).select { |w| logged_in_person.permitted?(w, "show") }
-  end
 
   # POST /structure_templates
   # POST /structure_templates.xml
