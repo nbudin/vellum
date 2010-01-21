@@ -2,44 +2,6 @@ class WorkflowActionsController < ApplicationController
   rest_permissions :class_name => "Workflow", :id_param => "workflow_id"
   before_filter :get_workflow_from_and_transition
 
-  # GET /workflow_actions
-  # GET /workflow_actions.xml
-  def index
-    @workflow_actions = WorkflowAction.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @workflow_actions }
-    end
-  end
-
-  # GET /workflow_actions/1
-  # GET /workflow_actions/1.xml
-  def show
-    @workflow_action = WorkflowAction.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @workflow_action }
-    end
-  end
-
-  # GET /workflow_actions/new
-  # GET /workflow_actions/new.xml
-  def new
-    @workflow_action = WorkflowAction.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @workflow_action }
-    end
-  end
-
-  # GET /workflow_actions/1/edit
-  def edit
-    @workflow_action = WorkflowAction.find(params[:id])
-  end
-
   # POST /workflow_actions
   # POST /workflow_actions.xml
   def create
