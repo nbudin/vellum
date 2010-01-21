@@ -24,11 +24,6 @@ class MapsController < ApplicationController
     end
   end
 
-  # GET /maps/1/edit
-  def edit
-    @map = Map.find(params[:id])
-  end
-
   # POST /maps
   # POST /maps.xml
   def create
