@@ -31,7 +31,7 @@ class WorkflowActionsController < ApplicationController
 
     respond_to do |format|
       if @workflow_action.update_attributes(params[:workflow_action])
-        format.html { redirect_to(@workflow_action) }
+        format.html { redirect_to(workflow_transition_url(@workflow, @from, @transition)) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
