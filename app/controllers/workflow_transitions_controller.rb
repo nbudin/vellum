@@ -38,7 +38,7 @@ class WorkflowTransitionsController < ApplicationController
 
     respond_to do |format|
       if @workflow_transition.update_attributes(params[:workflow_transition])
-        format.html { redirect_to(@workflow) }
+        format.html { redirect_to(workflow_transition_url(@workflow, @from, @workflow_transition)) }
         format.xml  { head :ok }
         format.json { head :ok }
       else

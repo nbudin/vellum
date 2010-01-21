@@ -28,7 +28,7 @@ class WorkflowStepsController < ApplicationController
 
     respond_to do |format|
       if @workflow_step.update_attributes(params[:workflow_step])
-        format.html { redirect_to(@workflow_step) }
+        format.html { redirect_to(@workflow) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -44,7 +44,7 @@ class WorkflowStepsController < ApplicationController
     @workflow_step.destroy
 
     respond_to do |format|
-      format.html { redirect_to(workflow_steps_url) }
+      format.html { redirect_to(@workflow) }
       format.xml  { head :ok }
     end
   end
