@@ -9,6 +9,7 @@ class StructureTemplatesController < ApplicationController
 
     respond_to do |format|
       format.xml  { render :xml => @structure_templates.to_xml }
+      format.json { render :json => @structure_templates.to_json }
     end
   end
 
