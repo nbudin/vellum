@@ -42,18 +42,24 @@
       <% if @workflow_status.assignee -%>
         Assigned to <b><%= @workflow_status.assignee.name %></b><br/>
       <% end -%>
-      <b><%= image_tag "workflow_step.png" %> <%= @workflow_status.workflow_step.name %></b>
-    </p>
-    <ul class="inline">
-      <% @workflow_status.workflow_step.leaving_transitions.each do |transition| -%>
-        <li>
-          <% link_to structure_path(@project, @structure) + "/transition?workflow_transition_id=#{transition.id}", :class => "button transition", :method => "post" do %>
-            <%= image_tag "workflow_transition.png" %>
-            <%=h transition.name %>
-          <% end -%>
-        </li>
+      <% if @workflow_status.workflow_step -%>
+        <b><%= image_tag "workflow_step.png" %> <%= @workflow_status.workflow_step.name %></b>
+      <% else -%>
+        <i>Unknown state</i>
       <% end -%>
-    </ul>
+    </p>
+    <% if @workflow_status.workflow_step -%>
+      <ul class="inline">
+        <% @workflow_status.workflow_step.leaving_transitions.each do |transition| -%>
+          <li>
+            <% link_to structure_path(@project, @structure) + "/transition?workflow_transition_id=#{transition.id}", :class => "button transition", :method => "post" do %>
+              <%= image_tag "workflow_transition.png" %>
+              <%=h transition.name %>
+            <% end -%>
+          </li>
+        <% end -%>
+      </ul>
+    <% end -%>
   <% end -%>
 
   <h2>Relationships</h2>
