@@ -2,6 +2,7 @@ class Project < ActiveRecord::Base
   belongs_to :template_schema
   has_many :structures, :dependent => :destroy, :include => [:structure_template]
   has_many :relationships, :dependent => :destroy, :include => [:relationship_type]
+  has_many :publication_templates, :dependent => :destroy
   has_many :maps, :dependent => :destroy
   
   acts_as_permissioned
