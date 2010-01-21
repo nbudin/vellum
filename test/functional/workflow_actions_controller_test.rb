@@ -9,47 +9,71 @@ class WorkflowActionsControllerTest < ActionController::TestCase
     @start = @workflow.workflow_steps.create(:name => "Start", :position => 1)
     @end = @workflow.workflow_steps.create(:name => "End", :position => 2)
     @transition = @start.leaving_transitions.create(:to => @end, :name => "Finish")
+    @params = {
+      :workflow_id => @workflow.id,
+      :workflow_step_id => @start.id,
+      :workflow_transition_id => @transition.id
+    }
+    @transition_path = workflow_transition_path(@workflow, @start, @transition)
   end
 
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:workflow_actions)
-  end
-
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
-  test "should create workflow_action" do
-    assert_difference('WorkflowAction.count') do
-      post :create, :workflow_action => { }
+  context "on POST to :create" do
+    setup do
+      @old_count = WorkflowAction.count
+      post :create, @params.update(
+        :workflow_action => {
+          :type => "WorkflowActions::Reassign",
+          :whom => "prompt"
+        }
+      )
     end
 
-    assert_redirected_to workflow_action_path(assigns(:workflow_action))
+    should_redirect_to("the transition") { @transition_path }
+    should_assign_to :workflow_action
+    should_not_set_the_flash
+
+    should "create a workflow action" do
+      assert_equal @old_count + 1, WorkflowAction.count
+    end
   end
 
-  test "should show workflow_action" do
-    get :show, :id => workflow_actions(:one).to_param
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, :id => workflow_actions(:one).to_param
-    assert_response :success
-  end
-
-  test "should update workflow_action" do
-    put :update, :id => workflow_actions(:one).to_param, :workflow_action => { }
-    assert_redirected_to workflow_action_path(assigns(:workflow_action))
-  end
-
-  test "should destroy workflow_action" do
-    assert_difference('WorkflowAction.count', -1) do
-      delete :destroy, :id => workflow_actions(:one).to_param
+  context "with a workflow action" do
+    setup do
+      @action = @transition.workflow_actions.create(:type => "WorkflowActions::Reassign",
+        :whom => "prompt")
+      @params[:id] = @action.id
     end
 
-    assert_redirected_to workflow_actions_path
+    context "on PUT to :update" do
+      setup do
+        @new_whom = @person.id.to_s
+        put :update, @params.update(:workflow_action => { :whom => @new_whom })
+      end
+
+      should_redirect_to("the transition") { @transition_path }
+      should_assign_to :workflow_action
+      should_not_set_the_flash
+
+      should "update the workflow action" do
+        assert_equal @new_whom, assigns(:workflow_action).whom
+        @action.reload
+        assert_equal @new_whom, @action.whom
+      end
+    end
+
+    context "on DELETE to :destroy" do
+      setup do
+        @old_count = WorkflowAction.count
+        delete :destroy, @params
+      end
+
+      should_redirect_to("the transition") { @transition_path }
+      should_assign_to :workflow_action
+      should_not_set_the_flash
+
+      should "destroy a workflow action" do
+        assert_equal @old_count - 1, WorkflowAction.count
+      end
+    end
   end
 end
