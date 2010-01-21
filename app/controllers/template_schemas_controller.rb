@@ -52,7 +52,6 @@ class TemplateSchemasController < ApplicationController
 
     respond_to do |format|
       if @template_schema.update_attributes(params[:template_schema])
-        flash[:notice] = 'TemplateSchema was successfully updated.'
         format.html { redirect_to template_schema_url(@template_schema) }
         format.xml  { head :ok }
         format.json { head :ok }
