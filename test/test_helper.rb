@@ -41,4 +41,21 @@ class ActiveSupport::TestCase
     @person = Person.create
     @request.session[:person] = @person.id
   end
+
+  def parse_json_response
+    begin
+        JSON.parse(@response.body)
+    rescue
+    end
+  end
+end
+
+module Shoulda
+  class Context
+    def should_respond_with_json
+      should "respond with valid JSON" do
+        assert parse_json_response
+      end
+    end
+  end
 end

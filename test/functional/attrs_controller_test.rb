@@ -76,10 +76,7 @@ class AttrsControllerTest < ActionController::TestCase
     should_not_set_the_flash
 
     should "respond with valid JSON" do
-      @obj = begin
-        JSON.parse(@response.body)
-      rescue
-      end
+      @obj = parse_json_response
       assert @obj, "Response body (#{@response.body}) is not valid JSON"
       assert_equal @attr.id, @obj["id"]
     end
