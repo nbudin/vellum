@@ -52,7 +52,10 @@ class WorkflowActionsController < ApplicationController
         format.xml  { head :created, :location => @workflow_action }
         format.json { head :created, :location => @workflow_action }
       else
-        format.html { render @transition }
+        format.html do
+          flash[:error_messages] = @workflow_action.errors.full_messages
+          redirect_to workflow_transition_url(@workflow, @from, @transition)
+        end
         format.xml  { render :xml => @workflow_action.errors, :status => :unprocessable_entity }
         format.json { render :json => @workflow_action.errors, :status => :unprocessable_entity }
       end
