@@ -1,45 +1,82 @@
 require 'test_helper'
 
 class WorkflowTransitionsControllerTest < ActionController::TestCase
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:workflow_transitions)
+  def setup
+    create_logged_in_person
+
+    @workflow = Factory.create(:workflow)
+    @workflow.grant(@person)
+    @start = @workflow.workflow_steps.create(:name => "Start", :position => 1)
+    @end = @workflow.workflow_steps.create(:name => "End", :position => 2)
   end
 
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
-  test "should create workflow_transition" do
-    assert_difference('WorkflowTransition.count') do
-      post :create, :workflow_transition => { }
+  context "on POST to :create" do
+    setup do
+      @old_count = WorkflowTransition.count
+      post :create, :workflow_id => @workflow.id, :workflow_step_id => @start.id,
+        :workflow_transition => { :to_id => @end.id, :name => "Finish" }
     end
 
-    assert_redirected_to workflow_transition_path(assigns(:workflow_transition))
+    should_redirect_to("the new transition") {
+      workflow_transition_path(@workflow, @start, assigns(:workflow_transition))
+    }
+    should_assign_to :workflow_transition
+    should_not_set_the_flash
+
+    should "create a workflow transition" do
+      assert_equal @old_count + 1, WorkflowTransition.count
+      assert_equal @end.id, assigns(:workflow_transition).to.id
+    end
   end
 
-  test "should show workflow_transition" do
-    get :show, :id => workflow_transitions(:one).to_param
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, :id => workflow_transitions(:one).to_param
-    assert_response :success
-  end
-
-  test "should update workflow_transition" do
-    put :update, :id => workflow_transitions(:one).to_param, :workflow_transition => { }
-    assert_redirected_to workflow_transition_path(assigns(:workflow_transition))
-  end
-
-  test "should destroy workflow_transition" do
-    assert_difference('WorkflowTransition.count', -1) do
-      delete :destroy, :id => workflow_transitions(:one).to_param
+  context "with a transition" do
+    setup do
+      @transition = @start.leaving_transitions.create(:to => @end, :name => "Finish")
     end
 
-    assert_redirected_to workflow_transitions_path
+    context "on GET to :show" do
+      setup do
+        get :show, :id => @transition.id, :workflow_step_id => @start.id, :workflow_id => @workflow.id
+      end
+
+      should_respond_with :success
+      should_assign_to :workflow_transition
+      should_render_template "show"
+    end
+
+    context "on PUT to :update" do
+      setup do
+        @new_name = "Finish him!!!!"
+        put :update, :id => @transition.id, :workflow_step_id => @start.id, :workflow_id => @workflow.id,
+          :workflow_transition => { :name => @new_name }
+      end
+
+      should_redirect_to("the transition") {
+        workflow_transition_path(@workflow, @start, @transition)
+      }
+      should_assign_to :workflow_transition
+      should_not_set_the_flash
+
+      should "update the transition" do
+        assert_equal @new_name, assigns(:workflow_transition).name
+        @transition.reload
+        assert_equal @new_name, @transition.name
+      end
+    end
+
+    context "on DELETE to :destroy" do
+      setup do
+        @old_count = WorkflowTransition.count
+        delete :destroy, :id => @transition.id, :workflow_step_id => @start.id, :workflow_id => @workflow.id
+      end
+
+      should_redirect_to("the workflow") { @workflow }
+      should_assign_to :workflow_transition
+      should_not_set_the_flash
+
+      should "destroy a transition" do
+        assert_equal @old_count - 1, WorkflowTransition.count
+      end
+    end
   end
 end

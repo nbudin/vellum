@@ -1,6 +1,15 @@
 require 'test_helper'
 
 class WorkflowActionsControllerTest < ActionController::TestCase
+  def setup
+    create_logged_in_person
+
+    @workflow = Factory.create(:workflow)
+    @workflow.grant(@person)
+    @start = @workflow.workflow_steps.create(:name => "Start", :position => 1)
+    @end = @workflow.workflow_steps.create(:name => "End", :position => 2)
+  end
+
   test "should get index" do
     get :index
     assert_response :success

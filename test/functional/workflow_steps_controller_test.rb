@@ -1,45 +1,84 @@
 require 'test_helper'
 
 class WorkflowStepsControllerTest < ActionController::TestCase
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:workflow_steps)
+  def setup
+    create_logged_in_person
+
+    @workflow = Factory.create(:workflow)
+    @workflow.grant(@person)
   end
 
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
-  test "should create workflow_step" do
-    assert_difference('WorkflowStep.count') do
-      post :create, :workflow_step => { }
+  context "on POST to :create" do
+    setup do
+      @old_count = WorkflowStep.count
+      @name = "Start"
+      post :create, :workflow_id => @workflow.id, :workflow_step => { :name => @name }
     end
 
-    assert_redirected_to workflow_step_path(assigns(:workflow_step))
+    should_redirect_to("the workflow") { @workflow }
+    should_assign_to :workflow_step
+    should_not_set_the_flash
+
+    should "create a step" do
+      assert_equal @old_count + 1, WorkflowStep.count
+      assert_equal @name, assigns(:workflow_step).name
+    end
   end
 
-  test "should show workflow_step" do
-    get :show, :id => workflow_steps(:one).to_param
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, :id => workflow_steps(:one).to_param
-    assert_response :success
-  end
-
-  test "should update workflow_step" do
-    put :update, :id => workflow_steps(:one).to_param, :workflow_step => { }
-    assert_redirected_to workflow_step_path(assigns(:workflow_step))
-  end
-
-  test "should destroy workflow_step" do
-    assert_difference('WorkflowStep.count', -1) do
-      delete :destroy, :id => workflow_steps(:one).to_param
+  context "with steps" do
+    setup do
+      @start = @workflow.workflow_steps.create(:name => "Start", :position => 1)
+      @end = @workflow.workflow_steps.create(:name => "End", :position => 2)
     end
 
-    assert_redirected_to workflow_steps_path
+    context "on PUT to :update" do
+      setup do
+        @new_name = "Begin"
+        put :update, :id => @start.id, :workflow_id => @workflow.id,
+          :workflow_step => { :name => @new_name }
+      end
+
+      should_redirect_to("the workflow") { @workflow }
+      should_assign_to :workflow_step
+      should_not_set_the_flash
+
+      should "update the step" do
+        assert_equal @new_name, assigns(:workflow_step).name
+        @start.reload
+        assert_equal @new_name, @start.name
+      end
+    end
+
+    context "on DELETE to :destroy" do
+      setup do
+        @old_count = WorkflowStep.count
+        delete :destroy, :id => @start.id, :workflow_id => @workflow.id
+      end
+
+      should_redirect_to("the workflow") { @workflow }
+      should_assign_to :workflow_step
+      should_not_set_the_flash
+
+      should "destroy a step" do
+        assert_equal @old_count - 1, WorkflowStep.count
+      end
+    end
+
+    context "on POST to :sort" do
+      setup do
+        post :sort, :workflow_id => @workflow.id, 
+          :workflow_steps => [ @end.id.to_s, @start.id.to_s ]
+      end
+
+      should_respond_with :success
+      should_assign_to :workflow_steps
+      should_not_set_the_flash
+
+      should "re-sort the steps" do
+        @end.reload
+        @start.reload
+        assert @start.position > @end.position
+      end
+    end
   end
 end
