@@ -1,45 +1,79 @@
 require 'test_helper'
 
 class MapsControllerTest < ActionController::TestCase
-  test "should get index" do
-    get :index
-    assert_response :success
-    assert_not_nil assigns(:maps)
+  def setup
+    create_logged_in_person
+    @schema = Factory.create(:template_schema)
+    @project = Factory.create(:project, :template_schema => @schema)
+    @project.grant(@person)
   end
 
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
-  test "should create map" do
-    assert_difference('Map.count') do
-      post :create, :map => { }
+  context "on POST to :create" do
+    setup do
+      @old_count = Map.count
+      post :create, :project_id => @project.id, :map => { :name => "My map" }
     end
 
-    assert_redirected_to map_path(assigns(:map))
+    should_assign_to :map
+    should_respond_with :redirect
+    should_not_set_the_flash
+
+    should "create map" do
+      assert_equal @old_count + 1, Map.count
+      assert_redirected_to map_path(@project, assigns(:map))
+    end
   end
 
-  test "should show map" do
-    get :show, :id => maps(:one).to_param
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, :id => maps(:one).to_param
-    assert_response :success
-  end
-
-  test "should update map" do
-    put :update, :id => maps(:one).to_param, :map => { }
-    assert_redirected_to map_path(assigns(:map))
-  end
-
-  test "should destroy map" do
-    assert_difference('Map.count', -1) do
-      delete :destroy, :id => maps(:one).to_param
+  context "with a map" do
+    setup do
+      @map = @project.maps.create :name => "A map"
     end
 
-    assert_redirected_to maps_path
+    context "on GET to :show" do
+      setup do
+        get :show, :project_id => @project.id, :id => @map.id
+      end
+
+      should_assign_to :map
+      should_respond_with :success
+      should_render_template "show"
+    end
+
+    context "on PUT to :update" do
+      setup do
+        put :update, :project_id => @project.id, :id => @map.id, :map => { :name => "Renamed" }
+      end
+
+      should_assign_to :map
+      should_respond_with :redirect
+      should_not_set_the_flash
+
+      should "update the map" do
+        assert_equal "Renamed", assigns(:map).name
+      end
+
+      should "redirect back to the map" do
+        assert_redirected_to map_path(@project, assigns(:map))
+      end
+    end
+
+    context "on DELETE to :destroy" do
+      setup do
+        @old_count = Map.count
+        delete :destroy, :project_id => @project.id, :id => @map.id
+      end
+
+      should_assign_to :map
+      should_respond_with :redirect
+      should_not_set_the_flash
+
+      should "destroy a map" do
+        assert_equal @old_count - 1, Map.count
+      end
+
+      should "redirect back to the project" do
+        assert_redirected_to project_path(@project)
+      end
+    end
   end
 end
