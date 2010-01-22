@@ -1,39 +1,115 @@
 require 'test_helper'
 
 class CreateStuffTest < ActionController::IntegrationTest
-  def setup
-    @person = Person.create
-    @account = @person.create_account :password => "password", :active => true
-    @email_address = @person.email_addresses.create :address => "test@test.com", :primary => true
+  context "logged in" do
+    setup do
+      @person = Person.create :firstname => "Test", :lastname => "User"
+      @account = @person.create_account :password => "password", :active => true
+      @address = "person#{@person.id}@test.com"
+      @email_address = @person.email_addresses.create :address => @address, :primary => true
 
-    visit "/"
-    click_link "Log in"
+      visit "/"
+      click_link "Log in"
 
-    fill_in "Email address", :with => "test@test.com"
-    choose "Yes, my password is:"
-    fill_in "login[password]", :with => "password"
-    click_button "Log in"
-  end
+      fill_in "Email address", :with => @address
+      choose "Yes, my password is:"
+      fill_in "login[password]", :with => "password"
+      click_button "Log in"
 
-  test "make some templates" do
-    click_link "Template Schemas"
+      assert_equal @person.id, session[:person]
+    end
 
-    fill_in "template_schema[name]", :with => "My new template schema"
-    click_button "Create template schema..."
+    should "make some templates" do
+      click_link "Template Schemas"
 
-    fill_in "structure_template[name]", :with => "Character"
-    click_button "Create template..."
+      fill_in "template_schema[name]", :with => "My new template schema"
+      click_button "Create template schema..."
 
-    click_link "Add TextField"
-    fill_in "attr[name]", :with => "HP"
-    click_button "Create"
+      fill_in "structure_template[name]", :with => "Character"
+      click_button "Create template..."
 
-    click_link "My new template schema"
-    fill_in "structure_template[name]", :with => "Organization"
-    click_button "Create template..."
+      click_link "Add TextField"
+      fill_in "attr[name]", :with => "HP"
+      click_button "Create"
 
-    fill_in "relationship_type[left_description]", :with => "includes"
-    select "Character", :from => "relationship_type[right_template_id]"
-    click_button "Create relationship type..."
+      click_link "My new template schema"
+      fill_in "structure_template[name]", :with => "Organization"
+      click_button "Create template..."
+
+      fill_in "relationship_type[left_description]", :with => "includes"
+      select "Character", :from => "relationship_type[right_template_id]"
+      click_button "Create relationship type..."
+    end
+
+    context "with basic templates" do
+      setup do
+        @includes = Factory.create(:relationship_type, :left_description => "includes")
+        
+        @character = @includes.left_template
+        @character.name = "Character"
+        assert @character.save
+
+        @character_sheet = @character.attrs.create(:name => "Sheet")
+        @character_sheet.attr_configuration = DocField.create
+        assert @character_sheet.save
+
+        @organization = @includes.right_template
+        @organization.name = "Organization"
+        assert @organization.save
+
+        @schema = @character.template_schema
+        @schema.name = "Characters and Organizations"
+        assert @schema.save
+
+        @schema.grant(@person)
+      end
+
+      should "create a project" do
+        visit "/"
+        click_link "Projects"
+
+        fill_in "project[name]", :with => "My new project"
+        select @schema.name, :from => "project[template_schema_id]"
+        click_button "Create project..."
+      end
+
+      context "and a project" do
+        setup do
+          @project = Project.create(:name => "Louisiana Purchase",
+            :template_schema => @schema)
+          @project.grant(@person)
+        end
+
+        should "write a character sheet" do
+          visit "/"
+          click_link "Projects"
+
+          click_link @project.name
+          assert_contain "Characters"
+          click_link "New character"
+          
+          fill_in "structure[name]", :with => "Thomas Jefferson"
+          fill_in @character_sheet.name, :with => "You want to buy some land."
+          click_button "Create"
+
+          assert_contain "Thomas Jefferson"
+        end
+
+        should "write an organization sheet" do
+          visit "/"
+          click_link "Projects"
+
+          click_link @project.name
+          assert_contain "Organizations"
+          click_link "New organizations"
+
+          fill_in "structure[name]", :with => "France"
+          fill_in @character_sheet.name, :with => "Oui oui!"
+          click_button "Create"
+
+          assert_contain "France"
+        end
+      end
+    end
   end
 end
