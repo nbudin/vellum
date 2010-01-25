@@ -1,0 +1,1 @@
+ActiveRecord::Base.observers = :structure_observer
