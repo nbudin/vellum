@@ -127,11 +127,12 @@ class CreateStuffTest < ActionController::IntegrationTest
             assert @france_sheet.save
           end
 
-          should "link structures together with a relationship" do
-            visit structure_path(@project, @tom)
-
-            save_and_open_page
-          end
+          # finalize this test case once things shake out with the relationship builder
+#          should "link structures together with a relationship" do
+#            visit structure_path(@project, @tom)
+#
+#            save_and_open_page
+#          end
 
           should "reassign a structure" do
             visit structure_path(@project, @tom)
