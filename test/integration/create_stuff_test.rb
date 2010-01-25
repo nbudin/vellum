@@ -132,6 +132,15 @@ class CreateStuffTest < ActionController::IntegrationTest
 
             save_and_open_page
           end
+
+          should "reassign a structure" do
+            visit structure_path(@project, @tom)
+
+            select @person.name, :from => "Assigned to"
+            click_button "Reassign"
+
+            assert_equal @person.id.to_s, field_labeled("Assigned to").value
+          end
         end
       end
     end
