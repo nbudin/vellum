@@ -11,6 +11,10 @@
       <td><%= f.text_field :site_color %></td>
     </tr>
     <tr>
+      <th>Site email address</th>
+      <td><%= f.text_field :site_email %></td>
+    </tr>
+    <tr>
       <th>Site administrator</th>
       <td><%= user_picker "site_settings[admin_kid]", :default => @site_settings.admin, :clear_after => false %></td>
     </tr>
