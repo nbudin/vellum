@@ -57,6 +57,10 @@ class CreateStuffTest < ActionController::IntegrationTest
         @organization.name = "Organization"
         assert @organization.save
 
+        @org_sheet = @organization.attrs.create(:name => "Sheet")
+        @org_sheet.attr_configuration = DocField.create
+        assert @org_sheet.save
+
         @schema = @character.template_schema
         @schema.name = "Characters and Organizations"
         assert @schema.save
@@ -101,13 +105,33 @@ class CreateStuffTest < ActionController::IntegrationTest
 
           click_link @project.name
           assert_contain "Organizations"
-          click_link "New organizations"
+          click_link "New organization"
 
           fill_in "structure[name]", :with => "France"
           fill_in @character_sheet.name, :with => "Oui oui!"
           click_button "Create"
 
           assert_contain "France"
+        end
+
+        context "and two structures" do
+          setup do
+            @tom = @project.structures.create(:structure_template => @character, :name => "Thomas Jefferson")
+            assert @tom_sheet = @tom.obtain_attr_value("Sheet")
+            @tom_sheet.doc_content = "You want to buy some land."
+            assert @tom_sheet.save
+
+            @france = @project.structures.create(:structure_template => @organization, :name => "France")
+            assert @france_sheet = @france.obtain_attr_value("Sheet")
+            @france_sheet.doc_content = "Oui oui!"
+            assert @france_sheet.save
+          end
+
+          should "link structures together with a relationship" do
+            visit structure_path(@project, @tom)
+
+            save_and_open_page
+          end
         end
       end
     end
