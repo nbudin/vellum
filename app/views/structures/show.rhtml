@@ -29,38 +29,22 @@
       <%= image_tag "template.png" %>
       <%= @structure.structure_template.name %>
     <% end -%>
+  <% form_for @structure, :url => structure_path(@project, @structure), :html => {:class => "assignee"} do |f| -%>
+    Assigned to 
+    <%= f.select "assignee_id", [["nobody", nil]] + @project.authors.sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
+                 :include_blank => false %>
+    
+    <button class="transition">
+        <%= image_tag "workflow_transition.png" %>
+        Reassign
+    </button>
+  <% end -%>
 	<% if logged_in? and logged_in_person.permitted?(@structure, "destroy") -%>
 		<br/>
-		<%= button_to "Delete", structure_path(@project, @structure), :method => "delete",
+		<%= button_to "Delete #{@structure.name}", structure_path(@project, @structure), :method => "delete",
 			:class => "delete", :confirm => "Are you sure you want to delete #{@structure.name}?" %>
 	<% end -%>
   </p>
-  
-  <% if @workflow_status -%>
-    <h2>Workflow</h2>
-    <p>
-      <% if @workflow_status.assignee -%>
-        Assigned to <b><%= @workflow_status.assignee.name %></b><br/>
-      <% end -%>
-      <% if @workflow_status.workflow_step -%>
-        <b><%= image_tag "workflow_step.png" %> <%= @workflow_status.workflow_step.name %></b>
-      <% else -%>
-        <i>Unknown state</i>
-      <% end -%>
-    </p>
-    <% if @workflow_status.workflow_step -%>
-      <ul class="inline">
-        <% @workflow_status.workflow_step.leaving_transitions.each do |transition| -%>
-          <li>
-            <% link_to structure_path(@project, @structure) + "/transition?workflow_transition_id=#{transition.id}", :class => "button transition", :method => "post" do %>
-              <%= image_tag "workflow_transition.png" %>
-              <%=h transition.name %>
-            <% end -%>
-          </li>
-        <% end -%>
-      </ul>
-    <% end -%>
-  <% end -%>
 
   <h2>Relationships</h2>
   <div id="relationships">

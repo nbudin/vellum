@@ -19,8 +19,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1.xml
   def show
     @project = Project.find(params[:id], 
-      :include => { :structures => { :structure_template => :workflow, 
-                                     :workflow_status => [:workflow_step, :assignee] }, 
+      :include => { :structures => { :structure_template => [] },
                                      :template_schema => [],
                                      :permissions => [] })
 

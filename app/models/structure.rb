@@ -128,13 +128,6 @@ class Structure < ActiveRecord::Base
       return a
     end
   end
-  
-  def obtain_workflow_status
-    if workflow_status.nil?
-      create_workflow_status :workflow_step => structure_template.workflow.start_step
-    end
-    workflow_status
-  end
 
   private
   def check_required_attrs

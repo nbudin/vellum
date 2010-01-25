@@ -13,4 +13,3 @@ worker:
 feature_spec:
   name: Feature Spec
   template_schema: foobarcorp
-  workflow: manager_approval
