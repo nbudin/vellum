@@ -30,7 +30,7 @@
       <%= @structure.structure_template.name %>
     <% end -%>
   <% form_for @structure, :url => structure_path(@project, @structure), :html => {:class => "assignee"} do |f| -%>
-    Assigned to 
+    <%= f.label "assignee_id", "Assigned to" %>
     <%= f.select "assignee_id", [["nobody", nil]] + @project.authors.sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
                  :include_blank => false %>
     
