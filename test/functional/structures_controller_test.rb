@@ -131,6 +131,8 @@ class StructuresControllerTest < ActionController::TestCase
 
     context "on PUT to :update with new assignee" do
       setup do
+        assert @person.primary_email_address
+
         put :update, :id => @structure.id, :project_id => @project.id,
           :structure => { :assignee_id => @person.id }
       end
@@ -139,6 +141,15 @@ class StructuresControllerTest < ActionController::TestCase
 
       should "reassign the structure" do
         assert_equal @person.id, assigns(:structure).assignee.id
+      end
+
+      should "send email to the new assignee" do
+        assert_sent_email do |email|
+          email.subject =~ /\[#{@project.name}\]/ &&
+            email.subject.include?(@structure.name) &&
+            email.to.include?(@person.primary_email_address) &&
+            email.body.include?("assigned to you")
+        end
       end
     end
 
