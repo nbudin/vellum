@@ -132,6 +132,10 @@ class StructuresControllerTest < ActionController::TestCase
     context "on PUT to :update with new assignee" do
       setup do
         assert @person.primary_email_address
+        @site_settings = SiteSettings.instance
+        @site_settings.site_name = "Test Site"
+        @site_settings.site_email = "vellum@example.com"
+        @site_settings.save
 
         put :update, :id => @structure.id, :project_id => @project.id,
           :structure => { :assignee_id => @person.id }
@@ -147,6 +151,7 @@ class StructuresControllerTest < ActionController::TestCase
         assert_sent_email do |email|
           email.subject =~ /\[#{@project.name}\]/ &&
             email.subject.include?(@structure.name) &&
+            email.from.include?(@site_settings.site_email) &&
             email.to.include?(@person.primary_email_address) &&
             email.body.include?("assigned to you")
         end
