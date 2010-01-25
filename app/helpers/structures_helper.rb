@@ -7,7 +7,7 @@ module StructuresHelper
       if a.required
         name_class << " required"
       end
-      html << content_tag(:td, h(a.name), :class => name_class)
+      html << content_tag(:td, content_tag(:label, h(a.name)), :class => name_class)
 
       av = if structure.new_record?
         # construct shim value
