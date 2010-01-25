@@ -44,6 +44,12 @@ class ActiveSupport::TestCase
 
   def create_logged_in_person
     @person = Person.create
+
+    assert @person.email_addresses.create(:address => "test#{@person.id}@example.com", :primary => true)
+    @person.email_addresses.reload
+    assert @person.primary_email_address
+    assert_equal @person.primary_email_address, "test#{@person.id}@example.com"
+    
     @request.session[:person] = @person.id
   end
 
