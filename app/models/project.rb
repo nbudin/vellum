@@ -19,7 +19,9 @@ class Project < ActiveRecord::Base
 
   def authors
     ids = docs.collect { |doc| doc.versions.collect { |version| version.author_id }.uniq }.flatten.uniq
-    ids.collect { |id| id and Person.find(id) }.compact
+    people = ids.collect { |id| id and Person.find(id) }.compact
+    people += self.permitted_people("edit")
+    people.uniq
   end
   
   def to_param
