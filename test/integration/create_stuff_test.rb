@@ -141,6 +141,9 @@ class CreateStuffTest < ActionController::IntegrationTest
             click_button "Reassign"
 
             assert_equal @person.id.to_s, field_labeled("Assigned to").value
+
+            visit project_path(@project)
+            assert_have_selector("\#structures_#{@character.id}_#{@tom.id} .assignee:contains('#{@person.name}')")
           end
         end
       end
