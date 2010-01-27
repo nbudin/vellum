@@ -4,8 +4,9 @@ class AssignmentMailerTest < ActionMailer::TestCase
   context "just assigned a character" do
     setup do
       @tmpl = Factory.create(:structure_template, :name => "Character")
-      @project = Factory.create(:project, :template_schema => @tmpl.template_schema,
-        :name => "Intrigue Under the Big Tent")
+      @project = @tmpl.project
+      @project.name = "Intrigue Under the Big Tent"
+      assert @project.save
       @structure = @project.structures.new(:structure_template => @tmpl, :name => "Joey")
 
       @person = Person.create(:firstname => "Bob", :lastname => "Writerson")
@@ -20,7 +21,7 @@ class AssignmentMailerTest < ActionMailer::TestCase
 
     should "send the assignee an email" do
       @expected.subject = "[#{@project.name}] #{@structure.name} has been assigned to you"
-      @expected.from = "#{@site_settings.site_name} <#{@site_settings.site_email}>"
+      @expected.from = @site_settings.site_email
       @expected.body = "The #{@tmpl.name} \"#{@structure.name}\" in the\nproject \"#{@project.name}\" has just been assigned to you."
       @expected.date = Time.now
 

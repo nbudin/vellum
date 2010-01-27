@@ -8,6 +8,7 @@ class Relationship < ActiveRecord::Base
   validate :check_circular
   validate :check_project_membership
   validate :check_duplicate
+  validate :check_templates
 
   def other(struct)
     if struct == left
@@ -64,6 +65,18 @@ class Relationship < ActiveRecord::Base
       end
       if others.size > 0
         errors.add_to_base("#{left.name} already #{relationship_type.left_description} #{right.name}")
+      end
+    end
+  end
+
+  def check_templates
+    [:left, :right].each do |dir|
+      structure = self.send(dir)
+      if structure and relationship_type
+        tmpl = relationship_type.send("#{dir}_template")
+        if tmpl and structure.structure_template and structure.structure_template != tmpl
+          errors.add(dir, "should be a #{tmpl.name} but instead is a #{structure.structure_template.name}")
+        end
       end
     end
   end

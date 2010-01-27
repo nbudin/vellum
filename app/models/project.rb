@@ -1,7 +1,10 @@
 class Project < ActiveRecord::Base
-  belongs_to :template_schema
+  has_many :structure_templates, :dependent => :destroy
   has_many :structures, :dependent => :destroy, :include => [:structure_template]
+
+  has_many :relationship_types, :dependent => :destroy
   has_many :relationships, :dependent => :destroy, :include => [:relationship_type]
+
   has_many :publication_templates, :dependent => :destroy
   has_many :maps, :dependent => :destroy
   

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100125212504) do
+ActiveRecord::Schema.define(:version => 20100127194918) do
 
   create_table "attr_value_metadatas", :force => true do |t|
     t.integer "attr_id"
@@ -192,9 +192,8 @@ ActiveRecord::Schema.define(:version => 20100125212504) do
   end
 
   create_table "projects", :force => true do |t|
-    t.string  "name"
-    t.integer "template_schema_id"
-    t.text    "blurb"
+    t.string "name"
+    t.text   "blurb"
   end
 
   create_table "publication_templates", :force => true do |t|
@@ -212,8 +211,10 @@ ActiveRecord::Schema.define(:version => 20100125212504) do
     t.string  "right_description"
     t.integer "left_template_id"
     t.integer "right_template_id"
-    t.integer "template_schema_id"
+    t.integer "project_id"
   end
+
+  add_index "relationship_types", ["project_id"], :name => "index_relationship_types_on_project_id"
 
   create_table "relationships", :force => true do |t|
     t.integer "relationship_type_id"
@@ -234,15 +235,15 @@ ActiveRecord::Schema.define(:version => 20100125212504) do
 
   create_table "structure_templates", :force => true do |t|
     t.string  "name"
-    t.integer "parent_id"
-    t.integer "template_schema_id"
-    t.integer "workflow_id"
+    t.integer "project_id"
   end
+
+  add_index "structure_templates", ["project_id"], :name => "index_structure_templates_on_project_id"
 
   create_table "structures", :force => true do |t|
     t.integer "structure_template_id"
     t.integer "project_id"
-    t.text    "blurb",                 :limit => 2147483647
+    t.text    "blurb",                 :limit => 16777215
     t.integer "position"
     t.string  "name"
     t.integer "assignee_id"
@@ -261,11 +262,6 @@ ActiveRecord::Schema.define(:version => 20100125212504) do
     t.datetime "updated_at"
   end
 
-  create_table "template_schemas", :force => true do |t|
-    t.string "name"
-    t.text   "description"
-  end
-
   create_table "text_fields", :force => true do |t|
     t.string   "default"
     t.datetime "created_at"
@@ -273,7 +269,7 @@ ActiveRecord::Schema.define(:version => 20100125212504) do
   end
 
   create_table "text_values", :force => true do |t|
-    t.text "value", :limit => 2147483647
+    t.text "value", :limit => 16777215
   end
 
   create_table "workflow_steps", :force => true do |t|

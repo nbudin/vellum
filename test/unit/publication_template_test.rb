@@ -5,7 +5,7 @@ class PublicationTemplateTest < ActiveSupport::TestCase
     setup do
       @person = Factory.create(:structure_template, :name => "Person")
         
-      @project = Factory.create(:project, :template_schema => @person.template_schema)
+      @project = @person.project
       @tmpl = Factory.build(:publication_template, :project => @project)
       @bob = Factory.build(:structure, :structure_template => @person, 
         :project => @project, :name => "Bob")

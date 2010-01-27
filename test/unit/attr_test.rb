@@ -8,8 +8,8 @@ class AttrTest < ActiveSupport::TestCase
     
     context "with an attached structure" do
       setup do
-        @project = Factory.build(:project, :template_schema => @attr.structure_template.template_schema)
-        @structure = Factory.build(:structure, :project => @project, :structure_template => @attr.structure_template)
+        @structure = Factory.build(:structure, :structure_template => @attr.structure_template)
+        @project = @structure.project
       end
       
       should "invalidate the structure unless set" do

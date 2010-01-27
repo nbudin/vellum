@@ -1,13 +1,20 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class RelationshipTypeTest < ActiveSupport::TestCase
-  fixtures :relationship_types, :structure_templates
+  context "A relationship of the wrong type" do
+    setup do
+      @s1 = Factory.build(:structure)
+      @project = @s1.project
 
-  def test_illegal_type
-    p1 = Structure.new(:structure_template => structure_templates(:person))
-    p2 = Structure.new(:structure_template => structure_templates(:person))
+      @s2 = Factory.build(:structure, :structure_template => @s1.structure_template, :project => @project)
+      @t2 = @project.structure_templates.new
 
-    r = Relationship.new(:relationship_type => relationship_types(:manager), :left => p1, :right => p2)
-    assert !r.valid?
+      @rt = @project.relationship_types.new(:left_template => @t2, :right_template => @t2)
+      @r = @project.relationships.new(:relationship_type => @rt, :left => @s1, :right => @s2)
+    end
+    
+    should "be invalid" do
+      assert !@r.valid?
+    end
   end
 end

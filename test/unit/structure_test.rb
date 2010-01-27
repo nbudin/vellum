@@ -4,7 +4,7 @@ class StructureTest < ActiveSupport::TestCase
   context "A new structure" do
     setup do
       @structure_template = Factory.create(:structure_template)
-      @project = Factory.create(:project, :template_schema => @structure_template.template_schema)
+      @project = @structure_template.project
       @bob = Factory.build(:structure, :structure_template => @structure_template, :project => @project, :name => "Bob")
     end
 
@@ -83,22 +83,28 @@ class StructureTest < ActiveSupport::TestCase
       setup do
         assert @bob.save
         
-        @rt = @structure_template.template_schema.relationship_types.create(:left_template => @structure_template,
-                                                                            :right_template => @structure_template)
+        assert @rt = @project.relationship_types.create(:left_template => @structure_template,
+                                                 :right_template => @structure_template,
+                                                 :left_description => "is shorter than",
+                                                 :right_description => "is taller than")
         
         assert @joe = @project.structures.create(:structure_template => @structure_template)
-        assert @r = Factory.create(:relationship, :relationship_type => @rt, :left => @joe, :right => @bob, :project => @project)
+        assert @r = @project.relationships.create(:relationship_type => @rt, :left => @joe, :right => @bob)
+
+        @bob.reload
+        @joe.reload
       end
       
       should "show the relationship on both structures" do
-        assert @r.save
-        @bob.reload
         assert @bob.inward_relationships.include?(@r), "@r doesn't show up on Bob's inward relationships"
         assert @bob.relationships.include?(@r), "@r doesn't show up on Bob's inward relationships"
-        
-        @joe.reload
+        @bob_related = @bob.related_structures(@rt, "inward")
+        assert @bob_related.include?(@joe), "related_structures should include Joe but is #{@bob_related.inspect}"
+
         assert @joe.outward_relationships.include?(@r), "@r doesn't show up on Joe's outward relationships"
         assert @joe.relationships.include?(@r), "@r doesn't show up on Joe's inward relationships"
+        @joe_related = @joe.related_structures(@rt, "outward")
+        assert @joe_related.include?(@bob), "related_structures should include Bob but is #{@joe_related.inspect}"
       end
     end
   end

@@ -5,7 +5,7 @@ class StructureContextTest < ActiveSupport::TestCase
     setup do
       @person = Factory.create(:structure_template, :name => "Person")
         
-      @project = Factory.create(:project, :template_schema => @person.template_schema)
+      @project = @person.project
       @bob = Factory.build(:structure, :structure_template => @person, 
         :project => @project, :name => "Bob")
       
@@ -82,7 +82,7 @@ class StructureContextTest < ActiveSupport::TestCase
     
     context "with a related structure" do
       setup do
-        @taller = @person.template_schema.relationship_types.create(
+        @taller = @project.relationship_types.create(
           :left_template => @person, :right_template => @person,
           :left_description => "is taller than", :right_description => "is shorter than")
         

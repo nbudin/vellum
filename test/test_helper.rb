@@ -35,8 +35,7 @@ class ActiveSupport::TestCase
     @attr = Factory.build(:attr)
     @attr.attr_configuration = @field
     @t = @attr.structure_template
-    @schema = @t.template_schema
-    @project = Factory.build(:project, :template_schema => @schema)
+    @project = @t.project
     @structure = Factory.build(:structure, :project => @project, :structure_template => @t)
     @avm = Factory.build(:attr_value_metadata, :structure => @structure, :attr => @attr)
     @value = Factory.build(value_type, :attr_value_metadata => @avm)

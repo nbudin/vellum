@@ -1,11 +1,11 @@
 class RelationshipType < ActiveRecord::Base
-  belongs_to :template_schema
+  belongs_to :project
   has_many :relationships, :dependent => :destroy
   belongs_to :left_template, :class_name => "StructureTemplate"
   belongs_to :right_template, :class_name => "StructureTemplate"
  
   validates_presence_of :left_template, :right_template, :template_schema
-  validate :check_templates_in_schema
+  validate :check_templates_in_project
 
   def name
     real_name = read_attribute :name
@@ -79,17 +79,17 @@ class RelationshipType < ActiveRecord::Base
   end
 
   private
-  def check_templates_in_schema
-    if template_schema
+  def check_templates_in_project
+    if project
       if left_template
-        unless left_template.template_schema == template_schema
-          errors.add("left_template", "is not in template schema #{template_schema.name}")
+        unless left_template.project == project
+          errors.add("left_template", "is not in project #{project}.name}")
         end
       end
   
       if right_template
-        unless right_template.template_schema == template_schema
-          errors.add("right_template", "is not in template schema #{template_schema.name}")
+        unless right_template.project == project
+          errors.add("right_template", "is not in project #{project.name}")
         end
       end
     end

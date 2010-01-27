@@ -44,23 +44,21 @@ class StructureContext < Radius::Context
     define_tag 'each_related' do |tag|
       how = tag.attr['how']
       
-      outward_relationship_types = RelationshipType.find_all_by_left_description(how)
-      inward_relationship_types = RelationshipType.find_all_by_right_description(how)
-      
       tag.locals.do_not_recurse ||= [tag.locals.structure]
       related = []
-      RelationshipType.find_all_by_left_description(how).each do |typ|
+      project = tag.locals.structure.project
+      project.relationship_types.find_all_by_left_description(how).each do |typ|
         related += tag.locals.structure.related_structures(typ, :outward)
       end
-      RelationshipType.find_all_by_right_description(how).each do |typ|
+      project.relationship_types.find_all_by_right_description(how).each do |typ|
         related += tag.locals.structure.related_structures(typ, :inward)
       end
       
-      related.reject! { |structure| tag.locals.do_not_recurse.include?(structure) } 
+      related.reject! { |s| tag.locals.do_not_recurse.include?(s) } 
       tag.locals.do_not_recurse += related
       
-      related.collect do |structure|
-        tag.locals.structure = structure
+      related.collect do |s|
+        tag.locals.structure = s
         tag.expand
       end.join("")
     end

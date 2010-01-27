@@ -87,9 +87,8 @@ class Structure < ActiveRecord::Base
       inward_relationships
     when :outward
       outward_relationships
-    end
+    end.select { |r| r.relationship_type == relationship_type }
     
-    relationships.reject! { |r| r.relationship_type != relationship_type }
     case direction.to_sym
     when :inward
       relationships.collect { |r| r.left }
