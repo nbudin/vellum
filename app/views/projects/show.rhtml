@@ -41,14 +41,6 @@ h2 {
 	  </ol>
 	</li>
   </ol>
-  
-  <h3>See also</h3>
-  <p>
-    <% link_to template_schema_url(@project.template_schema) do %>
-    <%= image_tag "schema.png" %>
-    <%= @project.template_schema.name %>
-    <% end %>
-  </p>
 </div>
 
 <%= jipe_editor_if_permitted(@project, "blurb", :rows => 4) %>

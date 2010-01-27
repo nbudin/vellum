@@ -5,8 +5,7 @@ class RelationshipsControllerTest < ActionController::TestCase
     create_logged_in_person
 
     @rt = Factory.create(:relationship_type)
-    @schema = @rt.template_schema
-    @project = Factory.create(:project, :template_schema => @schema)
+    @project = @rt.project
     @project.grant(@person)
     @left = Factory.create(:structure, :project => @project, :structure_template => @rt.left_template)
     @right = Factory.create(:structure, :project => @project, :structure_template => @rt.right_template)

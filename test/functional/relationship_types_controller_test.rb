@@ -4,17 +4,17 @@ class RelationshipTypesControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
 
-    @schema = Factory.create(:template_schema)
-    @schema.grant(@person)
+    @project = Factory.create(:project)
+    @project.grant(@person)
   end
 
   context "on POST to :create" do
     setup do
-      @a = @schema.structure_templates.create(:name => "A")
-      @b = @schema.structure_templates.create(:name => "B")
+      @a = @project.structure_templates.create(:name => "A")
+      @b = @project.structure_templates.create(:name => "B")
 
       @old_count = RelationshipType.count
-      post :create, :template_schema_id => @schema.id, :relationship_type => {
+      post :create, :project_id => @project.id, :relationship_type => {
         :left_template_id => @a.id,
         :right_template_id => @b.id,
         :left_description => "is related to"
@@ -30,18 +30,18 @@ class RelationshipTypesControllerTest < ActionController::TestCase
     end
 
     should "redirect to the new relationship type" do
-      assert_redirected_to relationship_type_path(@schema, assigns(:relationship_type))
+      assert_redirected_to relationship_type_path(@project, assigns(:relationship_type))
     end
   end
 
   context "with a relationship type" do
     setup do
-      @rt = Factory.create(:relationship_type, :template_schema => @schema)
+      @rt = Factory.create(:relationship_type, :project => @project)
     end
 
     context "on GET to :show" do
       setup do
-        get :show, :id => @rt.id, :template_schema_id => @schema.id
+        get :show, :id => @rt.id, :project_id => @project.id
       end
 
       should_assign_to :relationship_type
@@ -52,7 +52,7 @@ class RelationshipTypesControllerTest < ActionController::TestCase
     context "on PUT to :update" do
       setup do
         @new_desc = "is taller than"
-        put :update, :id => @rt.id, :template_schema_id => @schema.id,
+        put :update, :id => @rt.id, :project_id => @project.id,
           :relationship_type => { :left_description => @new_desc }
       end
 
@@ -67,14 +67,14 @@ class RelationshipTypesControllerTest < ActionController::TestCase
       end
 
       should "redirect to the relationship type" do
-        assert_redirected_to relationship_type_path(@schema, @rt)
+        assert_redirected_to relationship_type_path(@project, @rt)
       end
     end
 
     context "on DELETE to :destroy" do
       setup do
         @old_count = RelationshipType.count
-        delete :destroy, :id => @rt.id, :template_schema_id => @schema.id
+        delete :destroy, :id => @rt.id, :project_id => @project.id
       end
 
       should_assign_to :relationship_type

@@ -4,13 +4,13 @@ class StructureTemplatesControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
 
-    @schema = Factory.create(:template_schema)
-    @schema.grant(@person)
+    @project = Factory.create(:project)
+    @project.grant(@person)
   end
 
   context "on GET to :index.json" do
     setup do
-      get :index, :template_schema_id => @schema.id, :format => "json"
+      get :index, :project_id => @project.id, :format => "json"
     end
 
     should_respond_with :success
@@ -21,7 +21,7 @@ class StructureTemplatesControllerTest < ActionController::TestCase
   context "on POST to :create" do
     setup do
       @old_count = StructureTemplate.count
-      post :create, :template_schema_id => @schema.id,
+      post :create, :project_id => @project.id,
         :structure_template => { :name => "Car" }
     end
 
@@ -34,18 +34,18 @@ class StructureTemplatesControllerTest < ActionController::TestCase
     end
 
     should "redirect to the new structure template" do
-      assert_redirected_to structure_template_path(@schema, assigns(:structure_template))
+      assert_redirected_to structure_template_path(@project, assigns(:structure_template))
     end
   end
 
   context "with a structure template" do
     setup do
-      @tmpl = Factory.create(:structure_template, :template_schema => @schema)
+      @tmpl = Factory.create(:structure_template, :project => @project)
     end
 
     context "on GET to :show" do
       setup do
-        get :show, :template_schema_id => @schema.id, :id => @tmpl.id
+        get :show, :project_id => @project.id, :id => @tmpl.id
       end
 
       should_respond_with :success
@@ -57,7 +57,7 @@ class StructureTemplatesControllerTest < ActionController::TestCase
       setup do
         @new_name = "A different name"
 
-        put :update, :template_schema_id => @schema.id, :id => @tmpl.id,
+        put :update, :project_id => @project.id, :id => @tmpl.id,
           :structure_template => { :name => @new_name }
       end
 
@@ -72,14 +72,14 @@ class StructureTemplatesControllerTest < ActionController::TestCase
       end
 
       should "redirect to the template" do
-        assert_redirected_to structure_template_path(@schema, @tmpl)
+        assert_redirected_to structure_template_path(@project, @tmpl)
       end
     end
 
     context "on DELETE to :destroy" do
       setup do
         @old_count = StructureTemplate.count
-        delete :destroy, :template_schema_id => @schema.id, :id => @tmpl.id
+        delete :destroy, :project_id => @project.id, :id => @tmpl.id
       end
 
       should_respond_with :redirect
@@ -90,8 +90,8 @@ class StructureTemplatesControllerTest < ActionController::TestCase
         assert_equal @old_count - 1, StructureTemplate.count
       end
 
-      should "redirect to the schema" do
-        assert_redirected_to template_schema_path(@schema)
+      should "redirect to the project" do
+        assert_redirected_to project_path(@project)
       end
     end
   end

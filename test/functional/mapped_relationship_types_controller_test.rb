@@ -4,7 +4,7 @@ class MappedRelationshipTypesControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
     @relationship_type = Factory.create(:relationship_type)
-    @project = Factory.create(:project, :template_schema => @relationship_type.template_schema)
+    @project = @relationship_type.project
     @project.grant(@person)
     @map = Factory.create(:map, :project => @project)
 

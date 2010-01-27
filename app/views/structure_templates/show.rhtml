@@ -1,7 +1,7 @@
 <script type="text/javascript">
-Resource.model("StructureTemplate", {prefix: '<%= template_schema_path(@template_schema) %>'});
-Resource.model("Attr", { prefix: '<%= structure_template_path(@template_schema, @structure_template) %>'});
-Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema, @structure_template) %>/attrs/:attr_id',
+Resource.model("StructureTemplate", {prefix: '<%= project_path(@project) %>'});
+Resource.model("Attr", { prefix: '<%= structure_template_path(@project, @structure_template) %>'});
+Resource.model("Config", {prefix: '<%= structure_template_path(@project, @structure_template) %>/attrs/:attr_id',
 			  urls: { 'show': "/config.json", 'update': "/config.json" },
 			  format: 'json' });
 </script>
@@ -10,9 +10,9 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
 
 <div class="jumpbox">
   <div class="navigation">
-    <% link_to template_schema_path(@template_schema), :class => "button back" do %>
+    <% link_to project_path(@project), :class => "button back" do %>
       <%= image_tag "arrow_left.png" %>
-      <%=h @template_schema.name %>
+      <%=h @project.name %>
     <% end -%>
   </div>
 
@@ -20,18 +20,18 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
 
   <p>
     Part of
-    <% link_to @template_schema do %>
-      <%= image_tag "schema.png" %>
-      <%=h @template_schema.name %>
+    <% link_to @project do %>
+      <%= image_tag "project.png" %>
+      <%=h @project.name %>
     <% end -%>
   </p>
 </div>
 
 <h2>Attributes</h2>
 
-<% sortlist(@structure_template.attrs, "attrs", :url => attrs_path(@template_schema, @structure_template) + '/sort') do |attr| -%>
+<% sortlist(@structure_template.attrs, "attrs", :url => attrs_path(@project, @structure_template) + '/sort') do |attr| -%>
   <% complex_item(:id => "attr_#{attr.id}", :type => h(attr.attr_configuration.class.name), :name => h(attr.name),
-                  :delete_path => attr_path(@template_schema, @structure_template, attr)) do %>
+                  :delete_path => attr_path(@project, @structure_template, attr)) do %>
     <%= render_attr_editor attr %>
   <% end -%>
 <% end -%>
@@ -44,7 +44,7 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
 <ul class="inline">
 <% Attr.attr_classes.each do |cls| -%>
   <li>
-    <% link_to new_attr_path(@template_schema, @structure_template, :config_class => cls.name), :class => "button new" do %>
+    <% link_to new_attr_path(@project, @structure_template, :config_class => cls.name), :class => "button new" do %>
       <%= image_tag "attr_add.png" %> Add <%=cls.name %>
     <% end %>
   </li>
@@ -56,8 +56,8 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
 <p><%= @structure_template.name %>...</p>
 
 <ul class="itemlist">
-  <% itemlist_items(@relationship_types, :delete_path => relationship_types_path(@template_schema)) do |typ| -%>
-          <% link_to(relationship_type_path(@template_schema, typ)) do -%>
+  <% itemlist_items(@relationship_types, :delete_path => relationship_types_path(@project)) do |typ| -%>
+          <% link_to(relationship_type_path(@project, typ)) do -%>
 	    <%= image_tag "relationship_type.png" %>
 	    <%= typ.description_for(@structure_template) %>
 	    <%= typ.other_template(@structure_template).name %>
@@ -65,7 +65,7 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
   <% end -%>
 
     <li>
-      <% form_for(:relationship_type, :url => relationship_types_path(@template_schema)) do |f| %>
+      <% form_for(:relationship_type, :url => relationship_types_path(@project)) do |f| %>
       <div style="float: right;">
 	<button class="new">
 	  <%= image_tag "relationship_type.png" %>
@@ -74,7 +74,7 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@template_schema,
       </div>
       <%= hidden_field_tag "relationship_type[left_template_id]", @structure_template.id %>
       <%= f.text_field "left_description" %>
-      <%= f.select "right_template_id", @template_schema.structure_templates.collect { |t| [t.name, t.id] } %>
+      <%= f.select "right_template_id", @project.structure_templates.collect { |t| [t.name, t.id] } %>
       <% end -%>
     </li>
 </ul>

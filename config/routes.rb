@@ -8,6 +8,10 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :projects do |projects|
+    projects.resources :structure_templates, :name_prefix => nil do |templates|
+      templates.resources :attrs, :collection => { :sort => :post }, :name_prefix => nil
+    end
+    projects.resources :relationship_types, :name_prefix => nil
     projects.resources :structures, :name_prefix => nil, :collection => { :sort => :post }, 
                        :member => { :transition => :post } do |structures|
       structures.resources :doc_values, :name_prefix => nil do |doc_values|
@@ -20,20 +24,13 @@ ActionController::Routing::Routes.draw do |map|
       maps.resources :mapped_relationship_types, :name_prefix => nil
     end
   end
-  
-  map.resources :template_schemas do |schemas|
-    schemas.resources :structure_templates, :name_prefix => nil do |templates|
-      templates.resources :attrs, :collection => { :sort => :post }, :name_prefix => nil
-    end
-    schemas.resources :relationship_types, :name_prefix => nil
-  end
 
-  map.connect('template_schemas/:template_schema_id/structure_templates/:structure_template_id/attrs/:id/config.:format',
+  map.connect('projects/:project_id/structure_templates/:structure_template_id/attrs/:id/config.:format',
               :conditions => { :method => :get },
               :controller => 'attrs',
               :action => 'show_config')
               
-  map.connect('template_schemas/:template_schema_id/structure_templates/:structure_template_id/attrs/:id/config.:format',
+  map.connect('projects/:project_id/structure_templates/:structure_template_id/attrs/:id/config.:format',
               :conditions => { :method => :put },
               :controller => 'attrs',
               :action => 'update_config')

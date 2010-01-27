@@ -4,7 +4,7 @@ class RelationshipType < ActiveRecord::Base
   belongs_to :left_template, :class_name => "StructureTemplate"
   belongs_to :right_template, :class_name => "StructureTemplate"
  
-  validates_presence_of :left_template, :right_template, :template_schema
+  validates_presence_of :left_template, :right_template, :project
   validate :check_templates_in_project
 
   def name

@@ -1,16 +1,15 @@
 <script type="text/javascript">
-  Resource.model("RelationshipType", { prefix: '<%= template_schema_path(@template_schema) %>', format: 'json' });
+  Resource.model("RelationshipType", { prefix: '<%= project_path(@project) %>', format: 'json' });
 </script>
 
-<p><%= link_to "<- Back to #{@template_schema.name}",
-               template_schema_path(@template_schema) %></p>
+<p><%= link_to "<- Back to #{@project.name}", project_path(@project) %></p>
 
 <h1><%= jipe_editor(@relationship_type, "name") %></h1>
 
 <p>Connects <%= link_to @relationship_type.left_template.name, 
-                        structure_template_path(@template_schema, @relationship_type.left_template) %>
+                        structure_template_path(@project, @relationship_type.left_template) %>
 with <%= link_to @relationship_type.right_template.name, 
-                 structure_template_path(@template_schema, @relationship_type.right_template) %></p>
+                 structure_template_path(@project, @relationship_type.right_template) %></p>
 
 <h2>Phrasing</h2>
 

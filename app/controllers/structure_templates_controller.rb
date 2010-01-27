@@ -1,11 +1,11 @@
 class StructureTemplatesController < ApplicationController
-  rest_edit_permissions :class_name => "TemplateSchema", :id_param => "template_schema_id"
-  before_filter :get_schema
+  rest_edit_permissions :class_name => "Project", :id_param => "project_id"
+  before_filter :get_project
   
   # GET /structure_templates
   # GET /structure_templates.xml
   def index
-    @structure_templates = @template_schema.structure_templates
+    @structure_templates = @project.structure_templates
 
     respond_to do |format|
       format.xml  { render :xml => @structure_templates.to_xml }
@@ -30,12 +30,12 @@ class StructureTemplatesController < ApplicationController
   # POST /structure_templates.xml
   def create
     @structure_template = StructureTemplate.new(params[:structure_template])
-    @structure_template.template_schema = @template_schema
+    @structure_template.project = @project
 
     respond_to do |format|
       if @structure_template.save
-        format.html { redirect_to structure_template_url(@template_schema, @structure_template) }
-        format.xml  { head :created, :location => structure_template_url(@template_schema, @structure_template) }
+        format.html { redirect_to structure_template_url(@project, @structure_template) }
+        format.xml  { head :created, :location => structure_template_url(@project, @structure_template) }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @structure_template.errors.to_xml }
@@ -52,7 +52,7 @@ class StructureTemplatesController < ApplicationController
 
     respond_to do |format|
       if @structure_template.update_attributes(update_params)
-        format.html { redirect_to structure_template_url(@template_schema, @structure_template) }
+        format.html { redirect_to structure_template_url(@project, @structure_template) }
         format.xml  { head :ok }
         format.json { head :ok }
       else
@@ -70,12 +70,12 @@ class StructureTemplatesController < ApplicationController
     @structure_template.destroy
 
     respond_to do |format|
-      format.html { redirect_to template_schema_url(@template_schema) }
+      format.html { redirect_to project_url(@project) }
       format.xml  { head :ok }
     end
   end
   
-  def get_schema
-    @template_schema = TemplateSchema.find(params[:template_schema_id])
+  def get_project
+    @project = Project.find(params[:project_id])
   end
 end

@@ -4,7 +4,7 @@ class MappedStructureTemplatesControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
     @structure_template = Factory.create(:structure_template)
-    @project = Factory.create(:project, :template_schema => @structure_template.template_schema)
+    @project = @structure_template.project
     @project.grant(@person)
     @map = Factory.create(:map, :project => @project)
 

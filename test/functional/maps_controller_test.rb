@@ -3,8 +3,7 @@ require 'test_helper'
 class MapsControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
-    @schema = Factory.create(:template_schema)
-    @project = Factory.create(:project, :template_schema => @schema)
+    @project = Factory.create(:project)
     @project.grant(@person)
   end
 

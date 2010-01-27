@@ -6,7 +6,6 @@ class ProjectsController < ApplicationController
   # GET /projects.xml
   def index
     @projects = Project.find(:all, :include => :permissions).select { |p| logged_in_person.permitted?(p, "show") }
-    @template_schemas = TemplateSchema.find(:all, :include => :permissions).select { |s| logged_in_person.permitted?(s, "show") }
 
     respond_to do |format|
       format.html # index.rhtml
@@ -20,12 +19,11 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id], 
       :include => { :structures => { :structure_template => [] },
-                                     :template_schema => [],
                                      :permissions => [] })
 
     respond_to do |format|
       format.html do
-        @templates = @project.template_schema.structure_templates.sort_by { |ts| ts.name.sort_normalize }
+        @templates = @project.structure_templates.sort_by { |ts| ts.name.sort_normalize }
         @structures = {}
         @templates.each do |tmpl|
           @structures[tmpl] = @project.structures.select { |s| s.structure_template == tmpl }
@@ -48,7 +46,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(params[:project])
 
     respond_to do |format|
-      if logged_in_person.permitted?(@project.template_schema, "show") and @project.save
+      if @project.save
         @project.grant(logged_in_person)
         format.html { redirect_to project_url(@project) }
         format.xml  { head :created, :location => project_url(@project) }

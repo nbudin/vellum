@@ -7,7 +7,7 @@
       <%= project.name %>
     <% end -%>
   <% end %>
-  <% if @template_schemas.size > 0 -%>
+  <% if logged_in? -%>
     <li style="overflow: hidden;">
       <% form_for(:project, :url => projects_path) do |f| %>
       <div style="float: right;">
@@ -17,8 +17,6 @@
         </button>
       </div>
       <%= f.text_field "name" %>
-      using
-      <%= f.select :template_schema_id, @template_schemas.collect { |s| [ s.name, s.id ]} %>
       <% end -%>
     </li>
   <% end -%>

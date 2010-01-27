@@ -15,7 +15,7 @@
   <h2><%= @structure.name %></h2>
   <p>
     <b>Template:</b> 
-    <% link_to structure_template_path(@structure.project.template_schema, @structure.structure_template) do -%>
+    <% link_to structure_template_path(@structure.project, @structure.structure_template) do -%>
       <%= image_tag "template.png" %>
       <%= @structure.structure_template.name %>
     <% end -%>

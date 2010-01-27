@@ -7,8 +7,6 @@ class ProjectsController; def rescue_action(e) raise e end; end
 class ProjectsControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
-    @schema = Factory.create(:template_schema)
-    @schema.grant(@person)
   end
 
   context "on GET to :index" do
@@ -24,7 +22,7 @@ class ProjectsControllerTest < ActionController::TestCase
   context "on POST to :create with project" do
     setup do
       @old_count = Project.count
-      post :create, { :project => { :template_schema_id => @schema.id }}
+      post :create, { :project => { }}
     end
 
     should_respond_with :redirect
@@ -46,7 +44,7 @@ class ProjectsControllerTest < ActionController::TestCase
 
   context "with project" do
     setup do
-      @project = Factory.create(:project, :template_schema => @schema)
+      @project = Factory.create(:project)
       @project.grant(@person)
     end
 

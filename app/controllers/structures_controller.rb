@@ -69,7 +69,7 @@ class StructuresController < ApplicationController
   # POST /structures.xml
   def create
     # we need to set up the template before we can set the attrs
-    @structure_template = @project.template_schema.structure_templates.find(params[:template_id])
+    @structure_template = @project.structure_templates.find(params[:template_id])
     @structure = @project.structures.new(:structure_template => @structure_template)
     @structure.attributes = params[:structure]
 

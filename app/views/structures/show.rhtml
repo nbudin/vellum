@@ -1,7 +1,7 @@
 <script type="text/javascript">
-    Resource.model("RelationshipType", {prefix: '<%=template_schema_path(@project.template_schema)%>', format: 'json'});
+    Resource.model("RelationshipType", {prefix: '<%=project_path(@project)%>', format: 'json'});
     Resource.model("Structure", {prefix: '<%=project_path(@project)%>', format: 'json'});
-    Resource.model("StructureTemplate", {prefix: '<%=template_schema_path(@project.template_schema)%>', format: 'json'});
+    Resource.model("StructureTemplate", {prefix: '<%=project_path(@project)%>', format: 'json'});
 </script>
 
 <p style="margin-top: 2em;">
@@ -25,7 +25,7 @@
   <h2><%=h @structure.name %></h2>
   <p>
     <b>Template:</b> 
-    <% link_to structure_template_path(@structure.project.template_schema, @structure.structure_template) do -%>
+    <% link_to structure_template_path(@structure.project, @structure.structure_template) do -%>
       <%= image_tag "template.png" %>
       <%= @structure.structure_template.name %>
     <% end -%>

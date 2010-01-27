@@ -10,10 +10,7 @@ class StructuresControllerTest < ActionController::TestCase
     @attr.attr_configuration = @field
     @attr.save!
     @tmpl = @attr.structure_template
-    @schema = @tmpl.template_schema
-    @schema.grant(@person)
-
-    @project = Factory.create(:project, :template_schema => @schema)
+    @project = @tmpl.project
     @project.grant(@person)
   end
 

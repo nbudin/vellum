@@ -1,9 +1,9 @@
 class AttrsController < ApplicationController
-  perm_options = { :class_name => "TemplateSchema", :id_param => "template_schema_id" }
+  perm_options = { :class_name => "Project", :id_param => "project_id" }
   rest_permissions perm_options
   require_permission "show", {:only => [:show_config]}.update(perm_options)
   require_permission "edit", {:only => [:sort, :update_config]}.update(perm_options)
-  before_filter :get_template_and_schema
+  before_filter :get_template_and_project
   
   # GET /attrs
   # GET /attrs.xml
@@ -54,9 +54,9 @@ class AttrsController < ApplicationController
 
     respond_to do |format|
       if @attr.save
-        format.html { redirect_to structure_template_url(@template_schema, @structure_template) }
-        format.xml  { head :created, :location => attr_url(@template_schema, @structure_template, @attr) }
-        format.json { head :created, :location => attr_url(@template_schema, @structure_template, @attr) }
+        format.html { redirect_to structure_template_url(@project, @structure_template) }
+        format.xml  { head :created, :location => attr_url(@project, @structure_template, @attr) }
+        format.json { head :created, :location => attr_url(@project, @structure_template, @attr) }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @attr.errors.to_xml }
@@ -88,7 +88,7 @@ class AttrsController < ApplicationController
     @attr.destroy
 
     respond_to do |format|
-      format.html { redirect_to structure_template_url(@template_schema, @structure_template) }
+      format.html { redirect_to structure_template_url(@project, @structure_template) }
       format.xml  { head :ok }
       format.json { render :json => @attr.errors.to_json }
     end
@@ -138,8 +138,8 @@ class AttrsController < ApplicationController
 
   private
   
-  def get_template_and_schema
-    @template_schema = TemplateSchema.find(params[:template_schema_id])
-    @structure_template = @template_schema.structure_templates.find(params[:structure_template_id])
+  def get_template_and_project
+    @project = Project.find(params[:project_id])
+    @structure_template = @project.structure_templates.find(params[:structure_template_id])
   end
 end

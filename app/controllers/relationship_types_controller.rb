@@ -1,6 +1,6 @@
 class RelationshipTypesController < ApplicationController
-  rest_edit_permissions :class_name => "TemplateSchema", :id_param => "template_schema_id"
-  before_filter :get_template_schema
+  rest_edit_permissions :class_name => "Project", :id_param => "project_id"
+  before_filter :get_project
 
   # GET /relationship_types/1
   # GET /relationship_types/1.xml
@@ -18,15 +18,15 @@ class RelationshipTypesController < ApplicationController
   # POST /relationship_types.xml
   def create
     @relationship_type = RelationshipType.new(params[:relationship_type])
-    @relationship_type.template_schema = @template_schema
+    @relationship_type.project = @project
 
     respond_to do |format|
       if @relationship_type.save
-        format.html { redirect_to(relationship_type_url(@template_schema, @relationship_type)) }
+        format.html { redirect_to(relationship_type_url(@project, @relationship_type)) }
         format.xml  { render :xml => @relationship_type, :status => :created,
-          :location => relationship_type_url(@template_schema, @relationship_type, :format => :xml) }
+          :location => relationship_type_url(@project, @relationship_type, :format => :xml) }
         format.json { render :json => @relationship_type, :status => :created, 
-          :location => relationship_type_url(@template_schema, @relationship_type, :format => :json) }
+          :location => relationship_type_url(@project, @relationship_type, :format => :json) }
       else
         format.html { render :action => "new" }
         format.xml  { render :xml => @relationship_type.errors, :status => :unprocessable_entity }
@@ -42,7 +42,7 @@ class RelationshipTypesController < ApplicationController
 
     respond_to do |format|
       if @relationship_type.update_attributes(params[:relationship_type])
-        format.html { redirect_to(relationship_type_url(@template_schema, @relationship_type)) }
+        format.html { redirect_to(relationship_type_url(@project, @relationship_type)) }
         format.xml  { head :ok }
         format.json { head :ok }
       else
@@ -61,13 +61,13 @@ class RelationshipTypesController < ApplicationController
     @relationship_type.destroy
 
     respond_to do |format|
-      format.html { redirect_to(structure_template_url(@template_schema, left_template)) }
+      format.html { redirect_to(structure_template_url(@project, left_template)) }
       format.xml  { head :ok }
     end
   end
 
   private
-  def get_template_schema
-    @template_schema = TemplateSchema.find(params[:template_schema_id])
+  def get_project
+    @project = Project.find(params[:project_id])
   end
 end
