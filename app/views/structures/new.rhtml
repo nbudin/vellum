@@ -7,6 +7,6 @@
 <% form_for(:structure, :url => structures_path(@project)) do |f| -%>
   <%= hidden_field_tag "template_id", @structure.structure_template.id %>
 
-  <%= f.label "name", "Name:" %> <%= f.text_field("name") %>
+  <%= f.label "name", "Name" %> <%= f.text_field("name") %>
   <%= render :partial => "form" %>
 <% end -%>
