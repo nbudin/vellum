@@ -37,7 +37,7 @@
               <%= submit_tag "Add", :class => "new" %>
             </span>
             <%= f.select "structure_template_id",
-                         @project.template_schema.structure_templates.reject { |t|
+                         @project.structure_templates.reject { |t|
                               @map.structure_templates.include? t
                           }.collect { |t|
                               [t.plural_name, t.id]
@@ -64,7 +64,7 @@
               <%= submit_tag "Add", :class => "new" %>
             </span>
             <%= f.select "relationship_type_id",
-                         @project.template_schema.relationship_types.reject { |t|
+                         @project.relationship_types.reject { |t|
                               @map.relationship_types.include? t
                           }.collect { |t|
                               [t.left_name, t.id]
