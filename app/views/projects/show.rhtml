@@ -34,12 +34,9 @@ h2 {
 		  <li><%= link_to tmpl.plural_name, "#template_#{tmpl.id}" %></li>
 		<% end -%>
 	  </ol>
-	</li>
-	<li>Tools
-	  <ol>
-		<li><%= link_to "Maps", "#maps" %></li>
-	  </ol>
-	</li>
+        </li>
+        <li><%= link_to "Templates", structure_templates_path(@project) %></li>
+        <li><%= link_to "Maps", maps_path(@project) %></li>
   </ol>
 </div>
 
@@ -61,22 +58,3 @@ h2 {
 	  <% end -%>
   </div>
 <% end -%>
-
-<h1 style="margin-top: 2em;">Tools</h1>
-
-<a name="maps"></a>
-<h2>Maps</h2>
-
-<div style="margin-left: 20px;">
-  <p>
-    <% form_for :map, :url => maps_path(@project) do -%>
-	  <button class="button new" type="submit">
-		<%= image_tag "map_add.png" %> Add new map
-	  </button>
-    <% end -%>
-  </p>
-  <% sortlist(@project.maps, "maps", :url => sort_maps_path(@project)) do |map| -%>
-	<%= render :partial => 'maps/show_external', :locals => { :map => map } %>
-  <% end -%>
-</div>
-

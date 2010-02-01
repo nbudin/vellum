@@ -5,9 +5,10 @@ class StructureTemplatesController < ApplicationController
   # GET /structure_templates
   # GET /structure_templates.xml
   def index
-    @structure_templates = @project.structure_templates
+    @structure_templates = @project.structure_templates.all(:order => "name")
 
     respond_to do |format|
+      format.html
       format.xml  { render :xml => @structure_templates.to_xml }
       format.json { render :json => @structure_templates.to_json }
     end
@@ -70,7 +71,7 @@ class StructureTemplatesController < ApplicationController
     @structure_template.destroy
 
     respond_to do |format|
-      format.html { redirect_to project_url(@project) }
+      format.html { redirect_to structure_templates_url(@project) }
       format.xml  { head :ok }
     end
   end

@@ -10,9 +10,9 @@ Resource.model("Config", {prefix: '<%= structure_template_path(@project, @struct
 
 <div class="jumpbox">
   <div class="navigation">
-    <% link_to project_path(@project), :class => "button back" do %>
+    <% link_to structure_templates_path(@project), :class => "button back" do %>
       <%= image_tag "arrow_left.png" %>
-      <%=h @project.name %>
+      Templates
     <% end -%>
   </div>
 

@@ -4,6 +4,16 @@ class MapsController < ApplicationController
   require_permission "edit", {:only => [:sort]}.update(perm_options)
   before_filter :get_project
 
+  def index
+    @maps = @project.maps
+
+    respond_to do |format|
+      format.html
+      format.xml  { render :xml => @maps }
+      format.json { render :json => @maps }
+    end
+  end
+
   # GET /maps/1
   # GET /maps/1.xml
   def show
@@ -67,7 +77,7 @@ class MapsController < ApplicationController
     @map.destroy
 
     respond_to do |format|
-      format.html { redirect_to(project_url(@project)) }
+      format.html { redirect_to(maps_url(@project)) }
       format.xml  { head :ok }
       format.json { head :ok }
     end

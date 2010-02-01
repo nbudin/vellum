@@ -1,0 +1,26 @@
+<h1><%= @project.name %></h1>
+
+<h2>Templates</h2>
+
+<ul class="itemlist">
+  <% itemlist_items(@structure_templates,
+                    :delete_path => structure_templates_path(@project)) do |t| %>
+    <% link_to(structure_template_path(@project, t)) do -%>
+      <%= image_tag "template.png" %>
+      <%= t.name %>
+    <% end -%>
+  <% end %>
+  <li>
+    <% form_for(:structure_template, :url => structure_templates_path(@project)) do |f| %>
+    <div style="float: right;">
+      <button class="new">
+        <%= image_tag "template_add.png" %>
+        Create template...
+      </button>
+    </div>
+    <%= f.text_field "name" %>
+    <% end -%>
+  </li>
+</ul>
+
+
