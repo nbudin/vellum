@@ -169,20 +169,34 @@ module ApplicationHelper
     end
   end
 
+  def sortlist_items(items, list_id, options={}, &block)
+    full_html = items.collect do |item|
+      content_tag(:li, :id => "#{list_id.singularize}_#{item.id}") do
+        inner_html = image_tag("sort_handle.png", :class => "sort_handle")
+        if block_given?
+          inner_html << block.call(item)
+        end
+        inner_html
+      end
+    end.join("\n")
+    
+    if block_given?
+      concat full_html
+    else
+      full_html
+    end
+  end
+
+  def sortlist_sortable(list_id, url)
+    sortable_element(list_id, :handle => "sort_handle", :url => url)
+  end
+
   def sortlist(items, list_id, options={}, &block)
     url = options.delete(:url)
     html = content_tag(:ul, {:class => "sortlist", :id => list_id}.update(options)) do
-      items.collect do |item|
-        content_tag(:li, :id => "#{list_id.singularize}_#{item.id}") do
-          inner_html = image_tag("sort_handle.png", :class => "sort_handle")
-          if block_given?
-            inner_html << block.call(item)
-          end
-          inner_html
-        end
-      end.join("\n")
+      sortlist_items(items, list_id, options, &block)
     end
-    html << sortable_element(list_id, :handle => "sort_handle", :url => url)
+    html << sortlist_sortable(list_id, url)
     if block_given?
       concat html
     else
