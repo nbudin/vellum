@@ -128,8 +128,8 @@ module ApplicationHelper
     html = ""
     if options[:delete_path]
       if (not item.respond_to? "permitted?") or (logged_in? and logged_in_person.permitted?(item, "destroy"))
-        html << button_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",
-                          :method => :delete, :class => "delete")
+        html << link_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",
+                        :method => :delete, :class => "button delete")
       end
     end
     return html
