@@ -117,6 +117,8 @@ class MoveStructureTemplatesOntoProjects < ActiveRecord::Migration
     remove_column :relationship_types, :template_schema_id
     remove_column :projects, :template_schema_id
     drop_table :template_schemas
+
+    execute "DELETE FROM permissions WHERE permissioned_type = 'TemplateSchema'"
   end
 
   def self.down
