@@ -15,7 +15,7 @@
   </div>
   
   <h2><%=h @map.name %></h2>  
-    <% if logged_in? and logged_in_person.permitted?(@map, "destroy") -%>
+    <% if logged_in? and logged_in_person.permitted?(@project, "edit") -%>
         <%= button_to "Delete", map_path(@project, @map), :method => "delete",
             :class => "delete", :confirm => "Are you sure you want to delete the #{@map.name} map?" %>
     <% end -%>
