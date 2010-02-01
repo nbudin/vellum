@@ -14,12 +14,19 @@ module NavigationHelpers
       projects_path
     when /the project page for (.*)/
       project_path(Project.find_by_name($1))
+    when /the templates page for (.*)/
+      structure_templates_path(Project.find_by_name($1))
+    when /the maps page for (.*)/
+      maps_path(Project.find_by_name($1))
     when /the template page for (.*)/
       tmpl = StructureTemplate.find_by_name($1)
       structure_template_path(tmpl.project, tmpl)
     when /the structure page for (.*)/
       struct = Structure.find_by_name($1)
       structure_path(struct.project, struct)
+    when /the map page for (.*)/
+      map = Map.find_by_name($1)
+      map_path(map.project, map)
     when /the login page/
       url_for({ :controller => "auth", :action => "login" })
     
