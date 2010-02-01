@@ -19,11 +19,18 @@
 <body>
   
 <div class="topbar">
-  <div class="app_name"><%= link_to @site_settings.site_name, :controller => "about", :action => "index" %></div>
-  <%= render :partial => "auth/mini_auth_form" %>
-  <div class="nav_links">
-    <%= nav_link_to "Projects", projects_path(), "project.png" %>
+  <div class="app_name">
+    <%= link_to @site_settings.site_name, projects_path %>
   </div>
+  <%= render :partial => "auth/mini_auth_form" %>
+  <% if @project -%>
+    <div class="nav_links">
+      <%= nav_link_to @project.name, project_path(@project), "project.png", 
+          %w{projects structures}.include?(params[:controller]) %>
+      <%= nav_link_to "Templates", structure_templates_path(@project), "template.png" %>
+      <%= nav_link_to "Maps", maps_path(@project), "map.png" %>
+    </div>
+  <% end -%>
 </div>
 
 <% if flash[:error_messages] and flash[:error_messages].length > 0 -%>

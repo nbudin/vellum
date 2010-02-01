@@ -5,13 +5,17 @@ module ApplicationHelper
     jipe_editor(object, attr, options)
   end
   
-  def nav_link_to(label, destination, image_path=nil)
+  def nav_link_to(label, destination, image_path=nil, selected=nil)
+    if selected.nil?
+      selected = request.path =~ /^#{destination}/
+    end
+    
     label_html = if image_path
                    "#{image_tag(image_path, :alt => label)} #{h label}"
                  else
                    h(label)
                  end
-    link_to(label_html, destination, {:class => request.path =~ /^#{destination}/ ? "selected" : "" })
+    link_to(label_html, destination, {:class => selected ? "selected" : "" })
   end
   
   def page_title
