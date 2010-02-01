@@ -50,7 +50,7 @@ class RelationshipType < ActiveRecord::Base
   end
 
   def left_name
-    if left_template and right_template and right_description
+    if left_template and right_template and left_description
       "#{left_template.name} #{left_description} #{right_template.name}"
     elsif left_template and right_template
       "Untitled relationship type (#{left_template.name} to #{right_template.name})"
@@ -60,7 +60,7 @@ class RelationshipType < ActiveRecord::Base
   end
 
   def right_name
-    if right_description
+    if left_template and right_template and right_description
       "#{right_template.name} #{right_description} #{left_template.name}"
     else
       left_name
