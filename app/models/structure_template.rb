@@ -1,5 +1,5 @@
 class StructureTemplate < ActiveRecord::Base
-  has_many :attrs, :order => "position", :dependent => :destroy
+  has_many :attrs, :order => "position", :dependent => :destroy, :autosave => true
   has_many :required_attrs, :class_name => "Attr", :conditions => "required = 1"
   has_many :attr_configurations, :through => :attrs
   belongs_to :project

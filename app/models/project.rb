@@ -1,14 +1,18 @@
 class Project < ActiveRecord::Base
-  has_many :structure_templates, :dependent => :destroy
+  has_many :structure_templates, :dependent => :destroy, :autosave => true
   has_many :structures, :dependent => :destroy, :include => [:structure_template]
 
-  has_many :relationship_types, :dependent => :destroy
+  has_many :relationship_types, :dependent => :destroy, :autosave => true
   has_many :relationships, :dependent => :destroy, :include => [:relationship_type]
 
   has_many :publication_templates, :dependent => :destroy
   has_many :maps, :dependent => :destroy
   
   acts_as_permissioned
+
+  attr_reader :template_source_project_id
+  validates_associated :structure_templates
+  validates_associated :relationship_types
 
   def docs
     structures.collect do |struct|
