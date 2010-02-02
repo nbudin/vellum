@@ -71,11 +71,22 @@ class StructuresControllerTest < ActionController::TestCase
       @name = "Melissa"
       @color = "purple"
 
-      @structure = @project.structures.create(:name => @name, :structure_template => @tmpl)
+      @structure = @project.structures.create(:name => @name, :structure_template => @tmpl,
+        :position => 1)
       @av = @structure.obtain_attr_value(@attr_name)
       @av.value = @color
       @av.save
       @structure.reload
+    end
+
+    context "on GET to :index.json with the appropriate template" do
+      setup do
+        get :index, :project_id => @project.id, :template_id => @tmpl.id, :format => "json"
+      end
+
+      should_respond_with :success
+      should_assign_to :structures
+      should_respond_with_json
     end
 
     context "on GET to :show" do
@@ -171,6 +182,31 @@ class StructuresControllerTest < ActionController::TestCase
 
       should "redirect back to the project" do
         assert_redirected_to project_path(@project)
+      end
+    end
+
+    context "and another structure" do
+      setup do
+        @s2 = @project.structures.create(:name => "Another", :structure_template => @tmpl,
+          :position => 2)
+      end
+
+      context "on POST to :sort" do
+        setup do
+          assert @structure.position < @s2.position
+          
+          post :sort, :project_id => @project.id,
+            "structures_#{@tmpl.id}".to_sym => [ @s2.id.to_s, @structure.id.to_s ]
+        end
+
+        should_respond_with :success
+
+        should "sort the structures" do
+          @structure.reload
+          @s2.reload
+
+          assert @s2.position < @structure.position
+        end
       end
     end
   end
