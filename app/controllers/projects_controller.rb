@@ -13,7 +13,7 @@ class ProjectsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html # index.rhtml
+      format.html { render :action => "index" }
       format.xml  { render :xml => @projects.to_xml }
       format.json { render :json => @projects.to_json }
     end
@@ -57,7 +57,7 @@ class ProjectsController < ApplicationController
         format.xml  { head :created, :location => project_url(@project) }
         format.json { head :created, :location => project_url(@project) }
       else
-        format.html { render :action => "index" }
+        format.html { self.index }
         format.xml  { render :xml => @project.errors.to_xml }
         format.json { render :json => @project.errors.to_json }
       end

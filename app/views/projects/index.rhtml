@@ -46,10 +46,15 @@
         </button>
       </div>
       <%= f.text_field "name" %>
+      <%= f.label "template_source_project_id", "using templates from" %>
+      <%= f.select "template_source_project_id",
+        [["", ""]] + @projects.collect {|p| [p.name, p.id]} %>
+      <%= error_messages_for "project" %>
       <% end -%>
     </li>
   <% end -%>
 </ul>
+
 
 <% unless logged_in? -%>
 <p>To see your projects, please <%= link_to "log in", :controller => "auth", :action => "login" %>.</p>
