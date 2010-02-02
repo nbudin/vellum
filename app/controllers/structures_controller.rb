@@ -9,7 +9,7 @@ class StructuresController < ApplicationController
   def index
     conds = {:project_id => @project.id}
     if params[:template_id]
-      conds[:structure_template_id] = @project.template_schema.structure_templates.find(params[:template_id]).id
+      conds[:structure_template_id] = @project.structure_templates.find(params[:template_id]).id
     end
     @structures = Structure.find(:all, :conditions => conds, :include => [:attr_value_metadatas]).sort_by {|s| s.name.sort_normalize }
 
@@ -122,7 +122,7 @@ class StructuresController < ApplicationController
     params.each do |k, v|
       if k =~ /structures_(\d+)/
         tmpl_id = $1
-        @structure_template = @project.template_schema.structure_templates.find(tmpl_id)
+        @structure_template = @project.structure_templates.find(tmpl_id)
         @structures = @project.structures.select { |s| s.structure_template == @structure_template }
         @structures.each do |structure|
           structure.position = v.index(structure.id.to_s) + 1
