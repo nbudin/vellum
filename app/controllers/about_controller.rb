@@ -2,6 +2,7 @@ class AboutController < ApplicationController
   before_filter :check_admin, :only => ["edit_settings", "update_settings"]
   
   def index
+    redirect_to projects_url
   end
   
   def edit_settings

@@ -1,11 +1,16 @@
 class ProjectsController < ApplicationController
   rest_permissions
-  before_filter :check_login
   
   # GET /projects
   # GET /projects.xml
   def index
-    @projects = Project.find(:all, :include => :permissions).select { |p| logged_in_person.permitted?(p, "show") }
+    @projects = if logged_in?
+      Project.find(:all, :include => :permissions).select { |p|
+        logged_in_person.permitted?(p, "show")
+      }
+    else
+      []
+    end
 
     respond_to do |format|
       format.html # index.rhtml

@@ -1,5 +1,23 @@
 <h1>Projects</h1>
 
+<% if @site_settings.is_admin?(logged_in_person) -%>
+  <div class="jumpbox">
+    <div class="navigation">
+      <% link_to({ :controller => "about", :action => "edit_settings" }, :class => "button edit") do %>
+        Edit site settings
+      <% end -%>
+    </div>
+  </div>
+<% end -%>
+
+<% if @site_settings.welcome_html.blank? -%>
+  <h1>Welcome to Vellum</h1>
+
+  <p>Vellum is a collaborative space for online writing projects.</p>
+<% else -%>
+  <%= @site_settings.welcome_html %>
+<% end -%>
+
 <ul class="itemlist">
   <% itemlist_items(@projects, :delete_path => projects_path) do |project| %>
     <% link_to(project_path(project)) do -%>
@@ -21,3 +39,7 @@
     </li>
   <% end -%>
 </ul>
+
+<% unless logged_in? -%>
+<p>To see your projects, please <%= link_to "log in", :controller => "auth", :action => "login" %>.</p>
+<% end -%>
