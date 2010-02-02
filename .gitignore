@@ -5,3 +5,4 @@ config/scout.yml
 .project
 *.kpf
 nbproject/*
+tmp/*
