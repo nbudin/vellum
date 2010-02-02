@@ -1,6 +1,6 @@
 class StylesheetsController < ApplicationController
   layout nil
-  caches_page :all
+  caches_page :application, :editors, :jumpbox, :structures
   
   def application
   end
