@@ -45,14 +45,17 @@ class Project < ActiveRecord::Base
     project.structure_templates.each do |tmpl|
       logger.debug "Duplicating #{tmpl.name} template"
       new_tmpl = tmpl.clone
+      new_tmpl.project = nil
       self.structure_templates << new_tmpl
       new_templates[tmpl.id] = new_tmpl
 
       tmpl.attrs.each do |attr|
         new_attr = attr.clone
+        new_attr.structure_template = nil
         new_tmpl.attrs << new_attr
         if attr.attr_configuration
           new_conf = attr.attr_configuration.clone
+          new_conf.attr = nil
           new_attr.attr_configuration = new_conf
         end
       end
@@ -64,8 +67,16 @@ class Project < ActiveRecord::Base
         :left_description => rt.left_description,
         :right_description => rt.right_description,
         :left_template => new_templates[rt.left_template.id],
-        :right_template => new_templates[rt.right_template.id]
+        :right_template => new_templates[rt.right_template.id],
+        :project => self
       )
+    end
+  end
+
+  def template_source_project_id=(project_id)
+    unless project_id.blank?
+      self.clone_templates_from(Project.find(project_id))
+      @template_source_project_id = project_id
     end
   end
 
