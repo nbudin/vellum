@@ -22,7 +22,7 @@ end
 
 Given /^the Louisiana Purchase project$/ do
   project = Factory.create(:louisiana_purchase)
-  project.grant(controller.logged_in_person.name)
+  project.grant(controller.logged_in_person)
 end
 
 When /^I delete the (\d+)(?:st|nd|rd|th) project$/ do |pos|

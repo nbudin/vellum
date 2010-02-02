@@ -17,7 +17,7 @@ Feature: Manage projects
     And I fill in "project[name]" with "A new project"
     And I select "Louisiana Purchase" from "Using templates from"
     And I press "Create"
-    Then I should be on the project page for A new project
+    Then I should not be on the projects page
     And I should see "A new project"
     And I should see "Characters"
     And I should see "Organizations"
