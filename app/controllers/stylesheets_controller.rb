@@ -1,5 +1,6 @@
 class StylesheetsController < ApplicationController
   layout nil
+  caches_page :all
   
   def application
   end
