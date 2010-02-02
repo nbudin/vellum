@@ -45,6 +45,11 @@ class ProjectTest < ActiveSupport::TestCase
         assert_equal 0, @project.structures.size
         assert_equal 0, @project.relationships.size
       end
+
+      should "be valid" do
+        assert_valid @project
+        assert @project.save
+      end
     end
   end
 end
