@@ -27,8 +27,6 @@ class StructureTemplate < ActiveRecord::Base
       end
       if a
         return a
-      elsif not parent.nil?
-        return parent.attr(name)
       end
     end
   end
