@@ -20,6 +20,11 @@ Given /^the following projects:$/ do |projects|
   end
 end
 
+Given /^the Louisiana Purchase project$/ do
+  project = Factory.create(:louisiana_purchase)
+  project.grant(controller.logged_in_person.name)
+end
+
 When /^I delete the (\d+)(?:st|nd|rd|th) project$/ do |pos|
   visit projects_url
   within("ul.itemlist li:nth-child(#{pos.to_i})") do
