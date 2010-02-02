@@ -81,13 +81,13 @@ class RelationshipType < ActiveRecord::Base
   private
   def check_templates_in_project
     if project
-      if left_template
+      if left_template and left_template.project
         unless left_template.project == project
-          errors.add("left_template", "is not in project #{project}.name}")
+          errors.add("left_template", "is not in project #{project.name}")
         end
       end
   
-      if right_template
+      if right_template and right_template.project
         unless right_template.project == project
           errors.add("right_template", "is not in project #{project.name}")
         end
