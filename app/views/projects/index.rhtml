@@ -7,6 +7,17 @@
         Edit site settings
       <% end -%>
     </div>
+
+    <h2><%= @site_settings.site_name %></h2>
+
+    <dl>
+      <dt>Color</dt>
+      <dd><%= @site_settings.site_color %></dd>
+      <dt>Site email</dt>
+      <dd><%= @site_settings.site_email %></dd>
+      <dt>Admin</dt>
+      <dd><%= @site_settings.admin && @site_settings.admin.name %></dd>
+    </dl>
   </div>
 <% end -%>
 

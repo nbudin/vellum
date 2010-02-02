@@ -260,3 +260,23 @@ ol > li > ol > li {
 ol > li > ol > li:before {
   content: counter(item) "." counter(subitem) ". ";
 }
+
+dl {
+  text-align: left;
+  position: relative;
+}
+
+dl dt, dl dd {
+  margin: 1px;
+}
+
+dl dt {
+  font-weight: bold;
+  width: 100px;
+  float: left;
+  clear: left;
+}
+
+dl dd {
+  margin-left: 100px;
+}
