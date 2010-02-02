@@ -23,11 +23,12 @@ end
 When /^I delete the (\d+)(?:st|nd|rd|th) project$/ do |pos|
   visit projects_url
   within("ul.itemlist li:nth-child(#{pos.to_i})") do
-    click_button "Delete"
+    click_link "Delete"
   end
 end
 
 Then /^I should see the following projects:$/ do |expected_projects_table|
-  actual_table = table([['name']] + tableish('ul.itemlist li', 'a').slice(0..-2))
+  display_table = tableish('ul.itemlist li', 'a:not(.button)')
+  actual_table = table([['name']] + display_table.slice(0..-2))
   expected_projects_table.diff!(actual_table)
 end
