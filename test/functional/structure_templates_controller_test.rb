@@ -8,6 +8,16 @@ class StructureTemplatesControllerTest < ActionController::TestCase
     @project.grant(@person)
   end
 
+  context "on GET to :index" do
+    setup do
+      get :index, :project_id => @project.id
+    end
+
+    should_respond_with :success
+    should_assign_to :structure_templates
+    should_render_template "index"
+  end
+
   context "on GET to :index.json" do
     setup do
       get :index, :project_id => @project.id, :format => "json"
@@ -85,13 +95,10 @@ class StructureTemplatesControllerTest < ActionController::TestCase
       should_respond_with :redirect
       should_assign_to :structure_template
       should_not_set_the_flash
+      should_redirect_to("the template list") { structure_templates_path(@project) }
 
       should "destroy a template" do
         assert_equal @old_count - 1, StructureTemplate.count
-      end
-
-      should "redirect to the project" do
-        assert_redirected_to project_path(@project)
       end
     end
   end

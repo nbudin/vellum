@@ -7,6 +7,16 @@ class MapsControllerTest < ActionController::TestCase
     @project.grant(@person)
   end
 
+  context "on GET to :index" do
+    setup do
+      get :index, :project_id => @project.id
+    end
+
+    should_assign_to :maps
+    should_respond_with :success
+    should_render_template "index"
+  end
+
   context "on POST to :create" do
     setup do
       @old_count = Map.count
@@ -65,13 +75,10 @@ class MapsControllerTest < ActionController::TestCase
       should_assign_to :map
       should_respond_with :redirect
       should_not_set_the_flash
+      should_redirect_to("the map list") { maps_path @project }
 
       should "destroy a map" do
         assert_equal @old_count - 1, Map.count
-      end
-
-      should "redirect back to the project" do
-        assert_redirected_to project_path(@project)
       end
     end
   end
