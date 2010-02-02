@@ -79,3 +79,76 @@ end
 Factory.define :map do |map|
   
 end
+
+Factory.define :character, :class => "StructureTemplate" do |tmpl|
+  tmpl.name "Character"
+  tmpl.after_build do |t|
+    hp = t.attrs.new :name => "HP"
+    hp.attr_configuration = NumberField.new
+    t.attrs << hp
+  end
+end
+
+Factory.define :organization, :class => "StructureTemplate" do |tmpl|
+  tmpl.name "Organization"
+end
+
+Factory.define :louisiana_purchase, :class => "Project" do |project|
+  project.name "Louisiana Purchase"
+  project.after_build do |p|
+    char = Factory.build(:character)
+    org = Factory.build(:organization)
+    [char, org].each do |tmpl|
+      tmpl.project = p
+      p.structure_templates << tmpl
+    end
+    p.structure_templates += [char, org]
+    
+    includes = RelationshipType.new(
+      :left_template => org,
+      :right_template => char,
+      :left_description => "includes",
+      :right_description => "is part of",
+      :project => p
+    )
+    p.relationship_types << includes
+
+    louis = Structure.new(:structure_template => char, :name => "King Louis", :project => p)
+    avm = louis.attr_value_metadatas.new(:attr => char.attr("HP"))
+    avm.value = NumberValue.new(:value => 10)
+    louis.attr_value_metadatas << avm
+    p.structures << louis
+
+    france = Structure.new(:structure_template => org, :name => "France", :project => p)
+    p.structures << france
+
+    rel = Relationship.new(:relationship_type => includes, :left => france, :right => louis, :project => p)
+    p.relationships << rel
+  end
+
+  project.after_create do |p|
+    p.structure_templates.each do |t|
+      t.attrs.each do |a|
+        a.save!
+        a.attr_configuration.save! if a.attr_configuration
+      end
+      t.save!
+    end
+    
+    p.relationship_types.each do |rt|
+      rt.save!
+    end
+
+    p.structures.each do |s|
+      s.attr_value_metadatas.each do |avm|
+        avm.save!
+        avm.value.save! if avm.value
+      end
+      s.save!
+    end
+
+    p.relationships.each do |r|
+      r.save!
+    end
+  end
+end

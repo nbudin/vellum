@@ -35,6 +35,36 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def clone_templates_from(project)
+    new_templates = {}
+
+    project.structure_templates.each do |tmpl|
+      logger.debug "Duplicating #{tmpl.name} template"
+      new_tmpl = tmpl.clone
+      self.structure_templates << new_tmpl
+      new_templates[tmpl.id] = new_tmpl
+
+      tmpl.attrs.each do |attr|
+        new_attr = attr.clone
+        new_tmpl.attrs << new_attr
+        if attr.attr_configuration
+          new_conf = attr.attr_configuration.clone
+          new_attr.attr_configuration = new_conf
+        end
+      end
+    end
+
+    logger.debug "Duplicating relationship types from project #{project.name}"
+    project.relationship_types.each do |rt|
+      self.relationship_types << RelationshipType.new(:name => rt.name,
+        :left_description => rt.left_description,
+        :right_description => rt.right_description,
+        :left_template => new_templates[rt.left_template.id],
+        :right_template => new_templates[rt.right_template.id]
+      )
+    end
+  end
+
   def to_vproj(options = {})
     options[:indent] ||= 2
     xml = options[:builder] ||= Builder::XmlMarkup.new(:indent => options[:indent])
