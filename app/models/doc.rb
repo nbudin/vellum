@@ -1,7 +1,7 @@
 require 'rexml/parsers/sax2parser'
 
 class Doc < ActiveRecord::Base
-  acts_as_versioned
+  version_fu
 
   has_one :doc_value
   validates_presence_of :doc_value
