@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(:version => 20100204223709) do
     t.text    "value"
   end
 
+  add_index "attrs", ["doc_version_id", "name"], :name => "index_attrs_v2_on_doc_version_id_and_name", :unique => true
+
   create_table "auth_tickets", :force => true do |t|
     t.string   "secret"
     t.integer  "person_id"
@@ -55,6 +57,8 @@ ActiveRecord::Schema.define(:version => 20100204223709) do
     t.text    "choices"
   end
 
+  add_index "doc_template_attrs", ["doc_template_id", "name"], :name => "index_doc_template_attrs_on_doc_template_id_and_name", :unique => true
+
   create_table "doc_templates", :force => true do |t|
     t.string  "name"
     t.integer "project_id"
@@ -73,6 +77,8 @@ ActiveRecord::Schema.define(:version => 20100204223709) do
     t.datetime "updated_at"
   end
 
+  add_index "doc_versions", ["doc_id"], :name => "index_doc_versions_v2_on_doc_id"
+
   create_table "docs", :force => true do |t|
     t.string   "name"
     t.integer  "project_id"
@@ -86,6 +92,8 @@ ActiveRecord::Schema.define(:version => 20100204223709) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "docs", ["project_id"], :name => "index_docs_v2_on_project_id"
 
   create_table "documents", :force => true do |t|
     t.text     "title"
@@ -104,6 +112,8 @@ ActiveRecord::Schema.define(:version => 20100204223709) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "mapped_doc_templates", ["map_id", "doc_template_id"], :name => "index_mapped_doc_templates_on_map_id_and_doc_template_id", :unique => true
 
   create_table "mapped_relationship_types", :force => true do |t|
     t.integer  "map_id"

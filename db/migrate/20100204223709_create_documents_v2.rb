@@ -25,6 +25,18 @@ class CreateDocumentsV2 < ActiveRecord::Migration
       has_many :attrs, :class_name => "::CreateDocumentsV2::AttrV2", 
         :foreign_key => "doc_version_id", :autosave => true
 
+      def working_attrs
+        attr_hash = {}
+        self.attrs.each do |attr|
+          working_attr = attr.clone
+          working_attr.doc_version_id = nil
+          working_attr.doc_version = nil
+          attr_hash[working_attr.name] = working_attr
+        end
+        
+        return attr_hash
+      end
+
       # we're going to be saving these manually in the migration
       self.record_timestamps = false
     end
@@ -36,8 +48,6 @@ class CreateDocumentsV2 < ActiveRecord::Migration
 
     has_many :outward_relationships, :foreign_key => :left_id, :class_name => "Relationship"
 
-    after_save :save_versions
-
     def current_version
       versions.select { |v| v.version == self.version }.first
     end
@@ -47,41 +57,41 @@ class CreateDocumentsV2 < ActiveRecord::Migration
     end
 
     def attrs
-      current_version.attrs
+      @attrs || reload_working_attrs
+    end
+
+    def reload_working_attrs
+      if current_version.nil?
+        @attrs = {}
+      else
+        @attrs = current_version.working_attrs
+      end
     end
 
     def create_new_version?
-      super || attrs.any? { |a| a.changed? }
+      super || attrs.values.any? { |a| (a.changes.keys - ["doc_version_id"]).size > 0 }
     end
 
     def instatiate_revision
       super
       
-      if last_saved_version
-        last_saved_version.attrs.each do |a|
-          new_a = a.clone
-          new_a.doc_version = current_version
-          current_version.attrs << new_a
-        end
+      self.attrs.each_value do |a|
+        a.doc_version = current_version
+        current_version.attrs << a
       end
-    end
 
-    def save_versions
-      versions.each do |v|
-        v.save! if (v.changed? || v.attrs.any? { |a| a.changed? })
-      end
+      reload_working_attrs
     end
     
     def attr(name)
-      attrs.select {|a| a.name == name}.first
+      self.attrs[name]
     end
 
     def obtain_attr(name)
       a = attr(name)
       return a unless a.nil?
-      
-      attrs << attrs.build(:name => name)
-      return attr(name)
+
+      @attrs[name] = AttrV2.new(:name => name)
     end
   end
 
@@ -162,7 +172,13 @@ class CreateDocumentsV2 < ActiveRecord::Migration
                   choice.value
                 end.join("|"))
               else
-                file.print " (#{attr.attr_configuration.class.name}) - "
+                display_type = case attr.attr_configuration
+                when DocField
+                  "textarea"
+                else
+                  "text"
+                end
+                file.print " (#{display_type}) - "
               end
             else
               file.print " (no associated config object)"
@@ -176,8 +192,8 @@ class CreateDocumentsV2 < ActiveRecord::Migration
 
           project.structures.all(:conditions => {:structure_template_id => tmpl.id}, :order => "position").each do |s|
             file.puts "    Doc: #{s.name}"
-            tmpl.attrs.all(:order => "position").each do |attr|
-              av = s.attr_value(attr)
+            s.attrs.sort_by {|a| a.name}.each do |attr|
+              av = s.attr_value(attr.name)
               if av.kind_of? DocValue
                 file.puts "      #{attr.name}: #{av.try(:doc).try(:content)}"
               else
@@ -353,19 +369,28 @@ class CreateDocumentsV2 < ActiveRecord::Migration
             if new_value.kind_of? Array
               new_value = new_value.join("|")
             end
-            docv2.attrs << docv2.attrs.build(:name => avm.attr.name,
+            a = docv2.obtain_attr(avm.attr.name)
+            a.attributes = {
               :position => avm.attr.position,
-              :value => new_value)
+              :value => new_value
+            }
           else
-            docv2.attrs << docv2.attrs.build(:name => avm.attr.name,
+            a = docv2.obtain_attr(avm.attr.name)
+            a.attributes = {
               :position => avm.attr.position,
-              :value => avm.value.value)
+              :value => avm.value.value
+            }
           end
         end
       end
 
       if docv1s.length == 1
         say "#{structure.name} contains a single doc; using that doc for the content"
+        attr_name = docv1s.first.doc_value.attr.name
+        docv2.attrs.delete(attr_name)
+        template_attr = docv2.doc_template.doc_template_attrs.find_by_name(attr_name)
+        template_attr.destroy unless template_attr.nil?
+
         docv1s.first.versions.all(:order => "version").each do |version|
           docv2.version += 1
 
@@ -456,11 +481,11 @@ class CreateDocumentsV2 < ActiveRecord::Migration
 
           project.docs.all(:conditions => {:doc_template_id => tmpl.id}, :order => "position").each do |d|
             file.puts "    Doc: #{d.name}"
-            tmpl.doc_template_attrs.all(:order => "position").each do |attr|
+            d.versions.latest.attrs.all(:order => "name").each do |attr|
               a = d.attr(attr.name)
               file.puts "      #{attr.name}: #{a.try :value}"
             end
-            file.puts "      Content: #{d.content}"
+            file.puts "      Content: #{d.content}" unless d.content.blank?
 
             d.outward_relationships.all(:order => "left_description, docs_v2.name", :joins => [:relationship_type, :right]).each do |r|
               file.puts "      Relationship: #{r.relationship_type.left_description} #{r.right.name}"
