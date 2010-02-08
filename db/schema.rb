@@ -9,22 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100202154335) do
-
-  create_table "attr_value_metadatas", :force => true do |t|
-    t.integer "attr_id"
-    t.integer "structure_id"
-    t.integer "value_id"
-    t.string  "value_type"
-  end
+ActiveRecord::Schema.define(:version => 20100204223709) do
 
   create_table "attrs", :force => true do |t|
-    t.string  "name"
-    t.integer "structure_template_id"
-    t.integer "attr_configuration_id"
-    t.string  "attr_configuration_type"
+    t.integer "doc_version_id"
+    t.string  "name",           :null => false
     t.integer "position"
-    t.boolean "required"
+    t.string  "format"
+    t.text    "value"
   end
 
   create_table "auth_tickets", :force => true do |t|
@@ -36,20 +28,6 @@ ActiveRecord::Schema.define(:version => 20100202154335) do
   end
 
   add_index "auth_tickets", ["secret"], :name => "index_auth_tickets_on_secret", :unique => true
-
-  create_table "choice_fields", :force => true do |t|
-    t.integer  "default_choice_id"
-    t.string   "display_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "choice_values", :force => true do |t|
-    t.integer  "choice_id"
-    t.string   "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "choice_values_choices", :id => false, :force => true do |t|
     t.integer "choice_id"
@@ -69,40 +47,44 @@ ActiveRecord::Schema.define(:version => 20100202154335) do
 
   add_index "choices", ["choice_field_id"], :name => "index_choices_on_choice_field_id"
 
-  create_table "doc_fields", :force => true do |t|
-    t.boolean  "allow_linking"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "doc_template_attrs", :force => true do |t|
+    t.string  "name"
+    t.integer "doc_template_id"
+    t.integer "position"
+    t.string  "ui_type",         :default => "text", :null => false
+    t.text    "choices"
   end
 
-  create_table "doc_values", :force => true do |t|
-    t.integer  "doc_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "doc_templates", :force => true do |t|
+    t.string  "name"
+    t.integer "project_id"
   end
+
+  add_index "doc_templates", ["project_id"], :name => "index_doc_templates_on_project_id"
 
   create_table "doc_versions", :force => true do |t|
     t.integer  "doc_id"
-    t.integer  "version"
-    t.text     "title"
+    t.string   "name"
+    t.integer  "doc_template_id"
     t.text     "content"
+    t.integer  "author_id"
+    t.integer  "version"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "structure_template_id"
-    t.integer  "project_id"
-    t.integer  "author_id"
   end
 
-  add_index "doc_versions", ["doc_id"], :name => "index_doc_versions_on_doc_id"
-
   create_table "docs", :force => true do |t|
-    t.text     "title"
+    t.string   "name"
+    t.integer  "project_id"
+    t.integer  "doc_template_id"
+    t.integer  "position"
+    t.text     "blurb"
     t.text     "content"
+    t.integer  "assignee_id"
+    t.integer  "creator_id"
+    t.integer  "version",         :default => 1
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "structure_template_id"
-    t.integer  "version"
-    t.integer  "author_id"
   end
 
   create_table "documents", :force => true do |t|
@@ -115,17 +97,17 @@ ActiveRecord::Schema.define(:version => 20100202154335) do
     t.integer  "project_id"
   end
 
-  create_table "mapped_relationship_types", :force => true do |t|
+  create_table "mapped_doc_templates", :force => true do |t|
     t.integer  "map_id"
-    t.integer  "relationship_type_id"
+    t.integer  "doc_template_id"
     t.string   "color"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "mapped_structure_templates", :force => true do |t|
+  create_table "mapped_relationship_types", :force => true do |t|
     t.integer  "map_id"
-    t.integer  "structure_template_id"
+    t.integer  "relationship_type_id"
     t.string   "color"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -136,18 +118,6 @@ ActiveRecord::Schema.define(:version => 20100202154335) do
     t.text     "blurb"
     t.integer  "project_id"
     t.string   "graphviz_method"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "number_fields", :force => true do |t|
-    t.float    "default"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "number_values", :force => true do |t|
-    t.float    "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -170,18 +140,6 @@ ActiveRecord::Schema.define(:version => 20100202154335) do
     t.string "setting"
     t.binary "value"
   end
-
-  create_table "permission_caches", :force => true do |t|
-    t.integer "person_id"
-    t.integer "permissioned_id"
-    t.string  "permissioned_type"
-    t.string  "permission_name"
-    t.boolean "result"
-  end
-
-  add_index "permission_caches", ["permission_name"], :name => "index_permission_caches_on_permission_name"
-  add_index "permission_caches", ["permissioned_id", "permissioned_type"], :name => "index_permission_caches_on_permissioned_id_and_permissioned_type"
-  add_index "permission_caches", ["person_id"], :name => "index_permission_caches_on_person_id"
 
   create_table "permissions", :force => true do |t|
     t.integer "role_id"
@@ -209,18 +167,18 @@ ActiveRecord::Schema.define(:version => 20100202154335) do
     t.string  "name"
     t.string  "left_description"
     t.string  "right_description"
+    t.integer "project_id"
     t.integer "left_template_id"
     t.integer "right_template_id"
-    t.integer "project_id"
   end
 
   add_index "relationship_types", ["project_id"], :name => "index_relationship_types_on_project_id"
 
   create_table "relationships", :force => true do |t|
     t.integer "relationship_type_id"
+    t.integer "project_id"
     t.integer "left_id"
     t.integer "right_id"
-    t.integer "project_id"
   end
 
   create_table "site_settings", :force => true do |t|
@@ -231,45 +189,6 @@ ActiveRecord::Schema.define(:version => 20100202154335) do
     t.datetime "updated_at"
     t.string   "site_email"
     t.text     "welcome_html"
-  end
-
-  create_table "structure_templates", :force => true do |t|
-    t.string  "name"
-    t.integer "project_id"
-  end
-
-  add_index "structure_templates", ["project_id"], :name => "index_structure_templates_on_project_id"
-
-  create_table "structures", :force => true do |t|
-    t.integer "structure_template_id"
-    t.integer "project_id"
-    t.text    "blurb",                 :limit => 2147483647
-    t.integer "position"
-    t.string  "name"
-    t.integer "assignee_id"
-  end
-
-  create_table "substructure_fields", :force => true do |t|
-    t.integer  "min"
-    t.integer  "max"
-    t.integer  "substructure_template_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "substructure_values", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "text_fields", :force => true do |t|
-    t.string   "default"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "text_values", :force => true do |t|
-    t.text "value", :limit => 2147483647
   end
 
   create_table "workflow_steps", :force => true do |t|
