@@ -6,3 +6,4 @@ config/scout.yml
 *.kpf
 nbproject/*
 tmp/*
+rerun.txt
