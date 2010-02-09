@@ -187,25 +187,25 @@ class StructuresControllerTest < ActionController::TestCase
 
     context "and another structure" do
       setup do
-        @s2 = @project.structures.create(:name => "Another", :structure_template => @tmpl,
+        @d2 = @project.structures.create(:name => "Another", :structure_template => @tmpl,
           :position => 2)
       end
 
       context "on POST to :sort" do
         setup do
-          assert @structure.position < @s2.position
+          assert @structure.position < @d2.position
           
           post :sort, :project_id => @project.id,
-            "structures_#{@tmpl.id}".to_sym => [ @s2.id.to_s, @structure.id.to_s ]
+            "structures_#{@tmpl.id}".to_sym => [ @d2.id.to_s, @structure.id.to_s ]
         end
 
         should_respond_with :success
 
         should "sort the structures" do
           @structure.reload
-          @s2.reload
+          @d2.reload
 
-          assert @s2.position < @structure.position
+          assert @d2.position < @structure.position
         end
       end
     end

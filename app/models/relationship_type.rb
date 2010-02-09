@@ -1,8 +1,8 @@
 class RelationshipType < ActiveRecord::Base
   belongs_to :project
   has_many :relationships, :dependent => :destroy
-  belongs_to :left_template, :class_name => "StructureTemplate"
-  belongs_to :right_template, :class_name => "StructureTemplate"
+  belongs_to :left_template, :class_name => "DocTemplate"
+  belongs_to :right_template, :class_name => "DocTemplate"
  
   validates_presence_of :left_template, :right_template, :project
   validate :check_templates_in_project

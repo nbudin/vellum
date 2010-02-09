@@ -1,26 +1,26 @@
 class Map < ActiveRecord::Base
   belongs_to :project
-  has_many :mapped_structure_templates, :dependent => :destroy
+  has_many :mapped_doc_templates, :dependent => :destroy
   has_many :mapped_relationship_types, :dependent => :destroy
-  has_many :structure_templates, :through => :mapped_structure_templates, :order => "id"
+  has_many :doc_templates, :through => :mapped_doc_templates, :order => "id"
   has_many :relationship_types, :through => :mapped_relationship_types, :order => "id"
   
   COLORS = %w{red darkgreen blue orange purple black}
   
-  def structures
-    project.structures
+  def docs
+    project.docs
   end
   
   def relationships
     project.relationships
   end
   
-  def structure_options(structure, mapped_structure_template=nil)
-    color = mapped_structure_template && mapped_structure_template.color
-    color ||= color_collection(structure_templates, structure.structure_template)
+  def doc_options(doc, mapped_doc_template=nil)
+    color = mapped_doc_template && mapped_doc_template.color
+    color ||= color_collection(docs, doc.doc_template)
     
     {
-      :label => structure.name,
+      :label => doc.name,
       :color => color,
       :fontcolor => color
     }
@@ -56,11 +56,11 @@ class Map < ActiveRecord::Base
                       :overlap => "false", :splines => "true")
 
     nodes = {}
-    mapped_structure_templates.each do |mst|
-      project.structures.all(:conditions => ["structure_template_id = ?",
-                                             mst.structure_template.id]).each do |structure|
-        nodes[structure] = g.add_node("structure_#{structure.id}",
-                                    structure_options(structure, mst))
+    mapped_doc_templates.each do |mdt|
+      project.docs.all(:conditions => ["doc_template_id = ?",
+                                       mdt.doc_template.id]).each do |doc|
+        nodes[doc] = g.add_node("doc_#{doc.id}",
+                                doc_options(doc, mdt))
       end
     end
     

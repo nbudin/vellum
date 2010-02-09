@@ -3,10 +3,10 @@ require File.dirname(__FILE__) + '/../test_helper'
 class StructureContextTest < ActiveSupport::TestCase
   context "A VPub context" do
     setup do
-      @person = Factory.create(:structure_template, :name => "Person")
+      @person = Factory.create(:doc_template, :name => "Person")
         
       @project = @person.project
-      @bob = Factory.build(:structure, :structure_template => @person, 
+      @bob = Factory.build(:doc, :doc_template => @person,
         :project => @project, :name => "Bob")
       
       @context = StructureContext.new(@bob)
@@ -23,10 +23,9 @@ class StructureContextTest < ActiveSupport::TestCase
     
     context "with a valued attribute" do
       setup do
-        @height_attr = Factory.create(:attr, :name => "Height", :structure_template => @person,
-          :attr_configuration => Factory.create(:text_field))
+        @height_attr = @person.doc_template_attrs.create(:name => "Height")
         
-        @bob_height = @bob.obtain_attr_value("Height")
+        @bob_height = @bob.attrs["Height"]
         @bob_height.value = "5 ft 7 in"
       end
       
@@ -57,26 +56,23 @@ class StructureContextTest < ActiveSupport::TestCase
       end
     end
     
-    context "with a doc attribute" do
+    context "with a rich text attribute" do
       setup do
-        @notes_attr = Factory.create(:attr, :name => "Notes", :structure_template => @person,
-          :attr_configuration => Factory.create(:doc_field))
-        
-        @bob_notes = @bob.obtain_attr_value("Notes")
-        @bob_notes.doc_content = "<p>Bob is a <b>good</b> guy.</p>"
+        @notes_attr = @person.doc_template_attrs.create(:name => "Notes", :ui_type => "textarea")
+
+        @bob_notes = @bob.attrs["Notes"]
+        @bob_notes.value = "<p>Bob is a <b>good</b> guy.</p>"
       end
       
-      should "return the doc content" do
-        assert_equal @bob_notes.doc_content, @parser.parse('<v:attr:doc:content name="Notes"/>')
-        assert_equal @bob_notes.doc_content, @parser.parse('<v:attr:doc name="Notes"><v:content /></v:attr:doc>')
-        assert_equal @bob_notes.doc_content, @parser.parse('<v:attr name="Notes"><v:doc:content/></v:attr>')
-        assert_equal @bob_notes.doc_content, @parser.parse('<v:attr name="Notes"><v:doc><v:content/></v:doc></v:attr>')
+      should "return the content" do
+        assert_equal @bob_notes.value, @parser.parse('<v:attr:value name="Notes"/>')
+        assert_equal @bob_notes.value, @parser.parse('<v:attr name="Notes"><v:value /></v:attr>')
       end
       
-      should "return the doc content in the specified format" do
-        assert_equal @bob_notes.doc_content(:fo), @parser.parse('<v:attr:doc:content name="Notes" format="fo"/>')
+      should "return the content in the specified format" do
+        assert_equal @bob_notes.value(:fo), @parser.parse('<v:attr:value name="Notes" format="fo"/>')
         @context.format = 'fo'
-        assert_equal @bob_notes.doc_content(:fo), @parser.parse('<v:attr:doc:content name="Notes"/>')
+        assert_equal @bob_notes.value(:fo), @parser.parse('<v:attr:value name="Notes"/>')
       end
     end
     
@@ -87,7 +83,7 @@ class StructureContextTest < ActiveSupport::TestCase
           :left_description => "is taller than", :right_description => "is shorter than")
         
         @bob.save
-        @joe = Factory.create(:structure, :structure_template => @person, 
+        @joe = Factory.create(:doc, :doc_template => @person,
           :project => @project, :name => "Joe")
         @bob_taller = Factory.create(:relationship, :relationship_type => @taller,
           :left => @bob, :right => @joe, :project => @project)

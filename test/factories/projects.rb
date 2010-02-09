@@ -1,74 +1,36 @@
 Factory.define :project do |p|
 end
 
-Factory.define(:structure_template) do |t|
+Factory.define(:doc_template) do |t|
   t.association :project, :factory => :project
-  t.name "A structure template"
-end
-
-Factory.define(:attr) do |a|
-  a.association :structure_template, :factory => :structure_template
-  a.name "An attr"
-end
-
-Factory.define :text_field do
-
-end
-
-Factory.define :number_field do
-
-end
-
-Factory.define :choice_field do |f|
-
-end
-
-Factory.define :doc_field do
-
-end
-
-Factory.define :choice do
-end
-
-Factory.define :radio_choice_field do |f|
-  f.attr { |cf| cf.association(:attr, :name => "Filing status") }
-
+  t.name "A doc template"
 end
 
 Factory.define(:relationship_type) do |rt|
   rt.association :project, :factory => :project
   rt.after_build do |t|
     %w{left_template right_template}.each do |m|
-      tmpl = Factory.build(:structure_template, :project => t.project)
+      tmpl = Factory.build(:doc_template, :project => t.project)
       t.send("#{m}=", tmpl)
     end
   end
 end
 
-Factory.define :structure do |s|
-  s.association :project, :factory => :project
-  s.after_build do |struct|
-    struct.structure_template ||= struct.project.structure_templates.new
+Factory.define :doc do |d|
+  d.association :project, :factory => :project
+  d.after_build do |doc|
+    doc.doc_template ||= Factory.build(:doc_template, :project => doc.project)
   end
-end
-
-Factory.define :attr_value_metadata do |avm|
-end
-
-Factory.define :doc_value do |doc_value|
-end
-
-Factory.define :doc do |doc|
 end
 
 Factory.define :relationship do |r|
   r.association :project, :factory => :project
   r.after_build do |rel|
     rel.relationship_type ||= Factory.build(:relationship_type, :project => rel.project)
-    rel.left ||= Factory.build(:structure, :project => rel.project,
-      :structure_template => rel.relationship_type.left_template)
-    rel.right ||= Factory.build(:structure, :project => rel.project,
-      :structure_template => rel.relationship_type.right_template)
+    rel.left ||= Factory.build(:doc, :project => rel.project,
+      :doc_template => rel.relationship_type.left_template)
+    rel.right ||= Factory.build(:doc, :project => rel.project,
+      :doc_template => rel.relationship_type.right_template)
   end
 end
 
@@ -80,16 +42,16 @@ Factory.define :map do |map|
   
 end
 
-Factory.define :character, :class => "StructureTemplate" do |tmpl|
+Factory.define :character, :class => "DocTemplate" do |tmpl|
   tmpl.name "Character"
   tmpl.after_build do |t|
-    hp = t.attrs.new :name => "HP"
-    hp.attr_configuration = NumberField.new
-    t.attrs << hp
+    hp = t.doc_template_attrs.new(:name => "HP")
+    hp.ui_type = "text"
+    t.doc_template_attrs << hp
   end
 end
 
-Factory.define :organization, :class => "StructureTemplate" do |tmpl|
+Factory.define :organization, :class => "DocTemplate" do |tmpl|
   tmpl.name "Organization"
 end
 
@@ -100,9 +62,8 @@ Factory.define :louisiana_purchase, :class => "Project" do |project|
     org = Factory.build(:organization)
     [char, org].each do |tmpl|
       tmpl.project = p
-      p.structure_templates << tmpl
+      p.doc_templates << tmpl
     end
-    p.structure_templates += [char, org]
     
     includes = RelationshipType.new(
       :left_template => org,
@@ -113,24 +74,21 @@ Factory.define :louisiana_purchase, :class => "Project" do |project|
     )
     p.relationship_types << includes
 
-    louis = Structure.new(:structure_template => char, :name => "King Louis", :project => p)
-    avm = louis.attr_value_metadatas.new(:attr => char.attr("HP"))
-    avm.value = NumberValue.new(:value => 10)
-    louis.attr_value_metadatas << avm
-    p.structures << louis
+    louis = Doc.new(:doc_template => char, :name => "King Louis", :project => p)
+    louis.attrs["HP"].value = 10
+    p.docs << louis
 
-    france = Structure.new(:structure_template => org, :name => "France", :project => p)
-    p.structures << france
+    france = Doc.new(:doc_template => org, :name => "France", :project => p)
+    p.docs << france
 
     rel = Relationship.new(:relationship_type => includes, :left => france, :right => louis, :project => p)
     p.relationships << rel
   end
 
   project.after_create do |p|
-    p.structure_templates.each do |t|
-      t.attrs.each do |a|
+    p.doc_templates.each do |t|
+      t.doc_template_attrs.each do |a|
         a.save!
-        a.attr_configuration.save! if a.attr_configuration
       end
       t.save!
     end
@@ -139,12 +97,8 @@ Factory.define :louisiana_purchase, :class => "Project" do |project|
       rt.save!
     end
 
-    p.structures.each do |s|
-      s.attr_value_metadatas.each do |avm|
-        avm.save!
-        avm.value.save! if avm.value
-      end
-      s.save!
+    p.docs.each do |d|
+      d.save!
     end
 
     p.relationships.each do |r|

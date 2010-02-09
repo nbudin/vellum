@@ -1,1 +1,1 @@
-ActiveRecord::Base.observers = :structure_observer
+ActiveRecord::Base.observers = :doc_observer

@@ -1,70 +1,47 @@
 class StructureContext < Radius::Context
-  attr_reader :structure, :format
+  attr_reader :doc, :format
   
-  def initialize(structure)
+  def initialize(doc)
     super()
-    @structure = structure
-    globals.structure = @structure
+    @doc = doc
+    globals.doc = @doc
     self.format = 'html'
     
     define_tag 'attr' do |tag|
-      get_attr_value tag
+      get_attr tag
       tag.expand
     end
     
     define_tag 'attr:value' do |tag|
-      get_attr_value tag
+      get_attr tag
       
-      if tag.locals.attr.nil?
-        "[ERROR: Not in an attr while evaluating attr:value]"
-      elsif !tag.locals.attr.respond_to?(:value)
-        "[ERROR: Attr #{tag.locals.attr.id} doesn't have a value method]"
-      else
-        tag.locals.attr.value
-      end
+      tag.locals.attr.value(tag.attr['format'] || @format)
     end
     
     define_tag 'attr:if_value' do |tag|
-      get_attr_value tag
+      get_attr tag
       
       eval_conditional_tag(tag, tag.locals.attr.value)
-    end
-    
-    define_tag 'attr:doc' do |tag|
-      get_attr_doc tag
-      tag.expand
-    end
-    
-    define_tag 'attr:doc:content' do |tag|
-      get_attr_doc tag
-      
-      tag.locals.doc.content(tag.attr['format'] || @format)
     end
     
     define_tag 'each_related' do |tag|
       how = tag.attr['how']
       
-      tag.locals.do_not_recurse ||= [tag.locals.structure]
-      related = []
-      project = tag.locals.structure.project
-      project.relationship_types.find_all_by_left_description(how).each do |typ|
-        related += tag.locals.structure.related_structures(typ, :outward)
+      tag.locals.do_not_recurse ||= [tag.locals.doc]
+
+      related = tag.locals.doc.related_docs(how).reject do |d|
+        tag.locals.do_not_recurse.include?(d)
       end
-      project.relationship_types.find_all_by_right_description(how).each do |typ|
-        related += tag.locals.structure.related_structures(typ, :inward)
-      end
-      
-      related.reject! { |s| tag.locals.do_not_recurse.include?(s) } 
       tag.locals.do_not_recurse += related
-      
-      related.collect do |s|
-        tag.locals.structure = s
+
+      related.collect do |d|
+        tag.locals.doc = d
         tag.expand
       end.join("")
     end
     
     define_tag 'name' do |tag|
-      tag.locals.structure.name
+      tag.locals.doc.name
     end
   end
   
@@ -72,15 +49,10 @@ class StructureContext < Radius::Context
     @format = format
   end
   
-  def get_attr_value(tag)
+  def get_attr(tag)
     if tag.attr['name']
-      tag.locals.attr = tag.locals.structure.attr_value(tag.attr['name'])
+      tag.locals.attr = tag.locals.doc.attrs[tag.attr['name']]
     end
-  end
-  
-  def get_attr_doc(tag)
-    get_attr_value tag
-    tag.locals.doc = tag.locals.attr && tag.locals.attr.doc
   end
   
   def eval_conditional_tag(tag, value)

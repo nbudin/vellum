@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
-  has_many :structure_templates, :dependent => :destroy, :autosave => true
-  has_many :structures, :dependent => :destroy, :include => [:structure_template]
+  has_many :doc_templates, :dependent => :destroy, :autosave => true
+  has_many :docs, :dependent => :destroy, :include => [:doc_template]
 
   has_many :relationship_types, :dependent => :destroy, :autosave => true
   has_many :relationships, :dependent => :destroy, :include => [:relationship_type]
@@ -11,18 +11,8 @@ class Project < ActiveRecord::Base
   acts_as_permissioned
 
   attr_reader :template_source_project_id
-  validates_associated :structure_templates
+  validates_associated :doc_templates
   validates_associated :relationship_types
-
-  def docs
-    structures.collect do |struct|
-      struct.attr_values.collect do |av|
-        if av.kind_of? DocValue
-          av.doc
-        end
-      end
-    end.flatten.compact.uniq
-  end
 
   def authors
     ids = docs.collect { |doc| doc.versions.collect { |version| version.author_id }.uniq }.flatten.uniq
@@ -42,22 +32,17 @@ class Project < ActiveRecord::Base
   def clone_templates_from(project)
     new_templates = {}
 
-    project.structure_templates.each do |tmpl|
+    project.doc_templates.each do |tmpl|
       logger.debug "Duplicating #{tmpl.name} template"
       new_tmpl = tmpl.clone
       new_tmpl.project = nil
-      self.structure_templates << new_tmpl
+      self.doc_templates << new_tmpl
       new_templates[tmpl.id] = new_tmpl
 
-      tmpl.attrs.each do |attr|
+      tmpl.doc_template_attrs.each do |attr|
         new_attr = attr.clone
-        new_attr.structure_template = nil
-        new_tmpl.attrs << new_attr
-        if attr.attr_configuration
-          new_conf = attr.attr_configuration.clone
-          new_conf.attr = nil
-          new_attr.attr_configuration = new_conf
-        end
+        new_attr.doc_template = nil
+        new_tmpl.doc_template_attrs << new_attr
       end
     end
 

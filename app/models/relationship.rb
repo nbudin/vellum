@@ -1,7 +1,7 @@
 class Relationship < ActiveRecord::Base
   belongs_to :relationship_type
-  belongs_to :left, :class_name => "Structure", :foreign_key => "left_id"
-  belongs_to :right, :class_name => "Structure", :foreign_key => "right_id"
+  belongs_to :left, :class_name => "Doc", :foreign_key => "left_id"
+  belongs_to :right, :class_name => "Doc", :foreign_key => "right_id"
   belongs_to :project
 
   validates_presence_of :left, :right, :relationship_type, :project
@@ -71,11 +71,11 @@ class Relationship < ActiveRecord::Base
 
   def check_templates
     [:left, :right].each do |dir|
-      structure = self.send(dir)
-      if structure and relationship_type
+      doc = self.send(dir)
+      if doc and relationship_type
         tmpl = relationship_type.send("#{dir}_template")
-        if tmpl and structure.structure_template and structure.structure_template != tmpl
-          errors.add(dir, "should be a #{tmpl.name} but instead is a #{structure.structure_template.name}")
+        if tmpl and doc.doc_template and doc.doc_template != tmpl
+          errors.add(dir, "should be a #{tmpl.name} but instead is a #{doc.doc_template.name}")
         end
       end
     end
