@@ -23,16 +23,20 @@ class ProjectsController < ApplicationController
   # GET /projects/1.xml
   def show
     @project = Project.find(params[:id], 
-      :include => { :structures => { :structure_template => [] },
-                                     :permissions => [] })
+      :include => { :docs => { :doc_template => [] },
+                               :permissions => [] })
 
     respond_to do |format|
       format.html do
-        @templates = @project.structure_templates.sort_by { |ts| ts.name.sort_normalize }
-        @structures = {}
+        @templates = @project.doc_templates.sort_by { |t| t.name.sort_normalize }
+        @docs = {}
+        @project.docs.all.each do |d|
+          @docs[d.doc_template] ||= []
+          @docs[d.doc_template] << d
+        end
         @templates.each do |tmpl|
-          @structures[tmpl] = @project.structures.select { |s| s.structure_template == tmpl }
-          @structures[tmpl] = @structures[tmpl].sort_by { |s| s.position }
+          @docs[tmpl] ||= []
+          @docs[tmpl] = @docs[tmpl].sort_by { |s| s.position }
         end
       end
       format.xml  { render :xml => @project.to_xml }

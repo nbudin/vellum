@@ -25,20 +25,20 @@
     <div id="structures">
       Include all...
       <ul class="itemlist">
-        <% itemlist_items(@map.mapped_structure_templates,
-                          :delete_path => mapped_structure_templates_path(@project, @map)) do |mst| -%>
-          <span style="font-weight: bold; color: <%= mst.color %>;">
-            <%=h mst.structure_template && mst.structure_template.plural_name %>
+        <% itemlist_items(@map.mapped_doc_templates,
+                          :delete_path => mapped_doc_templates_path(@project, @map)) do |mdt| -%>
+          <span style="font-weight: bold; color: <%= mdt.color %>;">
+            <%=h mdt.doc_template && mdt.doc_template.name.pluralize %>
           </span>
         <% end -%>
         <li>
-          <% form_for :mapped_structure_template, :url => mapped_structure_templates_path(@project, @map) do |f| -%>
+          <% form_for :mapped_doc_template, :url => mapped_doc_templates_path(@project, @map) do |f| -%>
             <span style="float: right;">
               <%= submit_tag "Add", :class => "new" %>
             </span>
-            <%= f.select "structure_template_id",
-                         @project.structure_templates.reject { |t|
-                              @map.structure_templates.include? t
+            <%= f.select "doc_template_id",
+                         @project.doc_templates.reject { |t|
+                              @map.doc_templates.include? t
                           }.collect { |t|
                               [t.plural_name, t.id]
                           } %>

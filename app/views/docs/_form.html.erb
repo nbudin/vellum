@@ -1,0 +1,5 @@
+<% f.fields_for "attr_values" do |avs| %>
+  <% @doc.doc_template.doc_template_attrs.each do |ta| -%>
+    <%= edit_attr_row(@doc, ta.name, avs) %>
+  <% end -%>
+<% end -%>

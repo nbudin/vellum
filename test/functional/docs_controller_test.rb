@@ -1,16 +1,12 @@
 require 'test_helper'
 
-class StructuresControllerTest < ActionController::TestCase
+class DocsControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
     
-    @field = Factory.create(:text_field)
-    @attr_name = "Favorite color"
-    @attr = Factory.create(:attr, :name => "Favorite color")
-    @attr.attr_configuration = @field
-    @attr.save!
-    @tmpl = @attr.structure_template
-    @project = @tmpl.project
+    assert @attr = Factory.create(:doc_template_attr, :name => "Favorite color")
+    assert @tmpl = @attr.doc_template
+    assert @project = @tmpl.project
     @project.grant(@person)
   end
 
@@ -20,7 +16,7 @@ class StructuresControllerTest < ActionController::TestCase
     end
 
     should_respond_with :success
-    should_assign_to :structures
+    should_assign_to :docs
   end
 
   context "on GET to :new" do
@@ -29,40 +25,37 @@ class StructuresControllerTest < ActionController::TestCase
     end
 
     should_respond_with :success
-    should_assign_to :structure
+    should_assign_to :doc
     should_render_template "new"
   end
 
   context "on POST to :create" do
     setup do
-      @old_count = Structure.count
+      @old_count = Doc.count
       @name = "William"
       @color = "orange"
       post :create, { :project_id => @project.id, :template_id => @tmpl.id,
-        :structure => {
+        :doc => {
           :name => @name,
           :attr_values => {
-            @attr.id => {
-              :value => @color
-            }
+            @attr.name => @color
           }
         }
       }
     end
 
     should_respond_with :redirect
-    should_assign_to :structure
+    should_assign_to :doc
     should_not_set_the_flash
 
-    should "create a structure with the appropriate attrs" do
-      assert_equal @old_count + 1, Structure.count
-      assert_equal @name, assigns(:structure).name
-      assert_equal @color, assigns(:structure).attr_value(@attr).value
-      assert_equal @color, assigns(:structure).attr_value(@attr_name).value
+    should "create a doc with the appropriate attrs" do
+      assert_equal @old_count + 1, Doc.count
+      assert_equal @name, assigns(:doc).name
+      assert_equal @color, assigns(:doc).attrs[@attr.name].value
     end
 
-    should "redirect to the new structure" do
-      assert_redirected_to structure_path(@project, assigns(:structure))
+    should "redirect to the new doc" do
+      assert_redirected_to doc_path(@project, assigns(:doc))
     end
   end
 
@@ -71,12 +64,11 @@ class StructuresControllerTest < ActionController::TestCase
       @name = "Melissa"
       @color = "purple"
 
-      @structure = @project.structures.create(:name => @name, :structure_template => @tmpl,
+      @doc = @project.docs.create(:name => @name, :doc_template => @tmpl,
         :position => 1)
-      @av = @structure.obtain_attr_value(@attr_name)
-      @av.value = @color
-      @av.save
-      @structure.reload
+      @doc.attrs[@attr.name].value = @color
+      @doc.save
+      @doc.reload
     end
 
     context "on GET to :index.json with the appropriate template" do
@@ -85,27 +77,27 @@ class StructuresControllerTest < ActionController::TestCase
       end
 
       should_respond_with :success
-      should_assign_to :structures
+      should_assign_to :docs
       should_respond_with_json
     end
 
     context "on GET to :show" do
       setup do
-        get :show, :id => @structure.id, :project_id => @project.id
+        get :show, :id => @doc.id, :project_id => @project.id
       end
 
       should_respond_with :success
-      should_assign_to :structure
+      should_assign_to :docs
       should_render_template "show"
     end
     
     context "on GET to :edit" do
       setup do
-        get :edit, :id => @structure.id, :project_id => @project.id
+        get :edit, :id => @doc.id, :project_id => @project.id
       end
       
       should_respond_with :success
-      should_assign_to :structure
+      should_assign_to :doc
       should_render_template "edit"
     end
 
@@ -113,27 +105,24 @@ class StructuresControllerTest < ActionController::TestCase
       setup do
         @new_color = "turquoise"
 
-        put :update, :id => @structure.id, :project_id => @project.id,
-          :structure => {
+        put :update, :id => @doc.id, :project_id => @project.id,
+          :doc => {
             :attr_values => {
-              @attr.id => {
-                :value => @new_color
-              }
+              @attr.name => @new_color
             }
           }
       end
 
       should_respond_with :redirect
-      should_assign_to :structure
+      should_assign_to :doc
       should_not_set_the_flash
 
       should "update the structure" do
-        assert_equal @new_color, assigns(:structure).attr_value(@attr).value
-        assert_equal @new_color, assigns(:structure).attr_value(@attr_name).value
+        assert_equal @new_color, assigns(:doc).attrs[@attr.name].value
       end
 
       should "redirect back to the structure" do
-        assert_redirected_to structure_path(@project, @structure)
+        assert_redirected_to doc_path(@project, @doc)
       end
     end
 
@@ -168,44 +157,41 @@ class StructuresControllerTest < ActionController::TestCase
 
     context "on DELETE to :destroy" do
       setup do
-        @old_count = Structure.count
-        delete :destroy, :id => @structure.id, :project_id => @project.id
+        @old_count = Doc.count
+        delete :destroy, :id => @doc.id, :project_id => @project.id
       end
 
       should_respond_with :redirect
-      should_assign_to :structure
+      should_assign_to :doc
       should_not_set_the_flash
+      should_redirect_to("the project") { project_path @project }
 
-      should "destroy a structure" do
-        assert_equal @old_count - 1, Structure.count
-      end
-
-      should "redirect back to the project" do
-        assert_redirected_to project_path(@project)
+      should "destroy a doc" do
+        assert_equal @old_count - 1, Doc.count
       end
     end
 
     context "and another structure" do
       setup do
-        @d2 = @project.structures.create(:name => "Another", :structure_template => @tmpl,
+        @d2 = @project.docs.create(:name => "Another", :doc_template => @tmpl,
           :position => 2)
       end
 
       context "on POST to :sort" do
         setup do
-          assert @structure.position < @d2.position
+          assert @doc.position < @d2.position
           
           post :sort, :project_id => @project.id,
-            "structures_#{@tmpl.id}".to_sym => [ @d2.id.to_s, @structure.id.to_s ]
+            "docs_#{@tmpl.id}".to_sym => [ @d2.id.to_s, @doc.id.to_s ]
         end
 
         should_respond_with :success
 
-        should "sort the structures" do
-          @structure.reload
+        should "sort the docs" do
+          @doc.reload
           @d2.reload
 
-          assert @d2.position < @structure.position
+          assert @d2.position < @doc.position
         end
       end
     end

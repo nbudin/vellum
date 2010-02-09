@@ -8,19 +8,14 @@ ActionController::Routing::Routes.draw do |map|
   end
 
   map.resources :projects do |projects|
-    projects.resources :structure_templates, :name_prefix => nil do |templates|
+    projects.resources :doc_templates, :name_prefix => nil do |templates|
       templates.resources :attrs, :collection => { :sort => :post }, :name_prefix => nil
     end
     projects.resources :relationship_types, :name_prefix => nil
-    projects.resources :structures, :name_prefix => nil, :collection => { :sort => :post }, 
-                       :member => { :transition => :post } do |structures|
-      structures.resources :doc_values, :name_prefix => nil do |doc_values|
-        doc_values.resources :versions, :controller => 'DocValueVersions', :name_prefix => 'doc_value_'
-      end
-    end
+    projects.resources :docs, :name_prefix => nil, :collection => { :sort => :post }
     projects.resources :relationships, :name_prefix => nil
     projects.resources :maps, :name_prefix => nil, :collection => { :sort => :post } do |maps|
-      maps.resources :mapped_structure_templates, :name_prefix => nil
+      maps.resources :mapped_doc_templates, :name_prefix => nil
       maps.resources :mapped_relationship_types, :name_prefix => nil
     end
   end

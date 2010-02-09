@@ -35,7 +35,7 @@ h2 {
 		<% end -%>
 	  </ol>
         </li>
-        <li><%= link_to "Templates", structure_templates_path(@project) %></li>
+        <li><%= link_to "Templates", doc_templates_path(@project) %></li>
         <li><%= link_to "Maps", maps_path(@project) %></li>
   </ol>
 </div>
@@ -46,15 +46,15 @@ h2 {
   <h2><%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a></h2>
   <div style="margin-left: 20px;">
 	  <p>
-	    <% link_to new_structure_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
+	    <% link_to new_doc_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
 		  <%= image_tag "structure_add.png" %> Add new <%= tmpl.name %>
 	    <% end -%>
 	  </p>
-	  <% sortlist(@structures[tmpl], "structures_#{tmpl.id}",
-				  :url => sort_structures_path(@project)
-				  ) do |structure| -%>
-		<%= render :partial => 'structures/show_external', 
-			:locals => { :structure => structure } %>
+	  <% sortlist(@docs[tmpl], "docs_#{tmpl.id}",
+				  :url => sort_docs_path(@project)
+				  ) do |doc| -%>
+		<%= render :partial => 'docs/show_external',
+			:locals => { :doc => doc } %>
 	  <% end -%>
   </div>
 <% end -%>

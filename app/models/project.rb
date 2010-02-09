@@ -103,7 +103,7 @@ class Project < ActiveRecord::Base
       
       structures.each do |structure|
         xml.structure(:id => structure.id) do
-          xml.structure_template_id(structure.structure_template_id)
+          xml.doc_template_id(structure.doc_template_id)
           xml.attr_values do
             structure.attr_values.each do |av|
               xml.type(av.class.name)

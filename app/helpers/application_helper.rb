@@ -95,8 +95,21 @@ module ApplicationHelper
     show_class_template_name(value.class)
   end
 
-  def edit_attr_value_template_name(value)
-    edit_class_template_name(value.class)
+  def edit_attr_value_template_name(attr)
+    basename = case (attr.ui_type && attr.ui_type.to_sym)
+    when :textarea
+      "textarea"
+    when :radio
+      "radio"
+    when :dropdown
+      "dropdown"
+    when :multiple
+      "multiple"
+    else
+      "text"
+    end
+
+    "field_types/edit_#{basename}"
   end
 
   def render_attr(attr)
@@ -111,17 +124,19 @@ module ApplicationHelper
     render :partial => show_attr_value_template_name(value), :locals => { :value => value }
   end
 
-  def render_attr_value_editor(value, param_prefix_components=[])
-    param_prefix = "structure[attr_values]"
-    param_prefix_components.each do |comp|
-      param_prefix << "[#{comp}]"
+  def render_attr_value_editor(attr, f)
+    case (attr.ui_type && attr.ui_type.to_sym)
+    when :textarea
+      "textarea"
+    when :radio
+      "radio"
+    when :dropdown
+      "dropdown"
+    when :multiple
+      "multiple"
+    else
+      f.text_field attr.name
     end
-    param_prefix << "[#{value.attr.id}]"
-    render :partial => edit_attr_value_template_name(value), :locals => { 
-      :value => value, 
-      :param_prefix => param_prefix,
-      :param_prefix_components => param_prefix_components
-    }
   end
 
   def item_actions(item, options={})

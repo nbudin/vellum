@@ -6,6 +6,11 @@ Factory.define(:doc_template) do |t|
   t.name "A doc template"
 end
 
+Factory.define(:doc_template_attr) do |t|
+  t.association :doc_template
+  t.name "A doc template attr"
+end
+
 Factory.define(:relationship_type) do |rt|
   rt.association :project, :factory => :project
   rt.after_build do |t|

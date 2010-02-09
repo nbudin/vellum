@@ -30,13 +30,13 @@ class RelationshipsController < ApplicationController
     @relationship_type = RelationshipType.find(params[:relationship][:relationship_type_id])
     html_redirect = :back
     if params[:relationship][:left_id] == "new"
-      left = Structure.create(:project => @project, :structure_template => @relationship_type.left_template)
+      left = Doc.create(:project => @project, :doc_template => @relationship_type.left_template)
       params[:relationship][:left_id] = left.id
-      html_redirect = edit_structure_url(@project, left)
+      html_redirect = edit_doc_url(@project, left)
     elsif params[:relationship][:right_id] == "new"
-      right = Structure.create(:project => @project, :structure_template => @relationship_type.right_template)
+      right = Doc.create(:project => @project, :doc_template => @relationship_type.right_template)
       params[:relationship][:right_id] = right.id
-      html_redirect = edit_structure_url(@project, right)
+      html_redirect = edit_doc_url(@project, right)
     end
 
     @relationship = Relationship.new(params[:relationship])

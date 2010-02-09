@@ -1,6 +1,5 @@
 class Attr < ActiveRecord::Base
   belongs_to :doc_version, :class_name => "Doc::Version"
-  has_one :doc, :through => :doc_version
   acts_as_list :scope => :doc_version
 
   validates_uniqueness_of :name, :scope => :doc_version_id
@@ -22,6 +21,24 @@ class Attr < ActiveRecord::Base
     else
       raw_content
     end
+  end
+
+  def template_attr
+    if doc && doc.doc_template
+      doc.doc_template.doc_template_attrs.first(:conditions => {:name => self.name})
+    end
+  end
+
+  def doc
+    @doc ||= reload_doc
+  end
+
+  def ui_type
+    template_attr.try(:ui_type) || "text"
+  end
+
+  def reload_doc
+    @doc = doc_version.try(:doc)
   end
 
   private

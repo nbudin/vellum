@@ -1,21 +1,25 @@
-<h1>New doc</h1>
+<p><%= link_to "<- Back to #{@project.name}", project_path(@project) %></p>
 
-<%= error_messages_for :doc %>
+<h1>New <%=h @doc.doc_template.name %></h1>
 
-<% form_for(:doc, :url => docs_path) do |f| %>
-  <p>
-    <b>Title</b><br />
-    <%= f.text_field :title %>
-  </p>
+<%= error_messages_for :structure %>
 
-  <p>
-    <b>Content</b><br />
-    <%= f.text_area :content %>
-  </p>
+<% form_for(:doc, :url => docs_path(@project)) do |f| -%>
+  <%= hidden_field_tag "template_id", @doc.doc_template.id %>
 
-  <p>
-    <%= submit_tag "Create" %>
-  </p>
-<% end %>
+  <table class="structure">
+    <tr class="attribute">
+      <td><%= f.label "name", "Name" %></td>
+      <td><%= f.text_field("name") %></td>
+    </tr>
+    <%= render :partial => "form", :locals => { :f => f } %>
 
-<%= link_to 'Back', docs_path %>
+    <tr>
+      <td style="border-top: none;"></td>
+      <td>
+        <%= submit_tag "Create #{@doc.doc_template.name}", :class => "new" %>
+      </td>
+    </tr>
+  </table>
+
+<% end -%>

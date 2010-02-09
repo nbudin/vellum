@@ -10,7 +10,7 @@
     <% @relationship_types.each do |typ, directions| -%>
 	<% directions.each do |direction| -%>
 	    rb.addRelationshipType(<%=typ.id%>, '<%=direction%>', 
-			   '<%= escape_javascript(typ.description_for(structure.structure_template, direction)) %>');
+			   '<%= escape_javascript(typ.description_for(structure.doc_template, direction)) %>');
 	<% end -%>
     <% end -%>
 </script>

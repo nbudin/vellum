@@ -27,7 +27,7 @@
     <div class="nav_links">
       <%= nav_link_to @project.name, project_path(@project), "project.png", 
           %w{projects structures}.include?(params[:controller]) %>
-      <%= nav_link_to "Templates", structure_templates_path(@project), "template.png" %>
+      <%= nav_link_to "Templates", doc_templates_path(@project), "template.png" %>
       <%= nav_link_to "Maps", maps_path(@project), "map.png" %>
     </div>
   <% end -%>

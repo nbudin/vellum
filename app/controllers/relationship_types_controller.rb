@@ -61,7 +61,7 @@ class RelationshipTypesController < ApplicationController
     @relationship_type.destroy
 
     respond_to do |format|
-      format.html { redirect_to(structure_template_url(@project, left_template)) }
+      format.html { redirect_to(doc_template_url(@project, left_template)) }
       format.xml  { head :ok }
     end
   end

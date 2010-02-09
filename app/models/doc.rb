@@ -16,7 +16,12 @@ class Doc < ActiveRecord::Base
 
       unless doc_version.nil?
         doc_version.attrs.each do |attr|
+          # We create a clone of the attr with the version ref removed
+          # but the @doc variable remaining set
+
           working_attr = attr.clone
+          working_attr.reload_doc
+          
           working_attr.doc_version_id = nil
           working_attr.doc_version = nil
           @attrs[attr.name] = working_attr
@@ -59,7 +64,7 @@ class Doc < ActiveRecord::Base
 
     def values=(new_values = {})
       new_values.each do |name, value|
-        @attrs[name].value = value
+        self[name].value = value
       end
       
       values

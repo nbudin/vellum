@@ -15,7 +15,7 @@ class TemplateSchema < ActiveRecord::Base
 
       xml.structure_templates do
         structure_templates.each do |template|
-          xml.structure_template(:id => template.id) do
+          xml.doc_template(:id => template.id) do
             xml.name(template.name)
             
             xml.attrs do

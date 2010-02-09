@@ -31,9 +31,9 @@ table.versions tbody tr.odd {
   <h2><%= @doc_value.name %></h2>
   <p>
     <b>Defined in template:</b> 
-    <% link_to structure_template_path(@structure.project.template_schema, @structure.structure_template) do -%>
+    <% link_to doc_template_path(@structure.project.template_schema, @structure.doc_template) do -%>
       <%= image_tag "template.png" %>
-      <%= @structure.structure_template.name %>
+      <%= @structure.doc_template.name %>
     <% end -%>
   </p>
 </div>

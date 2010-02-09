@@ -1,0 +1,31 @@
+<div class="external_view">
+    <div class="summary">
+		<div class="actions">
+	      <% link_to(doc_path(@project, doc), :class => "button edit") do -%>
+	            <%= image_tag "structure.png" %> Details
+          <% end -%>
+		  <% if doc.blurb.nil? -%>
+		    <button class="edit" style="margin-right: 0.5em;"
+			    id="doc_<%=doc.id%>_add_description"
+				onClick="$('doc_<%=doc.id%>_blurb_display').show();
+						 $('doc_<%=doc.id%>_add_description').hide();
+						 $('doc_<%=doc.id%>_blurb').jipeEditor.enterEditMode();
+						">
+		    	Add description
+		    </button>
+		  <% end -%>
+		</div>	
+		<h3><%= jipe_editor_if_permitted doc, :name %></h3>
+	    <span class="assignee">
+  	        <% if doc.assignee -%>
+                (Assigned to <%=h doc.assignee.name -%>)
+  	        <% end -%>
+        </span>
+	</div>
+	<div id="doc_<%=doc.id%>_blurb_display"
+		<% if doc.blurb.nil? -%>
+			style="display: none;"
+		<% end -%>>
+		<%= jipe_editor doc, "blurb", :rows => 4 %>
+	</div>
+</div>

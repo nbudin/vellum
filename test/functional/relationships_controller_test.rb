@@ -7,8 +7,8 @@ class RelationshipsControllerTest < ActionController::TestCase
     @rt = Factory.create(:relationship_type)
     @project = @rt.project
     @project.grant(@person)
-    @left = Factory.create(:structure, :project => @project, :structure_template => @rt.left_template)
-    @right = Factory.create(:structure, :project => @project, :structure_template => @rt.right_template)
+    @left = Factory.create(:doc, :project => @project, :doc_template => @rt.left_template)
+    @right = Factory.create(:doc, :project => @project, :doc_template => @rt.right_template)
   end
 
   context "on GET to :index.json" do
@@ -52,10 +52,10 @@ class RelationshipsControllerTest < ActionController::TestCase
 
     context "and a new structure" do
       setup do
-        @old_structure_count = Structure.count
+        @old_doc_count = Doc.count
       end
 
-      context "on POST to :create with a new structure specified on the left" do
+      context "on POST to :create with a new doc specified on the left" do
         setup do
           post :create, :project_id => @project.id, :relationship => {
             :relationship_type_id => @rt.id,
@@ -68,17 +68,17 @@ class RelationshipsControllerTest < ActionController::TestCase
         should_assign_to :relationship
         should_not_set_the_flash
 
-        should "create a relationship and a structure" do
+        should "create a relationship and a doc" do
           assert_equal @old_count + 1, Relationship.count
-          assert_equal @old_structure_count + 1, Structure.count
+          assert_equal @old_doc_count + 1, Doc.count
         end
 
-        should "redirect to the new structure" do
-          assert_redirected_to edit_structure_path(@project, assigns(:relationship).left)
+        should "redirect to the new doc" do
+          assert_redirected_to edit_doc_path(@project, assigns(:relationship).left)
         end
       end
 
-      context "on POST to :create with a new structure specified on the right" do
+      context "on POST to :create with a new doc specified on the right" do
         setup do
           post :create, :project_id => @project.id, :relationship => {
             :relationship_type_id => @rt.id,
@@ -93,11 +93,11 @@ class RelationshipsControllerTest < ActionController::TestCase
 
         should "create a relationship and a structure" do
           assert_equal @old_count + 1, Relationship.count
-          assert_equal @old_structure_count + 1, Structure.count
+          assert_equal @old_doc_count + 1, Doc.count
         end
 
-        should "redirect to the new structure" do
-          assert_redirected_to edit_structure_path(@project, assigns(:relationship).right)
+        should "redirect to the new doc" do
+          assert_redirected_to edit_doc_path(@project, assigns(:relationship).right)
         end
       end
     end

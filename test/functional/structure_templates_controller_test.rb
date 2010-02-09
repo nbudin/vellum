@@ -32,11 +32,11 @@ class StructureTemplatesControllerTest < ActionController::TestCase
     setup do
       @old_count = StructureTemplate.count
       post :create, :project_id => @project.id,
-        :structure_template => { :name => "Car" }
+        :doc_template => { :name => "Car" }
     end
 
     should_respond_with :redirect
-    should_assign_to :structure_template
+    should_assign_to :doc_template
     should_not_set_the_flash
 
     should "create a structure template" do
@@ -44,13 +44,13 @@ class StructureTemplatesControllerTest < ActionController::TestCase
     end
 
     should "redirect to the new structure template" do
-      assert_redirected_to structure_template_path(@project, assigns(:structure_template))
+      assert_redirected_to doc_template_path(@project, assigns(:doc_template))
     end
   end
 
   context "with a structure template" do
     setup do
-      @tmpl = Factory.create(:structure_template, :project => @project)
+      @tmpl = Factory.create(:doc_template, :project => @project)
     end
 
     context "on GET to :show" do
@@ -59,7 +59,7 @@ class StructureTemplatesControllerTest < ActionController::TestCase
       end
 
       should_respond_with :success
-      should_assign_to :structure_template
+      should_assign_to :doc_template
       should_render_template "show"
     end
 
@@ -68,21 +68,21 @@ class StructureTemplatesControllerTest < ActionController::TestCase
         @new_name = "A different name"
 
         put :update, :project_id => @project.id, :id => @tmpl.id,
-          :structure_template => { :name => @new_name }
+          :doc_template => { :name => @new_name }
       end
 
       should_respond_with :redirect
-      should_assign_to :structure_template
+      should_assign_to :doc_template
       should_not_set_the_flash
 
       should "update the template" do
-        assert_equal @new_name, assigns(:structure_template).name
+        assert_equal @new_name, assigns(:doc_template).name
         @tmpl.reload
         assert_equal @new_name, @tmpl.name
       end
 
       should "redirect to the template" do
-        assert_redirected_to structure_template_path(@project, @tmpl)
+        assert_redirected_to doc_template_path(@project, @tmpl)
       end
     end
 
@@ -93,7 +93,7 @@ class StructureTemplatesControllerTest < ActionController::TestCase
       end
 
       should_respond_with :redirect
-      should_assign_to :structure_template
+      should_assign_to :doc_template
       should_not_set_the_flash
       should_redirect_to("the template list") { structure_templates_path(@project) }
 

@@ -1,11 +1,11 @@
 Given /^a template named "(.*)"$/ do |name|
-  assert tmpl = Factory.create(:structure_template, :name => name)
+  assert tmpl = Factory.create(:doc_template, :name => name)
   tmpl.project.grant(controller.logged_in_person)
 end
 
 Given /^a template named "(.*)" in (.*)$/ do |name, project_name|
   assert project = Project.find_by_name(project_name)
-  assert tmpl = Factory.create(:structure_template, :name => name, :project => project)
+  assert tmpl = Factory.create(:doc_template, :name => name, :project => project)
 end
 
 Given /^a project with the following templates:$/ do |table|

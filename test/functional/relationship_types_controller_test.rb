@@ -10,8 +10,8 @@ class RelationshipTypesControllerTest < ActionController::TestCase
 
   context "on POST to :create" do
     setup do
-      @a = @project.structure_templates.create(:name => "A")
-      @b = @project.structure_templates.create(:name => "B")
+      @a = @project.doc_templates.create(:name => "A")
+      @b = @project.doc_templates.create(:name => "B")
 
       @old_count = RelationshipType.count
       post :create, :project_id => @project.id, :relationship_type => {

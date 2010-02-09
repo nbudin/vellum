@@ -1,0 +1,37 @@
+<% form_for(:doc, :url => doc_path(@project, @doc), :html => {:method => 'put'}) do |f| -%>
+
+<p style="margin-top: 2em;">
+  <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold;" %>
+  (<%=h @doc.doc_template.name %>)</p>
+
+<div class="jumpbox">
+  <div class="navigation">
+    <% link_to doc_path(@project, @doc), :class => "button cancel" do -%>
+      <%= image_tag "arrow_left.png" %>
+      Cancel editing
+    <% end -%>
+  </div>
+    
+  <h2><%= @doc.name %></h2>
+  <p>
+    <b>Template:</b> 
+    <% link_to doc_template_path(@doc.project, @doc.doc_template) do -%>
+      <%= image_tag "template.png" %>
+      <%= @doc.doc_template.name %>
+    <% end -%>
+  </p>
+</div>
+
+<%= error_messages_for :doc %>
+
+  <table class="structure">
+    <%= render :partial => 'form', :locals => { :f => f } %>
+
+    <tr>
+      <td style="border-top: none;"></td>
+      <td>
+        <%= submit_tag "Save changes" %>
+      </td>
+    </tr>
+  </table>
+<% end -%>

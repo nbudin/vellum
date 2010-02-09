@@ -7,9 +7,9 @@
 <h1><%= jipe_editor(@relationship_type, "name") %></h1>
 
 <p>Connects <%= link_to @relationship_type.left_template.name, 
-                        structure_template_path(@project, @relationship_type.left_template) %>
+                        doc_template_path(@project, @relationship_type.left_template) %>
 with <%= link_to @relationship_type.right_template.name, 
-                 structure_template_path(@project, @relationship_type.right_template) %></p>
+                 doc_template_path(@project, @relationship_type.right_template) %></p>
 
 <h2>Phrasing</h2>
 

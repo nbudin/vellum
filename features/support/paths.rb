@@ -20,7 +20,7 @@ module NavigationHelpers
       maps_path(Project.find_by_name($1))
     when /the template page for (.*)/
       tmpl = StructureTemplate.find_by_name($1)
-      structure_template_path(tmpl.project, tmpl)
+      doc_template_pathdoc_template_pathdoc_template_pathdoc_template_pathdoc_template_pathdoc_template_path(tmpl.project, tmpl)
     when /the structure page for (.*)/
       struct = Structure.find_by_name($1)
       structure_path(struct.project, struct)
