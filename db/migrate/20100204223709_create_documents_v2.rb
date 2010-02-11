@@ -9,6 +9,10 @@ class ChoiceField < ActiveRecord::Base
   def multiple
     display_type == "multiple"
   end
+
+  def display_type
+    read_attribute(:display_type) || "radio"
+  end
 end
 
 class TextField < ActiveRecord::Base
@@ -257,7 +261,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
 
     def attr_value(a)
       avm = avm_for_attr(a)
-      avm && avm.value
+      avm.try(:value)
     end
     
     def attr(name)
@@ -296,7 +300,16 @@ class CreateDocumentsV2 < ActiveRecord::Migration
         project.structure_templates.all(:order => "name").each do |tmpl|
           file.puts "  Template: #{tmpl.name}"
 
+          docfields = tmpl.attrs.select { |a| a.attr_configuration.try(:kind_of?, DocField) }
+          single_docfield = nil
+          if docfields.size == 1
+            # it's going to become the doc content
+            single_docfield = docfields.first
+          end
+
           tmpl.attrs.all(:order => "position").each do |attr|
+            next if (single_docfield && attr == single_docfield)
+
             file.print "    Attr: #{attr.name}"
             if attr.attr_configuration
               if attr.attr_configuration.kind_of? ChoiceField
@@ -325,13 +338,20 @@ class CreateDocumentsV2 < ActiveRecord::Migration
 
           project.structures.all(:conditions => {:structure_template_id => tmpl.id}, :order => "position").each do |s|
             file.puts "    Doc: #{s.name}"
+            file.puts "      Blurb: #{s.blurb}"
+
             tmpl.attrs.all(:order => "position").each do |attr|
+              next if (single_docfield && attr == single_docfield)
               av = s.attr_value(attr.name)
               if av.kind_of? DocValue
                 file.puts "      #{attr.name}: #{av.try(:doc).try(:content)}"
               else
                 file.puts "      #{attr.name}: #{av.try :value}"
               end
+            end
+            if single_docfield
+              content = s.attr_value(single_docfield.name).try(:doc).try(:content)
+              file.puts "      Content: #{content}" unless content.blank?
             end
 
             s.outward_relationships.all.sort_by { |r| "#{r.left_description}#{r.right_name_v1}" }.each do |r|
@@ -435,7 +455,16 @@ class CreateDocumentsV2 < ActiveRecord::Migration
 
       doc_tmpl = DocTemplate.create(:name => tmpl.name, :project => tmpl.project)
       doc_template_ids[tmpl.id] = doc_tmpl.id
+
+      docfields = tmpl.attrs.select { |a| a.attr_configuration.try(:kind_of?, DocField) }
+      single_docfield = nil
+      if docfields.size == 1
+        # it's going to become the doc content
+        single_docfield = docfields.first
+      end
       tmpl.attrs.all.each do |attr|
+        next if (single_docfield && attr == single_docfield)
+
         doc_attr = doc_tmpl.doc_template_attrs.new(
           :name => attr.name,
           :position => attr.position
@@ -452,6 +481,8 @@ class CreateDocumentsV2 < ActiveRecord::Migration
         end
 
         doc_tmpl.doc_template_attrs << doc_attr
+        doc_attr.save!
+        say "#{tmpl.name} #{attr.name} attr converted as #{doc_attr.inspect}"
       end
       
       doc_tmpl.save!
@@ -494,56 +525,61 @@ class CreateDocumentsV2 < ActiveRecord::Migration
         :blurb => structure.blurb
         )
       docv2_ids[structure.id] = docv2.id
-      docv1s = []
-      structure.attr_value_metadatas.each do |avm|
-        if avm.attr && avm.value
-          case avm.value
-          when DocValue
-            docv1s << avm.value.doc unless avm.value.doc.nil?
-          when ChoiceValue
-            new_value = avm.value.value
-            if new_value.kind_of? Array
-              new_value = new_value.join("|")
-            end
-            a = docv2.obtain_attr(avm.attr.name)
-            a.attributes = {
-              :position => avm.attr.position,
-              :value => new_value
-            }
-          else
-            a = docv2.obtain_attr(avm.attr.name)
-            a.attributes = {
-              :position => avm.attr.position,
-              :value => avm.value.value
-            }
+      docv1_attrs = []
+      structure.structure_template.attrs.each do |attr|
+        value = structure.attr_value(attr.name)
+
+        case attr.attr_configuration
+        when DocField
+          docv1_attrs << attr
+        when ChoiceField
+          new_value = value.try(:value)
+          if new_value.kind_of? Array
+            new_value = new_value.join("|")
           end
+          a = docv2.obtain_attr(attr.name)
+          a.attributes = {
+            :position => attr.position,
+            :value => new_value
+          }
+        else
+          a = docv2.obtain_attr(attr.name)
+          a.attributes = {
+            :position => attr.position,
+            :value => value.try(:value)
+          }
         end
       end
 
-      if docv1s.length == 1
+      if docv1_attrs.size == 1
         say "#{structure.name} contains a single doc; using that doc for the content"
-        attr_name = docv1s.first.doc_value.attr.name
+        attr_name = docv1_attrs.first.name
         docv2.attrs.delete(attr_name)
         template_attr = docv2.doc_template.doc_template_attrs.find_by_name(attr_name)
         template_attr.destroy unless template_attr.nil?
 
-        docv1s.first.versions.all(:order => "version").each do |version|
-          docv2.version += 1
+        docv1 = structure.attr_value(attr_name).try(:doc)
+        if docv1
+          docv1.versions.all(:order => "version").each do |version|
+            docv2.version += 1
 
-          docv2.versions.create(
-            :name => docv2.name,
-            :doc_template_id => docv2.doc_template_id,
-            :author_id => version.author_id,
-            :content => version.content,
-            :version => docv2.version,
-            :created_at => version.created_at,
-            :updated_at => version.updated_at
-          )
+            docv2.versions.create(
+              :name => docv2.name,
+              :doc_template_id => docv2.doc_template_id,
+              :author_id => version.author_id,
+              :content => version.content,
+              :version => docv2.version,
+              :created_at => version.created_at,
+              :updated_at => version.updated_at
+            )
+          end
         end
-      elsif docv1s.length > 1
-        say "#{structure.name} contains #{docv1s.length} docs; interleaving docs as attr versions"
+      elsif docv1_attrs.size > 1
+        say "#{structure.name} contains #{docv1_attrs.size} docs; interleaving docs as attr versions"
 
-        docv1_versions = docv1s.collect {|d| d.versions}.flatten
+        docv1_values = docv1_attrs.collect {|a| structure.attr_value(a.name)}.compact
+        docv1s = docv1_values.collect {|dv| dv.respond_to?(:doc) ? dv.doc : nil }.compact
+        docv1_versions = docv1s.collect {|d| d.versions.all }.flatten
         docv1_versions.sort_by {|v| v.updated_at}.each do |version|
           attr = docv2.obtain_attr(version.doc_v1.doc_value.attr.name)
           attr.format = "html"
@@ -619,13 +655,14 @@ class CreateDocumentsV2 < ActiveRecord::Migration
 
           project.docs.all(:conditions => {:doc_template_id => tmpl.id}, :order => "position").each do |d|
             file.puts "    Doc: #{d.name}"
+            file.puts "      Blurb: #{d.blurb}"
             d.doc_template.doc_template_attrs.all(:order => "position").each do |dta|
               a = d.attr(dta.name)
               file.puts "      #{dta.name}: #{a.try :value}"
             end
             file.puts "      Content: #{d.content}" unless d.content.blank?
 
-            d.outward_relationships.all(:order => "left_description, docs_v2.name", :joins => [:relationship_type, :right]).each do |r|
+            d.outward_relationships.all.sort_by { |r| "#{r.left_description}#{r.right.name}" }.each do |r|
               file.puts "      Relationship: #{r.relationship_type.left_description} #{r.right.name}"
             end
           end
@@ -643,6 +680,17 @@ class CreateDocumentsV2 < ActiveRecord::Migration
     rename_table "docs_v2", "docs"
     rename_table "doc_versions_v2", "doc_versions"
     rename_table "attrs_v2", "attrs"
+
+    # Sanity check: compare old and new data dumps, raise a warning if they differ
+    digest = Digest::SHA1.new
+    v1_hash = digest.hexdigest(File.open(File.join(RAILS_ROOT, "all-data-structures-v1.txt")).read)
+    v2_hash = digest.hexdigest(File.open(File.join(RAILS_ROOT, "all-data-structures-v2.txt")).read)
+    if v1_hash != v2_hash
+      say "!!!!!!!!!!! WARNING !!!!!!!!!!!!!!!!"
+      say "Data seems to be different after migration!"
+      say "Highly recommended: diff -u all-data-structures-v1.txt all-data-structures-v2.txt"
+      say "!!!!!!!!!!! WARNING !!!!!!!!!!!!!!!!"
+    end
   end
 
   def self.down
