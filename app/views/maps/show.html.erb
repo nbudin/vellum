@@ -21,8 +21,8 @@
     <% end -%>
 
   <% if logged_in? and logged_in_person.permitted?(@project, "edit") -%>
-    <h2>Structures</h2>
-    <div id="structures">
+    <h2>Documents</h2>
+    <div id="docs">
       Include all...
       <ul class="itemlist">
         <% itemlist_items(@map.mapped_doc_templates,

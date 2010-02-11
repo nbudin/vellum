@@ -9,7 +9,7 @@ Feature: Manage templates
 
     When I am on the project page for Test Project
     And I follow "Templates"
-    And I fill in "structure_template[name]" with "Character"
+    And I fill in "doc_template[name]" with "Character"
     And I press "Create template..."
     Then I should see "Character"
     And I should be on the template page for Character
@@ -21,7 +21,7 @@ Feature: Manage templates
 
     When I am on the templates page for Test Project
     And I follow "Character"
-    And I follow "Add TextField"
+    And I follow "Add field"
     And I fill in "attr[name]" with "HP"
     And I press "Create"
     Then I should see "HP"

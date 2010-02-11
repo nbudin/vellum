@@ -23,14 +23,14 @@ Feature: Manage maps
     And a map named "Organization Membership" in Test Project
 
     When I am on the map page for Organization Membership
-    And I select "Characters" from "mapped_structure_template[structure_template_id]"
-    And I press "Add" within "div#structures"
+    And I select "Characters" from "mapped_doc_template[doc_template_id]"
+    And I press "Add" within "div#docs"
     Then I should be on the map page for Organization Membership
-    And I should see "Characters" within "#structures ul.itemlist"
+    And I should see "Characters" within "#docs ul.itemlist"
 
-    When I select "Organizations" from "mapped_structure_template[structure_template_id]"
-    And I press "Add" within "div#structures"
-    Then I should see "Organizations" within "#structures ul.itemlist"
+    When I select "Organizations" from "mapped_doc_template[doc_template_id]"
+    And I press "Add" within "div#docs"
+    Then I should see "Organizations" within "#docs ul.itemlist"
 
     When I select "Organization includes Character" from "mapped_relationship_type[relationship_type_id]"
     And I press "Add" within "div#relationships"
