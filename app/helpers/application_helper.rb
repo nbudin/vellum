@@ -120,20 +120,27 @@ module ApplicationHelper
     render :partial => edit_attr_template_name(attr), :locals => { :field => attr.attr_configuration }
   end
 
-  def render_attr_value(value)
-    render :partial => show_attr_value_template_name(value), :locals => { :value => value }
+  def render_attr_value(attr)
+    case (attr.ui_type.try(:to_sym))
+    when :textarea
+      content_tag(:div, sanitize(attr.value), :class => "document_content")
+    when :multiple
+      raise "Figure out what to do here"
+    else
+      attr.value
+    end
   end
 
   def render_attr_value_editor(attr, f)
     case (attr.ui_type && attr.ui_type.to_sym)
     when :textarea
-      "textarea"
+      raise "Figure out what to do here"
     when :radio
-      "radio"
+      raise "Figure out what to do here"
     when :dropdown
-      "dropdown"
+      raise "Figure out what to do here"
     when :multiple
-      "multiple"
+      raise "Figure out what to do here"
     else
       f.text_field attr.name
     end

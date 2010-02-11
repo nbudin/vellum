@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class StructureTemplatesControllerTest < ActionController::TestCase
+class DocTemplatesControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
 
@@ -14,7 +14,7 @@ class StructureTemplatesControllerTest < ActionController::TestCase
     end
 
     should_respond_with :success
-    should_assign_to :structure_templates
+    should_assign_to :doc_templates
     should_render_template "index"
   end
 
@@ -24,13 +24,13 @@ class StructureTemplatesControllerTest < ActionController::TestCase
     end
 
     should_respond_with :success
-    should_assign_to :structure_templates
+    should_assign_to :doc_templates
     should_respond_with_json
   end
 
   context "on POST to :create" do
     setup do
-      @old_count = StructureTemplate.count
+      @old_count = DocTemplate.count
       post :create, :project_id => @project.id,
         :doc_template => { :name => "Car" }
     end
@@ -39,16 +39,16 @@ class StructureTemplatesControllerTest < ActionController::TestCase
     should_assign_to :doc_template
     should_not_set_the_flash
 
-    should "create a structure template" do
-      assert_equal @old_count + 1, StructureTemplate.count
+    should "create a doc template" do
+      assert_equal @old_count + 1, DocTemplate.count
     end
 
-    should "redirect to the new structure template" do
+    should "redirect to the new doc template" do
       assert_redirected_to doc_template_path(@project, assigns(:doc_template))
     end
   end
 
-  context "with a structure template" do
+  context "with a doc template" do
     setup do
       @tmpl = Factory.create(:doc_template, :project => @project)
     end
@@ -88,17 +88,17 @@ class StructureTemplatesControllerTest < ActionController::TestCase
 
     context "on DELETE to :destroy" do
       setup do
-        @old_count = StructureTemplate.count
+        @old_count = DocTemplate.count
         delete :destroy, :project_id => @project.id, :id => @tmpl.id
       end
 
       should_respond_with :redirect
       should_assign_to :doc_template
       should_not_set_the_flash
-      should_redirect_to("the template list") { structure_templates_path(@project) }
+      should_redirect_to("the template list") { doc_templates_path(@project) }
 
       should "destroy a template" do
-        assert_equal @old_count - 1, StructureTemplate.count
+        assert_equal @old_count - 1, DocTemplate.count
       end
     end
   end

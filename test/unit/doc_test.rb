@@ -58,6 +58,13 @@ class DocTest < ActiveSupport::TestCase
           assert_equal 1, @avs.size
         end
 
+        should "take attr values from attr_values=" do
+          @doc.attr_values = { @attr.name => "Fuschia" }
+          assert_equal "Fuschia", @attr.value
+          assert_equal "Fuschia", @doc.attrs[@attr.name].value
+          assert_equal "Fuschia", @doc.attr_values[@attr.name]
+        end
+
         context "having been saved" do
           setup do
             @version1 = @doc.version

@@ -5,12 +5,12 @@
 <span id="relationship_builder"></span>
 <%= javascript_include_tag 'relationship_builder' %>
 <script type="text/javascript">
-    var rb = new RelationshipBuilder('relationship_builder', <%=structure.id%>, 
+    var rb = new RelationshipBuilder('relationship_builder', <%=doc.id%>,
 	'<%=relationships_path(@project)%>', '<%= image_path "relationship_add.png" %>');
     <% @relationship_types.each do |typ, directions| -%>
 	<% directions.each do |direction| -%>
 	    rb.addRelationshipType(<%=typ.id%>, '<%=direction%>', 
-			   '<%= escape_javascript(typ.description_for(structure.doc_template, direction)) %>');
+			   '<%= escape_javascript(typ.description_for(doc.doc_template, direction)) %>');
 	<% end -%>
     <% end -%>
 </script>

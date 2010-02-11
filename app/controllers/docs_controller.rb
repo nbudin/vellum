@@ -69,9 +69,18 @@ class DocsController < ApplicationController
     @doc_template = @project.doc_templates.find(params[:template_id])
     @doc = @project.docs.new(:doc_template => @doc_template)
     @doc.attributes = params[:doc]
+    @doc.creator = logged_in_person
+
+    successful_save = @doc.save
+    if successful_save
+      @doc.versions.each do |v|
+        v.author = logged_in_person
+        successful_save = false unless v.save
+      end
+    end
 
     respond_to do |format|
-      if @doc.save
+      if successful_save
         format.html { redirect_to doc_url(@project, @doc) }
         format.xml  { head :created, :location => doc_url(@project, @doc, :format => "xml" ) }
         format.json { head :created, :location => doc_url(@project, @doc, :format => "json") }
@@ -88,9 +97,16 @@ class DocsController < ApplicationController
   # PUT /docs/1.xml
   def update
     @doc = @project.docs.find(params[:id])
-    
+
+    successful_save = @doc.update_attributes(params[:doc])
+    if successful_save
+      v = @doc.versions.latest
+      v.author = logged_in_person
+      successful_save = v.save
+    end
+
     respond_to do |format|
-      if @doc.update_attributes(params[:doc])
+      if successful_save
         format.html { redirect_to doc_url(@project, @doc) }
         format.xml  { head :ok }
         format.json { head :ok }

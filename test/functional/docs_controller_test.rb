@@ -54,12 +54,17 @@ class DocsControllerTest < ActionController::TestCase
       assert_equal @color, assigns(:doc).attrs[@attr.name].value
     end
 
+    should "set the creator and version author" do
+      assert_equal @person.id, assigns(:doc).creator_id
+      assert_equal @person.id, assigns(:doc).versions.first.author_id
+    end
+
     should "redirect to the new doc" do
       assert_redirected_to doc_path(@project, assigns(:doc))
     end
   end
 
-  context "with a structure" do
+  context "with a doc" do
     setup do
       @name = "Melissa"
       @color = "purple"
@@ -87,7 +92,7 @@ class DocsControllerTest < ActionController::TestCase
       end
 
       should_respond_with :success
-      should_assign_to :docs
+      should_assign_to :doc
       should_render_template "show"
     end
     
@@ -117,6 +122,10 @@ class DocsControllerTest < ActionController::TestCase
       should_assign_to :doc
       should_not_set_the_flash
 
+      should "set the new version's author" do
+        assert_equal @person.id, assigns(:doc).versions.latest.author_id
+      end
+
       should "update the structure" do
         assert_equal @new_color, assigns(:doc).attrs[@attr.name].value
       end
@@ -129,25 +138,26 @@ class DocsControllerTest < ActionController::TestCase
     context "on PUT to :update with new assignee" do
       setup do
         assert @person.primary_email_address
+        assert_not_equal @person.id, @doc.assignee
         @site_settings = SiteSettings.instance
         @site_settings.site_name = "Test Site"
         @site_settings.site_email = "vellum@example.com"
         @site_settings.save
 
-        put :update, :id => @structure.id, :project_id => @project.id,
-          :structure => { :assignee_id => @person.id }
+        put :update, :id => @doc.id, :project_id => @project.id,
+          :doc => { :assignee_id => @person.id }
       end
 
-      should_assign_to :structure
+      should_assign_to :doc
 
-      should "reassign the structure" do
-        assert_equal @person.id, assigns(:structure).assignee.id
+      should "reassign the doc" do
+        assert_equal @person.id, assigns(:doc).assignee.id
       end
 
       should "send email to the new assignee" do
         assert_sent_email do |email|
           email.subject =~ /\[#{@project.name}\]/ &&
-            email.subject.include?(@structure.name) &&
+            email.subject.include?(@doc.name) &&
             email.from.include?(@site_settings.site_email) &&
             email.to.include?(@person.primary_email_address) &&
             email.body.include?("assigned to you")

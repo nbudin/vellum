@@ -33,6 +33,12 @@ class Doc < ActiveRecord::Base
       @attrs[name] ||= Attr.new(:name => name)
     end
 
+    def each
+      @attrs.values.sort_by {|a| a.position}.each do |attr|
+        yield attr
+      end
+    end
+
     def delete(name)
       deleted_attr = @attrs.delete(name)
       @deleted_attrs << deleted_attr
@@ -83,8 +89,9 @@ class Doc < ActiveRecord::Base
     @attrs || reload_working_attrs
   end
 
-  def reload_working_attrs
-    @attrs = AttrSet.new(versions.latest)
+  def reload_working_attrs(version=nil)
+    version ||= versions.latest
+    @attrs = AttrSet.new(version)
   end
 
   def create_new_version?
@@ -96,7 +103,7 @@ class Doc < ActiveRecord::Base
 
     new_version = versions.select { |v| v.new_record? }.last
     attrs.save_to_doc_version(new_version)
-    reload_working_attrs
+    reload_working_attrs(new_version)
   end
 
   def to_param

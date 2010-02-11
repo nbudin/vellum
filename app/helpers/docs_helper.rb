@@ -11,16 +11,13 @@ module DocsHelper
     end
   end
   
-  def attr_row(structure, attr)
-    av = structure.obtain_attr_value(attr)
-    if av
-      content_tag(:tr) do
-        html = ""
-        html << content_tag(:td, :style => "vertical-align: top; font-weight: bold;") do
-          h(attr.name)            
-        end
-        html << content_tag(:td, render_attr_value(av))
+  def attr_row(attr)
+    content_tag(:tr) do
+      html = ""
+      html << content_tag(:td, :style => "vertical-align: top; font-weight: bold;") do
+        h(attr.name)
       end
+      html << content_tag(:td, render_attr_value(attr))
     end
   end
 end

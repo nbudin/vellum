@@ -3,15 +3,15 @@
 <h2>Templates</h2>
 
 <ul class="itemlist">
-  <% itemlist_items(@structure_templates,
-                    :delete_path => structure_templates_path(@project)) do |t| %>
+  <% itemlist_items(@doc_templates,
+                    :delete_path => doc_templates_path(@project)) do |t| %>
     <% link_to(doc_template_path(@project, t)) do -%>
       <%= image_tag "template.png" %>
       <%= t.name %>
     <% end -%>
   <% end %>
   <li>
-    <% form_for(:doc_template, :url => structure_templates_path(@project)) do |f| %>
+    <% form_for(:doc_template, :url => doc_templates_path(@project)) do |f| %>
     <div style="float: right;">
       <button class="new">
         <%= image_tag "template_add.png" %>

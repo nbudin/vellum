@@ -1,5 +1,5 @@
 <script type="text/javascript">
-Resource.model("StructureTemplate", {prefix: '<%= project_path(@project) %>'});
+Resource.model("DocTemplate", {prefix: '<%= project_path(@project) %>'});
 Resource.model("Attr", { prefix: '<%= doc_template_path(@project, @doc_template) %>'});
 Resource.model("Config", {prefix: '<%= doc_template_path(@project, @doc_template) %>/attrs/:attr_id',
 			  urls: { 'show': "/config.json", 'update': "/config.json" },
@@ -10,7 +10,7 @@ Resource.model("Config", {prefix: '<%= doc_template_path(@project, @doc_template
 
 <div class="jumpbox">
   <div class="navigation">
-    <% link_to structure_templates_path(@project), :class => "button back" do %>
+    <% link_to doc_templates_path(@project), :class => "button back" do %>
       <%= image_tag "arrow_left.png" %>
       Templates
     <% end -%>
@@ -29,27 +29,21 @@ Resource.model("Config", {prefix: '<%= doc_template_path(@project, @doc_template
 
 <h2>Attributes</h2>
 
-<% sortlist(@doc_template.attrs, "attrs", :url => attrs_path(@project, @doc_template) + '/sort') do |attr| -%>
-  <% complex_item(:id => "attr_#{attr.id}", :type => h(attr.attr_configuration.class.name), :name => h(attr.name),
-                  :delete_path => attr_path(@project, @doc_template, attr)) do %>
-    <%= render_attr_editor attr %>
+<% sortlist(@doc_template.doc_template_attrs, "doc_template_attrs",
+            :url => doc_template_attrs_path(@project, @doc_template) + '/sort') do |dta| -%>
+  <% complex_item(:id => "attr_#{dta.id}", :name => h(dta.name),
+                  :delete_path => doc_template_attr_path(@project, @doc_template, dta)) do %>
+    <%= render_doc_template_attr_editor dta %>
   <% end -%>
 <% end -%>
 
-<% if @doc_template.attrs.count == 0 -%>
+<% if @doc_template.doc_template_attrs.count == 0 -%>
 <p><i>No attributes.</i></p>
 <% end -%>
 
-
-<ul class="inline">
-<% Attr.attr_classes.each do |cls| -%>
-  <li>
-    <% link_to new_attr_path(@project, @doc_template, :config_class => cls.name), :class => "button new" do %>
-      <%= image_tag "attr_add.png" %> Add <%=cls.name %>
-    <% end %>
-  </li>
-<% end -%>
-</ul>
+<% link_to new_doc_template_attr_path(@project, @doc_template), :class => "button new" do %>
+  <%= image_tag "attr_add.png" %> Add attribute
+<% end %>
 
 <h2>Relationship Types</h2>
 
@@ -74,7 +68,7 @@ Resource.model("Config", {prefix: '<%= doc_template_path(@project, @doc_template
       </div>
       <%= hidden_field_tag "relationship_type[left_template_id]", @doc_template.id %>
       <%= f.text_field "left_description" %>
-      <%= f.select "right_template_id", @project.structure_templates.collect { |t| [t.name, t.id] } %>
+      <%= f.select "right_template_id", @project.doc_templates.collect { |t| [t.name, t.id] } %>
       <% end -%>
     </li>
 </ul>

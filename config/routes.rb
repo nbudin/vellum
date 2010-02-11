@@ -9,7 +9,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :projects do |projects|
     projects.resources :doc_templates, :name_prefix => nil do |templates|
-      templates.resources :attrs, :collection => { :sort => :post }, :name_prefix => nil
+      templates.resources :doc_template_attrs, :collection => { :sort => :post }, :name_prefix => nil
     end
     projects.resources :relationship_types, :name_prefix => nil
     projects.resources :docs, :name_prefix => nil, :collection => { :sort => :post }

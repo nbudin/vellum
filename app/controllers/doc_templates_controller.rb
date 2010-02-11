@@ -1,23 +1,23 @@
-class StructureTemplatesController < ApplicationController
+class DocTemplatesController < ApplicationController
   rest_edit_permissions :class_name => "Project", :id_param => "project_id"
   before_filter :get_project
   
-  # GET /structure_templates
-  # GET /structure_templates.xml
+  # GET /doc_templates
+  # GET /doc_templates.xml
   def index
-    @structure_templates = @project.structure_templates.all(:order => "name")
+    @doc_templates = @project.doc_templates.all(:order => "name")
 
     respond_to do |format|
       format.html
-      format.xml  { render :xml => @structure_templates.to_xml }
-      format.json { render :json => @structure_templates.to_json }
+      format.xml  { render :xml => @doc_templates.to_xml }
+      format.json { render :json => @doc_templates.to_json }
     end
   end
 
-  # GET /structure_templates/1
-  # GET /structure_templates/1.xml
+  # GET /doc_templates/1
+  # GET /doc_templates/1.xml
   def show
-    @doc_template = StructureTemplate.find(params[:id])
+    @doc_template = @project.doc_templates.find(params[:id])
     @relationship_types = @doc_template.outward_relationship_types + @doc_template.inward_relationship_types
 
     respond_to do |format|
@@ -27,11 +27,10 @@ class StructureTemplatesController < ApplicationController
     end
   end
 
-  # POST /structure_templates
-  # POST /structure_templates.xml
+  # POST /doc_templates
+  # POST /doc_templates.xml
   def create
-    @doc_template = StructureTemplate.new(params[:doc_template])
-    @doc_template.project = @project
+    @doc_template = @project.doc_templates.new(params[:doc_template])
 
     respond_to do |format|
       if @doc_template.save
@@ -44,10 +43,10 @@ class StructureTemplatesController < ApplicationController
     end
   end
 
-  # PUT /structure_templates/1
-  # PUT /structure_templates/1.xml
+  # PUT /doc_templates/1
+  # PUT /doc_templates/1.xml
   def update
-    @doc_template = StructureTemplate.find(params[:id])
+    @doc_template = DocTemplate.find(params[:id])
     update_params = params[:doc_template].dup
     update_params.delete(:attrs)
 
@@ -64,14 +63,14 @@ class StructureTemplatesController < ApplicationController
     end
   end
 
-  # DELETE /structure_templates/1
-  # DELETE /structure_templates/1.xml
+  # DELETE /doc_templates/1
+  # DELETE /doc_templates/1.xml
   def destroy
-    @doc_template = StructureTemplate.find(params[:id])
+    @doc_template = @project.doc_templates.find(params[:id])
     @doc_template.destroy
 
     respond_to do |format|
-      format.html { redirect_to structure_templates_url(@project) }
+      format.html { redirect_to doc_templates_url(@project) }
       format.xml  { head :ok }
     end
   end
