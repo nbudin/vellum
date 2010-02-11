@@ -1,10 +1,65 @@
+class DocField < ActiveRecord::Base
+  has_one :attr, :class_name => "AttrV1", :as => :attr_configuration
+end
+
+class ChoiceField < ActiveRecord::Base
+  has_one :attr, :class_name => "AttrV1", :as => :attr_configuration
+  has_many :choices
+  
+  def multiple
+    display_type == "multiple"
+  end
+end
+
+class TextField < ActiveRecord::Base
+  has_one :attr, :class_name => "AttrV1", :as => :attr_configuration
+end
+
+class NumberField < ActiveRecord::Base
+  has_one :attr, :class_name => "AttrV1", :as => :attr_configuration
+end
+
+class Choice < ActiveRecord::Base
+  belongs_to :choice_field
+  acts_as_list :scope => :choice_field_id
+end
+
+class DocValue < ActiveRecord::Base
+  has_one :attr_value_metadata, :class_name => "CreateDocumentsV2::AttrValueMetadata", :as => :value
+  belongs_to :doc, :class_name => "CreateDocumentsV2::DocV1", :foreign_key => "doc_id"
+  
+  def attr
+    attr_value_metadata.try(:attr)
+  end
+end
+
+class ChoiceValue < ActiveRecord::Base
+  has_one :attr_value_metadata, :class_name => "CreateDocumentsV2::AttrValueMetadata", :as => :value
+  has_and_belongs_to_many :choices
+  
+  def value
+    if attr_value_metadata.try(:attr).try(:attr_configuration).try(:multiple)
+      choices.collect { |c| c.value }
+    elsif choices.length > 0
+      choices[0].value
+    else
+      nil
+    end
+  end
+end
+
+class TextValue < ActiveRecord::Base
+end
+
+class NumberValue < ActiveRecord::Base
+end
+
 class CreateDocumentsV2 < ActiveRecord::Migration
   class DocV1 < ActiveRecord::Base
     set_table_name "docs"
-    version_fu
+    version_fu :table_name => "doc_versions", :foreign_key => "doc_id"
 
-    has_one :doc_value
-    validates_presence_of :doc_value
+    has_one :doc_value, :foreign_key => "doc_id"
     belongs_to :author, :class_name => "Person"
   end
 
@@ -121,6 +176,14 @@ class CreateDocumentsV2 < ActiveRecord::Migration
     belongs_to :left, :class_name => "DocV2"
     belongs_to :right, :class_name => "DocV2"
     belongs_to :relationship_type
+    
+    def right_name_v1
+      right_id && Structure.find(right_id).try(:name)
+    end
+    
+    def left_description
+      relationship_type.try(:left_description)
+    end
   end
 
   class RelationshipType < ActiveRecord::Base
@@ -129,6 +192,18 @@ class CreateDocumentsV2 < ActiveRecord::Migration
     belongs_to :right_structure_template, :class_name => "StructureTemplate"
     belongs_to :left_template, :class_name => "DocTemplate"
     belongs_to :right_template, :class_name => "DocTemplate"
+
+    def left_name_v1
+      lt = left_template_id && StructureTemplate.find(left_template_id)
+      rt = right_template_id && StructureTemplate.find(right_template_id)
+      if lt and rt and left_description
+        "#{lt.name} #{left_description} #{rt.name}"
+      elsif lt and rt
+        "Untitled relationship type (#{left_template.name} to #{right_template.name})"
+      else
+        "Untitled relationship type"
+      end
+    end
 
     def left_name
       if left_template and right_template and left_description
@@ -152,6 +227,64 @@ class CreateDocumentsV2 < ActiveRecord::Migration
   class MappedDocTemplate < ActiveRecord::Base
     belongs_to :map
     belongs_to :doc_template
+  end
+  
+  class MappedStructureTemplate < ActiveRecord::Base
+    belongs_to :map
+    belongs_to :structure_template
+  end
+  
+  class StructureTemplate < ActiveRecord::Base
+    belongs_to :project
+    has_many :attrs, :class_name => "AttrV1"
+    
+    has_many :outward_relationship_types, :foreign_key => :left_template_id, :class_name => "RelationshipType"
+  end
+  
+  class Structure < ActiveRecord::Base
+    belongs_to :project
+    belongs_to :structure_template
+    has_many :attr_value_metadatas
+    has_many :attrs, :through => :attr_value_metadatas
+    
+    has_many :outward_relationships, :foreign_key => :left_id, :class_name => "Relationship"
+    has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship"
+    
+    def avm_for_attr(a)
+      a = self.attr(a)
+      attr_value_metadatas.select { |avm| avm.attr == a }.first
+    end
+
+    def attr_value(a)
+      avm = avm_for_attr(a)
+      avm && avm.value
+    end
+    
+    def attr(name)
+      if name.kind_of? AttrV1
+        if name.structure_template == self.structure_template
+          name
+        else
+          attrs.select {|a| a.id == name.id }.first
+        end
+      elsif name.kind_of? Fixnum
+        attrs.select {|a| a.id == name }.first
+      else
+        attrs.select {|a| a.name == name }.first
+      end
+    end
+  end
+  
+  class AttrV1 < ActiveRecord::Base
+    set_table_name "attrs"
+    belongs_to :structure_template
+    belongs_to :attr_configuration, :polymorphic => true
+  end
+  
+  class AttrValueMetadata < ActiveRecord::Base
+    belongs_to :structure
+    belongs_to :attr, :class_name => "AttrV1"
+    belongs_to :value, :polymorphic => true
   end
 
   def self.up
@@ -187,12 +320,12 @@ class CreateDocumentsV2 < ActiveRecord::Migration
           end
 
           tmpl.outward_relationship_types.all(:order => "left_description").each do |rt|
-            file.puts "    Relationship type: #{rt.left_name}"
+            file.puts "    Relationship type: #{rt.left_name_v1}"
           end
 
           project.structures.all(:conditions => {:structure_template_id => tmpl.id}, :order => "position").each do |s|
             file.puts "    Doc: #{s.name}"
-            s.attrs.sort_by {|a| a.name}.each do |attr|
+            tmpl.attrs.all(:order => "position").each do |attr|
               av = s.attr_value(attr.name)
               if av.kind_of? DocValue
                 file.puts "      #{attr.name}: #{av.try(:doc).try(:content)}"
@@ -201,8 +334,8 @@ class CreateDocumentsV2 < ActiveRecord::Migration
               end
             end
 
-            s.outward_relationships.all(:order => "left_description, structures.name", :joins => [:relationship_type, :right]).each do |r|
-              file.puts "      Relationship: #{r.left_description} #{r.right.name}"
+            s.outward_relationships.all.sort_by { |r| "#{r.left_description}#{r.right_name_v1}" }.each do |r|
+              file.puts "      Relationship: #{r.left_description} #{r.right_name_v1}"
             end
           end
         end
@@ -312,7 +445,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
         when DocField
           doc_attr.ui_type = "textarea"
         when ChoiceField
-          doc_attr.ui_type = attr.attr_configuration.display_type
+          doc_attr.ui_type = attr.attr_configuration.display_type || "radio"
           doc_attr.choices = attr.attr_configuration.choices.collect { |c| c.value }.join("|")
         else
           doc_attr.ui_type = "text"
@@ -328,8 +461,11 @@ class CreateDocumentsV2 < ActiveRecord::Migration
     rename_column "relationship_types", "right_template_id", "right_structure_template_id"
     add_column "relationship_types", "left_template_id", :integer
     add_column "relationship_types", "right_template_id", :integer
+    
+    RelationshipType.reset_column_information
 
     RelationshipType.all.each do |rt|
+      say "Converting references on relationship type \"#{rt.left_description}\" (#{rt.inspect})"
       rt.left_template_id = doc_template_ids[rt.left_structure_template_id]
       rt.right_template_id = doc_template_ids[rt.right_structure_template_id]
       rt.save!
@@ -409,7 +545,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
 
         docv1_versions = docv1s.collect {|d| d.versions}.flatten
         docv1_versions.sort_by {|v| v.updated_at}.each do |version|
-          attr = docv2.obtain_attr(version.doc.doc_value.attr.name)
+          attr = docv2.obtain_attr(version.doc_v1.doc_value.attr.name)
           attr.format = "html"
           attr.value = version.content
           docv2.save!
@@ -435,12 +571,14 @@ class CreateDocumentsV2 < ActiveRecord::Migration
     add_column "relationships", "left_id", :integer
     add_column "relationships", "right_id", :integer
 
+    Relationship.reset_column_information
+
     Relationship.all.each do |r|
       r.left_id = docv2_ids[r.left_structure_id]
       r.right_id = docv2_ids[r.right_structure_id]
       r.save!
     end
-
+    
     remove_column "relationships", "left_structure_id"
     remove_column "relationships", "right_structure_id"
 
@@ -481,9 +619,9 @@ class CreateDocumentsV2 < ActiveRecord::Migration
 
           project.docs.all(:conditions => {:doc_template_id => tmpl.id}, :order => "position").each do |d|
             file.puts "    Doc: #{d.name}"
-            d.versions.latest.attrs.all(:order => "name").each do |attr|
-              a = d.attr(attr.name)
-              file.puts "      #{attr.name}: #{a.try :value}"
+            d.doc_template.doc_template_attrs.all(:order => "position").each do |dta|
+              a = d.attr(dta.name)
+              file.puts "      #{dta.name}: #{a.try :value}"
             end
             file.puts "      Content: #{d.content}" unless d.content.blank?
 
