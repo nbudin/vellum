@@ -7,7 +7,9 @@ class Doc < ActiveRecord::Base
       :foreign_key => "doc_version_id", :autosave => true
   end
 
-  self.versioned_columns -= %w{ author_id }
+  if self.versioned_columns
+    self.versioned_columns -= %w{ author_id }
+  end
 
   class AttrSet
     def initialize(doc_version = nil)
