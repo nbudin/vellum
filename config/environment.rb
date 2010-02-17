@@ -20,6 +20,7 @@ Rails::Initializer.run do |config|
   config.gem "ruby-graphviz", :lib => "graphviz"
   config.gem "radius"
   config.gem "nbudin-version_fu", :lib => "version_fu"
+  config.gem "jrails"
   
   # Settings in config/environments/* take precedence over those specified here
   
