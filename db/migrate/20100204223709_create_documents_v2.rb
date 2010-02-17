@@ -316,7 +316,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
                 file.print " (#{attr.attr_configuration.display_type}) - "
                 file.print(attr.attr_configuration.choices.collect do |choice|
                   choice.value
-                end.join("|"))
+                end.join(","))
               else
                 display_type = case attr.attr_configuration
                 when DocField
@@ -475,7 +475,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
           doc_attr.ui_type = "textarea"
         when ChoiceField
           doc_attr.ui_type = attr.attr_configuration.display_type || "radio"
-          doc_attr.choices = attr.attr_configuration.choices.collect { |c| c.value }.join("|")
+          doc_attr.choices = attr.attr_configuration.choices.collect { |c| c.value }.join(",")
         else
           doc_attr.ui_type = "text"
         end

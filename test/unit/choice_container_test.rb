@@ -45,18 +45,27 @@ class ChoiceContainerTest < ActiveSupport::TestCase
   context "A choice container with choices in it" do
     setup do
       @cc = SimpleChoiceContainer.new
-      @cc.choices_str = "a|b|c|d|e"
+      @cc.choices_str = "a,b,c,d,e"
     end
 
     should "return the right choice set" do
       assert_equal 5, @cc.choices.size
       assert_equal %w{a b c d e}, @cc.choices
+      assert_equal "a, b, c, d, e", @cc.human_choices
     end
 
     should "remove choices correctly" do
       @cc.choices = %w{a b c e}
       assert_equal %w{a b c e}, @cc.choices
-      assert_equal "a|b|c|e", @cc.choices_str
+      assert_equal "a,b,c,e", @cc.choices_str
+      assert_equal "a, b, c, e", @cc.human_choices
+    end
+
+    should "remove human choices correctly" do
+      @cc.human_choices = "a, b, c, e"
+      assert_equal %w{a b c e}, @cc.choices
+      assert_equal "a,b,c,e", @cc.choices_str
+      assert_equal "a, b, c, e", @cc.human_choices
     end
   end
 end
