@@ -26,7 +26,7 @@ class AeUsersLocalTables < ActiveRecord::Migration
     end
 
     add_index :permission_caches, :person_id
-    add_index :permission_caches, [:permissioned_id, :permissioned_type]
+    add_index :permission_caches, [:permissioned_id, :permissioned_type], :name => "perm_id_type_key"
     add_index :permission_caches, :permission_name
   end
 
