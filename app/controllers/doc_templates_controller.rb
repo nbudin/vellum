@@ -27,6 +27,13 @@ class DocTemplatesController < ApplicationController
     end
   end
 
+  # GET /doc_templates/1
+  # GET /doc_templates/1.xml
+  def edit
+    @doc_template = @project.doc_templates.find(params[:id])
+    @relationship_types = @doc_template.outward_relationship_types + @doc_template.inward_relationship_types
+  end
+
   # POST /doc_templates
   # POST /doc_templates.xml
   def create
@@ -48,7 +55,9 @@ class DocTemplatesController < ApplicationController
   def update
     @doc_template = DocTemplate.find(params[:id])
     update_params = params[:doc_template].dup
-    update_params.delete(:attrs)
+    if update_params[:doc_template_attrs_attributes]
+      update_params[:doc_template_attrs_attributes].reject! { |id, attr_params| attr_params[:name].blank? }
+    end
 
     respond_to do |format|
       if @doc_template.update_attributes(update_params)

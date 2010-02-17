@@ -75,49 +75,8 @@ module ApplicationHelper
     end
   end
 
-  def show_class_template_name(klass)
-    "field_types/#{klass.name.tableize.singularize}"
-  end
-  
-  def edit_class_template_name(klass)
-    "field_types/edit_#{klass.name.tableize.singularize}"
-  end
-
-  def show_attr_template_name(attr)
-    show_attr_template_name(attr.attr_configuration.class)
-  end
-
-  def edit_attr_template_name(attr)
-    edit_class_template_name(attr.attr_configuration.class)
-  end
-
-  def show_attr_value_template_name(value)
-    show_class_template_name(value.class)
-  end
-
-  def edit_attr_value_template_name(attr)
-    basename = case (attr.ui_type && attr.ui_type.to_sym)
-    when :textarea
-      "textarea"
-    when :radio
-      "radio"
-    when :dropdown
-      "dropdown"
-    when :multiple
-      "multiple"
-    else
-      "text"
-    end
-
-    "field_types/edit_#{basename}"
-  end
-
   def render_attr(attr)
     render :partial => show_attr_value_template_name(attr), :locals => { :field => attr.attr_configuration }
-  end
-
-  def render_attr_editor(attr)
-    render :partial => edit_attr_template_name(attr), :locals => { :field => attr.attr_configuration }
   end
 
   def render_attr_value(attr)

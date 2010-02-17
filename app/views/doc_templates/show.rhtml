@@ -1,18 +1,14 @@
-<script type="text/javascript">
-Resource.model("DocTemplate", {prefix: '<%= project_path(@project) %>'});
-Resource.model("Attr", { prefix: '<%= doc_template_path(@project, @doc_template) %>'});
-Resource.model("Config", {prefix: '<%= doc_template_path(@project, @doc_template) %>/attrs/:attr_id',
-			  urls: { 'show': "/config.json", 'update': "/config.json" },
-			  format: 'json' });
-</script>
-  
-<h1><%= jipe_editor(@doc_template, "name") %></h1>
+<h1><%= @doc_template.name %></h1>
 
 <div class="jumpbox">
   <div class="navigation">
     <% link_to doc_templates_path(@project), :class => "button back" do %>
       <%= image_tag "arrow_left.png" %>
       Templates
+    <% end -%>
+    <% link_to edit_doc_template_path(@project, @doc_template), :class => "button edit" do %>
+      <%= image_tag "template_edit.png" %>
+      Edit
     <% end -%>
   </div>
 
@@ -27,23 +23,13 @@ Resource.model("Config", {prefix: '<%= doc_template_path(@project, @doc_template
   </p>
 </div>
 
-<h2>Attributes</h2>
+<h2>Template Fields</h2>
 
-<% sortlist(@doc_template.doc_template_attrs, "doc_template_attrs",
-            :url => doc_template_attrs_path(@project, @doc_template) + '/sort') do |dta| -%>
-  <% complex_item(:id => "attr_#{dta.id}", :name => h(dta.name),
-                  :delete_path => doc_template_attr_path(@project, @doc_template, dta)) do %>
-    <%= render_doc_template_attr_editor dta %>
-  <% end -%>
-<% end -%>
+<p>The following fields will appear on <strong>all</strong> <%= @doc_template.name.pluralize %>:</p>
 
-<% if @doc_template.doc_template_attrs.count == 0 -%>
-<p><i>No attributes.</i></p>
-<% end -%>
-
-<% link_to new_doc_template_attr_path(@project, @doc_template), :class => "button new" do %>
-  <%= image_tag "attr_add.png" %> Add field
-<% end %>
+<dl class="doc_template_attrs">
+  <%= render :partial => "doc_template_attr", :collection => @doc_template.doc_template_attrs %>
+</dl>
 
 <h2>Relationship Types</h2>
 

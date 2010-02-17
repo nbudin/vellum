@@ -213,11 +213,11 @@ ul.itemlist li {
     overflow: auto;
 }
 
-ul.itemlist li.even {
+ul.itemlist li.even, dl .even {
     background-color: #eee;
 }
 
-ul.itemlist li.odd {
+ul.itemlist li.odd, dl .odd {
     background-color: #ddd;
 }
 
@@ -294,4 +294,24 @@ li.tab a:hover {
 li.tab a.active {
     background-image: url(/images/button-bg-prelight.png);
     background-color: #c9f;
+}
+
+dl.doc_template_attrs dt {
+  width: 200px;
+}
+
+dl.doc_template_attrs dt input {
+  width: 150px;
+}
+
+dl.doc_template_attrs dd {
+  padding-left: 210px;
+}
+
+.markedForDeletion {
+  background-color: #fdd;
+}
+
+.odd .markedForDeletion {
+  background-color: #faa;
 }
