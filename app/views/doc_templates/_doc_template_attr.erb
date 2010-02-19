@@ -1,11 +1,9 @@
-<div class="<%= cycle :odd, :even %>" style="overflow: hidden;">
-  <dt>
-    <%= doc_template_attr.name %>
-  </dt>
-  <dd>
-    <%= doc_template_attr.ui_type_name %>
-    <% if doc_template_attr.choices.size > 0 -%>
-      (Choices: <%= doc_template_attr.human_choices %>)
-    <% end -%>
-  </dd>
-</div>
+<dt>
+  <%= doc_template_attr.name %>
+</dt>
+<dd>
+  <%= doc_template_attr.ui_type_name %>
+  <% if doc_template_attr.choices.size > 0 -%>
+    (Choices: <%= doc_template_attr.human_choices %>)
+  <% end -%>
+</dd>

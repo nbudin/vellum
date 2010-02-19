@@ -14,14 +14,44 @@
         }
     }
     
-    function updateMarkForDeletionClass() {
-        var $this = jQuery(this);
-        var target = $this.parents('dd');
+    function updateMarkForDeletionClass(checkbox) {
+        if (checkbox == null) {
+            checkbox = this;
+        }
+        checkbox = jQuery(checkbox);
+        var target = checkbox.parents('dd');
 
-        if ($this.is(':checked')) {
-            target.addClass('markedForDeletion');
+        if (checkbox.is(':checked')) {
+            target.addClass('willDelete');
         } else {
-            target.removeClass('markedForDeletion');
+            target.removeClass('willDelete');
+        }
+    }
+
+    function toggleDeleteCheckbox(event) {
+        var checkbox = event.data;
+
+        if (checkbox.is(':checked')) {
+            checkbox.attr('checked', false);
+        } else {
+            checkbox.attr('checked', true);
+        }
+
+        updateDeleteButtonText(checkbox);
+        updateMarkForDeletionClass(checkbox);
+    }
+
+    function updateDeleteButtonText(checkbox) {
+        if (checkbox == null) {
+            checkbox = this;
+        }
+        checkbox = jQuery(checkbox);
+        button = checkbox.siblings('button');
+
+        if (checkbox.is(':checked')) {
+            button.html("Keep");
+        } else {
+            button.html("Remove");
         }
     }
 
@@ -31,20 +61,10 @@
 
         target.children().hide();
         var deleteButton = jQuery("<button type=\"button\" class=\"delete\">Remove</button>");
-        deleteButton.bind('click', $this, function(event) {
-            var $this = jQuery(this);
-
-            if (event.data.is(':checked')) {
-                event.data.attr('checked', false);
-                $this.html("Remove");
-            } else {
-                event.data.attr('checked', true);
-                $this.html("Keep");
-            }
-
-            updateMarkForDeletionClass(event.data);
-        })
+        deleteButton.bind('click', $this, toggleDeleteCheckbox);
         target.append(deleteButton);
+
+        updateDeleteButtonText($this);
     }
 
     jQuery.fn.vellumTemplateAttr = function() {
@@ -70,29 +90,29 @@ jQuery.fn.zebrify = function(selector) {
 }
 
 jQuery.fn.vellumAttrList = function() {
-    this.children('div').vellumTemplateAttr();
+    this.children('dd').vellumTemplateAttr();
 
-    var $lastAttr = this.children('div:last-child');
-    var newAttrHtml = $lastAttr.html();
+    var $lastAttr = this.children('dt:last, dd:last');
+    var newAttrHtml = jQuery("<p>").append($lastAttr.clone()).html();
 
-    var $newAttrDiv = jQuery("<dd><button class=\"new\" type=\"button\">Add field</button></dd>");
+    var $newAttrDiv = jQuery("<p><button class=\"new\" type=\"button\">Add field</button></p>");
     $newAttrDiv.find("button").bind('click', {'list': this, 'newAttrDiv': $newAttrDiv, 'rawHtml': newAttrHtml},
         function(event) {
             var timedHtml = event.data.rawHtml.replace(/99999/g, new Date().getTime());
-            var newAttr = jQuery("<div>" + timedHtml + "</div>");
+            var newAttr = jQuery(timedHtml);
 
             var cancelButton = jQuery("<button class=\"delete\" type=\"button\">Remove</button>").
                 bind("click", {'target': newAttr, 'list': event.data.list}, function(event) {
                     event.data.target.remove();
-                    event.data.list.zebrify('div');
             });
-            newAttr.find('dd').append(jQuery("<span style=\"float: right\"></span>").append(cancelButton));
+            newAttr.filter('dd').append(jQuery("<span style=\"float: right\"></span>").append(cancelButton));
+            newAttr.addClass('willAdd');
 
             newAttr.vellumTemplateAttr();
             event.data.newAttrDiv.before(newAttr);
-            event.data.list.zebrify('div');
         });
-    $lastAttr.replaceWith($newAttrDiv);
+    $lastAttr.remove();
+    this.append($newAttrDiv);
     
-    return this.zebrify('div');
+    return this;
 }

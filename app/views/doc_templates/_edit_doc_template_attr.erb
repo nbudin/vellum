@@ -1,22 +1,20 @@
-<div class="<%= cycle :odd, :even %>" style="overflow: hidden;">
-  <dt>
-    <%= dta_fields.label "name", dta_fields.object.new_record? ? "Add:" : "Name:" %>
-    <%= dta_fields.text_field "name" %>
-  </dt>
-  <dd>
-    <% unless dta_fields.object.new_record? -%>
-      <span style="float: right; color: red; font-weight: bold;">
-        <%= dta_fields.label(:_delete, "Remove") %>
-        <%= dta_fields.check_box(:_delete, :class => "delete") %>
-      </span>
-    <% end -%>
-    <%= dta_fields.label "ui_type", "Display as:" %>
-    <%= dta_fields.select "ui_type", DocTemplateAttr.ui_types_for_select,
-      {}, {:class => "ui_type_select"} %>
-    <div class="choices">
-      <%= dta_fields.label "human_choices", "Choices:" %>
-      <%= dta_fields.text_field "human_choices",
-        :placeholder => "Example: apple, banana, pear" %>
-    </div>
-  </dd>
-</div>
+<dt>
+  <%= dta_fields.label "name", dta_fields.object.new_record? ? "Add:" : "Name:" %>
+  <%= dta_fields.text_field "name" %>
+</dt>
+<dd>
+  <% unless dta_fields.object.new_record? -%>
+    <span style="float: right; color: red; font-weight: bold;">
+      <%= dta_fields.label(:_delete, "Remove") %>
+      <%= dta_fields.check_box(:_delete, :class => "delete") %>
+    </span>
+  <% end -%>
+  <%= dta_fields.label "ui_type", "Display as:" %>
+  <%= dta_fields.select "ui_type", DocTemplateAttr.ui_types_for_select,
+    {}, {:class => "ui_type_select"} %>
+  <div class="choices">
+    <%= dta_fields.label "human_choices", "Choices:" %>
+    <%= dta_fields.text_field "human_choices",
+      :placeholder => "Example: apple, banana, pear" %>
+  </div>
+</dd>

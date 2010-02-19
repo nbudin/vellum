@@ -297,21 +297,31 @@ li.tab a.active {
 }
 
 dl.doc_template_attrs dt {
-  width: 200px;
+  min-width: 10em;
+  margin-left: 15px;
+  margin-top: 5px;
+  padding-right: 0.5em;
 }
 
 dl.doc_template_attrs dt input {
-  width: 150px;
+  width: 10em;
 }
 
 dl.doc_template_attrs dd {
-  padding-left: 210px;
+  display: block;
+  padding: 0.5em;
+  padding-left: 16em;
+  background-color: #ddd;
+  border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
+  -webkit-border-radius: 0.5em;
+  max-width: 45em;
 }
 
-.markedForDeletion {
-  background-color: #fdd;
+.willDelete {
+  background-color: #faa !important;
 }
 
-.odd .markedForDeletion {
-  background-color: #faa;
+.willAdd {
+  background-color: #afa !important;
 }
