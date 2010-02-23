@@ -38,6 +38,16 @@ When /^(?:|I )select "([^\"]*)" from "([^\"]*)" within "([^\"]*)"$/ do |choice, 
   end
 end
 
+When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)" within "([^\"]*)"$/ do |field, value, selector|
+  within selector do
+    When "I fill in \"#{field}\" with \"#{value}\""
+  end
+end
+
+When /^(?:|I )select "([^\"]*)" and "([^\"]*)" from "([^\"]*)"$/ do |value1, value2, field|
+  select([value1, value2], :from => field)
+end
+
 Then /^(?:|I )should(?:n\'t| not) be on (.+)$/ do |page_name|
   current_path = URI.parse(current_url).select(:path, :query).compact.join('?')
   if defined?(Spec::Rails::Matchers)

@@ -2,15 +2,25 @@ Feature: Manage docs
   Scenario: Create a new doc
     Given I am logged in as Joe User
     And a project named "Test Project"
-    And a template named "Character" in "Test Project"
-    And a text field named "HP" on Character
+    And a template named "Character" in "Test Project" with the following fields:
+      |name        |type                   |choices           |
+      |HP          |Simple text input      |                  |
+      |Gender      |Radio buttons          |male, female      |
+      |Importance  |Drop-down list         |high, medium, low |
+      |Affiliations|Multiple selection list|North, South, East|
+      |GM Notes    |Rich text input        |                  |
 
     When I am on the project page for Test Project
     Then I should see "Characters"
 
     When I follow "Add new Character"
+    Then show me the page
     And I fill in "Name" with "Grognar"
     And I fill in "HP" with "50"
+    And I choose "male"
+    And I select "low" from "Importance"
+    And I select "North" and "East" from "Affiliations"
+    And I fill in "GM Notes" with "Grognar is a moron."
     And I press "Create"
     Then I should see "Grognar"
 

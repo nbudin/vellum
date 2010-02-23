@@ -15,6 +15,9 @@ Given /^a template named "([^\"]*)" in "([^\"]*)" with the following fields:$/ d
     And "I follow \"Edit\""
     And "I fill in \"Add:\" with \"#{field[:name]}\""
     And "I select \"#{field[:type]}\" from \"Display as:\" within \"dd.willAdd\""
+    unless field[:choices].blank?
+      And "I fill in \"Choices:\" with \"#{field[:choices]}\" within \"dd.willAdd\""
+    end
     And "I press \"Save changes\""
 
     Then "I should see \"#{field[:name]}\""
