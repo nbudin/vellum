@@ -17,23 +17,30 @@ Feature: Manage templates
   Scenario: Add fields to a template
     Given I am logged in as Joe User
     And a project named "Test Project"
-    And a template named "Character" in Test Project
+    And a template named "Character" in "Test Project"
 
     When I am on the templates page for Test Project
     And I follow "Character"
-    And I follow "Add field"
-    And I fill in "attr[name]" with "HP"
-    And I press "Create"
-    Then I should see "HP"
+    And I follow "Edit"
+    And I fill in "Add:" with "HP"
+    And I press "Save changes"
+    Then I should see the following template fields:
+      |name    |type             |
+      |HP      |Simple text input|
 
   Scenario: Remove fields from a template
     Given I am logged in as Joe User
     And a project named "Test Project"
-    And a template named "Character" in Test Project
-    And a text field named "HP" on Character
+    And a template named "Character" in "Test Project" with the following fields:
+      |name    |type             |
+      |HP      |Simple text input|
+      |Mana    |Simple text input|
 
     When I am on the template page for Character
-    And I follow "Delete" within "div.complex_item:has(div.metadata:has(div.name:contains(HP)))"
+    And I follow "Edit"
+    And I check "Remove" within "dt:contains(HP) + dd"
+    And I press "Save changes"
+    
     Then I should be on the template page for Character
     And I should not see "HP"
 
