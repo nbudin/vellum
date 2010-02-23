@@ -54,9 +54,9 @@ Feature: Manage templates
   Scenario: Remove relationship types from a template
     Given I am logged in as Joe User
     And a project named "Test Project"
-    And a template named "Character" in Test Project
-    And a template named "Organization" in Test Project
-    And a relationship type where "Organization" includes "Character" in Test Project
+    And a template named "Character" in "Test Project"
+    And a template named "Organization" in "Test Project"
+    And a relationship type where "Organization" includes "Character" in "Test Project"
 
     When I am on the template page for Organization
     And I follow "Delete" within "li:has(a:contains('includes'))"
@@ -66,7 +66,7 @@ Feature: Manage templates
   Scenario: Delete a template
     Given I am logged in as Joe User
     And a project named "Test Project"
-    And a template named "Character" in Test Project
+    And a template named "Character" in "Test Project"
 
     When I am on the templates page for Test Project
     And I follow "Delete" within "li:has(a:contains('Character'))"

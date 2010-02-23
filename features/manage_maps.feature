@@ -17,10 +17,10 @@ Feature: Manage maps
   Scenario: Add templates and relationship types to a map
     Given I am logged in as Joe User
     And a project named "Test Project"
-    And a template named "Character" in Test Project
-    And a template named "Organization" in Test Project
-    And a relationship type where "Organization" includes "Character" in Test Project
-    And a map named "Organization Membership" in Test Project
+    And a template named "Character" in "Test Project"
+    And a template named "Organization" in "Test Project"
+    And a relationship type where "Organization" includes "Character" in "Test Project"
+    And a map named "Organization Membership" in "Test Project"
 
     When I am on the map page for Organization Membership
     And I select "Characters" from "mapped_doc_template[doc_template_id]"
@@ -39,10 +39,10 @@ Feature: Manage maps
   Scenario: Delete a map
     Given I am logged in as Joe User
     And a project named "Test Project"
-    And a template named "Character" in Test Project
-    And a template named "Organization" in Test Project
-    And a relationship type where "Organization" includes "Character" in Test Project
-    And a map named "Organization Membership" in Test Project
+    And a template named "Character" in "Test Project"
+    And a template named "Organization" in "Test Project"
+    And a relationship type where "Organization" includes "Character" in "Test Project"
+    And a map named "Organization Membership" in "Test Project"
 
     When I am on the map page for Organization Membership
     And I press "Delete"

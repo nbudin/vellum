@@ -17,7 +17,7 @@ Given /^a project with the following templates:$/ do |table|
   end
 end
 
-Given /^a relationship type where "([^\"]*)" (.*) "([^\"]*)" in (.*)$/ do |left_template_name,
+Given /^a relationship type where "([^\"]*)" (.*) "([^\"]*)" in "([^\"]*)"$/ do |left_template_name,
     left_description, right_template_name, project_name|
 
   assert project = Project.find_by_name(project_name)
