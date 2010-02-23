@@ -1,6 +1,9 @@
 <p style="margin-top: 2em;">
-  <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold;" %>
-  (<%=h f.object.doc_template.name %>)</p>
+  <b><%= f.label :name, "Document Name" %></b><br/>
+  <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold; width: 99%;" %>
+</p>
+
+<%= error_messages_for :doc, :object => f.object %>
 
 <dl class="doc_attrs">
   <% f.fields_for "attr_values" do |avs| %>
