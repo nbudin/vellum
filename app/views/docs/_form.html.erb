@@ -1,5 +1,13 @@
-<% f.fields_for "attr_values" do |avs| %>
-  <% @doc.doc_template.doc_template_attrs.each do |ta| -%>
-    <%= edit_attr_row(@doc, ta.name, avs) %>
+<p style="margin-top: 2em;">
+  <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold;" %>
+  (<%=h f.object.doc_template.name %>)</p>
+
+<dl class="doc_attrs">
+  <% f.fields_for "attr_values" do |avs| %>
+    <% f.object.doc_template.doc_template_attrs.each do |ta| -%>
+      <%= edit_attr_row(f.object, ta.name, avs) %>
+    <% end -%>
   <% end -%>
-<% end -%>
+</dl>
+
+<%= f.text_area :content, :class => "mceEditor", :style => "width: 100%;" %>

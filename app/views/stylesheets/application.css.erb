@@ -208,14 +208,21 @@ div.attribute_name {
 }
 
 textarea, .document_content {
-    max-width: 60em;
+    max-width: 45em;
     min-width: 30em;
     width: auto;
-    min-height: 20em;
 }
 
 .document_content, .document_content p, .document_content ul, .document_content ol {
     font-family: serif;
+}
+
+.document_content p:first-child {
+    margin-top: 0;
+}
+
+.document_content p:last-child {
+    margin-bottom: 0;
 }
 
 img {

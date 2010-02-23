@@ -14,7 +14,8 @@ class ApplicationController < ActionController::Base
     :theme_advanced_resize_horizontal => false,
     :theme_advanced_statusbar_location => 'bottom',
     :content_css => '/stylesheets/document.css',
-    :width => "700"
+    #:width => "500",
+    :height => "250"
   }
   
   before_filter :get_site_settings

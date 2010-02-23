@@ -26,25 +26,24 @@ module DocsHelper
     end
   end
 
-  def edit_attr_row(structure, name, f)
-    content_tag(:tr, :class => "attribute") do
-      html = ""
+  def edit_attr_row(doc, name, f)
+    a = doc.attrs[name]
 
-      a = structure.attrs[name]
-      
-      name_class = "attribute_name"
-      html << content_tag(:td, f.label(a.name_for_id, a.name, :class => name_class))
-      html << content_tag(:td, render_attr_value_editor(a, f))
+    content_tag(:dt, a.name) +
+    content_tag(:dd, render_attr_value_editor(a, f))
+  end
+
+  def render_attr_value(attr)
+    case (attr.ui_type.try(:to_sym))
+    when :textarea
+      content_tag(:div, sanitize(attr.value), :class => "document_content")
+    else
+      attr.value
     end
   end
   
   def attr_row(attr)
-    content_tag(:tr) do
-      html = ""
-      html << content_tag(:td, :style => "vertical-align: top; font-weight: bold;") do
-        h(attr.name)
-      end
-      html << content_tag(:td, render_attr_value(attr))
-    end
+    content_tag(:dt, attr.name) +
+    content_tag(:dd, render_attr_value(attr))
   end
 end

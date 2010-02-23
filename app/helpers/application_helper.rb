@@ -79,15 +79,6 @@ module ApplicationHelper
     render :partial => show_attr_value_template_name(attr), :locals => { :field => attr.attr_configuration }
   end
 
-  def render_attr_value(attr)
-    case (attr.ui_type.try(:to_sym))
-    when :textarea
-      content_tag(:div, sanitize(attr.value), :class => "document_content")
-    else
-      attr.value
-    end
-  end
-
   def item_actions(item, options={})
     html = ""
     if options[:delete_path]

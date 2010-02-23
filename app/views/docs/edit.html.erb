@@ -1,8 +1,4 @@
-<% form_for(:doc, :url => doc_path(@project, @doc), :html => {:method => 'put'}) do |f| -%>
-
-<p style="margin-top: 2em;">
-  <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold;" %>
-  (<%=h @doc.doc_template.name %>)</p>
+<% form_for(@doc, :url => doc_path(@project, @doc), :html => {:method => 'put'}) do |f| -%>
 
 <div class="jumpbox">
   <div class="navigation">
@@ -24,14 +20,6 @@
 
 <%= error_messages_for :doc %>
 
-  <table class="structure">
-    <%= render :partial => 'form', :locals => { :f => f } %>
-
-    <tr>
-      <td style="border-top: none;"></td>
-      <td>
-        <%= submit_tag "Save changes" %>
-      </td>
-    </tr>
-  </table>
+<%= render :partial => 'form', :locals => { :f => f } %>
+<p><%= submit_tag "Save changes", :class => "save" %></p>
 <% end -%>

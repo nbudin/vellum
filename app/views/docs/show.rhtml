@@ -61,9 +61,12 @@
   </div>  
 </div>
     
-<table style="margin-top: .75em;" class="structure">
+<dl style="margin-top: .75em;" class="doc_attrs">
     <% @doc.attrs.each do |attr| -%>
 		<%= attr_row(attr) %>
     <% end -%>
-</table>
+</dl>
 
+<div class="document_content" id="doc_content">
+  <%= sanitize @doc.content %>
+</div>
