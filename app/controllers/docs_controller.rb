@@ -71,16 +71,8 @@ class DocsController < ApplicationController
     @doc.attributes = params[:doc]
     @doc.creator = logged_in_person
 
-    successful_save = @doc.save
-    if successful_save
-      @doc.versions.each do |v|
-        v.author = logged_in_person
-        successful_save = false unless v.save
-      end
-    end
-
     respond_to do |format|
-      if successful_save
+      if @doc.save
         format.html { redirect_to doc_url(@project, @doc) }
         format.xml  { head :created, :location => doc_url(@project, @doc, :format => "xml" ) }
         format.json { head :created, :location => doc_url(@project, @doc, :format => "json") }
