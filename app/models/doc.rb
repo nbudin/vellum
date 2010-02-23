@@ -89,6 +89,8 @@ class Doc < ActiveRecord::Base
   has_many :outward_relationships, :foreign_key => :left_id, :class_name => "Relationship", :dependent => :destroy
   has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship", :dependent => :destroy
 
+  before_create :set_version_creators
+
   def attrs
     @attrs || reload_working_attrs
   end
@@ -158,6 +160,13 @@ class Doc < ActiveRecord::Base
       relationships.collect { |r| r.left }
     when :outward
       relationships.collect { |r| r.right }
+    end
+  end
+
+  private
+  def set_version_creators
+    versions.each do |v|
+      v.author = self.creator
     end
   end
 end
