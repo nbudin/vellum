@@ -3,7 +3,7 @@
 </dt>
 <dd>
   <%= doc_template_attr.ui_type_name %>
-  <% if doc_template_attr.choices.size > 0 -%>
+  <% if doc_template_attr.multiple_choice? -%>
     (Choices: <%= doc_template_attr.human_choices %>)
   <% end -%>
 </dd>

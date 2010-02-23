@@ -32,4 +32,13 @@ class DocTemplateAttr < ActiveRecord::Base
   def ui_type_name
     DocTemplateAttr.ui_type_name(ui_type)
   end
+
+  def multiple_choice?
+    case ui_type.to_sym
+    when :radio, :dropdown, :multiple
+      true
+    else
+      false
+    end
+  end
 end
