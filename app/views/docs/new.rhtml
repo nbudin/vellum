@@ -1,7 +1,5 @@
 <p><%= link_to "<- Back to #{@project.name}", project_path(@project) %></p>
 
-<%= error_messages_for :doc %>
-
 <% form_for(@doc, :url => docs_path(@project)) do |f| -%>
   <%= hidden_field_tag "template_id", @doc.doc_template.id %>
   <%= render :partial => "form", :locals => { :f => f } %>
