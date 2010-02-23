@@ -42,6 +42,15 @@ class Attr < ActiveRecord::Base
     end
   end
 
+  def value=(value)
+    write_attribute(:value, case value
+    when Hash
+      choices.select { |choice| value[choice] }.join(", ")
+    else
+      value
+    end)
+  end
+
   def template_attr
     if doc && doc.doc_template
       doc.doc_template.doc_template_attrs.first(:conditions => {:name => self.name})

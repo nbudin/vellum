@@ -31,12 +31,34 @@ class AttrTest < ActiveSupport::TestCase
     end
 
     should "correctly identify the template" do
-      assert @attr.template_attr.from_template?
+      assert @attr.from_template?
       assert_equal @ta, @attr.template_attr
     end
 
     should "return the right UI type" do
       assert_equal "textarea", @attr.ui_type
+    end
+
+    context "with choices" do
+      setup do
+        @ta.ui_type = "radio"
+        @ta.choices = ["to seek the Grail", "to star in a movie"]
+        assert @ta.save
+      end
+
+      should "return the right choices" do
+        assert_equal ["to seek the Grail", "to star in a movie"], @attr.choices
+      end
+
+      should "accept hash values" do
+        @attr.value = { "to seek the Grail" => true, "to star in a movie" => false }
+        assert_equal "to seek the Grail", @attr.value
+      end
+
+      should "reject hash values that are not in the choices list" do
+        @attr.value = { "a" => 1 }
+        assert_equal "", @attr.value
+      end
     end
   end
 end

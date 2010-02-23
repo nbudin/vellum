@@ -13,7 +13,14 @@ module DocsHelper
     when :dropdown
       f.select attr.name_for_id, attr.choices
     when :multiple
-      f.select attr.name_for_id, attr.choices, :multiple => true
+      f.fields_for attr.name_for_id do |attr_fields|
+        content_tag(:ul, :style => "list-style-type: none;") do
+          attr.choices.collect do |choice|
+            attr_fields.check_box(choice) +
+            attr_fields.label(choice, choice)
+          end
+        end
+      end
     else
       f.text_field attr.name_for_id
     end

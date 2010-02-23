@@ -44,6 +44,18 @@ class DocTest < ActiveSupport::TestCase
         assert attr === @attr
       end
 
+      context "with choices" do
+        setup do
+          assert @ta = @doc.doc_template.doc_template_attrs.create(:name => @attr_name,
+            :ui_type => "multiple", :choices => %w{red green blue})
+        end
+
+        should "accept hash values for attr_values=" do
+          @doc.attr_values = { @attr.name => { "red" => true, "green" => true, "blue" => false } }
+          assert_equal "red, green", @attr.value
+        end
+      end
+
       context "having a value" do
         setup do
           @attr.value = "Yellow"
