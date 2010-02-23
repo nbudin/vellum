@@ -2,7 +2,7 @@
   <%= dta_fields.label "name", dta_fields.object.new_record? ? "Add:" : "Name:" %>
   <%= dta_fields.text_field "name" %>
 </dt>
-<dd>
+<dd <% if dta_fields.object.new_record? %>class="willAdd"<% end %>  >
   <% unless dta_fields.object.new_record? -%>
     <span style="float: right; color: red; font-weight: bold;">
       <%= dta_fields.label(:_delete, "Remove") %>
