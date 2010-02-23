@@ -38,7 +38,7 @@ class DocsControllerTest < ActionController::TestCase
         :doc => {
           :name => @name,
           :attr_values => {
-            @attr.name => @color
+            Attr::Base.name_for_id(@attr.name) => @color
           }
         }
       }

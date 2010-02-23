@@ -14,8 +14,8 @@ Feature: Manage docs
     Then I should see "Characters"
 
     When I follow "Add new Character"
-    Then show me the page
-    And I fill in "Name" with "Grognar"
+    And show me the page
+    And I fill in "Document Name" with "Grognar"
     And I fill in "HP" with "50"
     And I choose "male"
     And I select "low" from "Importance"
@@ -23,7 +23,6 @@ Feature: Manage docs
     And I check "East"
     And I fill in "GM Notes" with "Grognar is a moron."
     And I press "Create Character"
-    Then show me the page
     Then I should be on the doc page for Grognar
     And I should see the following fields:
       |name        |value              |
