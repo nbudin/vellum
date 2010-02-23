@@ -29,7 +29,7 @@ module DocsHelper
   def edit_attr_row(doc, name, f)
     a = doc.attrs[name]
 
-    content_tag(:dt, a.name) +
+    content_tag(:dt, f.label(a.name_for_id, a.name)) +
     content_tag(:dd, render_attr_value_editor(a, f))
   end
 
