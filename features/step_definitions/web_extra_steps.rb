@@ -26,6 +26,18 @@ When /^(?:|I )press "([^\"]*)" within "([^\"]*)"$/ do |button, selector|
   end
 end
 
+When /^(?:|I )check "([^\"]*)" within "([^\"]*)"$/ do |field, selector|
+  within selector do
+    check(field)
+  end
+end
+
+When /^(?:|I )select "([^\"]*)" from "([^\"]*)" within "([^\"]*)"$/ do |choice, field, selector|
+  within selector do
+    When "I select \"#{choice}\" from \"#{field}\""
+  end
+end
+
 Then /^(?:|I )should(?:n\'t| not) be on (.+)$/ do |page_name|
   current_path = URI.parse(current_url).select(:path, :query).compact.join('?')
   if defined?(Spec::Rails::Matchers)
