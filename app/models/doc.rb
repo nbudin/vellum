@@ -90,6 +90,7 @@ class Doc < ActiveRecord::Base
   has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship", :dependent => :destroy
 
   before_create :set_version_creators
+  after_save :save_versions
 
   def attrs
     @attrs || reload_working_attrs
@@ -167,6 +168,12 @@ class Doc < ActiveRecord::Base
   def set_version_creators
     versions.each do |v|
       v.author = self.creator
+    end
+  end
+
+  def save_versions
+    versions.each do |v|
+      v.save(false)
     end
   end
 end
