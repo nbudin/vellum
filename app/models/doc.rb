@@ -27,13 +27,14 @@ class Doc < ActiveRecord::Base
           
           working_attr.doc_version_id = nil
           working_attr.doc_version = nil
-          @attrs[attr.name] = working_attr
+          @attrs[Attr::Base.name_for_id attr.name] = working_attr
         end
       end
     end
 
     def [](name)
-      @attrs[name] ||= Attr.new(:name => name, :doc => @doc)
+      normalized_name = Attr::Base.name_for_id(name)
+      @attrs[normalized_name] ||= Attr.new(:name => name, :doc => @doc)
     end
 
     def each
@@ -43,7 +44,7 @@ class Doc < ActiveRecord::Base
     end
 
     def delete(name)
-      deleted_attr = @attrs.delete(name)
+      deleted_attr = @attrs.delete(Attr::Base.name_for_id name)
       @deleted_attrs << deleted_attr
       return deleted_attr
     end

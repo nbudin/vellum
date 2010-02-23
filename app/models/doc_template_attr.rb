@@ -5,6 +5,7 @@ class DocTemplateAttr < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :doc_template_id
 
   include ChoiceContainer
+  include Attr::Base
 
   def self.ui_types
     %w{text textarea radio dropdown multiple}

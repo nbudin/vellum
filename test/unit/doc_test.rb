@@ -66,6 +66,11 @@ class DocTest < ActiveSupport::TestCase
           assert_equal "Fuschia", @doc.attr_values[@attr.name]
         end
 
+        should "take attr values from normalized attr_values=" do
+          @doc.attr_values = { Attr::Base.name_for_id(@attr.name) => "Hot pink" }
+          assert_equal "Hot pink", @attr.value
+        end
+
         context "having been saved" do
           setup do
             @version1 = @doc.version

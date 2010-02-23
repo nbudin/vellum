@@ -12,6 +12,12 @@ class AttrTest < ActiveSupport::TestCase
 
     subject { @attr }
     should_validate_uniqueness_of :name, :scoped_to => "doc_version_id"
+    should_allow_values_for :name, "a name", "rather-usual", "10 lbs"
+    should_not_allow_values_for :name, "field_name", "can't", "include!", "weirdness."
+
+    should "normalize name for ID properly" do
+      assert_equal "test_name", @attr.name_for_id
+    end
   end
 
   context "with an existing template attr" do

@@ -1,3 +1,7 @@
+def normalize_attr_name(name)
+  name.gsub(/[^A-Za-z0-9 \-]/, "")
+end
+
 class DocField < ActiveRecord::Base
   has_one :attr, :class_name => "AttrV1", :as => :attr_configuration
 end
@@ -143,19 +147,22 @@ class CreateDocumentsV2 < ActiveRecord::Migration
     end
     
     def attr(name)
-      self.attrs[name]
+      self.attrs[normalize_attr_name name]
     end
 
     def obtain_attr(name)
-      a = attr(name)
+      a = attr(normalize_attr_name name)
       return a unless a.nil?
 
-      @attrs[name] = AttrV2.new(:name => name)
+      @attrs[name] = AttrV2.new(:name => normalize_attr_name(name))
     end
   end
 
   class AttrV2 < ActiveRecord::Base
     set_table_name "attrs_v2"
+
+    validates_format_of :name, :with => /^[A-Za-z0-9 \-]*$/
+    validates_uniqueness_of :name, :scope => :doc_version_id, :case_sensitive => false
 
     belongs_to :doc_version, :class_name => "DocV2::Version"
     has_one :doc, :through => :doc_version
@@ -171,6 +178,8 @@ class CreateDocumentsV2 < ActiveRecord::Migration
 
   class DocTemplateAttr < ActiveRecord::Base
     belongs_to :doc_template
+    validates_format_of :name, :with => /^[A-Za-z0-9 \-]*$/
+    validates_uniqueness_of :name, :scope => :doc_template_id, :case_sensitive => false
   end
 
   class Relationship < ActiveRecord::Base
@@ -310,7 +319,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
           tmpl.attrs.all(:order => "position").each do |attr|
             next if (single_docfield && attr == single_docfield)
 
-            file.print "    Attr: #{attr.name}"
+            file.print "    Attr: #{normalize_attr_name attr.name}"
             if attr.attr_configuration
               if attr.attr_configuration.kind_of? ChoiceField
                 file.print " (#{attr.attr_configuration.display_type}) - "
@@ -344,9 +353,9 @@ class CreateDocumentsV2 < ActiveRecord::Migration
               next if (single_docfield && attr == single_docfield)
               av = s.attr_value(attr.name)
               if av.kind_of? DocValue
-                file.puts "      #{attr.name}: #{av.try(:doc).try(:content)}"
+                file.puts "      #{normalize_attr_name attr.name}: #{av.try(:doc).try(:content)}"
               else
-                file.puts "      #{attr.name}: #{av.try :value}"
+                file.puts "      #{normalize_attr_name attr.name}: #{av.try :value}"
               end
             end
             if single_docfield
@@ -466,7 +475,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
         next if (single_docfield && attr == single_docfield)
 
         doc_attr = doc_tmpl.doc_template_attrs.new(
-          :name => attr.name,
+          :name => normalize_attr_name(attr.name),
           :position => attr.position
         )
 
@@ -480,9 +489,10 @@ class CreateDocumentsV2 < ActiveRecord::Migration
           doc_attr.ui_type = "text"
         end
 
+        say "Converting #{tmpl.name} #{attr.name} attr as #{doc_attr.inspect}"
+
         doc_tmpl.doc_template_attrs << doc_attr
         doc_attr.save!
-        say "#{tmpl.name} #{attr.name} attr converted as #{doc_attr.inspect}"
       end
       
       doc_tmpl.save!

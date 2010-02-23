@@ -1,10 +1,28 @@
 class Attr < ActiveRecord::Base
+  module Base
+    def self.included(klass)
+      klass.class_eval do
+        validates_format_of :name, :with => /^[A-Za-z0-9 \-]*$/,
+          :message => "can only contain letters, numbers, spaces, and hypens"
+      end
+    end
+
+    def self.name_for_id(name)
+      name.downcase.gsub(/ /, "_")
+    end
+
+    def name_for_id
+      Attr::Base.name_for_id(name)
+    end
+  end
+
   belongs_to :doc_version, :class_name => "Doc::Version"
   acts_as_list :scope => :doc_version
 
-  validates_uniqueness_of :name, :scope => :doc_version_id
+  validates_uniqueness_of :name, :scope => :doc_version_id, :case_sensitive => false
 
   include ChoiceContainer
+  include Attr::Base
   attr_accessor :doc
 
   def value(format='html')
