@@ -12,9 +12,10 @@ class Doc < ActiveRecord::Base
   end
 
   class AttrSet
-    def initialize(doc_version = nil)
+    def initialize(doc, doc_version = nil)
       @attrs = {}
       @deleted_attrs = []
+      @doc = doc
 
       unless doc_version.nil?
         doc_version.attrs.each do |attr|
@@ -22,7 +23,7 @@ class Doc < ActiveRecord::Base
           # but the @doc variable remaining set
 
           working_attr = attr.clone
-          working_attr.reload_doc
+          working_attr.doc = doc
           
           working_attr.doc_version_id = nil
           working_attr.doc_version = nil
@@ -32,7 +33,7 @@ class Doc < ActiveRecord::Base
     end
 
     def [](name)
-      @attrs[name] ||= Attr.new(:name => name)
+      @attrs[name] ||= Attr.new(:name => name, :doc => @doc)
     end
 
     def each
@@ -93,7 +94,7 @@ class Doc < ActiveRecord::Base
 
   def reload_working_attrs(version=nil)
     version ||= versions.latest
-    @attrs = AttrSet.new(version)
+    @attrs = AttrSet.new(self, version)
   end
 
   def create_new_version?

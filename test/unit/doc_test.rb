@@ -21,6 +21,7 @@ class DocTest < ActiveSupport::TestCase
       assert a = @doc.attrs["new attr"]
       assert a.is_a? Attr
       assert @doc.attrs["new attr"] === a
+      assert_equal @doc, a.doc
     end
 
     should "return the right value for name" do

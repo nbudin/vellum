@@ -5,6 +5,7 @@ class Attr < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :doc_version_id
 
   include ChoiceContainer
+  attr_accessor :doc
 
   def value(format='html')
     raw_content = read_attribute(:value)
@@ -29,12 +30,16 @@ class Attr < ActiveRecord::Base
     end
   end
 
-  def doc
-    @doc ||= reload_doc
+  def from_template?
+    template_attr
   end
 
   def ui_type
     template_attr.try(:ui_type) || "text"
+  end
+
+  def choices
+    template_attr.try(:choices) || []
   end
 
   def reload_doc
