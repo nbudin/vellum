@@ -29,7 +29,7 @@ Feature: Manage docs
     And a project named "Test Project"
     And a template named "Character" in "Test Project"
     And a template named "Organization" in "Test Project"
-    And a relationship type where "Character" includes "Organization" in "Test Project"
+    And a relationship type where "Organization" includes "Character" in "Test Project"
     And a Character doc named "King Louis" in "Test Project"
     And an Organization doc named "France" in "Test Project"
 
@@ -37,7 +37,9 @@ Feature: Manage docs
     Then I should see "King Louis" within "h2:contains('Characters') + div"
     And I should see "France" within "h2:contains('Organizations') + div"
 
-    When I follow "Details" within "li:contains('King Louis')"
+    When I follow "Details" within "li:contains('France')"
+    And I add a new "includes" relationship to "King Louis"
+    Then I should see "includes King Louis"
 
   Scenario: Reassign a doc
     Given I am logged in as Joe User
