@@ -22,8 +22,16 @@ Feature: Manage docs
     And I check "North"
     And I check "East"
     And I fill in "GM Notes" with "Grognar is a moron."
-    And I press "Create"
-    Then I should see "Grognar"
+    And I press "Create Character"
+    Then show me the page
+    Then I should be on the doc page for Grognar
+    And I should see the following fields:
+      |name        |value              |
+      |HP          |50                 |
+      |Gender      |male               |
+      |Importance  |low                |
+      |Affiliations|North, East        |
+      |GM Notes    |Grognar is a moron.|
 
   Scenario: Link two docs
     Given I am logged in as Joe User
