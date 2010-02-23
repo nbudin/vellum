@@ -65,11 +65,13 @@ class DocsController < ApplicationController
   # POST /docs
   # POST /docs.xml
   def create
-    # we need to set up the template before we can set the attrs
-    @doc_template = @project.doc_templates.find(params[:template_id])
-    @doc = @project.docs.new(:doc_template => @doc_template)
-    @doc.attributes = params[:doc]
-    @doc.creator = logged_in_person
+    if params[:template_id]
+      @doc_template = @project.doc_templates.find(params[:template_id])
+    end
+
+    @doc = @project.docs.new(params[:doc].update(
+        :doc_template => @doc_template,
+        :creator => logged_in_person))
 
     respond_to do |format|
       if @doc.save
