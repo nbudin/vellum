@@ -83,25 +83,8 @@ module ApplicationHelper
     case (attr.ui_type.try(:to_sym))
     when :textarea
       content_tag(:div, sanitize(attr.value), :class => "document_content")
-    when :multiple
-      raise "Figure out what to do here"
     else
       attr.value
-    end
-  end
-
-  def render_attr_value_editor(attr, f)
-    case (attr.ui_type && attr.ui_type.to_sym)
-    when :textarea
-      raise "Figure out what to do here"
-    when :radio
-      raise "Figure out what to do here"
-    when :dropdown
-      raise "Figure out what to do here"
-    when :multiple
-      raise "Figure out what to do here"
-    else
-      f.text_field attr.name
     end
   end
 

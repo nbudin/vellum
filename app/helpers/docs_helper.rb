@@ -1,4 +1,24 @@
 module DocsHelper
+  def render_attr_value_editor(attr, f)
+    case attr.ui_type.try(:to_sym)
+    when :textarea
+      f.text_area attr.name, :class => "mceEditor"
+    when :radio
+      content_tag(:ul, :style => "list-style-type: none;") do
+        attr.choices.collect do |choice|
+          f.radio_button(attr.name, choice) +
+          f.label(attr.name, choice, :value => choice)
+        end.join("\n")
+      end
+    when :dropdown
+      f.select attr.name, attr.choices
+    when :multiple
+      f.select attr.name, attr.choices, :multiple => true
+    else
+      f.text_field attr.name
+    end
+  end
+
   def edit_attr_row(structure, name, f)
     content_tag(:tr, :class => "attribute") do
       html = ""
