@@ -9,3 +9,7 @@ Then /^I should see the following fields:$/ do |expected_fields_table|
   actual_table = table([['name', 'value']] + display_table)
   expected_fields_table.diff!(actual_table)
 end
+
+When /^I add a new "([^\"]*)" relationship to "([^\"]*)"$/ do |relationship_type_name, target|
+  pending # express the regexp above with the code you wish you had
+end
