@@ -4,7 +4,7 @@
 </dt>
 <dd <% if dta_fields.object.new_record? %>class="willAdd"<% end %>  >
   <% unless dta_fields.object.new_record? -%>
-    <span style="float: right; color: red; font-weight: bold;">
+    <span style="float: right; color: red; font-weight: bold; margin-right: 10px;">
       <%= dta_fields.label(:_delete, "Remove") %>
       <%= dta_fields.check_box(:_delete, :class => "delete") %>
     </span>

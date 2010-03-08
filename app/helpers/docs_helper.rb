@@ -33,12 +33,25 @@ module DocsHelper
     end
   end
 
+  def attr_class(attr)
+    if attr.from_template?
+      "fromTemplate"
+    else
+      latest_version = attr.try(:doc).try(:versions).try(:last)
+      if latest_version
+        if latest_version.attrs.none? { |saved_attr| saved_attr.name == attr.name }
+          "willAdd"
+        end
+      end
+    end
+  end
+
   def edit_attr_row(attr_fields)
     attr = attr_fields.object
     
     attr_fields.hidden_field(:name) +
     content_tag(:dt, attr_fields.label(:value, attr.name)) +
-    content_tag(:dd, render_attr_value_editor(attr_fields))
+    content_tag(:dd, render_attr_value_editor(attr_fields), :class => attr_class(attr))
   end
 
   def render_attr_value(attr)
@@ -52,6 +65,6 @@ module DocsHelper
   
   def attr_row(attr)
     content_tag(:dt, attr.name) +
-    content_tag(:dd, render_attr_value(attr))
+    content_tag(:dd, render_attr_value(attr), :class => attr_class(attr))
   end
 end
