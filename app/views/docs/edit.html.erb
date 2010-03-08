@@ -16,8 +16,25 @@
       <%= @doc.doc_template.name %>
     <% end -%>
   </p>
+
+  <h2>Related</h2>
+  <div id="relationships">
+    <%= @doc.name %>...
+    <ul class="itemlist">
+      <% itemlist_items(@doc.relationships) do |rel| -%>
+        <%= rel.description_for(@doc) %>
+        <%= link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)), :target => "_blank" %>
+      <% end -%>
+    </ul>
+  </div>
 </div>
 
 <%= render :partial => 'form', :locals => { :f => f } %>
 <p><%= submit_tag "Save changes", :class => "save" %></p>
 <% end -%>
+
+<script type="text/javascript">
+  jQuery(function() {
+    jQuery('#relationships a[target=_blank]').vellumDocSummaryPopup();
+  });
+</script>

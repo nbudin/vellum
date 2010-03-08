@@ -211,6 +211,7 @@ ul.itemlist li {
     padding-top: 2px;
     padding-bottom: 2px;
     overflow: auto;
+    clear: both;
 }
 
 ul.itemlist li.even, dl .even {
@@ -329,4 +330,43 @@ dl.doc_attrs dd, dl.doc_template_attrs dd {
 
 .fromTemplate {
   background-color: #ccf !important;
+}
+
+#docSummaryPopup {
+  background-color: white;
+  /*width: 322px;*/
+  float: right;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid black;
+  border-top: none;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  padding: 3px;
+}
+
+#docSummaryPopup p, #docSummaryPopup li {
+  font-size: 11px;
+  line-height: 13px;
+}
+
+#docSummaryPopup p:first-child {
+  margin-top: 0;
+}
+
+#docSummaryPopup p:last-child {
+  margin-bottom: 0;
+}
+
+li.expanded {
+  background-color: black !important;
+  color: white !important;
+}
+
+li.expanded a {
+  color: white !important;
 }

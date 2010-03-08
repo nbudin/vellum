@@ -116,3 +116,54 @@ jQuery.fn.vellumAttrList = function() {
     
     return this;
 }
+
+jQuery.fn.slideUpAndRemove = function() {
+    this.slideUp("fast", function() {
+                jQuery(this).remove();
+            });
+
+    return this;
+}
+
+jQuery.fn.vellumDocSummaryPopup = function() {
+    this.each(function () {
+        var $this = jQuery(this);
+        var href = $this.attr('href');
+        $this.attr('href', "#");
+        $this.attr('target', '');
+
+        $this.bind('click', href, function (event) {
+            jQuery('#docSummaryPopup').slideUpAndRemove();
+
+            var href = event.data;
+            var li = jQuery(this).parent();
+            jQuery('li.expanded').removeClass('expanded');
+            jQuery('a#closeDocSummaryPopup').remove();
+            
+            jQuery.getJSON(href + '.json', function(data) {
+                console.log(data);
+                
+                var content = data.content;
+                if (content == null || content.length == 0) {
+                    content = "<p><i>No content</i></p>";
+                }
+
+                var popup = jQuery("<div id=\"docSummaryPopup\">" + content + "</div>");
+                popup.hide();
+                li.after(popup);
+                li.addClass('expanded');
+
+                var closeLink = jQuery("<a href=\"#\" id=\"closeDocSummaryPopup\" style=\"float: right;\">" +
+                    "<img src=\"/images/contract.png\" alt=\"Close\" title=\"Close\"/></a>");
+                closeLink.bind("click", function () {
+                    jQuery('#docSummaryPopup').slideUpAndRemove();
+                    jQuery('li.expanded').removeClass('expanded');
+                    jQuery('a#closeDocSummaryPopup').remove();
+                });
+                li.prepend(closeLink);
+                
+                popup.slideDown("fast");
+            });
+        });
+    });
+}
