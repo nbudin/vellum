@@ -4,25 +4,44 @@ class Attr < ActiveRecord::Base
       klass.class_eval do
         validates_format_of :name, :with => /^[A-Za-z0-9 \-]*$/,
           :message => "can only contain letters, numbers, spaces, and hypens"
+
+        validates_presence_of :name
+      end
+    end
+  end
+
+  module WithSlug
+    def self.included(klass)
+      klass.class_eval do
+        validates_format_of :slug, :with => /^[a-z0-9\-\_]*$/,
+          :message => "can only contain lowercase letters, numbers, underscores, and hyphens"
+
+        validates_presence_of :slug
       end
     end
 
-    def self.name_for_id(name)
-      name.downcase.gsub(/ /, "_")
+    def self.slug_for(name)
+      name && name.downcase.gsub(/ /, "_")
     end
 
-    def name_for_id
-      Attr::Base.name_for_id(name)
+    def name=(new_name)
+      write_attribute(:name, new_name)
+      write_attribute(:slug, Attr::WithSlug.slug_for(new_name))
+    end
+
+    def slug=(new_slug)
+      raise "You cannot directly set the slug of this object.  Set the name instead."
     end
   end
 
   belongs_to :doc_version, :class_name => "Doc::Version"
   acts_as_list :scope => :doc_version
 
-  validates_uniqueness_of :name, :scope => :doc_version_id, :case_sensitive => false
+  validates_uniqueness_of :slug, :scope => :doc_version_id, :case_sensitive => false
 
   include ChoiceContainer
   include Attr::Base
+  include Attr::WithSlug
   attr_accessor :doc
 
   def value(format='html')
@@ -45,7 +64,10 @@ class Attr < ActiveRecord::Base
   def value=(value)
     write_attribute(:value, case value
     when Hash
-      choices.select { |choice| value[choice] }.join(", ")
+      selected_choices = value.values.select { |choice| 
+        ActiveRecord::ConnectionAdapters::Column.value_to_boolean(choice['selected'])
+      }
+      selected_choices.collect { |choice| choice['choice'] }.join(", ")
     else
       value
     end)
@@ -53,12 +75,16 @@ class Attr < ActiveRecord::Base
 
   def template_attr
     if doc && doc.doc_template
-      doc.doc_template.doc_template_attrs.first(:conditions => {:name => self.name})
+      doc.doc_template.doc_template_attrs.select { |dta| dta.name == self.name }.first
     end
   end
 
   def from_template?
     template_attr
+  end
+
+  def position
+    template_attr.try(:position) || read_attribute(:position)
   end
 
   def ui_type

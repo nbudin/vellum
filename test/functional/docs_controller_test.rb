@@ -37,9 +37,9 @@ class DocsControllerTest < ActionController::TestCase
       post :create, { :project_id => @project.id, :template_id => @tmpl.id,
         :doc => {
           :name => @name,
-          :attr_values => {
-            Attr::Base.name_for_id(@attr.name) => @color
-          }
+          :attrs_attributes => [
+            { 'name' => @attr.name, 'value' => @color }
+          ]
         }
       }
     end
@@ -112,9 +112,9 @@ class DocsControllerTest < ActionController::TestCase
 
         put :update, :id => @doc.id, :project_id => @project.id,
           :doc => {
-            :attr_values => {
-              @attr.name => @new_color
-            }
+            :attrs_attributes => [
+              { 'name' => @attr.name, 'value' => @new_color }
+            ]
           }
       end
 

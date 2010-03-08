@@ -11,20 +11,29 @@ class AttrTest < ActiveSupport::TestCase
     end
 
     subject { @attr }
-    should_validate_uniqueness_of :name, :scoped_to => "doc_version_id"
     should_allow_values_for :name, "a name", "rather-usual", "10 lbs"
-    should_not_allow_values_for :name, "field_name", "can't", "include!", "weirdness."
+    should_not_allow_values_for :name, "field_name", "can't", "include!", "weirdness.", nil, ""
 
-    should "normalize name for ID properly" do
-      assert_equal "test_name", @attr.name_for_id
+    should "normalize for slug properly" do
+      assert_equal "test_name", @attr.slug
+    end
+
+    should "return the same instance for a slug-normalized equivalent name" do
+      assert @attr = @doc.attrs[@attr.name]
+      assert @attr === @doc.attrs[@attr.name]
+      assert @attr === @doc.attrs["test NAME"]
+      assert @attr === @doc.attrs["TEST_NAME"]
     end
   end
 
   context "with an existing template attr" do
     setup do
+      # create a different template attr too, to make sure we're getting the right positions
+      assert @other_ta = Factory.create(:doc_template_attr, :name => "Gender",
+        :ui_type => "text")
+      assert @tmpl = @other_ta.doc_template
       assert @ta = Factory.create(:doc_template_attr, :name => "Quest",
-        :ui_type => "textarea")
-      assert @tmpl = @ta.doc_template
+        :ui_type => "textarea", :doc_template => @tmpl)
       assert @doc = Factory.create(:doc, :doc_template => @tmpl,
         :project => @tmpl.project)
       assert @attr = @doc.attrs["Quest"]
@@ -39,11 +48,17 @@ class AttrTest < ActiveSupport::TestCase
       assert_equal "textarea", @attr.ui_type
     end
 
+    should "return the right position" do
+      assert_equal @ta.position, @attr.position
+    end
+
     context "with choices" do
       setup do
         @ta.ui_type = "radio"
         @ta.choices = ["to seek the Grail", "to star in a movie"]
         assert @ta.save
+        @attr.doc.reload
+        assert @attr = @doc.attrs["Quest"]
       end
 
       should "return the right choices" do
@@ -51,12 +66,14 @@ class AttrTest < ActiveSupport::TestCase
       end
 
       should "accept hash values" do
-        @attr.value = { "to seek the Grail" => true, "to star in a movie" => false }
+        @attr.value = { 0 => { 'choice' => "to seek the Grail", 'selected' => true },
+            1 => { 'choice' => "to star in a movie", 'selected' => false }
+        }
         assert_equal "to seek the Grail", @attr.value
       end
 
       should "reject hash values that are not in the choices list" do
-        @attr.value = { "a" => 1 }
+        @attr.value = { 0 => { 'choice' => "a", :selected => 1 } }
         assert_equal "", @attr.value
       end
     end

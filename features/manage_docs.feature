@@ -3,34 +3,34 @@ Feature: Manage docs
     Given I am logged in as Joe User
     And a project named "Test Project"
     And a template named "Character" in "Test Project" with the following fields:
-      |name        |type                   |choices           |
-      |HP          |Simple text input      |                  |
-      |Gender      |Radio buttons          |male, female      |
-      |Importance  |Drop-down list         |high, medium, low |
-      |Affiliations|Multiple selection list|North, South, East|
-      |GM Notes    |Rich text input        |                  |
+      |name        |type                   |choices                       |
+      |HP          |Simple text input      |                              |
+      |Gender      |Radio buttons          |male, female                  |
+      |Importance  |Drop-down list         |high, medium, low             |
+      |Affiliations|Multiple selection list|North, South, East, North West|
+      |GM Notes    |Rich text input        |                              |
 
     When I am on the project page for Test Project
     Then I should see "Characters"
 
     When I follow "Add new Character"
-    And show me the page
     And I fill in "Document Name" with "Grognar"
     And I fill in "HP" with "50"
     And I choose "male"
     And I select "low" from "Importance"
     And I check "North"
     And I check "East"
+    And I check "North West"
     And I fill in "GM Notes" with "Grognar is a moron."
     And I press "Create Character"
     Then I should be on the doc page for Grognar
     And I should see the following fields:
-      |name        |value              |
-      |HP          |50                 |
-      |Gender      |male               |
-      |Importance  |low                |
-      |Affiliations|North, East        |
-      |GM Notes    |Grognar is a moron.|
+      |name        |value                  |
+      |HP          |50                     |
+      |Gender      |male                   |
+      |Importance  |low                    |
+      |Affiliations|North, East, North West|
+      |GM Notes    |Grognar is a moron.    |
 
   Scenario: Link two docs
     Given I am logged in as Joe User

@@ -14,12 +14,13 @@ ActiveRecord::Schema.define(:version => 20100204223709) do
   create_table "attrs", :force => true do |t|
     t.integer "doc_version_id"
     t.string  "name",           :null => false
+    t.string  "slug",           :null => false
     t.integer "position"
     t.string  "format"
     t.text    "value"
   end
 
-  add_index "attrs", ["doc_version_id", "name"], :name => "index_attrs_v2_on_doc_version_id_and_name", :unique => true
+  add_index "attrs", ["doc_version_id", "slug"], :name => "index_attrs_v2_on_doc_version_id_and_slug", :unique => true
 
   create_table "auth_tickets", :force => true do |t|
     t.string   "secret"

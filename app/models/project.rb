@@ -39,8 +39,8 @@ class Project < ActiveRecord::Base
       self.doc_templates << new_tmpl
       new_templates[tmpl.id] = new_tmpl
 
-      tmpl.doc_template_attrs.each do |attr|
-        new_attr = attr.clone
+      tmpl.doc_template_attrs.each do |dta|
+        new_attr = dta.clone
         new_attr.doc_template = nil
         new_tmpl.doc_template_attrs << new_attr
       end

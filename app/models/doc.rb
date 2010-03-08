@@ -11,11 +11,11 @@ class Doc < ActiveRecord::Base
     self.versioned_columns -= %w{ author_id }
   end
 
-  class AttrSet
+  class AttrSet < Array
     def initialize(doc, doc_version = nil)
-      @attrs = {}
       @deleted_attrs = []
       @doc = doc
+      @attrs_by_slug = {}
 
       unless doc_version.nil?
         doc_version.attrs.each do |attr|
@@ -23,34 +23,107 @@ class Doc < ActiveRecord::Base
           # but the @doc variable remaining set
 
           working_attr = attr.clone
-          working_attr.doc = doc
+          working_attr.doc = @doc
           
           working_attr.doc_version_id = nil
           working_attr.doc_version = nil
-          @attrs[Attr::Base.name_for_id attr.name] = working_attr
+          self << working_attr
+        end
+      end
+
+      # ensure we have all template attributes
+      unless @doc.doc_template.nil?
+        @doc.doc_template.doc_template_attrs.each do |dta|
+          self[dta.name]
         end
       end
     end
 
-    def [](name)
-      normalized_name = Attr::Base.name_for_id(name)
-      @attrs[normalized_name] ||= Attr.new(:name => name, :doc => @doc)
-    end
+    def [](index_or_slug)
+      case index_or_slug
+      when Fixnum
+        super(index_or_slug)
+      else
+        existing = find_by_index_or_slug(index_or_slug)
 
-    def each
-      @attrs.values.sort_by {|a| a.position}.each do |attr|
-        yield attr
+        if existing.nil?
+          new_attr = Attr.new(:name => index_or_slug, :doc => @doc)
+          self << new_attr
+          return new_attr
+        else
+          return existing
+        end
       end
     end
 
-    def delete(name)
-      deleted_attr = @attrs.delete(Attr::Base.name_for_id name)
-      @deleted_attrs << deleted_attr
-      return deleted_attr
+    def <<(attr)
+      super(attr)
+      after_change
+    end
+
+    def push(attr)
+      super(attr)
+      after_change
+    end
+
+    def insert(index, attr)
+      super(index, attr)
+      after_change
+    end
+
+    def after_change
+      update_slug_hash!
+      resort!
+    end
+
+    def update_slug_hash!
+      @attrs_by_slug = self.inject({}) do |memo, attr|
+        memo[attr.slug] = attr
+        memo
+      end
+    end
+
+    def resort!
+      self.sort! do |a, b|
+        if a.from_template? && !b.from_template?
+          -1
+        elsif !a.from_template? && b.from_template?
+          1
+        elsif a.position && b.position
+          a.position <=> b.position
+        elsif a.position
+          -1
+        elsif b.position
+          1
+        else
+          a.name <=> b.name
+        end
+      end
+    end
+
+    def find_by_index_or_slug(index_or_slug)
+      case index_or_slug
+      when Fixnum
+        self[index_or_slug]
+      else
+        slug = Attr::WithSlug.slug_for(index_or_slug)
+        @attrs_by_slug[slug] ||= self.select { |attr| attr.slug == slug }.first
+      end
+    end
+
+    def delete(index_or_slug)
+      attr = find_by_index_or_slug(index_or_slug)
+      return unless attr
+
+      super(attr)
+      @attrs_by_slug.delete(attr.slug)
+      @deleted_attrs << attr
+      resort!
+      return attr
     end
 
     def save_to_doc_version(doc_version)
-      doc_version.attrs = @attrs.values
+      doc_version.attrs = self.collect { |attr| attr.clone }
 
       doc_version.attrs.each do |attr|
         attr.doc_version = doc_version
@@ -58,26 +131,47 @@ class Doc < ActiveRecord::Base
     end
 
     def changed?
-      @deleted_attrs.size > 0 or @attrs.values.any? do |attr|
+      @deleted_attrs.size > 0 or self.any? do |attr|
         attr_changes = attr.changes.keys
         attr_changes -= ["doc_version_id"]
         attr_changes.size > 0
       end
     end
 
-    def values
-      @attrs.inject({}) do |memo, (name, attr)|
-        memo[attr.name] = attr.value
+    def nested_attributes
+      self.inject([]) do |memo, attr|
+        memo << { 'name' => attr.name, 'value' => attr.value }
         memo
       end
     end
 
-    def values=(new_values = {})
-      new_values.each do |name, value|
-        self[name].value = value
+    def nested_attributes=(nested_attributes = [])
+      nested_attributes_array = case nested_attributes
+      when Array
+        nested_attributes
+      when Hash
+        nested_attributes.keys.sort.inject([]) do |memo, key|
+          memo << nested_attributes[key]
+        end
+      else
+        raise "Nested attributes must be an array or hash"
       end
       
-      values
+      nested_attributes_array.each do |item|
+        name = item['name']
+        if name.nil?
+          raise "Item #{item.inspect} has no specified name"
+        end
+
+        if ActiveRecord::ConnectionAdapters::Column.value_to_boolean(item['_destroy']) ||
+            ActiveRecord::ConnectionAdapters::Column.value_to_boolean(item['_delete'])
+          self.delete(name)
+        else
+          self[name].value = item['value']
+        end
+      end
+      
+      self.nested_attributes
     end
   end
 
@@ -121,12 +215,12 @@ class Doc < ActiveRecord::Base
     end
   end
 
-  def attr_values
-    attrs.values
+  def attrs_attributes
+    attrs.nested_attributes
   end
 
-  def attr_values=(values)
-    attrs.values = values
+  def attrs_attributes=(nested_attributes)
+    attrs.nested_attributes = nested_attributes
   end
 
   def relationships

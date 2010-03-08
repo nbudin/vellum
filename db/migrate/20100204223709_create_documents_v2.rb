@@ -1,4 +1,8 @@
 def normalize_attr_name(name)
+  name.downcase.gsub(/ /, "_")
+end
+
+def remove_invalid_chars(name)
   name.gsub(/[^A-Za-z0-9 \-]/, "")
 end
 
@@ -94,7 +98,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
           working_attr = attr.clone
           working_attr.doc_version_id = nil
           working_attr.doc_version = nil
-          attr_hash[working_attr.name] = working_attr
+          attr_hash[working_attr.slug] = working_attr
         end
         
         return attr_hash
@@ -151,10 +155,11 @@ class CreateDocumentsV2 < ActiveRecord::Migration
     end
 
     def obtain_attr(name)
-      a = attr(normalize_attr_name name)
+      a = attr(name)
       return a unless a.nil?
 
-      @attrs[name] = AttrV2.new(:name => normalize_attr_name(name))
+      a = AttrV2.new(:name => name)
+      @attrs[a.slug] = a
     end
   end
 
@@ -162,7 +167,13 @@ class CreateDocumentsV2 < ActiveRecord::Migration
     set_table_name "attrs_v2"
 
     validates_format_of :name, :with => /^[A-Za-z0-9 \-]*$/
-    validates_uniqueness_of :name, :scope => :doc_version_id, :case_sensitive => false
+    validates_format_of :slug, :with => /^[a-z0-9\-_]*$/
+    validates_uniqueness_of :slug, :scope => :doc_version_id, :case_sensitive => false
+
+    def name=(new_name)
+      write_attribute(:name, new_name)
+      self.slug = normalize_attr_name(new_name)
+    end
 
     belongs_to :doc_version, :class_name => "DocV2::Version"
     has_one :doc, :through => :doc_version
@@ -319,7 +330,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
           tmpl.attrs.all(:order => "position").each do |attr|
             next if (single_docfield && attr == single_docfield)
 
-            file.print "    Attr: #{normalize_attr_name attr.name}"
+            file.print "    Attr: #{remove_invalid_chars attr.name}"
             if attr.attr_configuration
               if attr.attr_configuration.kind_of? ChoiceField
                 file.print " (#{attr.attr_configuration.display_type}) - "
@@ -353,9 +364,9 @@ class CreateDocumentsV2 < ActiveRecord::Migration
               next if (single_docfield && attr == single_docfield)
               av = s.attr_value(attr.name)
               if av.kind_of? DocValue
-                file.puts "      #{normalize_attr_name attr.name}: #{av.try(:doc).try(:content)}"
+                file.puts "      #{remove_invalid_chars attr.name}: #{av.try(:doc).try(:content)}"
               else
-                file.puts "      #{normalize_attr_name attr.name}: #{av.try :value}"
+                file.puts "      #{remove_invalid_chars attr.name}: #{av.try :value}"
               end
             end
             if single_docfield
@@ -435,13 +446,14 @@ class CreateDocumentsV2 < ActiveRecord::Migration
       t.integer "doc_version_id"
 
       t.string "name", :null => false
+      t.string "slug", :null => false
       t.integer "position"
 
       t.string "format"
       t.text "value"
     end
 
-    add_index "attrs_v2", [:doc_version_id, :name], :unique => true
+    add_index "attrs_v2", [:doc_version_id, :slug], :unique => true
 
     create_table "mapped_doc_templates" do |t|
       t.integer "map_id"
@@ -475,7 +487,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
         next if (single_docfield && attr == single_docfield)
 
         doc_attr = doc_tmpl.doc_template_attrs.new(
-          :name => normalize_attr_name(attr.name),
+          :name => remove_invalid_chars(attr.name),
           :position => attr.position
         )
 
@@ -547,13 +559,13 @@ class CreateDocumentsV2 < ActiveRecord::Migration
           if new_value.kind_of? Array
             new_value = new_value.join("|")
           end
-          a = docv2.obtain_attr(attr.name)
+          a = docv2.obtain_attr(remove_invalid_chars attr.name)
           a.attributes = {
             :position => attr.position,
             :value => new_value
           }
         else
-          a = docv2.obtain_attr(attr.name)
+          a = docv2.obtain_attr(remove_invalid_chars attr.name)
           a.attributes = {
             :position => attr.position,
             :value => value.try(:value)
@@ -591,7 +603,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
         docv1s = docv1_values.collect {|dv| dv.respond_to?(:doc) ? dv.doc : nil }.compact
         docv1_versions = docv1s.collect {|d| d.versions.all }.flatten
         docv1_versions.sort_by {|v| v.updated_at}.each do |version|
-          attr = docv2.obtain_attr(version.doc_v1.doc_value.attr.name)
+          attr = docv2.obtain_attr(remove_invalid_chars version.doc_v1.doc_value.attr.name)
           attr.format = "html"
           attr.value = version.content
           docv2.save!

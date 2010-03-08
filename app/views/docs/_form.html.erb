@@ -6,10 +6,8 @@
 <%= error_messages_for :doc, :object => f.object %>
 
 <dl class="doc_attrs">
-  <% f.fields_for "attr_values" do |avs| %>
-    <% f.object.doc_template.doc_template_attrs.each do |ta| -%>
-      <%= edit_attr_row(f.object, ta.name, avs) %>
-    <% end -%>
+  <% f.fields_for :attrs do |attr_fields| %>
+    <%= edit_attr_row(attr_fields) %>
   <% end -%>
 </dl>
 

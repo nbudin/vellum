@@ -1,36 +1,44 @@
 module DocsHelper
-  def render_attr_value_editor(attr, f)
+  def render_attr_value_editor(attr_fields)
+    attr = attr_fields.object
+
     case attr.ui_type.try(:to_sym)
     when :textarea
-      f.text_area attr.name_for_id, :class => "mceEditor"
+      attr_fields.text_area :value, :class => "mceEditor"
     when :radio
       content_tag(:ul, :style => "list-style-type: none;") do
         attr.choices.collect do |choice|
-          f.radio_button(attr.name_for_id, choice) +
-          f.label(attr.name_for_id, choice, :value => choice)
+          attr_fields.radio_button(:value, choice) +
+          attr_fields.label(:value, choice, :value => choice)
         end.join("\n")
       end
     when :dropdown
-      f.select attr.name_for_id, attr.choices
+      attr_fields.select :value, attr.choices
     when :multiple
-      f.fields_for attr.name_for_id do |attr_fields|
+      attr_fields.fields_for :value do |value_fields|
         content_tag(:ul, :style => "list-style-type: none;") do
+          i = -1
           attr.choices.collect do |choice|
-            attr_fields.check_box(choice) +
-            attr_fields.label(choice, choice)
+            i += 1
+            value_fields.fields_for i.to_s do |choice_fields|
+              choice_fields.hidden_field(:choice, :value => choice) +
+              choice_fields.check_box(:selected, :checked => attr_fields.object.value.try(:include?, choice)) +
+              choice_fields.label(:selected, choice)
+            end
           end
         end
       end
     else
-      f.text_field attr.name_for_id
+      attr_fields.text_field :value
     end
   end
 
-  def edit_attr_row(doc, name, f)
-    a = doc.attrs[name]
-
-    content_tag(:dt, f.label(a.name_for_id, a.name)) +
-    content_tag(:dd, render_attr_value_editor(a, f))
+  def edit_attr_row(attr_fields)
+    attr = attr_fields.object
+    
+    attr_fields.hidden_field(:name) +
+    content_tag(:dt, attr_fields.label(:value, attr.name)) +
+    content_tag(:dd, render_attr_value_editor(attr_fields))
   end
 
   def render_attr_value(attr)

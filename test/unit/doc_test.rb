@@ -50,8 +50,11 @@ class DocTest < ActiveSupport::TestCase
             :ui_type => "multiple", :choices => %w{red green blue})
         end
 
-        should "accept hash values for attr_values=" do
-          @doc.attr_values = { @attr.name => { "red" => true, "green" => true, "blue" => false } }
+        should "accept hash values for attrs_attributes=" do
+          @doc.attrs_attributes = [ { 'name' => @attr.name, 
+              'value' => { 0 => { 'choice' => "red", 'selected' => true, },
+                1 => { 'choice' => "green", 'selected' => true},
+                2 => { 'choice' => "blue", 'selected' => false } } } ]
           assert_equal "red, green", @attr.value
         end
       end
@@ -65,22 +68,25 @@ class DocTest < ActiveSupport::TestCase
           assert_equal "Yellow", @doc.attrs[@attr_name].value
         end
 
-        should "respond appropriately to attr_values" do
-          assert @avs = @doc.attr_values
-          assert_equal "Yellow", @avs[@attr_name]
+        should "respond appropriately to attrs_attributes" do
+          assert @avs = @doc.attrs_attributes
+          assert_equal "Yellow", @avs.select { |pair| pair['name'] == @attr_name }.first['value']
           assert_equal 1, @avs.size
         end
 
-        should "take attr values from attr_values=" do
-          @doc.attr_values = { @attr.name => "Fuschia" }
+        should "take attr values from attrs_attributes=" do
+          @doc.attrs_attributes = [ { 'name' => @attr.name, 'value' => "Fuschia" } ]
           assert_equal "Fuschia", @attr.value
           assert_equal "Fuschia", @doc.attrs[@attr.name].value
-          assert_equal "Fuschia", @doc.attr_values[@attr.name]
+          assert_equal "Fuschia", @doc.attrs_attributes.select {|pair| pair['name'] == @attr_name }.first['value']
         end
 
-        should "take attr values from normalized attr_values=" do
-          @doc.attr_values = { Attr::Base.name_for_id(@attr.name) => "Hot pink" }
+        should "take attr values from slugified attrs_attributes=" do
+          name = @attr.name
+          @doc.attrs_attributes = [ { 'name' => Attr::WithSlug.slug_for(name), 'value' => "Hot pink" } ]
           assert_equal "Hot pink", @attr.value
+          assert_equal name, @attr.name
+          assert_equal Attr::WithSlug.slug_for(name), @attr.slug
         end
 
         context "having been saved" do
@@ -125,8 +131,9 @@ class DocTest < ActiveSupport::TestCase
 
           context "and the attr deleted" do
             setup do
+              assert @doc.attrs_attributes.any? { |attrs| attrs['name'] == @attr_name }
               @doc.attrs.delete(@attr_name)
-              assert_nil @doc.attr_values[@attr_name]
+              assert !@doc.attrs_attributes.any? { |attrs| attrs['name'] == @attr_name }
 
               assert @doc.save
               assert @doc = Doc.find(@doc.id)
@@ -134,7 +141,7 @@ class DocTest < ActiveSupport::TestCase
             end
 
             should "not have the attr in the working set" do
-              assert_nil @doc.attr_values[@attr_name]
+              assert !@doc.attrs_attributes.any? {|attrs| pair['name'] == @attr_name }
             end
 
             should "not have the attr on the latest version" do
@@ -186,6 +193,26 @@ class DocTest < ActiveSupport::TestCase
         assert @joe_related.include?(@doc), "related_structures should include Bob but is #{@joe_related.inspect}"
         @joe_related = @joe.related_docs("is shorter than")
         assert @joe_related.include?(@doc), "related_structures should include Bob but is #{@joe_related.inspect}"
+      end
+    end
+
+    context "with template attrs" do
+      setup do
+        @doc_template = @doc.doc_template
+        assert @doc_template_attr = @doc_template.doc_template_attrs.new(:name => "Age")
+        @doc_template.doc_template_attrs << @doc_template_attr
+        assert @doc_template.doc_template_attrs.include? @doc_template_attr
+
+        @doc.reload_working_attrs
+        assert @doc.doc_template.doc_template_attrs.include? @doc_template_attr
+      end
+
+      should "automatically include the template attrs" do
+        assert @doc.attrs.any? { |attr| attr.name == @doc_template_attr.name }
+
+        attr = @doc.attrs.select { |attr| attr.name == @doc_template_attr.name }.first
+        assert attr.from_template?
+        assert_equal @doc_template_attr, attr.template_attr
       end
     end
   end
