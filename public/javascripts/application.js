@@ -139,6 +139,7 @@ jQuery.fn.vellumDocSummaryPopup = function() {
             var li = jQuery(this).parent();
             jQuery('li.expanded').removeClass('expanded');
             jQuery('a#closeDocSummaryPopup').remove();
+            jQuery('a#popupDoc').remove();
             
             jQuery.getJSON(href + '.json', function(data) {
                 console.log(data);
@@ -153,13 +154,18 @@ jQuery.fn.vellumDocSummaryPopup = function() {
                 li.after(popup);
                 li.addClass('expanded');
 
+                var popupLink = jQuery("<a href=\"" + href + "\" target=\"blank\" style=\"float: right;\" id=\"popupDoc\">" +
+                    "<img src=\"/images/popup.png\" alt=\"Pop up\" title=\"Pop up\"/></a>");
+
                 var closeLink = jQuery("<a href=\"#\" id=\"closeDocSummaryPopup\" style=\"float: right;\">" +
                     "<img src=\"/images/contract.png\" alt=\"Close\" title=\"Close\"/></a>");
                 closeLink.bind("click", function () {
                     jQuery('#docSummaryPopup').slideUpAndRemove();
                     jQuery('li.expanded').removeClass('expanded');
                     jQuery('a#closeDocSummaryPopup').remove();
+                    jQuery('a#popupDoc').remove();
                 });
+                li.prepend(popupLink);
                 li.prepend(closeLink);
                 
                 popup.slideDown("fast");
