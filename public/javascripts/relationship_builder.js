@@ -59,6 +59,7 @@ RelationshipBuilder = Class.create({
 			this.relationshipTypeIdField.value = match[1];
 			this.relationshipOrigin = match[2];
 			RelationshipType.find(match[1], function (rtype) {
+
 				var otherTemplateId = null;
 				if (this.relationshipOrigin == "left") {
 					otherTemplateId = rtype.right_template_id;
@@ -66,8 +67,8 @@ RelationshipBuilder = Class.create({
 					otherTemplateId = rtype.left_template_id;
 				}
 				if (otherTemplateId) {
-					otherTemplate = StructureTemplate.find(otherTemplateId);
-					Structure.find('all', {'template_id': otherTemplateId}, function(structures) {
+					otherTemplate = DocTemplate.find(otherTemplateId);
+					Doc.find('all', {'template_id': otherTemplateId}, function(docs) {
 						var blankOption = new Element('option', {'value': ''});
 						this.targetSelect.appendChild(blankOption);
 			
@@ -75,9 +76,9 @@ RelationshipBuilder = Class.create({
 						newOption.update("<b>New "+otherTemplate.name+"...</b>");
 						this.targetSelect.appendChild(newOption);
 			
-						structures.each(function(structure) {
-							var option = new Element('option', {'value': structure.id});
-							option.update(structure.name);
+						docs.each(function(doc) {
+							var option = new Element('option', {'value': doc.id});
+							option.update(doc.name);
 							this.targetSelect.appendChild(option);
 						}.bind(this));
 			
