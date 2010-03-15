@@ -36,7 +36,7 @@ class ProjectsController < ApplicationController
         end
         @templates.each do |tmpl|
           @docs[tmpl] ||= []
-          @docs[tmpl] = @docs[tmpl].sort_by { |s| s.position }
+          @docs[tmpl] = @docs[tmpl].sort_by { |s| s.position || 0 }
         end
       end
       format.xml  { render :xml => @project.to_xml }
