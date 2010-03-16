@@ -9,10 +9,15 @@ Feature: Manage templates
 
     When I am on the project page for Test Project
     And I follow "Templates"
-    And I fill in "doc_template[name]" with "Character"
-    And I press "Create template..."
+    And I follow "Add new template..."
+    And I fill in "Template name" with "Character"
+    And I fill in "Add:" with "Mana"
+    And I press "Create template"
     Then I should see "Character"
     And I should be on the template page for Character
+    And I should see the following template fields:
+      |name     |type             |
+      |Mana     |Simple text input|
 
   Scenario: Add fields to a template
     Given I am logged in as Joe User

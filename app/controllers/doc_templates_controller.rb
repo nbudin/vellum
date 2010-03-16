@@ -27,6 +27,10 @@ class DocTemplatesController < ApplicationController
     end
   end
 
+  def new
+    @doc_template = @project.doc_templates.new
+  end
+
   # GET /doc_templates/1
   # GET /doc_templates/1.xml
   def edit

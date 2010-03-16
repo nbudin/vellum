@@ -1,0 +1,18 @@
+<div class="jumpbox">
+  <div class="navigation">
+    <% link_to doc_templates_path(@project), :class => "button cancel" do -%>
+      <%= image_tag "arrow_left.png" %>
+      Cancel
+    <% end -%>
+  </div>
+
+  <h2>New template</h2>
+</div>
+
+<% form_for(@doc_template, :url => doc_templates_path(@project)) do |f| -%>
+
+<%= render :partial => "form", :locals => { :f => f } %>
+
+<%= submit_tag "Create template", :class => "save" %>
+
+<% end -%>

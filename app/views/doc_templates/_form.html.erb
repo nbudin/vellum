@@ -1,0 +1,26 @@
+<p style="margin-top: 2em;">
+  <b><%= f.label :name, "Template name" %></b><br/>
+  <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold;" %>
+</p>
+
+<%= f.error_messages %>
+
+<h2>Template Fields</h2>
+
+<dl class="doc_template_attrs">
+  <% f.fields_for :doc_template_attrs do |dta_fields| %>
+    <%= render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields } %>
+  <% end -%>
+
+  <% f.fields_for :doc_template_attrs_attributes, nil do |outer_fields| -%>
+    <% outer_fields.fields_for '99999',  @doc_template.doc_template_attrs.new do |dta_fields| %>
+      <%= render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields } %>
+    <% end -%>
+  <% end -%>
+</dl>
+
+<script type="text/javascript">
+  jQuery(function() {
+    jQuery('dl.doc_template_attrs').vellumAttrList();
+  });
+</script>

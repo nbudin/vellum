@@ -11,15 +11,10 @@
     <% end -%>
   <% end %>
   <li>
-    <% form_for(:doc_template, :url => doc_templates_path(@project)) do |f| %>
-    <div style="float: right;">
-      <button class="new">
-        <%= image_tag "template_add.png" %>
-        Create template...
-      </button>
-    </div>
-    <%= f.text_field "name" %>
-    <% end -%>
+    <% link_to new_doc_template_path(@project), :class => "button new" do %>
+      <%= image_tag "template_add.png" %>
+      Add new template...
+    <% end %>
   </li>
 </ul>
 
