@@ -5,6 +5,12 @@ class TitleAllUntitledProjects < ActiveRecord::Migration
       p.name = "Untitled project"
       p.save!
     end
+
+    DocTemplate.all.each do |t|
+      next unless t.name.blank?
+      t.name = "Untitled template #{t.id}"
+      t.save!
+    end
   end
 
   def self.down

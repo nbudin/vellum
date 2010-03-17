@@ -1,5 +1,6 @@
 <h1>Editing template "<%= @doc_template.name %>"</h1>
 
-<% form_for(:doc_template, @doc_template, :url => doc_template_path(@project, @doc_template)) do |f| -%>
+<% form_for(:doc_template, @doc_template, :url => doc_template_path(@project, @doc_template),
+            :html => { :method => :put }) do |f| -%>
   <%= render :partial => "form", :locals => { :f => f } %>
 <% end -%>
