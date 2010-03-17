@@ -1,18 +1,5 @@
-<div class="jumpbox">
-  <div class="navigation">
-    <% link_to doc_template_path(@project, @doc_template), :class => "button cancel" do -%>
-      <%= image_tag "arrow_left.png" %>
-      Cancel editing
-    <% end -%>
-  </div>
-
-  <h2><%= @doc_template.name %></h2>
-</div>
+<h1>Editing template "<%= @doc_template.name %>"</h1>
 
 <% form_for(@doc_template, :url => doc_template_path(@project, @doc_template)) do |f| -%>
-
-<%= render :partial => "form", :locals => { :f => f } %>
-
-<%= submit_tag "Save changes", :class => "save" %>
-
+  <%= render :partial => "form", :locals => { :f => f } %>
 <% end -%>

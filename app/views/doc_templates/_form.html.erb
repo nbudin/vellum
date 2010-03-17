@@ -1,23 +1,47 @@
-<p style="margin-top: 2em;">
-  <b><%= f.label :name, "Template name" %></b><br/>
-  <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold;" %>
-</p>
-
 <%= f.error_messages %>
 
-<h2>Template Fields</h2>
+<div class="cardform">
+  <p>
+    <b><%= f.label :name, "Template name" %></b><br/>
+    <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold; width: 99%;" %>
+  </p>
 
-<dl class="doc_template_attrs">
-  <% f.fields_for :doc_template_attrs do |dta_fields| %>
-    <%= render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields } %>
-  <% end -%>
 
-  <% f.fields_for :doc_template_attrs_attributes, nil do |outer_fields| -%>
-    <% outer_fields.fields_for '99999',  @doc_template.doc_template_attrs.new do |dta_fields| %>
-      <%= render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields } %>
+  <div class="callout">
+    <h2>Template Fields</h2>
+
+    <p>All documents contain a main area to write in.  Fields let you add some
+      additional areas.</p>
+    <p>For example, on a "Plot" template, you might want a
+      separate area for your notes, so you could create a field called "Writer's
+      Notes" and make it a rich text area.  Or on a Character, you might want to
+      be able to choose which family the character comes from.  You could make that
+      a set of radio buttons.</p>
+
+    <dl class="doc_template_attrs">
+      <% f.fields_for :doc_template_attrs do |dta_fields| %>
+        <%= render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields } %>
+      <% end -%>
+
+      <% f.fields_for :doc_template_attrs_attributes, nil do |outer_fields| -%>
+        <% outer_fields.fields_for '99999',  @doc_template.doc_template_attrs.new do |dta_fields| %>
+          <%= render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields } %>
+        <% end -%>
+      <% end -%>
+    </dl>
+  </div>
+
+  <div class="submit">
+    <% link_to :back, :class => "button cancel" do -%>
+      Cancel
     <% end -%>
-  <% end -%>
-</dl>
+    <% if f.object.new_record? -%>
+      <%= submit_tag "Create template", :class => "new" %>
+    <% else -%>
+      <%= submit_tag "Save changes", :class => "save" %>
+    <% end -%>
+  </div>
+</div>
 
 <script type="text/javascript">
   jQuery(function() {

@@ -38,19 +38,10 @@
   <% end %>
   <% if logged_in? -%>
     <li style="overflow: hidden;">
-      <% form_for(:project, :url => projects_path) do |f| %>
-      <div style="float: right;">
-        <button class="new">
+      <% link_to new_project_path, :class => "button new" do %>
           <%= image_tag "project_add.png" %>
           Create project...
-        </button>
-      </div>
-      <%= f.text_field "name" %>
-      <%= f.label "template_source_project_id", "using templates from" %>
-      <%= f.select "template_source_project_id",
-        [["", ""]] + @projects.collect {|p| [p.name, p.id]} %>
-      <%= error_messages_for "project" %>
-      <% end -%>
+      <% end %>
     </li>
   <% end -%>
 </ul>

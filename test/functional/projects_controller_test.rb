@@ -19,10 +19,19 @@ class ProjectsControllerTest < ActionController::TestCase
     should_render_template "index"
   end
 
+  context "on GET to :new" do
+    setup do
+      get :new
+    end
+
+    should_respond_with :success
+    should_render_template "new"
+  end
+
   context "on POST to :create with project" do
     setup do
       @old_count = Project.count
-      post :create, { :project => { }}
+      post :create, { :project => { :name => "My project" }}
     end
 
     should_respond_with :redirect

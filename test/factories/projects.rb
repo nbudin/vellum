@@ -1,4 +1,5 @@
 Factory.define :project do |p|
+  p.name "A new project"
 end
 
 Factory.define(:doc_template) do |t|

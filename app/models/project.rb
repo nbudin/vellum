@@ -13,6 +13,7 @@ class Project < ActiveRecord::Base
   attr_reader :template_source_project_id
   validates_associated :doc_templates
   validates_associated :relationship_types
+  validates_presence_of :name
 
   def authors
     ids = docs.collect { |doc| doc.versions.collect { |version| version.author_id }.uniq }.flatten.uniq
