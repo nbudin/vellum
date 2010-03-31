@@ -30,7 +30,7 @@
     <%= link_to @site_settings.site_name, projects_path %>
   </div>
   <%= render :partial => "auth/mini_auth_form" %>
-  <% if @project -%>
+  <% if @project and !@project.new_record? -%>
     <div class="nav_links">
       <%= nav_link_to @project.name, project_path(@project), "project.png", 
           %w{projects structures}.include?(params[:controller]) %>

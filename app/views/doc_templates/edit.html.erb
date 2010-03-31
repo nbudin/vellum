@@ -1,42 +1,6 @@
-<% form_for(@doc_template, :url => doc_template_path(@project, @doc_template)) do |f| -%>
+<h1>Editing template "<%= @doc_template.name %>"</h1>
 
-<p style="margin-top: 2em;">
-  <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold;" %>
-</p>
-
-<div class="jumpbox">
-  <div class="navigation">
-    <% link_to doc_template_path(@project, @doc_template), :class => "button cancel" do -%>
-      <%= image_tag "arrow_left.png" %>
-      Cancel editing
-    <% end -%>
-  </div>
-
-  <h2><%= @doc_template.name %></h2>
-</div>
-
-<%= error_messages_for :doc %>
-
-<h2>Template Fields</h2>
-
-<dl class="doc_template_attrs">
-  <% f.fields_for :doc_template_attrs do |dta_fields| %>
-    <%= render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields } %>
-  <% end -%>
-
-  <% f.fields_for :doc_template_attrs_attributes, nil do |outer_fields| -%>
-    <% outer_fields.fields_for '99999',  @doc_template.doc_template_attrs.new do |dta_fields| %>
-      <%= render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields } %>
-    <% end -%>
-  <% end -%>
-</dl>
-
-<%= submit_tag "Save changes", :class => "save" %>
-
+<% form_for(:doc_template, @doc_template, :url => doc_template_path(@project, @doc_template),
+            :html => { :method => :put }) do |f| -%>
+  <%= render :partial => "form", :locals => { :f => f } %>
 <% end -%>
-
-<script type="text/javascript">
-  jQuery(function() {
-    jQuery('dl.doc_template_attrs').vellumAttrList();
-  });
-</script>

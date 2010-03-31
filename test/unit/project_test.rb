@@ -1,6 +1,8 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ProjectTest < ActiveSupport::TestCase
+  should_validate_presence_of :name
+
   context "A project" do
     setup do
       assert @project = Factory.create(:project)

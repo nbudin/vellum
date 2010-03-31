@@ -28,6 +28,16 @@ class DocTemplatesControllerTest < ActionController::TestCase
     should_respond_with_json
   end
 
+  context "on GET to :new" do
+    setup do
+      get :new, :project_id => @project.id
+    end
+
+    should_respond_with :success
+    should_assign_to :doc_template
+    should_render_template "new"
+  end
+
   context "on POST to :create" do
     setup do
       @old_count = DocTemplate.count

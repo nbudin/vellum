@@ -284,3 +284,45 @@ dl dt {
   float: left;
   clear: left;
 }
+
+.cardform {
+  background-color: <%= @site_settings.site_color %>;
+  width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1em;
+  border: 1px black solid;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.cardform .callout {
+  padding: 1em;
+  color: #444;
+  background-color: white;
+  border: 1px #666 solid;
+  font-size: 90%;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+}
+
+.cardform .callout p {
+  font-size: 12px;
+}
+
+.cardform .submit {
+  display: block;
+  margin-top: 1em;
+  text-align: right;
+}
+
+.cardform .submit button, .cardform .submit a.button, .cardform .submit input[type=submit] {
+  font-size: 200%;
+}
+
+.cardform .submit a.button {
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+}

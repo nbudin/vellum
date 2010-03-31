@@ -7,6 +7,7 @@ class DocTemplate < ActiveRecord::Base
   has_many :docs, :dependent => :destroy
 
   accepts_nested_attributes_for :doc_template_attrs, :allow_destroy => true
+  validates_presence_of :name
 
   def plural_name
     # later we may want to add the possibility to override this

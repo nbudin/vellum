@@ -1,22 +1,20 @@
 class ProjectsController < ApplicationController
   rest_permissions
-  
+
+  before_filter :get_visible_projects, :only => [:index, :new]
+
   # GET /projects
   # GET /projects.xml
   def index
-    @projects = if logged_in?
-      Project.find(:all, :include => :permissions).select { |p|
-        logged_in_person.permitted?(p, "show")
-      }
-    else
-      []
-    end
-
     respond_to do |format|
       format.html { render :action => "index" }
       format.xml  { render :xml => @projects.to_xml }
       format.json { render :json => @projects.to_json }
     end
+  end
+
+  def new
+    render :action => "new"
   end
 
   # GET /projects/1
@@ -36,7 +34,7 @@ class ProjectsController < ApplicationController
         end
         @templates.each do |tmpl|
           @docs[tmpl] ||= []
-          @docs[tmpl] = @docs[tmpl].sort_by { |s| s.position }
+          @docs[tmpl] = @docs[tmpl].sort_by { |s| s.position || 0 }
         end
       end
       format.xml  { render :xml => @project.to_xml }
@@ -61,7 +59,7 @@ class ProjectsController < ApplicationController
         format.xml  { head :created, :location => project_url(@project) }
         format.json { head :created, :location => project_url(@project) }
       else
-        format.html { self.index }
+        format.html { get_visible_projects ; self.new }
         format.xml  { render :xml => @project.errors.to_xml }
         format.json { render :json => @project.errors.to_json }
       end
@@ -100,9 +98,14 @@ class ProjectsController < ApplicationController
   end
   
   private
-  def check_login
-    if not logged_in?
-      redirect_to :controller => "about", :action => "index"
+
+  def get_visible_projects
+    @projects = if logged_in?
+      Project.find(:all, :include => :permissions).select { |p|
+        logged_in_person.permitted?(p, "show")
+      }
+    else
+      []
     end
   end
 end

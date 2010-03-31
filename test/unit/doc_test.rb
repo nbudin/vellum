@@ -32,6 +32,16 @@ class DocTest < ActiveSupport::TestCase
       assert_nil @doc.assignee
     end
 
+    context "having been saved" do
+      setup do
+        assert @doc.save
+      end
+
+      should "have a position" do
+        assert_not_nil @doc.position
+      end
+    end
+
     context "with an attr" do
       setup do
         assert @doc.save

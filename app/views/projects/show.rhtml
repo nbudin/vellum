@@ -58,3 +58,25 @@ h2 {
 	  <% end -%>
   </div>
 <% end -%>
+
+<% if @templates.size < 1 -%>
+  <h2>Welcome to <%= @project.name %></h2>
+
+  <p>Before you can get started writing, Vellum needs to know a little bit about
+    your project.  In particular, it needs to know what kinds of documents you're
+    going to be putting in it.  The way you tell it about that is by making
+    <strong>templates</strong>.</p>
+
+  <p>You need a template for each <strong>type</strong> of document you're going
+    to write.  So if you create a template called "Character,"
+    Vellum will know that you're going to be writing some characters.
+    You can make as many templates as you want.  They'll all show up as sections
+    on this page.</p>
+<% end -%>
+
+<p>
+  <% link_to new_doc_template_path(@project), :class => "button new" do %>
+    <%= image_tag "template_add.png" %>
+    Add new template...
+  <% end %>
+</p>
