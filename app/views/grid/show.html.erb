@@ -1,0 +1,36 @@
+<h1><%= @doc_template.plural_name %> in <%= @project.name %></h1>
+
+<table class="grid">
+  <thead>
+    <tr>
+      <th>
+        Name
+      </th>
+      <th>
+        Assigned to
+      </th>
+      <% @doc_template_attrs.each do |dta| -%>
+      <th>
+        <%=h dta.name %>
+      </th>
+      <% end -%>
+    </tr>
+  </thead>
+  <tbody>
+    <% @docs.each do |doc| -%>
+    <tr>
+      <td>
+        <%=h doc.name %>
+      </td>
+      <td>
+        <%= doc.assignee.try(:name) %>
+      </td>
+      <% @doc_template_attrs.each do |dta| -%>
+      <td>
+        <%=h doc.attrs[dta.name].value %>
+      </td>
+      <% end -%>
+    </tr>
+    <% end -%>
+  </tbody>
+</table>

@@ -1,0 +1,47 @@
+<h1><%= @doc_template.plural_name %> in <%= @project.name %></h1>
+
+<% form_for @project do |f| %>
+  <table class="grid editgrid">
+    <thead>
+      <tr>
+        <th>
+          Name
+        </th>
+        <th>
+          Assigned to
+        </th>
+        <% @doc_template_attrs.each do |dta| -%>
+        <th>
+          <%=h dta.name %>
+        </th>
+        <% end -%>
+      </tr>
+    </thead>
+    <tbody>
+      <% f.fields_for :docs, @docs do |doc_fields| %>
+      <tr>
+        <td>
+          <%= doc_fields.text_field :name %>
+        </td>
+        <td>
+          <%= assignee_select(doc_fields, @project) %>
+        </td>
+        <% doc_fields.fields_for :attrs do |attr_fields| -%>
+        <td class="attr">
+          <div class="attr_current_value"><%=truncate(strip_tags attr_fields.object.value)%></div>
+          <div class="attr_editor <%= attr_fields.object.ui_type %>">
+            <%= render_attr_value_editor(attr_fields)  %>
+          </div>
+        </td>
+        <% end -%>
+      </tr>
+      <% end -%>
+    </tbody>
+  </table>
+<% end %>
+
+<script type="text/javascript">
+  jQuery(function() {
+      jQuery('table.grid').vellumGridEditor();
+  });
+</script>
