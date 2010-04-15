@@ -17,9 +17,3 @@ config.action_controller.perform_caching             = false
 # The :test delivery method accumulates sent emails in the
 # ActionMailer::Base.deliveries array.
 config.action_mailer.delivery_method = :test
-
-config.gem 'shoulda', :source => "http://gemcutter.org"
-config.gem 'factory_girl', :source => "http://gemcutter.org", :version => "~> 1.2.3"
-config.gem 'webrat'
-config.gem 'cucumber', :lib => false
-config.gem 'cucumber-rails', :lib => false
