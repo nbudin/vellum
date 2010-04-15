@@ -5,6 +5,18 @@ module ApplicationHelper
     jipe_editor(object, attr, options)
   end
   
+  def indefinite_article_for(string)
+    if string =~ /^\s*[aeiou]/i
+      "an"
+    else
+      "a"
+    end
+  end
+  
+  def a_template_name(template)
+    "#{indefinite_article_for(template.name)} #{template.name}"
+  end
+  
   def nav_link_to(label, destination, image_path=nil, selected=nil)
     if selected.nil?
       selected = request.path =~ /^#{destination}/

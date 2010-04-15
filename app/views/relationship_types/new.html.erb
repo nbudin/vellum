@@ -1,11 +1,3 @@
-<h1>New relationship_type</h1>
-
-<% form_for(@relationship_type) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
-<% end %>
-
-<%= link_to 'Back', relationship_types_path %>
+<% form_for(:relationship_type, @relationship_type, :url => relationship_types_path(@project)) do |f| -%>
+  <%= render :partial => "form", :locals => { :f => f } %>
+<% end -%>

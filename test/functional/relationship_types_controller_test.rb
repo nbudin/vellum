@@ -1,4 +1,4 @@
-require 'test_helper'
+require 'test/test_helper'
 
 class RelationshipTypesControllerTest < ActionController::TestCase
   def setup
@@ -7,46 +7,88 @@ class RelationshipTypesControllerTest < ActionController::TestCase
     @project = Factory.create(:project)
     @project.grant(@person)
   end
-
-  context "on POST to :create" do
+  
+  context "on GET to :new" do
     setup do
-      @a = @project.doc_templates.create(:name => "A")
-      @b = @project.doc_templates.create(:name => "B")
-
+      get :new, :project_id => @project.id
+    end
+    
+    should_assign_to :relationship_type
+    should_render_template :choose_templates
+  end
+  
+  context "on POST to :create without templates" do
+    setup do
       @old_count = RelationshipType.count
       post :create, :project_id => @project.id, :relationship_type => {
-        :left_template_id => @a.id,
-        :right_template_id => @b.id,
         :left_description => "is related to"
       }
     end
 
     should_assign_to :relationship_type
-    should_respond_with :redirect
+    should_render_template :choose_templates
     should_not_set_the_flash
 
-    should "create a relationship type" do
-      assert_equal @old_count + 1, RelationshipType.count
-    end
-
-    should "redirect to the new relationship type" do
-      assert_redirected_to relationship_type_path(@project, assigns(:relationship_type))
+    should "not create a relationship type" do
+      assert_equal @old_count, RelationshipType.count
     end
   end
-
+  
+  context "with templates" do
+    setup do
+      @a = @project.doc_templates.create(:name => "A")
+      @b = @project.doc_templates.create(:name => "B")
+    end
+    
+    context "on GET to :new" do
+      setup do      
+        get :new, :project_id => @project.id, :relationship_type => {
+          :left_template_id => @a.id,
+          :right_template_id => @b.id
+        }
+      end
+      
+      should_assign_to :relationship_type
+      should_render_template :new
+    end
+  
+    context "on POST to :create" do
+      setup do
+        @old_count = RelationshipType.count
+        post :create, :project_id => @project.id, :relationship_type => {
+          :left_template_id => @a.id,
+          :right_template_id => @b.id,
+          :left_description => "is related to"
+        }
+      end
+  
+      should_assign_to :relationship_type
+      should_respond_with :redirect
+      should_not_set_the_flash
+  
+      should "create a relationship type" do
+        assert_equal @old_count + 1, RelationshipType.count
+      end
+  
+      should "redirect to the left template" do
+        assert_redirected_to doc_template_path(@project, @a)
+      end
+    end
+  end
+  
   context "with a relationship type" do
     setup do
       @rt = Factory.create(:relationship_type, :project => @project)
     end
 
-    context "on GET to :show" do
+    context "on GET to :edit" do
       setup do
-        get :show, :id => @rt.id, :project_id => @project.id
+        get :edit, :id => @rt.id, :project_id => @project.id
       end
 
       should_assign_to :relationship_type
       should_respond_with :success
-      should_render_template "show"
+      should_render_template "edit"
     end
 
     context "on PUT to :update" do
@@ -66,8 +108,8 @@ class RelationshipTypesControllerTest < ActionController::TestCase
         assert_equal @new_desc, @rt.left_description
       end
 
-      should "redirect to the relationship type" do
-        assert_redirected_to relationship_type_path(@project, @rt)
+      should "redirect to the left template" do
+        assert_redirected_to doc_template_path(@project, @rt.left_template)
       end
     end
 

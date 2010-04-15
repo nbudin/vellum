@@ -1,0 +1,39 @@
+<div class="cardform">
+  <p>
+    <b><%= f.label :name, "Relationship Type" %></b><br/>
+    <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold; width: 99%;" %>
+  </p>
+
+  <%= f.hidden_field :left_template_id %>
+  <%= f.hidden_field :right_template_id %>
+
+  <div class="callout">
+    <h2>Phrasing</h2>
+
+    <p>When a <%= @relationship_type.left_template.name %> is connected to a
+      <%= @relationship_type.right_template.name %> via this relationship type, how should Vellum
+      phrase that connection?  Please fill in the fields below to describe the relationship.</p>
+
+    <p>
+      <%= f.label :left_description, a_template_name(@relationship_type.left_template).titleize %>
+      <%= f.text_field :left_description %>
+      <%= a_template_name(@relationship_type.right_template) %>
+    </p>
+    <p>
+      <%= f.label :right_description, "And #{a_template_name(@relationship_type.right_template)}" %>
+      <%= f.text_field :right_description %>
+      <%= a_template_name(@relationship_type.left_template) %>
+    </p>
+  </div>
+
+  <div class="submit">
+    <% link_to :back, :class => "button cancel" do -%>
+      Cancel
+    <% end -%>
+    <% if f.object.new_record? -%>
+      <%= submit_tag "Create relationship type", :class => "new" %>
+    <% else -%>
+      <%= submit_tag "Save changes", :class => "save" %>
+    <% end -%>
+  </div>
+</div>

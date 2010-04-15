@@ -1,12 +1,4 @@
-<h1>Editing relationship_type</h1>
-
-<% form_for(@relationship_type) do |f| %>
-  <%= f.error_messages %>
-
-  <p>
-    <%= f.submit 'Update' %>
-  </p>
-<% end %>
-
-<%= link_to 'Show', @relationship_type %> |
-<%= link_to 'Back', relationship_types_path %>
+<% form_for(:relationship_type, @relationship_type, :url => relationship_type_path(@project, @relationship_type),
+            :html => { :method => :put }) do |f| -%>
+  <%= render :partial => "form", :locals => { :f => f } %>
+<% end -%>

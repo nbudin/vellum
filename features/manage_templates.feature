@@ -57,9 +57,17 @@ Feature: Manage templates
       |Organization|
 
     When I am on the template page for Organization
-    And I fill in "relationship_type[left_description]" with "includes"
-    And I select "Character" from "relationship_type[right_template_id]"
-    And I press "Create relationship type..."
+    And I follow "Create relationship type..."
+    
+    And I fill in "Relationship type" with "Organization membership"
+    And I select "Character" from "Second template"
+    And I press "Continue"
+    Then I should see "Phrasing"
+    
+    And I fill in "An Organization" with "includes"
+    And I fill in "And a Character" with "is a member of"
+    And I press "Create relationship type"
+    
     And I go to the template page for Organization
     Then I should see "includes Character"
 

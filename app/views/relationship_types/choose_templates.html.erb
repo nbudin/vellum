@@ -1,0 +1,39 @@
+<h1>New relationship type</h1>
+
+<% form_for @relationship_type, :url => new_relationship_type_path(@project), :html => { :method => :get } do |f| %>
+    <div class="cardform">
+      <p>
+        <b><%= f.label :name, "Relationship Type" %></b><br/>
+        <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold; width: 99%;" %>
+      </p>
+
+      <%= f.hidden_field :left_description %>
+      <%= f.hidden_field :right_description %>
+
+      <div class="callout">
+        <h2>Choose templates</h2>
+
+        <p>Relationship types define the connections documents can have with one another.
+        For example, a character might be involved in a plot.  To define this, you can
+        create a "Character is involved in Plot" relationship between the Character
+        template and the Plot template.</p>
+
+        <p>Relationships can also exist between two documents of the same template.  For
+        example, it is perfectly legitimate for a Character to know a Character.</p>
+
+        <dl class="doc_template_attrs">
+          <dt><%= f.label :left_template_id, "First template" %></dt>
+          <dd><%= f.select :left_template_id, [""] + @project.doc_templates.collect {|t| [t.name, t.id]} %></dd>
+          <dt><%= f.label :right_template_id, "Second template" %></dt>
+          <dd><%= f.select :right_template_id, [""] + @project.doc_templates.collect {|t| [t.name, t.id]} %></dd>
+        </dl>
+      </div>
+
+      <div class="submit">
+        <% link_to :back, :class => "button cancel" do -%>
+          Cancel
+        <% end -%>
+        <%= submit_tag "Continue", :class => "new" %>
+      </div>
+    </div>
+<% end %>
