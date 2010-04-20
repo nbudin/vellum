@@ -9,6 +9,17 @@ class RelationshipTypesController < ApplicationController
     render :action => "choose_templates" if templates_needed?
   end
   
+  # GET /relationship_types/1
+  # GET /relationship_types/1.xml
+  def show
+    @relationship_type = @project.relationship_types.find(params[:id])
+
+    respond_to do |format|
+      format.xml  { render :xml => @relationship_type }
+      format.json  { render :json => @relationship_type }
+    end
+  end
+  
   def edit
     set_relationship_type_return_url
     @relationship_type = @project.relationship_types.find(params[:id])
