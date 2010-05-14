@@ -22,6 +22,7 @@ class PublicationTemplatesController < ApplicationController
   
   def new
     @publication_template = @project.publication_templates.build
+    @doc_templates = @project.doc_templates.all.sort_by { |t| t.name.sort_normalize }
   end
   
   # GET /publication_templates/1;edit
