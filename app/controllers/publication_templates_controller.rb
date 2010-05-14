@@ -69,7 +69,7 @@ class PublicationTemplatesController < ApplicationController
     
     context_options = { :project => @project }
     
-    @tempfile = Tempfile.new("vellum-publication.zip")
+    @tempfile = Tempfile.new("vellum-publication-#{Time.now}.zip")
     
     begin      
       Zip::ZipOutputStream.open(@tempfile.path) do |zipfile|
