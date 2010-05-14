@@ -8,6 +8,7 @@ gem "ruby-graphviz", :require => "graphviz"
 gem "radius"
 gem "nbudin-version_fu", :require => "version_fu"
 gem "jrails"
+gem "rubyzip"
 
 group :development do
   gem "bullet"

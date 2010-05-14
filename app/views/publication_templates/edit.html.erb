@@ -1,0 +1,7 @@
+<% form_for(@publication_template, :url => publication_template_path(@project, @publication_template)) do |f| -%>
+  <%= render :partial => "form", :locals => { :f => f } %>
+  
+  <p>
+    <%= submit_tag "Save changes", :class => "new" %>
+  </p>
+<% end -%>

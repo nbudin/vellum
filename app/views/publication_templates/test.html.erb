@@ -1,0 +1,22 @@
+<h2> 
+  Output from "<%=h @publication_template.name %>"
+  <% if @doc -%>
+    for "<%=h @doc.name %>"
+  <% end -%>
+</h2>
+
+<%= render :partial => 'jumpbox' %>
+
+<% if @error -%>
+  <h3><%= @error.class.name %></h3>
+  
+  <p><%= @error.to_s %></p>
+  
+  <div class="code">
+    <%=simple_format(h(@error.backtrace.join "\n")) %>
+  </div>
+<% else -%>
+  <div class="code">
+    <%=simple_format(h(@output)) %>
+  </div>
+<% end -%>

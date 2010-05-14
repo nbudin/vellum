@@ -1,0 +1,36 @@
+<h2>VPub Templates</h2>
+
+<p>VPub is a simple templating language for Vellum projects and documents.  It lets you generate
+  HTML, XSL:FO, and other types of documents right from Vellum.</p>
+
+<div style="align: left; padding-left: 1em;">  
+  <h3 style="margin-left: -0.5em;">VPub Tags</h3>
+
+  <p>
+    <b>&lt;v:name/&gt;</b><br/>
+    Outputs the name of the current document.
+  </p>
+  
+  <p><b>&lt;v:content/&gt;</b><br/>
+  Outputs the content of the current document, converted into the appropriate output format for
+    this template.</p>
+    
+  <p><b>&lt;v:attr:value name="Attribute Name"/&gt;</b><br/>
+  Outputs the value of the "Attribute Name" attribute for the current document, if it exists.</p>
+  
+  <p><b>&lt;v:attr:if_value name="Attribute Name" eq="value"&gt; ... &lt;/v:attr:if_value&gt;</b><br/>
+  Outputs the inner content only if the "Attribute Name" attribute is equal to "value" in the
+    current document.</p>
+
+  <p><b>&lt;v:attr:if_value name="Attribute Name" ne="value"&gt; ... &lt;/v:attr:if_value&gt;</b><br/>
+  Outputs the inner content only if the "Attribute Name" attribute is <i>not</i> equal to "value" in the
+    current document.</p>
+
+  <p><b>&lt;v:attr:if_value name="Attribute Name" match="regex"&gt; ... &lt;/v:attr:if_value&gt;</b><br/>
+  Outputs the inner content only if the "Attribute Name" attribute matches the regular expression "regex" in the
+    current document.</p>
+    
+  <p><b>&lt;v:each_related how="is married to"&gt; ... &lt;/v:each_related&gt;</b><br/>
+  Loops through each document with a "is married to" relationship with the current document.  Outputs the inner
+  content <i>in the context of each related document</i>.</p>
+</div>

@@ -1,0 +1,2 @@
+module PublicationTemplatesHelper
+end

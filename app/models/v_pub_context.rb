@@ -17,7 +17,7 @@ class VPubContext < Radius::Context
     define_tag 'attr:value' do |tag|
       get_attr tag
       
-      tag.locals.attr.value(tag.attr['format'] || @format)
+      tag.locals.attr.value(format_for_tag(tag))
     end
     
     define_tag 'attr:if_value' do |tag|
@@ -45,6 +45,20 @@ class VPubContext < Radius::Context
     define_tag 'name' do |tag|
       tag.locals.doc.name
     end
+    
+    define_tag 'content' do |tag|
+      content = tag.locals.doc.content
+      
+      if format_for_tag(tag) == "fo"
+        FormatConversions.html_to_fo(content)
+      else
+        content
+      end
+    end
+  end
+  
+  def format_for_tag(tag)
+    tag.attr['format'] || @format
   end
   
   def format=(format)

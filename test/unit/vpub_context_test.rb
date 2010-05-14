@@ -7,7 +7,7 @@ class VPubContextTest < ActiveSupport::TestCase
         
       @project = @person.project
       @bob = Factory.build(:doc, :doc_template => @person,
-        :project => @project, :name => "Bob")
+        :project => @project, :name => "Bob", :content => "<p>Here we have <b>Bob</b>.<br/>Bob likes to ski.</p>")
       
       @context = VPubContext.new(:project => @project, :doc => @bob)
       @parser = Radius::Parser.new(@context, :tag_prefix => 'v')
@@ -19,6 +19,14 @@ class VPubContextTest < ActiveSupport::TestCase
     
     should "return a structure's name" do
       assert_equal "Bob", @parser.parse('<v:name/>')
+    end
+    
+    should "return the doc's content" do
+      assert_equal @bob.content, @parser.parse('<v:content/>')
+      @fo_content = FormatConversions.html_to_fo(@bob.content)
+      assert_equal @fo_content, @parser.parse('<v:content format="fo"/>')
+      @context.format = "fo"
+      assert_equal @fo_content, @parser.parse('<v:content/>')
     end
     
     context "with a valued attribute" do

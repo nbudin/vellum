@@ -18,6 +18,8 @@ ActionController::Routing::Routes.draw do |map|
       maps.resources :mapped_doc_templates, :name_prefix => nil
       maps.resources :mapped_relationship_types, :name_prefix => nil
     end
+    projects.resources :publication_templates, :name_prefix => nil, 
+      :member => { :test => [:get, :post], :publish => [:get, :post] }
   end
 
   map.connect('projects/:project_id/structure_templates/:structure_template_id/attrs/:id/config.:format',

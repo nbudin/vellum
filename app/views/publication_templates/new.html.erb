@@ -1,0 +1,7 @@
+<% form_for(@publication_template, :url => publication_templates_path(@project)) do |f| -%>
+  <%= render :partial => "form", :locals => { :f => f } %>
+
+  <p>
+    <%= submit_tag "Create publication template", :class => "new" %>
+  </p>
+<% end -%>

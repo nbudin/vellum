@@ -1,0 +1,7 @@
+<h2><%= @publication_template.name %></h2>
+
+<%= render :partial => 'jumpbox' %>
+
+<div class="code">
+  <%=simple_format(h(@publication_template.content)) %>
+</div>

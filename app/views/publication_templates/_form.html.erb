@@ -1,0 +1,27 @@
+<div class="jumpbox">
+  <%= render :partial => "vpub_help" %>
+</div>
+
+<p style="margin-top: 2em;">
+  <b><%= f.label :name, "Publication Template Name" %></b><br/>
+  <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold; width: 99%;" %>
+</p>
+
+<%= error_messages_for :publication_template, :object => f.object %>
+
+<p>
+  <b><%= f.label :format, "Output Format" %></b><br/>
+  <% %w{html fo}.each do |format| %>
+    <span style="display: inline-block; padding-right: 3em;">
+      <%= f.radio_button :format, format %> <%= f.label :format, format.upcase, :value => format %>
+    </span>
+  <% end -%>
+</p>  
+
+<p>
+  <b><%= f.label :format, "Operates on:" %></b>
+  <%= f.select :doc_template_id, @doc_templates.collect {|t| [t.name, t.id]},
+               :include_blank => "No document required" %>
+</p>
+
+<%= f.text_area :content, :style => "width: 100%; max-width: 100%; font-family: monospace;" %>
