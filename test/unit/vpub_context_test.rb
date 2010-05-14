@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class StructureContextTest < ActiveSupport::TestCase
+class VPubContextTest < ActiveSupport::TestCase
   context "A VPub context" do
     setup do
       @person = Factory.create(:doc_template, :name => "Person")
@@ -9,7 +9,7 @@ class StructureContextTest < ActiveSupport::TestCase
       @bob = Factory.build(:doc, :doc_template => @person,
         :project => @project, :name => "Bob")
       
-      @context = StructureContext.new(@bob)
+      @context = VPubContext.new(:project => @project, :doc => @bob)
       @parser = Radius::Parser.new(@context, :tag_prefix => 'v')
     end
   

@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class PublicationTemplateTest < ActiveSupport::TestCase
+  should_belong_to :project
+  
   context "A publication template" do
     setup do
       @person = Factory.create(:doc_template, :name => "Person")

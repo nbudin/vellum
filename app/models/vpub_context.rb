@@ -1,11 +1,13 @@
-class StructureContext < Radius::Context
-  attr_reader :doc, :format
+class VPubContext < Radius::Context
+  attr_reader :project, :doc, :format
   
-  def initialize(doc)
+  def initialize(init_options = {})
     super()
-    @doc = doc
+    @project = init_options[:project]
+    @doc = init_options[:doc]
+    globals.project = @project
     globals.doc = @doc
-    self.format = 'html'
+    self.format = init_options[:format] || 'html'
     
     define_tag 'attr' do |tag|
       get_attr tag

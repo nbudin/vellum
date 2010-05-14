@@ -1,8 +1,8 @@
 class PublicationTemplate < ActiveRecord::Base
   belongs_to :project
   
-  def execute(structure)
-    context = StructureContext.new(structure)
+  def execute(doc)
+    context = VPubContext.new(doc)
     if format
       context.format = format
     end
