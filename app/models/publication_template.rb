@@ -1,11 +1,8 @@
 class PublicationTemplate < ActiveRecord::Base
   belongs_to :project
   
-  def execute(doc)
-    context = VPubContext.new(doc)
-    if format
-      context.format = format
-    end
+  def execute(context_options)
+    context = VPubContext.new({:format => format}.update(context_options))
     parser = Radius::Parser.new(context, :tag_prefix => 'v')
     parser.parse(content)
   end

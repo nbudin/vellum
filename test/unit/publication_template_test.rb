@@ -15,7 +15,7 @@ class PublicationTemplateTest < ActiveSupport::TestCase
     
     should "return a parsed template" do
       @tmpl.content = "Hello, my name is <v:name/>"
-      assert_equal "Hello, my name is #{@bob.name}", @tmpl.execute(@bob)
+      assert_equal "Hello, my name is #{@bob.name}", @tmpl.execute(:doc => @bob)
     end
   end
 end
