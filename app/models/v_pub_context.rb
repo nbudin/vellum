@@ -49,11 +49,13 @@ class VPubContext < Radius::Context
       end
       
       prev_doc = tag.locals.doc
-      project.docs.all(:conditions => conds).collect do |d|
+      content = project.docs.all(:conditions => conds).collect do |d|
         tag.locals.doc = d
         tag.expand
       end.join
       tag.locals.doc = prev_doc
+      
+      content
     end
     
     define_tag 'name' do |tag|
