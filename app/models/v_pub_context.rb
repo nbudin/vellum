@@ -48,10 +48,12 @@ class VPubContext < Radius::Context
         conds[:doc_template_id] = project.doc_templates.find_by_name(tag.attr['template']).id
       end
       
+      prev_doc = tag.locals.doc
       project.docs.all(:conditions => conds).collect do |d|
         tag.locals.doc = d
         tag.expand
       end.join
+      tag.locals.doc = prev_doc
     end
     
     define_tag 'name' do |tag|
