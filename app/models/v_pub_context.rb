@@ -3,8 +3,8 @@ class VPubContext < Radius::Context
   
   def initialize(init_options = {})
     super()
-    @project = init_options[:project]
     @doc = init_options[:doc]
+    @project = init_options[:project] || @doc.project
     globals.project = @project
     globals.doc = @doc
     self.format = init_options[:format] || 'html'
@@ -40,6 +40,18 @@ class VPubContext < Radius::Context
         tag.locals.doc = d
         tag.expand
       end.join("")
+    end
+    
+    define_tag 'each_doc' do |tag|
+      conds = {}
+      if tag.attr['template']
+        conds[:doc_template_id] = project.doc_templates.find_by_name(tag.attr['template']).id
+      end
+      
+      project.docs.all(:conditions => conds).collect do |d|
+        tag.locals.doc = d
+        tag.expand
+      end.join
     end
     
     define_tag 'name' do |tag|

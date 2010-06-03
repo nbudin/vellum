@@ -102,6 +102,11 @@ class VPubContextTest < ActiveSupport::TestCase
         assert_equal @joe.name, @parser.parse('<v:each_related how="is taller than"><v:name/></v:each_related>')
       end
       
+      should "iterate through docs by template" do
+        text = @parser.parse('<v:each_doc template="Person"><v:name/></v:each_doc>')
+        assert_equal "BobJoe", text
+      end
+      
       context "in a recursive loop" do
         setup do
           @joe_taller = Factory.create(:relationship, :relationship_type => @taller,
