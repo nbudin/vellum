@@ -67,29 +67,45 @@ class PublicationTemplatesController < ApplicationController
   def publish
     @publication_template = @project.publication_templates.find(params[:id])
     
-    context_options = { :project => @project }
-    
-    @tempfile = Tempfile.new("vellum-publication-#{Time.now}.zip")
+    @attachment = true
     
     begin      
-      Zip::ZipOutputStream.open(@tempfile.path) do |zipfile|
-        if @publication_template.doc_template
+      if @publication_template.doc_template
+        @tempfile = Tempfile.new("vellum-publication-#{Time.now}.zip")
+
+        @filename = @project.name
+        @filename << " - #{@publication_template.doc_template.plural_name}" if @publication_template.doc_template
+        @filename << ".zip"
+        
+        @filetype = "application/zip"
+    
+        Zip::ZipOutputStream.open(@tempfile.path) do |zipfile|
           @publication_template.doc_template.docs.each do |doc|
             zipfile.put_next_entry("#{doc.name}.#{@publication_template.output_format}")
             zipfile.print @publication_template.execute(:project => @project, :doc => doc)
           end
-        else
-          zipfile.put_next_entry("#{@publication_template.name}.#{@publication_template.output_format}")
-          zipfile.print @publication_template.execute(:project => @project)
         end
+      else
+        @tempfile = Tempfile.new("vellum-publication-#{Time.now}.#{@publication_template.output_format}")
+        @tempfile.write @publication_template.execute(:project => @project)
+        
+        @filetype = case @publication_template.output_format.to_sym
+        when :fo
+          "application/xslfo+xml"
+        when :html
+          @attachment = false
+          "text/html"
+        else
+          "application/octet-stream"
+        end
+        
+        @filename = "#{@project.name} - #{@publication_template.name}.#{@publication_template.output_format}"
       end
       
-      filename = @project.name
-      filename << " - #{@publication_template.doc_template.plural_name}" if @publication_template.doc_template
-      filename << ".zip"
+      @tempfile.flush
       
-      send_file @tempfile.path, :type => 'application/zip', :disposition => 'attachment',
-        :filename => filename
+      send_file @tempfile.path, :type => @filetype, :disposition => (@attachment ? 'attachment' : 'inline'),
+        :filename => @filename
     rescue Exception => e
       @error = e
       render :action => 'test'
