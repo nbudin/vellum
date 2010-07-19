@@ -24,11 +24,11 @@ class MapsController < ApplicationController
       format.xml  { render :xml => @map }
       format.json { render :json => @map }
       format.png  {
-        send_data @map.output(:output => "png"), :filename => "#{@project.name} #{@map.name}.png",
+        send_data @map.output("png"), :filename => "#{@project.name} #{@map.name}.png",
                   :disposition => 'inline', :type => 'png'
       }
       format.svg {
-        send_data @map.output(:output => "svg"), :filename => "#{@project.name} #{@map.name}.svg",
+        send_data @map.output("svg"), :filename => "#{@project.name} #{@map.name}.svg",
                   :disposition => 'inline', :type => 'svg'
       }
     end

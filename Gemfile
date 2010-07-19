@@ -4,7 +4,7 @@ gem "ruby-openid", "~> 2.1.4", :require => "openid"
 gem "mysql"
 
 gem "acts_as_singleton"
-gem "ruby-graphviz", :require => "graphviz"
+gem "ruby-graphviz", ">= 0.9.2", :require => "graphviz"
 gem "radius"
 gem "nbudin-version_fu", :require => "version_fu"
 gem "jrails"

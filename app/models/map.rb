@@ -32,14 +32,8 @@ class Map < ActiveRecord::Base
     }
   end
   
-  def output(options={})
-    tf = Tempfile.new("map_#{id}.output")
-    tf.close
-    graphviz.output(options.update(:file => tf.path))
-    data = tf.open.read
-    tf.close
-    tf.unlink
-    return data
+  def output(format, options={})
+    graphviz.output(options.update(format.to_sym => String))
   end
   
   def graphviz_method
