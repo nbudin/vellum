@@ -3,9 +3,9 @@ set :repository,  "git://github.com/nbudin/vellum.git"
 
 set :deploy_to, "/var/www/vellum.aegames.org"
 
-role :app, "sakai.natbudin.com"
-role :web, "sakai.natbudin.com"
-role :db,  "sakai.natbudin.com", :primary => true
+role :app, "ishinabe.natbudin.com"
+role :web, "ishinabe.natbudin.com"
+role :db,  "ishinabe.natbudin.com", :primary => true
 
 set :checkout, "export"
 set :user, "www-data"
