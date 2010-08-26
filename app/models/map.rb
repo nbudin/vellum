@@ -36,6 +36,37 @@ class Map < ActiveRecord::Base
     graphviz.output(options.update(format.to_sym => String))
   end
   
+  def gchart_params(options = {})
+    @dot_output ||= output("none").gsub(/\s+/, " ")
+    
+    url_options = {
+      :cht => "gv:#{graphviz_method}",
+      :chl => @dot_output
+    }.update(options)
+  end
+  
+  def gchart_get_url(options = {})    
+    url = "http://chart.apis.google.com/chart?"
+    
+    url_params = []
+    gchart_params(options).each do |k, v|
+      url_params << "#{Rack::Utils.escape(k)}=#{Rack::Utils.escape(v)}"
+    end
+    url << url_params.join("&")
+    
+    url
+  end
+  
+  def gchart_post(options = {})
+    res = Net::HTTP.post_form(URI.parse('http://chart.apis.google.com/chart'), gchart_params(options))
+    case res
+    when Net::HTTPSuccess
+      res.body
+    else
+      raise "#{res.message}: #{res.body}"
+    end
+  end
+  
   def graphviz_method
     method = read_attribute :graphviz_method
     if method.blank?

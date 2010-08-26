@@ -24,7 +24,7 @@ class MapsController < ApplicationController
       format.xml  { render :xml => @map }
       format.json { render :json => @map }
       format.png  {
-        send_data @map.output("png"), :filename => "#{@project.name} #{@map.name}.png",
+        send_data @map.gchart_post, :filename => "#{@project.name} #{@map.name}.png",
                   :disposition => 'inline', :type => 'png'
       }
       format.svg {
