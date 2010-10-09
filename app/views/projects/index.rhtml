@@ -1,6 +1,6 @@
 <h1>Projects</h1>
 
-<% if @site_settings.is_admin?(logged_in_person) -%>
+<% if current_person.try(:admin?) -%>
   <div class="jumpbox">
     <div class="navigation">
       <% link_to({ :controller => "about", :action => "edit_settings" }, :class => "button edit") do %>
@@ -36,7 +36,7 @@
       <%= project.name %>
     <% end -%>
   <% end %>
-  <% if logged_in? -%>
+  <% if person_signed_in? -%>
     <li style="overflow: hidden;">
       <% link_to new_project_path, :class => "button new" do %>
           <%= image_tag "project_add.png" %>
@@ -47,6 +47,6 @@
 </ul>
 
 
-<% unless logged_in? -%>
+<% unless person_signed_in? -%>
 <p>To see your projects, please <%= link_to "log in", :controller => "auth", :action => "login" %>.</p>
 <% end -%>

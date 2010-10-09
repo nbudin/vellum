@@ -1,6 +1,5 @@
 class ProjectsController < ApplicationController
-  rest_permissions
-
+  load_and_authorize_resource :except => [:index]
   before_filter :get_visible_projects, :only => [:index, :new]
 
   # GET /projects
@@ -22,7 +21,7 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id], 
       :include => { :docs => { :doc_template => [] },
-                               :permissions => [] })
+                    :project_memberships => [] })
 
     respond_to do |format|
       format.html do
@@ -44,13 +43,16 @@ class ProjectsController < ApplicationController
   end
   
   def edit
-    @project = Project.find(params[:id])
+    @project = Project.find(params[:id], :include => {:project_memberships => :person})
+    authorize! :change_permissions, @project
+    
+    @project.project_memberships.build
   end
 
   # POST /projects
   # POST /projects.xml
   def create
-    @project = Project.new(params[:project])
+    @project = Project.new(params[:project], :include => {:project_memberships => :person})
 
     respond_to do |format|
       if @project.save
@@ -70,6 +72,7 @@ class ProjectsController < ApplicationController
   # PUT /projects/1.xml
   def update
     @project = Project.find(params[:id])
+    authorize! :change_permissions, @project
 
     respond_to do |format|
       if @project.update_attributes(params[:project])
@@ -77,7 +80,7 @@ class ProjectsController < ApplicationController
         format.xml  { head :ok }
         format.json { head :ok }
       else
-        format.html { render :action => "show" }
+        format.html { render :action => "edit" }
         format.xml  { render :xml => @project.errors.to_xml }
         format.json { render :json => @project.errors.to_json }
       end
@@ -100,10 +103,8 @@ class ProjectsController < ApplicationController
   private
 
   def get_visible_projects
-    @projects = if logged_in?
-      Project.find(:all, :include => :permissions).select { |p|
-        logged_in_person.permitted?(p, "show")
-      }
+    @projects = if current_person
+      current_person.project_memberships.all(:include => :project).map(&:project).uniq.compact
     else
       []
     end

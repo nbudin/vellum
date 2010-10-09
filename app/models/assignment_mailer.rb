@@ -8,7 +8,7 @@ class AssignmentMailer < ActionMailer::Base
 
     subject    "[#{doc.project ? doc.project.name : "Vellum"}] #{doc.name} has been assigned to you"
     from       @site_settings.site_email
-    recipients assignee.primary_email_address
+    recipients assignee.email
     sent_on    sent_at
     
     body       :doc => doc, :assignee => assignee

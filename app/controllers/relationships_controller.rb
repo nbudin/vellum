@@ -1,6 +1,5 @@
 class RelationshipsController < ApplicationController
-  rest_permissions :class_name => "Project", :id_param => "project_id"
-  before_filter :get_project
+  load_and_authorize_resource :project
   
   # GET /relationships
   # GET /relationships.xml
@@ -88,11 +87,5 @@ class RelationshipsController < ApplicationController
       format.xml  { head :ok }
       format.json { head :ok }
     end
-  end
-
-  private
-  
-  def get_project
-    @project = Project.find(params[:project_id])
   end
 end

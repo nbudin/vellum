@@ -3,7 +3,7 @@
     <% link_to publication_templates_path(@project), :class => "button back" do -%>
       <%= image_tag "arrow_left.png" %> Publication
     <% end -%>
-    <% if logged_in? and logged_in_person.permitted?(@project, "edit") -%>
+    <% if person_signed_in? and logged_in_person.permitted?(@project, "edit") -%>
       <% link_to edit_publication_template_path(@project, @publication_template), :class => "button edit" do -%>
         Edit
         <%= image_tag "publication_template_edit.png" %>

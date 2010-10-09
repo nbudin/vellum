@@ -1,8 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require 'projects_controller'
-
-# Re-raise errors caught by the controller.
-class ProjectsController; def rescue_action(e) raise e end; end
+require 'test_helper'
 
 class ProjectsControllerTest < ActionController::TestCase
   def setup
@@ -47,14 +43,17 @@ class ProjectsControllerTest < ActionController::TestCase
     end
 
     should "grant permissions to the logged in user" do
-      assert @person.permitted?(assigns(:project), 'edit')
+      ability = Ability.new(@person)
+      %w{read update destroy}.each do |action|
+        assert ability.can?(action.to_sym, @project)
+      end
     end
   end
 
   context "with project" do
     setup do
       @project = Factory.create(:project)
-      @project.grant(@person)
+      @project.project_memberships.create(:person => @person, :author => true, :admin => true)
     end
 
     context "on GET to :show" do

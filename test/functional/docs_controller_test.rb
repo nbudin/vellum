@@ -137,7 +137,7 @@ class DocsControllerTest < ActionController::TestCase
 
     context "on PUT to :update with new assignee" do
       setup do
-        assert @person.primary_email_address
+        assert @person.email
         assert_not_equal @person.id, @doc.assignee
         @site_settings = SiteSettings.instance
         @site_settings.site_name = "Test Site"
@@ -159,7 +159,7 @@ class DocsControllerTest < ActionController::TestCase
           email.subject =~ /\[#{@project.name}\]/ &&
             email.subject.include?(@doc.name) &&
             email.from.include?(@site_settings.site_email) &&
-            email.to.include?(@person.primary_email_address) &&
+            email.to.include?(@person.email) &&
             email.body.include?("assigned to you")
         end
       end

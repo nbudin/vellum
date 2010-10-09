@@ -1,7 +1,5 @@
 class MappedRelationshipTypesController < ApplicationController
-  perm_options = { :class_name => "Project", :id_param => "project_id" }
-  rest_permissions perm_options
-  require_permission "edit", {:only => [:sort]}.update(perm_options)
+  load_and_authorize_resource
   before_filter :get_project_and_map
 
   # POST /mapped_relationship_types

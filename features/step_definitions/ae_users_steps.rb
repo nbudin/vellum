@@ -28,7 +28,7 @@ end
 
 Given /^I log in as (.*) (.*)$/ do |firstname, lastname|
   Given "I am on the home page"
-  unless controller.logged_in?
+  unless controller.person_signed_in?
     Given "I am on the login page"
     And "I fill in \"Email address\" with \"#{email_address_from_name(firstname, lastname)}\""
     And "I choose \"Yes, my password is:\""

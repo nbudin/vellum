@@ -8,7 +8,8 @@ class Project < ActiveRecord::Base
   has_many :publication_templates, :dependent => :destroy
   has_many :maps, :dependent => :destroy
   
-  acts_as_permissioned
+  has_many :project_memberships
+  accepts_nested_attributes_for :project_memberships, :allow_destroy => true
 
   attr_reader :template_source_project_id
   validates_associated :doc_templates
@@ -78,7 +79,7 @@ class Project < ActiveRecord::Base
         authors.each do |author|
           xml.author(:id => author.id) do
             xml.name(author.name)
-            xml.email(author.primary_email_address)
+            xml.email(author.email)
           end
         end
       end

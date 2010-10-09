@@ -30,26 +30,27 @@ class ActiveSupport::TestCase
   self.use_instantiated_fixtures  = false
 
   # Add more helper methods to be used by all tests here...
-  def build_schema_for_attr_value(field_type, value_type)
-    @field = Factory.build(field_type)
-    @attr = Factory.build(:attr)
-    @attr.attr_configuration = @field
-    @t = @attr.doc_template
-    @project = @t.project
-    @structure = Factory.build(:structure, :project => @project, :doc_template => @t)
-    @avm = Factory.build(:attr_value_metadata, :structure => @structure, :attr => @attr)
-    @value = Factory.build(value_type, :attr_value_metadata => @avm)
-  end
+  #def build_schema_for_attr_value(field_type, value_type)
+  #  @field = Factory.build(field_type)
+  #  @attr = Factory.build(:attr)
+  #  @attr.attr_configuration = @field
+  #  @t = @attr.doc_template
+  #  @project = @t.project
+  #  @structure = Factory.build(:structure, :project => @project, :doc_template => @t)
+  #  @avm = Factory.build(:attr_value_metadata, :structure => @structure, :attr => @attr)
+  #  @value = Factory.build(value_type, :attr_value_metadata => @avm)
+  #end
+end
 
+class ActionController::TestCase
+  include Devise::TestHelpers
+  
   def create_logged_in_person
     @person = Person.create
+    @person.email = "test#{@person.id}@example.com"
+    assert @person.save
 
-    assert @person.email_addresses.create(:address => "test#{@person.id}@example.com", :primary => true)
-    @person.email_addresses.reload
-    assert @person.primary_email_address
-    assert_equal @person.primary_email_address, "test#{@person.id}@example.com"
-    
-    @request.session[:person] = @person.id
+    sign_in(@person)
   end
 
   def parse_json_response

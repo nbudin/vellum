@@ -3,8 +3,6 @@ class TemplateSchema < ActiveRecord::Base
   has_many :structure_templates, :dependent => :destroy
   has_many :relationship_types, :dependent => :destroy
   
-  acts_as_permissioned
-
   def to_vschema(options = {})
     options[:indent] ||= 2
     xml = options[:builder] ||= Builder::XmlMarkup.new(:indent => options[:indent])

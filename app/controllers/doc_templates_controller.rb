@@ -1,5 +1,5 @@
 class DocTemplatesController < ApplicationController
-  rest_edit_permissions :class_name => "Project", :id_param => "project_id"
+  load_and_authorize_resource
   before_filter :get_project
   
   # GET /doc_templates

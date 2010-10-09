@@ -17,9 +17,9 @@ h2 {
       <%= image_tag "arrow_left.png" %>
       Projects
     <% end -%>
-    <% if logged_in_person.permitted?(@project, "edit") -%>
+    <% if can? :update, @project -%>
       <% link_to edit_project_path(@project), :class => "button edit" do -%>
-        Properties
+        Members
         <%= image_tag "project_edit.png" %>
       <% end -%>
     <% end -%>

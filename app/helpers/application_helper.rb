@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   def jipe_editor_if_permitted(object, attr, options={})
-    options[:editing] = logged_in? && logged_in_person.permitted?(object, "edit")
+    options[:editing] = can?(:update, object)
     jipe_editor(object, attr, options)
   end
   
@@ -94,7 +94,7 @@ module ApplicationHelper
   def item_actions(item, options={})
     html = ""
     if options[:delete_path]
-      if (not item.respond_to? "permitted?") or (logged_in? and logged_in_person.permitted?(item, "destroy"))
+      if (not item.respond_to? "permitted?") or (person_signed_in? and logged_in_person.permitted?(item, "destroy"))
         html << link_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",
                         :method => :delete, :class => "button delete")
       end

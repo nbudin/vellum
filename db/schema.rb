@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100514183842) do
+ActiveRecord::Schema.define(:version => 20100826153002) do
 
   create_table "attrs", :force => true do |t|
     t.integer "doc_version_id"
@@ -21,16 +21,6 @@ ActiveRecord::Schema.define(:version => 20100514183842) do
   end
 
   add_index "attrs", ["doc_version_id", "slug"], :name => "index_attrs_v2_on_doc_version_id_and_slug", :unique => true
-
-  create_table "auth_tickets", :force => true do |t|
-    t.string   "secret"
-    t.integer  "person_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.datetime "expires_at"
-  end
-
-  add_index "auth_tickets", ["secret"], :name => "index_auth_tickets_on_secret", :unique => true
 
   create_table "choice_values_choices", :id => false, :force => true do |t|
     t.integer "choice_id"
@@ -96,6 +86,16 @@ ActiveRecord::Schema.define(:version => 20100514183842) do
 
   add_index "docs", ["project_id"], :name => "index_docs_v2_on_project_id"
 
+  create_table "documents", :force => true do |t|
+    t.text     "title"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "structure_template_id"
+    t.integer  "version"
+    t.integer  "project_id"
+  end
+
   create_table "mapped_doc_templates", :force => true do |t|
     t.integer  "map_id"
     t.integer  "doc_template_id"
@@ -123,43 +123,35 @@ ActiveRecord::Schema.define(:version => 20100514183842) do
     t.datetime "updated_at"
   end
 
-  create_table "open_id_authentication_associations", :force => true do |t|
-    t.binary  "server_url"
-    t.string  "handle"
-    t.binary  "secret"
-    t.integer "issued"
-    t.integer "lifetime"
-    t.string  "assoc_type"
-  end
-
-  create_table "open_id_authentication_nonces", :force => true do |t|
-    t.string  "nonce"
-    t.integer "created"
-  end
-
   create_table "open_id_authentication_settings", :force => true do |t|
     t.string "setting"
     t.binary "value"
   end
 
-  create_table "permission_caches", :force => true do |t|
-    t.integer "person_id"
-    t.integer "permissioned_id"
-    t.string  "permissioned_type"
-    t.string  "permission_name"
-    t.boolean "result"
+  create_table "people", :force => true do |t|
+    t.string   "email"
+    t.string   "firstname"
+    t.string   "lastname"
+    t.string   "gender"
+    t.datetime "birthdate"
+    t.boolean  "admin"
+    t.string   "username"
+    t.integer  "sign_in_count",      :default => 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  add_index "permission_caches", ["permission_name"], :name => "index_permission_caches_on_permission_name"
-  add_index "permission_caches", ["permissioned_id", "permissioned_type"], :name => "perm_id_type_key"
-  add_index "permission_caches", ["person_id"], :name => "index_permission_caches_on_person_id"
+  add_index "people", ["username"], :name => "index_people_on_username", :unique => true
 
-  create_table "permissions", :force => true do |t|
-    t.integer "role_id"
+  create_table "project_memberships", :force => true do |t|
+    t.integer "project_id"
     t.integer "person_id"
-    t.string  "permission"
-    t.integer "permissioned_id"
-    t.string  "permissioned_type"
+    t.boolean "author"
+    t.boolean "admin"
   end
 
   create_table "projects", :force => true do |t|
@@ -204,5 +196,15 @@ ActiveRecord::Schema.define(:version => 20100514183842) do
     t.string   "site_email"
     t.text     "welcome_html"
   end
+
+  create_table "workflow_steps", :force => true do |t|
+    t.string   "name"
+    t.integer  "position"
+    t.integer  "workflow_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "workflow_steps", ["workflow_id"], :name => "index_workflow_steps_on_workflow_id"
 
 end

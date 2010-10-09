@@ -6,7 +6,7 @@ class RelationshipsControllerTest < ActionController::TestCase
 
     @rt = Factory.create(:relationship_type)
     @project = @rt.project
-    @project.grant(@person)
+    @project.project_memberships.create(:person => @person, :author => true)
     @left = Factory.create(:doc, :project => @project, :doc_template => @rt.left_template)
     @right = Factory.create(:doc, :project => @project, :doc_template => @rt.right_template)
   end

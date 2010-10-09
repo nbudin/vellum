@@ -5,7 +5,7 @@ class RelationshipTypesControllerTest < ActionController::TestCase
     create_logged_in_person
 
     @project = Factory.create(:project)
-    @project.grant(@person)
+    @project.project_memberships.create(:person => @person, :author => true)
   end
   
   context "on GET to :new" do

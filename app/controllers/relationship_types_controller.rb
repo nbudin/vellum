@@ -1,6 +1,5 @@
 class RelationshipTypesController < ApplicationController
-  rest_edit_permissions :class_name => "Project", :id_param => "project_id"
-  before_filter :get_project
+  load_and_authorize_resource :project
   
   def new
     set_relationship_type_return_url
@@ -81,11 +80,7 @@ class RelationshipTypesController < ApplicationController
     end
   end
 
-  private
-  def get_project
-    @project = Project.find(params[:project_id])
-  end
-  
+  private  
   def set_relationship_type_return_url
     session[:relationship_type_return_url] ||= request.referer
   end
