@@ -154,7 +154,7 @@ A simple jQuery UI Accordion.<br />
   Initialize a accordion with the <code>disabled</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).accordion( { disabled: true } );</code></pre>
+<pre><code>$( ".selector" ).accordion({ disabled: true });</code></pre>
 </dd>
 
     
@@ -196,7 +196,7 @@ $( ".selector" ).accordion( "option", "disabled", true );</code></pre>
   Initialize a accordion with the <code>active</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).accordion( { active: 2 } );</code></pre>
+<pre><code>$( ".selector" ).accordion({ active: 2 });</code></pre>
 </dd>
 
     
@@ -238,7 +238,7 @@ $( ".selector" ).accordion( "option", "active", 2 );</code></pre>
   Initialize a accordion with the <code>animated</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).accordion( { animated: 'bounceslide' } );</code></pre>
+<pre><code>$( ".selector" ).accordion({ animated: 'bounceslide' });</code></pre>
 </dd>
 
     
@@ -280,7 +280,7 @@ $( ".selector" ).accordion( "option", "animated", 'bounceslide' );</code></pre>
   Initialize a accordion with the <code>autoHeight</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).accordion( { autoHeight: false } );</code></pre>
+<pre><code>$( ".selector" ).accordion({ autoHeight: false });</code></pre>
 </dd>
 
     
@@ -322,7 +322,7 @@ $( ".selector" ).accordion( "option", "autoHeight", false );</code></pre>
   Initialize a accordion with the <code>clearStyle</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).accordion( { clearStyle: true } );</code></pre>
+<pre><code>$( ".selector" ).accordion({ clearStyle: true });</code></pre>
 </dd>
 
     
@@ -364,7 +364,7 @@ $( ".selector" ).accordion( "option", "clearStyle", true );</code></pre>
   Initialize a accordion with the <code>collapsible</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).accordion( { collapsible: true } );</code></pre>
+<pre><code>$( ".selector" ).accordion({ collapsible: true });</code></pre>
 </dd>
 
     
@@ -406,7 +406,7 @@ $( ".selector" ).accordion( "option", "collapsible", true );</code></pre>
   Initialize a accordion with the <code>event</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).accordion( { event: 'mouseover' } );</code></pre>
+<pre><code>$( ".selector" ).accordion({ event: 'mouseover' });</code></pre>
 </dd>
 
     
@@ -448,7 +448,7 @@ $( ".selector" ).accordion( "option", "event", 'mouseover' );</code></pre>
   Initialize a accordion with the <code>fillSpace</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).accordion( { fillSpace: true } );</code></pre>
+<pre><code>$( ".selector" ).accordion({ fillSpace: true });</code></pre>
 </dd>
 
     
@@ -490,7 +490,7 @@ $( ".selector" ).accordion( "option", "fillSpace", true );</code></pre>
   Initialize a accordion with the <code>header</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).accordion( { header: 'h3' } );</code></pre>
+<pre><code>$( ".selector" ).accordion({ header: 'h3' });</code></pre>
 </dd>
 
     
@@ -532,7 +532,7 @@ $( ".selector" ).accordion( "option", "header", 'h3' );</code></pre>
   Initialize a accordion with the <code>icons</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).accordion( { icons: { 'header': 'ui-icon-plus', 'headerSelected': 'ui-icon-minus' } } );</code></pre>
+<pre><code>$( ".selector" ).accordion({ icons: { 'header': 'ui-icon-plus', 'headerSelected': 'ui-icon-minus' } });</code></pre>
 </dd>
 
     
@@ -574,7 +574,7 @@ $( ".selector" ).accordion( "option", "icons", { 'header': 'ui-icon-plus', 'head
   Initialize a accordion with the <code>navigation</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).accordion( { navigation: true } );</code></pre>
+<pre><code>$( ".selector" ).accordion({ navigation: true });</code></pre>
 </dd>
 
     
@@ -616,7 +616,7 @@ $( ".selector" ).accordion( "option", "navigation", true );</code></pre>
   Initialize a accordion with the <code>navigationFilter</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).accordion( { navigationFilter: function(){ ... } } );</code></pre>
+<pre><code>$( ".selector" ).accordion({ navigationFilter: function(){ ... } });</code></pre>
 </dd>
 
     
@@ -825,6 +825,28 @@ $( ".selector" ).accordion( "option", "navigationFilter", function(){ ... } );</
 </li>
 
 
+<li class="method" id="method-option">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-option">option</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.accordion( "option"
+
+, options
+
+
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Set multiple accordion options at once by providing an options object.</p>
+  </div>
+</li>
+
+
 <li class="method" id="method-widget">
   <div class="method-header">
     <h3 class="method-name"><a href="#method-widget">widget</a></h3>
@@ -946,10 +968,10 @@ $( ".selector" ).accordion( "option", "navigationFilter", function(){ ... } );</
 </div>
 
 </p><!-- 
-Pre-expand include size: 35160 bytes
-Post-expand include size: 60096 bytes
-Template argument size: 34821 bytes
+Pre-expand include size: 36551 bytes
+Post-expand include size: 61985 bytes
+Template argument size: 35253 bytes
 Maximum: 2097152 bytes
 -->
 
-<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3773-1!1!0!!en!2 and timestamp 20100318122755 -->
+<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3773-1!1!0!!en!2 and timestamp 20100910151506 -->
