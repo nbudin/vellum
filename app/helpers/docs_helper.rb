@@ -4,7 +4,7 @@ module DocsHelper
 
     case attr.ui_type.try(:to_sym)
     when :textarea
-      attr_fields.text_area :value, :class => "mceEditor"
+      attr_fields.text_area :value, :class => "wymeditor"
     when :radio
       content_tag(:ul, :style => "list-style-type: none;") do
         attr.choices.collect do |choice|

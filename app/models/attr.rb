@@ -7,7 +7,7 @@ class Attr < ActiveRecord::Base
 
         validates_presence_of :name
       end
-    end
+    end    
   end
 
   module WithSlug
