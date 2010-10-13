@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class DocTest < ActiveSupport::TestCase
-  should_belong_to :project
-  should_belong_to :doc_template
-  should_belong_to :creator
-  should_have_many :versions
+  should belong_to(:project)
+  should belong_to(:doc_template)
+  should belong_to(:creator)
+  should have_many(:versions)
 
   context "A doc" do
     setup do

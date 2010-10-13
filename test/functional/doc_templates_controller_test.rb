@@ -13,9 +13,9 @@ class DocTemplatesControllerTest < ActionController::TestCase
       get :index, :project_id => @project.id
     end
 
-    should_respond_with :success
-    should_assign_to :doc_templates
-    should_render_template "index"
+    should respond_with(:success)
+    should assign_to(:doc_templates)
+    should render_template("index")
   end
 
   context "on GET to :index.json" do
@@ -23,8 +23,8 @@ class DocTemplatesControllerTest < ActionController::TestCase
       get :index, :project_id => @project.id, :format => "json"
     end
 
-    should_respond_with :success
-    should_assign_to :doc_templates
+    should respond_with(:success)
+    should assign_to(:doc_templates)
     should_respond_with_json
   end
 
@@ -33,9 +33,9 @@ class DocTemplatesControllerTest < ActionController::TestCase
       get :new, :project_id => @project.id
     end
 
-    should_respond_with :success
-    should_assign_to :doc_template
-    should_render_template "new"
+    should respond_with(:success)
+    should assign_to(:doc_template)
+    should render_template("new")
   end
 
   context "on POST to :create" do
@@ -45,9 +45,9 @@ class DocTemplatesControllerTest < ActionController::TestCase
         :doc_template => { :name => "Car" }
     end
 
-    should_respond_with :redirect
-    should_assign_to :doc_template
-    should_not_set_the_flash
+    should respond_with(:redirect)
+    should assign_to(:doc_template)
+    should_not set_the_flash
 
     should "create a doc template" do
       assert_equal @old_count + 1, DocTemplate.count
@@ -68,9 +68,9 @@ class DocTemplatesControllerTest < ActionController::TestCase
         get :show, :project_id => @project.id, :id => @tmpl.id
       end
 
-      should_respond_with :success
-      should_assign_to :doc_template
-      should_render_template "show"
+      should respond_with(:success)
+      should assign_to(:doc_template)
+      should render_template("show")
     end
 
     context "on PUT to :update" do
@@ -81,9 +81,9 @@ class DocTemplatesControllerTest < ActionController::TestCase
           :doc_template => { :name => @new_name }
       end
 
-      should_respond_with :redirect
-      should_assign_to :doc_template
-      should_not_set_the_flash
+      should respond_with(:redirect)
+      should assign_to(:doc_template)
+      should_not set_the_flash
 
       should "update the template" do
         assert_equal @new_name, assigns(:doc_template).name
@@ -102,10 +102,10 @@ class DocTemplatesControllerTest < ActionController::TestCase
         delete :destroy, :project_id => @project.id, :id => @tmpl.id
       end
 
-      should_respond_with :redirect
-      should_assign_to :doc_template
-      should_not_set_the_flash
-      should_redirect_to("the template list") { doc_templates_path(@project) }
+      should respond_with(:redirect)
+      should assign_to(:doc_template)
+      should_not set_the_flash
+      should redirect_to("the template list") { doc_templates_path(@project) }
 
       should "destroy a template" do
         assert_equal @old_count - 1, DocTemplate.count

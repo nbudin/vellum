@@ -11,7 +11,9 @@ class RelationshipTest < ActiveSupport::TestCase
     @rt = @p.relationship_types.create(:left_template => @t, :right_template => @t)
   end
   
-  should_validate_presence_of :left, :right, :project, :relationship_type
+  [:left, :right, :project, :relationship_type].each do |f|
+    should validate_presence_of(f)
+  end
   
   context "A new relationship" do
     setup do
