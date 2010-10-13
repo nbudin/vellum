@@ -11,7 +11,6 @@ body {
 	top: 20px;
 	margin-top: 0.5em;
 	right: 0.5em;
-    background-color: <%= @site_settings.site_color %>;
     padding: 0.3em;
     text-align: center;
     border-radius: 5px;

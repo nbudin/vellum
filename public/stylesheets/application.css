@@ -74,7 +74,6 @@ div.progressBar div.background {
 }
 
 div.topbar {
-  background-color: <%= @site_settings.site_color %>;
   position: fixed;
   top: 0px;
   left: 0px;
@@ -166,7 +165,6 @@ div.authbox {
     margin-left: -160px;
     margin-top: -125px;
     border: 1px black solid;
-    background-color: <%= @site_settings.site_color %>;
     padding: 1em;
     border-radius: 5px;
     -moz-border-radius: 5px;
@@ -189,7 +187,6 @@ div.authbox {
 }
 
 #other_login_options li a {
-    background-color: <%= @site_settings.site_color %>;
     color: black;
     text-decoration: none;
     margin: 0.5em;
@@ -291,7 +288,6 @@ dl dt {
 }
 
 .cardform {
-  background-color: <%= @site_settings.site_color %>;
   width: 600px;
   margin-left: auto;
   margin-right: auto;
