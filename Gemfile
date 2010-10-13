@@ -9,6 +9,8 @@ gem "radius"
 gem "nbudin-version_fu", :require => "version_fu"
 gem "jrails"
 gem "rubyzip"
+gem "nokogiri", ">= 1.4.1"
+gem "sanitize"
 
 group :development do
   gem "bullet"

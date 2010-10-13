@@ -31,6 +31,12 @@ class DocTest < ActiveSupport::TestCase
     should "not start out assigned to anyone" do
       assert_nil @doc.assignee
     end
+    
+    should "automatically sanitize content on save" do
+      @doc.content = "<span class=\"invalid-class\">Sanitized</span>"
+      assert @doc.save
+      assert_equal "Sanitized", @doc.content
+    end
 
     context "having been saved" do
       setup do
@@ -67,6 +73,12 @@ class DocTest < ActiveSupport::TestCase
                 2 => { 'choice' => "blue", 'selected' => false } } } ]
           assert_equal "red, green", @attr.value
         end
+      end
+      
+      should "sanitize attr content on save" do
+        @attr.value = "<table><tr><td>A table cell</td></tr></table>"
+        assert @doc.save
+        assert_equal "A table cell", @doc.attrs[@attr_name].value
       end
 
       context "having a value" do

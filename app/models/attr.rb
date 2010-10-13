@@ -69,7 +69,7 @@ class Attr < ActiveRecord::Base
       }
       selected_choices.collect { |choice| choice['choice'] }.join(", ")
     else
-      value
+      Sanitize.clean(value.to_s, Sanitize::Config::VELLUM)
     end)
   end
 

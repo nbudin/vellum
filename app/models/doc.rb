@@ -6,6 +6,12 @@ class Doc < ActiveRecord::Base
     has_many :attrs, :class_name => "::Attr",
       :foreign_key => "doc_version_id", :autosave => true
   end
+  
+  before_save do |doc|
+    unless doc.content.blank?
+      doc.content = Sanitize.clean(doc.content, Sanitize::Config::VELLUM)
+    end
+  end
 
   if self.versioned_columns
     self.versioned_columns -= %w{ author_id }
