@@ -111,7 +111,7 @@
 
 <p style="color: green"><%= flash[:notice] %></p>
 
-<%= yield.unpack("U*").collect { |s| (s > 127 ? "&##{s};" : s.chr) }.join("")  %>
+<%= yield %>
 
 </body>
 </html>
