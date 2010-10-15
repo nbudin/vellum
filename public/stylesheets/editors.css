@@ -95,6 +95,8 @@ button, a.button, input[type=submit], #other_login_options li a {
     background-image: url(/images/button-bg.png);
     background-position: 50% 50%;
     background-repeat: repeat-x;
+    font-family: sans-serif;
+    font-size: 13px;
 }
 
 button[disabled], a.button.disabled, input[type=submit][disabled] {
