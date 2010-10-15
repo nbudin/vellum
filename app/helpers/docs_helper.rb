@@ -58,7 +58,7 @@ module DocsHelper
   def render_attr_value(attr)
     case (attr.ui_type.try(:to_sym))
     when :textarea
-      content_tag(:div, sanitize(attr.value), :class => "document_content")
+      content_tag(:div, attr.value, :class => "document_content")
     else
       attr.value
     end
