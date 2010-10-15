@@ -1,10 +1,28 @@
 <p><%= link_to "<- Back to #{@project.name}", project_path(@project) %></p>
 
 <% form_for(@doc, :url => docs_path(@project)) do |f| -%>
+  <div class="jumpbox">
+    <div class="navigation">
+      <% link_to project_path(@project), :class => "button cancel" do -%>
+        <%= image_tag "arrow_left.png" %>
+        Cancel
+      <% end -%>
+      <button type="submit" class="edit wymupdate">
+        Create <%= @doc.doc_template.name %>
+        <%= image_tag "structure_add.png" %>
+      </button>
+    </div>
+    
+    <h2>New document</h2>
+    <p>
+      <b>Template:</b> 
+      <% link_to doc_template_path(@doc.project, @doc.doc_template) do -%>
+        <%= image_tag "template.png" %>
+        <%= @doc.doc_template.name %>
+      <% end -%>
+    </p>
+  </div>
+
   <%= hidden_field_tag "template_id", @doc.doc_template.id %>
   <%= render :partial => "form", :locals => { :f => f } %>
-
-  <p>
-    <%= submit_tag "Create #{@doc.doc_template.name}", :class => "new wymupdate" %>
-  </p>
 <% end -%>
