@@ -58,10 +58,21 @@ convert_css_to_tags = lambda do |env|
   { :node => node }
 end
 
+convert_line_endings_to_unix = lambda do |env|
+  node = env[:node]
+  
+  node.children.select(&:text?).each do |text|
+    text.content = text.content.gsub(/\r\n/, "\n")
+    text.content = text.content.gsub(/\r/, "\n")
+  end
+  
+  { :node => node }
+end
+
 Sanitize::Config::VELLUM = {
   :elements => %w{p h1 h2 h3 h4 h5 h6 ul ol li b i em strong br u},
   :attributes => {
     :all => %w{class}
   },
-  :transformers => [ remove_non_vellum_classes, convert_css_to_tags, remove_unneeded_spans ]
+  :transformers => [ remove_non_vellum_classes, convert_css_to_tags, remove_unneeded_spans, convert_line_endings_to_unix ]
 }

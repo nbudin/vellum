@@ -28,6 +28,13 @@ class SanitizeTest < ActiveSupport::TestCase
     assert_sanitized("<span class=\"MsoNormal\" style=\"margin-left: 3px;\">Some text</span>", "<span>Some text</span>")
     assert_sanitized("<center>Centered text</center>", "Centered text")
   end
+  
+  test "convert non-Unix line breaks" do
+    assert_sanitized("<p>My text<br />\nis on two lines</p>", "<p>My text<br />\nis on two lines</p>")
+    assert_sanitized("<p>My text<br />\r\nis on two lines</p>", "<p>My text<br />\nis on two lines</p>")
+    assert_sanitized("<p>My text<br />\ris on two lines</p>", "<p>My text<br />\nis on two lines</p>")
+    assert_sanitized("<p>My text<br />\r\nis on<br />\rthree lines</p>", "<p>My text<br />\nis on<br />\nthree lines</p>")
+  end
 
   private
   def assert_sanitized(input, expected)
