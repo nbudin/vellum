@@ -173,3 +173,59 @@ jQuery.fn.vellumDocSummaryPopup = function() {
         });
     });
 }
+
+jQuery.fn.vellumEditExpander = function () {
+    this.each(function() {
+        var $this = jQuery(this);
+        var children = $this.children("*:visible").hide();
+    
+        var preview = jQuery("<div class=\"edit-expander-preview\" style=\"cursor: pointer;\">" 
+            + $this.attr('data-edit-expander-preview') 
+            + " <em>(click to edit)</em>"
+            + "</div>");
+        $this.prepend(preview);
+        preview.bind('click', function () {
+           preview.hide();
+           children.show(); 
+        });        
+    });
+    
+    return this;
+}
+
+jQuery.fn.vellumAutoResizeWym = function () {
+    var $wymIframe = this.find(".wym_iframe iframe");
+    if ($wymIframe.size() == 0) {
+        return this;
+    }
+    
+    var doResize = function () {
+        var targetHeight = jQuery(window).height() - $wymIframe.offset().top - 15;
+
+        if (targetHeight < 200) {
+            targetHeight = 200;
+        }
+
+        $wymIframe.height(targetHeight);
+    };
+    
+    var initLoop = function() {
+        // bit of a hack.  wait for the iframe height to be 200 before doing the initial resize.
+        
+        if ($wymIframe.height() < 200) {
+            setTimeout(initLoop, 100);
+        } else {
+            doResize();
+        }
+    };
+    
+    var autoResizeTimer;
+    jQuery(window).resize(function () {
+        clearTimeout(autoResizeTimer);
+        autoResizeTimer = setTimeout(doResize, 100);
+    });
+    
+    initLoop();
+    
+    return this;
+}

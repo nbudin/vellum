@@ -51,7 +51,8 @@ module DocsHelper
     
     attr_fields.hidden_field(:name) +
     content_tag(:dt, attr_fields.label(:value, attr.name)) +
-    content_tag(:dd, render_attr_value_editor(attr_fields), :class => attr_class(attr))
+    content_tag(:dd, render_attr_value_editor(attr_fields), :class => "vellumEditExpander #{attr_class(attr)}", 
+      :"data-edit-expander-preview" => truncate(strip_tags(attr.value), 100))
   end
 
   def render_attr_value(attr)
