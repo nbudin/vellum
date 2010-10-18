@@ -102,8 +102,8 @@ class DocsController < ApplicationController
     respond_to do |format|
       if successful_save
         format.html { redirect_to doc_url(@project, @doc) }
-        format.xml  { head :ok }
-        format.json { head :ok }
+        format.xml  { render :xml => @doc.to_xml }
+        format.json { render :json => @doc.to_json }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @doc.errors.to_xml }

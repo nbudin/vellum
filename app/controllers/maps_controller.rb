@@ -60,8 +60,8 @@ class MapsController < ApplicationController
     respond_to do |format|
       if @map.update_attributes(params[:map])
         format.html { redirect_to map_url(@project, @map) }
-        format.xml  { head :ok }
-        format.json { head :ok }
+        format.xml  { render :xml => @map.to_xml }
+        format.json { render :json => @map.to_json }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @map.errors, :status => :unprocessable_entity }

@@ -74,8 +74,8 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if @project.update_attributes(params[:project])
         format.html { redirect_to project_url(@project) }
-        format.xml  { head :ok }
-        format.json { head :ok }
+        format.xml  { render :xml => @project.to_xml }
+        format.json { render :json => @project.to_json }
       else
         format.html { render :action => "show" }
         format.xml  { render :xml => @project.errors.to_xml }

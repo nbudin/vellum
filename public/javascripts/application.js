@@ -87,7 +87,7 @@ jQuery.fn.zebrify = function(selector) {
     // stupid zero-based indexing: :even gives you the odd ones and vice versa
     children.filter(":even").removeClass("even").addClass("odd");
     children.filter(":odd").removeClass("odd").addClass("even");
-}
+};
 
 jQuery.fn.vellumAttrList = function() {
     this.children('dd').vellumTemplateAttr();
@@ -115,7 +115,7 @@ jQuery.fn.vellumAttrList = function() {
     this.append($newAttrDiv);
     
     return this;
-}
+};
 
 jQuery.fn.slideUpAndRemove = function() {
     this.slideUp("fast", function() {
@@ -123,7 +123,7 @@ jQuery.fn.slideUpAndRemove = function() {
             });
 
     return this;
-}
+};
 
 jQuery.fn.vellumDocSummaryPopup = function() {
     this.each(function () {
@@ -172,7 +172,7 @@ jQuery.fn.vellumDocSummaryPopup = function() {
             });
         });
     });
-}
+};
 
 jQuery.fn.vellumEditExpander = function () {
     this.each(function() {
@@ -191,7 +191,7 @@ jQuery.fn.vellumEditExpander = function () {
     });
     
     return this;
-}
+};
 
 jQuery.fn.vellumAutoResizeWym = function () {
     var $wymIframe = this.find(".wym_iframe iframe");
@@ -228,7 +228,36 @@ jQuery.fn.vellumAutoResizeWym = function () {
     initLoop();
     
     return this;
-}
+};
+
+jQuery.fn.vellumInPlaceEdit = function() {
+    this.each(function () {
+        var $this = jQuery(this);
+        var url = $this.attr('data-in-place-edit-url');
+        var object = $this.attr('data-in-place-edit-object');
+        var field = $this.attr('data-in-place-edit-field');
+        var rows = $this.attr('data-in-place-edit-rows');
+        
+        var options = { 
+            'name': object + "[" + field + "]", 
+            'id': 'element_id', 
+            'method': 'PUT',
+            'submit': 'Save',
+            'cancel': 'Cancel',
+            'ajaxOptions': { 'dataType': 'json' },
+            'callback': function (value, settings) {
+                jQuery(this).html(jQuery.parseJSON(value)[field]);
+            }
+        };
+        
+        if (rows != null) {
+            options['type'] = 'textarea';
+            options['rows'] = rows;
+        }
+        
+        $this.editable(url, options);
+    });
+};
 
 jQuery(function() {
   jQuery(".wymeditor").wymeditor({
@@ -292,4 +321,10 @@ jQuery(function() {
   
   jQuery(".vellumEditExpander").vellumEditExpander();
   jQuery(".vellumAutoResizeWym").vellumAutoResizeWym();
+  jQuery(".vellumInPlaceEdit").vellumInPlaceEdit();
+  jQuery(".external_view .add_description").bind('click', function () {
+      var $this = jQuery(this);
+      $this.parents('.external_view').find('.blurb_display').show();
+      $this.hide();
+  });
 });

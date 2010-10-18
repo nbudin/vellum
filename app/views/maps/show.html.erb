@@ -1,10 +1,6 @@
-<script type="text/javascript">
-    Resource.model("Map", {prefix: '<%=project_path(@project)%>', format: 'json'});
-</script>
+<%= in_place_editor @map, :name, :tag => "h1", :url => map_url(@project, @map, :format => 'json') %>
 
-<h1><%=jipe_editor @map, "name" %></h1>
-
-<p><%= jipe_editor @map, "blurb", :rows => 4 %></p>
+<%= in_place_editor @map, :blurb, :rows => 4, :url => map_url(@project, @map, :format => 'json') %>
 
 <div class="jumpbox">
   <div class="navigation">

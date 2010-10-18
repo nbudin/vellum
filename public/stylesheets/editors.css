@@ -385,3 +385,11 @@ li.expanded a {
 ul.itemlist :-moz-any-link:focus {
   outline: none;
 }
+
+.vellumInPlaceEdit {
+  cursor: pointer;
+}
+
+.vellumInPlaceEdit:hover {
+  background-color: #ffa;
+}

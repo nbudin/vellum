@@ -1,11 +1,5 @@
-<script type="text/javascript">
-    Resource.model("RelationshipType", {prefix: '<%=project_path(@project)%>', format: 'json'});
-    Resource.model("Doc", {prefix: '<%=project_path(@project)%>', format: 'json'});
-    Resource.model("DocTemplate", {prefix: '<%=project_path(@project)%>', format: 'json'});
-</script>
-
 <p style="margin-top: 2em;">
-  <span style="font-weight: bold; font-size: 200%;"><%= jipe_editor_if_permitted @doc, "name" %></span>
+  <span style="font-weight: bold; font-size: 200%;"><%=h @doc.name %></span>
     (<%=h @doc.doc_template.name %>)</p>
 
 <div class="jumpbox">
