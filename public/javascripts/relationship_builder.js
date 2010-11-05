@@ -1,114 +1,73 @@
-RelationshipBuilder = Class.create({
-    'initialize': function(parent, sourceId, postUrl, buttonImageUrl) {
-		this.parent = $(parent);
-		this.sourceId = sourceId;
-		this.postUrl = postUrl;
-		this.buttonImageUrl = buttonImageUrl;
-	
-		this.form = new Element('form', {'method': 'post', 'action': postUrl });
-		this.parent.appendChild(this.form);
-	
-		this.buttonFloat = new Element('div', {'style': 'float: right;'});
-		this.addButton = new Element('button', {'class': 'new', 'disabled': 'disabled'});
-		if (this.buttonImageUrl) {
-			this.buttonImage = new Element('img', {'src': this.buttonImageUrl});
-			this.addButton.appendChild(this.buttonImage);
-		}
-		this.addButton.insert(' Add');
-		this.buttonFloat.appendChild(this.addButton);
-	
-		this.form.appendChild(this.buttonFloat);
-	
-		this.relationshipTypeIdField = new Element('input', 
-							   {'type': 'hidden', 
-								'name': 'relationship[relationship_type_id]'});
-		this.form.appendChild(this.relationshipTypeIdField);
-		this.relationshipOrigin = null;
-		
-		this.relationshipTypeSelect = new Element('select');
-		this.relationshipTypeSelect.appendChild(new Element('option', {'value': ''}));
-		this.relationshipTypeSelect.observe('change', this.relationshipTypeChanged.bind(this));
-		this.form.appendChild(this.relationshipTypeSelect);
-	
-		this.targetSelect = new Element('select', {'style': 'display: none;'});
-		this.targetSelect.observe('change', this.targetChanged.bind(this));
-		this.form.appendChild(this.targetSelect);
-	
-		this.leftId = new Element('input', {'type': 'hidden', 'name': 'relationship[left_id]'});
-		this.form.appendChild(this.leftId);
-		this.rightId = new Element('input', {'type': 'hidden', 'name': 'relationship[right_id]'});
-		this.form.appendChild(this.rightId);
-	},
-
-    'addRelationshipType': function(id, direction, description) {
-		var option = new Element('option', {'value': id + '_' + direction});
-		option.update(description);
-		this.relationshipTypeSelect.appendChild(option);
-    },
-
-    'relationshipTypeChanged': function(event) {
-		var idpdRegex = /^(\d+)_(\w+)$/;
-		var idPlusDirection = event.element().value;
-		var description = event.element().options[event.element().selectedIndex].innerHTML;
+(function(jQuery) {
+    updateTargets = function() {
+        var $this = jQuery(this);
+        var $form = $this.parent();
+        var $targetIdSelect = $form.find('select[name="relationship[target_id]"]');
+		var idpdRegex = /^(\d+)_(left|right)$/;
+        var idPlusDirection = $this.val();
+		var description = $this.find('option:selected').html();
 		var match = idpdRegex.exec(idPlusDirection);
-		this.targetSelect.childElements().each(function(node) {
-			node.remove();
-		});
+		var projectURL = $form.attr('data-project-url');
 	
 		if (match) {
-			this.relationshipTypeIdField.value = match[1];
-			this.relationshipOrigin = match[2];
-			RelationshipType.find(match[1], function (rtype) {
+            var relationshipTypeId = match[1];
+            var sourceDirection = match[2];
+
+		    $targetIdSelect.find('option').remove();
+		    jQuery.getJSON(projectURL + '/relationship_types/'+relationshipTypeId+'.json', function (rtype) {
 
 				var otherTemplateId = null;
-				if (this.relationshipOrigin == "left") {
+				if (sourceDirection == "left") {
 					otherTemplateId = rtype.right_template_id;
-				} else if (this.relationshipOrigin == "right") {
+				} else if (sourceDirection == "right") {
 					otherTemplateId = rtype.left_template_id;
 				}
-				if (otherTemplateId) {
-					otherTemplate = DocTemplate.find(otherTemplateId);
-					Doc.find('all', {'template_id': otherTemplateId}, function(docs) {
-						var blankOption = new Element('option', {'value': ''});
-						this.targetSelect.appendChild(blankOption);
-			
-						var newOption = new Element('option', {'value': 'new'});
-						newOption.update("<b>New "+otherTemplate.name+"...</b>");
-						this.targetSelect.appendChild(newOption);
-			
-						docs.each(function(doc) {
-							var option = new Element('option', {'value': doc.id});
-							option.update(doc.name);
-							this.targetSelect.appendChild(option);
-						}.bind(this));
-			
-						this.targetSelect.show();
-					}.bind(this));
-				}
-			}.bind(this));
-		} else {
-			this.targetSelect.hide();
-			this.targetChanged(event);
-		}
-    },
+				jQuery.getJSON(projectURL + '/docs.json?template_id=' + otherTemplateId, function(docs) {
+				    $targetIdSelect.append('<option value=""></option>');
+                    $targetIdSelect.append('<option value="new"><b>New document...</b></option>');
 
-    'targetChanged': function(event) {
-		if (this.targetSelect.value) {
-			if (this.addButton.hasAttribute('disabled')) {
-			this.addButton.removeAttribute('disabled');
-			}
-			if (this.relationshipOrigin == 'left') {
-			this.leftId.value = this.sourceId;
-			this.rightId.value = this.targetSelect.value;
-			} else {
-			this.leftId.value = this.targetSelect.value;
-			this.rightId.value = this.sourceId;
-			}
+			        for (var i=0; i<docs.length; i++) {
+			            var doc = docs[i];
+                        var $docOption = jQuery('<option value="'+doc.id+'"></option>');
+                        $docOption.html(doc.name);
+                        $targetIdSelect.append($docOption);
+			        }
+
+			        $targetIdSelect.show();
+			        enableDisableButton();
+				});
+			});
 		} else {
-			this.addButton.writeAttribute({'disabled': 'disabled'});
-			this.leftId.value = null;
-			this.rightId.value = null;
+			$targetIdSelect.hide();
+			enableDisableButton();
 		}
+    };
+    
+    enableDisableButton = function () {
+        var $this = jQuery(this);
+        var $form = $this.parent();
+        var $button = $form.find('button');
+        
+        if ($form.find('select').filter(function () { return (jQuery(this).val() == '') }).size() > 0) {
+            $button.disable();
+        } else {
+            $button.enable();
+        }
+    };
+
+    jQuery.fn.vellumRelationshipBuilder = function() {
+        this.find('select[name="relationship[relationship_type_id_and_source_direction]"]')
+            .bind('change', updateTargets);
+            
+        this.find('select[name="relationship[target_id]"]')
+            .bind('change', enableDisableButton)
+            .hide()
+            .each(enableDisableButton);
+
+        return this;
     }
-});
+})(jQuery);
 
+jQuery(function() {
+    jQuery(".vellumRelationshipBuilder").vellumRelationshipBuilder();
+});
