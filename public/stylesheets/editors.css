@@ -393,3 +393,25 @@ ul.itemlist :-moz-any-link:focus {
 .vellumInPlaceEdit:hover {
   background-color: #ffa;
 }
+
+.vellumColorPicker {
+  width: 15px;
+  height: 15px;
+  position: relative;
+  border: 2px #666 outset;
+  display: inline-block;
+  float: left;
+  cursor: pointer;
+}
+
+.vellumColorPickerPlaceholder {
+  position: absolute;
+  z-index: 1000;
+  background-color: white;
+  border: 1px black solid;
+  top: 16px;
+  left: -2px;
+  width: 200px;
+  height: 200px;
+  display: none;
+}

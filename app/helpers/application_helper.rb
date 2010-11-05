@@ -241,16 +241,11 @@ module ApplicationHelper
   end
   
   def color_picker(f, field_name, options={})
-    html = f.hidden_field "color"
-    html << content_tag("button", "", :class => "color_swatch", :type => "button",
-                        :id => "#{f.object_name}_color_swatch")
-    html << javascript_tag(<<EOJS
-      new Control.ColorPicker("#{f.object_name}_color",
-                                      {
-                                        "swatch": "#{f.object_name}_color_swatch",
-                                        "IMAGE_BASE": "#{ url_for "/images/colorPicker/" }"
-                                      });
-EOJS
-)
+    html = f.hidden_field(field_name)
+    placeholder_id = "#{f.object_name}_#{field_name}_swatch"
+    html << content_tag("div", :class => "vellumColorPicker",
+                        "data-colorpicker-field" => "#{f.object_name}[#{field_name}]") do
+      content_tag("div", "", :class => "vellumColorPickerPlaceholder")
+    end
   end
 end

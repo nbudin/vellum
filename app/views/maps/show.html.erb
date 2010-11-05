@@ -27,7 +27,7 @@
             <%=h mdt.doc_template && mdt.doc_template.name.pluralize %>
           </span>
         <% end -%>
-        <li>
+        <li style="overflow: visible;">
           <% form_for :mapped_doc_template, :url => mapped_doc_templates_path(@project, @map) do |f| -%>
             <span style="float: right;">
               <%= submit_tag "Add", :class => "new" %>
@@ -54,7 +54,7 @@
             <%=h mrt.relationship_type && mrt.relationship_type.left_name %>
           </span>
         <% end -%>
-        <li>
+        <li style="overflow: visible;">
           <% form_for :mapped_relationship_type, :url => mapped_relationship_types_path(@project, @map) do |f| -%>
             <span style="float: right;">
               <%= submit_tag "Add", :class => "new" %>

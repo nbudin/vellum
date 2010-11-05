@@ -259,6 +259,55 @@ jQuery.fn.vellumInPlaceEdit = function() {
     });
 };
 
+jQuery.fn.vellumColorPicker = function() {
+    this.each(function() {
+        var $this = jQuery(this);
+        var $field = $this.parent().find("input[name=\"" + $this.attr('data-colorpicker-field') + "\"]");
+        
+        var callback = function(color) {
+            $field.val(color);
+            $this.css('background-color', color);
+        };
+        
+        var $placeholder = $this.find('.vellumColorPickerPlaceholder');
+        $placeholder.farbtastic(callback).hide();
+        if ($field.val() == "") {
+            $field.val("#000000");
+        }
+        callback($field.val());
+        
+        origPos = $placeholder.show().position();
+        $placeholder.hide();
+        
+        var resetPlaceholder = function() {
+            $placeholder.css('left', origPos.left)
+                .css('top', origPos.top)
+                .detach()
+                .appendTo($this);
+        }
+        
+        var popupPlaceholder = function() {
+            var offset = $placeholder.show().offset();
+            console.log(offset);
+            $placeholder.detach().appendTo("body")
+                .css('left', offset.left)
+                .css('top', offset.top);
+        }
+        
+        $this.bind("click", function () {
+            if ($placeholder.is(':visible')) {
+                resetPlaceholder();
+                $placeholder.hide();
+                $this.css('border-style', 'outset');
+            } else {
+                popupPlaceholder();
+                $placeholder.show();
+                $this.css('border-style', 'inset');
+            }
+        });
+    });
+}
+
 jQuery(function() {
   jQuery(".wymeditor").wymeditor({
     'skin': 'vellum',
@@ -322,6 +371,7 @@ jQuery(function() {
   jQuery(".vellumEditExpander").vellumEditExpander();
   jQuery(".vellumAutoResizeWym").vellumAutoResizeWym();
   jQuery(".vellumInPlaceEdit").vellumInPlaceEdit();
+  jQuery(".vellumColorPicker").vellumColorPicker();
   jQuery(".external_view .add_description").bind('click', function () {
       var $this = jQuery(this);
       $this.parents('.external_view').find('.blurb_display').show();
