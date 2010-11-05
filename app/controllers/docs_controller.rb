@@ -11,7 +11,7 @@ class DocsController < ApplicationController
     if params[:template_id]
       conds[:doc_template_id] = @project.doc_templates.find(params[:template_id]).id
     end
-    @docs = @project.docs.all(:conditions => conds).sort_by {|s| s.name.sort_normalize }
+    @docs = @project.docs.all(:conditions => conds).sort_by {|s| s.name.try(:sort_normalize) || "" }
 
     respond_to do |format|
       format.xml  { render :xml => @docs.to_xml(:methods => [:name]) }
@@ -31,7 +31,7 @@ class DocsController < ApplicationController
                     :inward_relationships => { :right => [], :relationship_type => [:left_template, :right_template] } })
     @relationships = @doc.relationships.sort_by do |rel|
       other = rel.other(@doc)
-      "#{rel.description_for(@doc)} #{other.name.sort_normalize}"
+      "#{rel.description_for(@doc)} #{other.name.try(:sort_normalize)}"
     end
     @relationship_types = {}
     @doc.doc_template.relationship_types.each do |typ|
