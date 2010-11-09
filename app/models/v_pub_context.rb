@@ -93,7 +93,12 @@ class VPubContext < Radius::Context
     
     fields = tag.attr['sort'].split(/\s*,\s*/)
     docs.sort do |a, b|
-      fields.detect(0) do |field|
+      fields_to_try = fields.dup
+      result = 0
+      
+      while fields_to_try.size > 0 && result == 0
+        field = fields_to_try.shift
+
         if field =~ /^-(.*)$/
           field = $1
           desc = -1
@@ -101,20 +106,29 @@ class VPubContext < Radius::Context
           desc = 1
         end
         
-        result = case field
+        case field
         when "@name"
-          a.name <=> b.name
+          av = a.name
+          bv = b.name
         else
-          a.attrs[field].to_s <=> b.attrs[field].to_s
+          av = a.attrs[field].value
+          bv = b.attrs[field].value
         end
         
-        case result
-        when 0
-          nil
+        result = if av.nil? && bv.nil?
+          0
+        elsif av.nil?
+          -1
+        elsif bv.nil?
+          1
         else
-          result * desc
+          av <=> bv
         end
+        
+        result *= desc
       end
+      
+      result
     end
   end
   
