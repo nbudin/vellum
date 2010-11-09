@@ -36,7 +36,7 @@ class VPubContext < Radius::Context
       end
       tag.locals.do_not_recurse += related
 
-      related.collect do |d|
+      sort_docs(tag, related).collect do |d|
         tag.locals.doc = d
         tag.expand
       end.join("")
@@ -49,7 +49,8 @@ class VPubContext < Radius::Context
       end
       
       prev_doc = tag.locals.doc
-      content = project.docs.all(:conditions => conds).collect do |d|
+      docs = project.docs.all(:conditions => conds)
+      content = sort_docs(tag, docs).collect do |d|
         tag.locals.doc = d
         tag.expand
       end.join
@@ -84,6 +85,36 @@ class VPubContext < Radius::Context
   def get_attr(tag)
     if tag.attr['name']
       tag.locals.attr = tag.locals.doc.attrs[tag.attr['name']]
+    end
+  end
+  
+  def sort_docs(tag, docs)
+    return docs unless tag.attr['sort']
+    
+    fields = tag.attr['sort'].split(/\s*,\s*/)
+    docs.sort do |a, b|
+      fields.detect(0) do |field|
+        if field =~ /^-(.*)$/
+          field = $1
+          desc = -1
+        else
+          desc = 1
+        end
+        
+        result = case field
+        when "@name"
+          a.name <=> b.name
+        else
+          a.attrs[field].to_s <=> b.attrs[field].to_s
+        end
+        
+        case result
+        when 0
+          nil
+        else
+          result * desc
+        end
+      end
     end
   end
   
