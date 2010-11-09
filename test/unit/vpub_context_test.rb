@@ -103,8 +103,8 @@ class VPubContextTest < ActiveSupport::TestCase
       end
       
       should "iterate through docs by template" do
-        text = @parser.parse('<v:each_doc template="Person"><v:name/></v:each_doc>')
-        assert_equal "BobJoe", text
+        assert_equal "BobJoe", @parser.parse('<v:each_doc template="Person"><v:name/></v:each_doc>')
+        assert_equal "JoeBob", @parser.parse('<v:each_doc template="Person" sort="-@name"><v:name/></v:each_doc>')
       end
       
       context "in a recursive loop" do
@@ -126,6 +126,16 @@ class VPubContextTest < ActiveSupport::TestCase
             :project => @project, :name => "Tim")
           @tim_taller = Factory.create(:relationship, :relationship_type => @taller,
             :left => @bob, :right => @tim, :project => @project)
+            
+          @tim.attrs['Favorite Color'].value = 'green'
+          @tim.attrs['Sandwich'].value = 'BLT'
+          @tim.attrs['Number'].value = '13'
+          @tim.save
+          @joe.attrs['Favorite Color'].value = 'blue'
+          @joe.attrs['Sandwich'].value = 'BLT'
+          @joe.attrs['Number'].value = '5'
+          @joe.save
+          
           @bob.reload
         end
         
@@ -134,6 +144,21 @@ class VPubContextTest < ActiveSupport::TestCase
             @parser.parse('<v:each_related how="is taller than" sort="@name"><v:name/></v:each_related>')
           assert_equal "#{@tim.name}#{@joe.name}",
             @parser.parse('<v:each_related how="is taller than" sort="-@name"><v:name/></v:each_related>')
+          
+          assert_equal "#{@joe.name}#{@tim.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="Favorite Color"><v:name/></v:each_related>')
+          assert_equal "#{@tim.name}#{@joe.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="-Favorite Color"><v:name/></v:each_related>')
+          
+          assert_equal "#{@joe.name}#{@tim.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="Sandwich, Favorite Color"><v:name/></v:each_related>')
+          assert_equal "#{@tim.name}#{@joe.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="-Sandwich, -Favorite Color"><v:name/></v:each_related>')
+          
+          assert_equal "#{@joe.name}#{@tim.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="#Number"><v:name/></v:each_related>')
+          assert_equal "#{@tim.name}#{@joe.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="-#Number"><v:name/></v:each_related>')
         end
       end
     end
