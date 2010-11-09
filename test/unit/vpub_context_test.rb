@@ -119,6 +119,23 @@ class VPubContextTest < ActiveSupport::TestCase
           assert_equal @joe.name, @parser.parse('<v:each_related how="is taller than"><v:name/></v:each_related>')
         end
       end
+      
+      context "and another related structure" do
+        setup do
+          @tim = Factory.create(:doc, :doc_template => @person,
+            :project => @project, :name => "Tim")
+          @tim_taller = Factory.create(:relationship, :relationship_type => @taller,
+            :left => @bob, :right => @tim, :project => @project)
+          @bob.reload
+        end
+        
+        should "sort properly" do
+          assert_equal "#{@joe.name}#{@tim.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="@name"><v:name/></v:each_related>')
+          assert_equal "#{@tim.name}#{@joe.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="-@name"><v:name/></v:each_related>')
+        end
+      end
     end
   end
 end
