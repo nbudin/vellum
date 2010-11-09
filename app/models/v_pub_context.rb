@@ -99,20 +99,36 @@ class VPubContext < Radius::Context
       while fields_to_try.size > 0 && result == 0
         field = fields_to_try.shift
 
-        if field =~ /^-(.*)$/
-          field = $1
-          desc = -1
-        else
-          desc = 1
+        desc = 1
+        numeric = false
+        special = false
+
+        if field =~ /([^A-Za-z0-9]+)(.*)$/
+          options = $1
+          field = $2
+          
+          numeric = true if options.include? '#'
+          desc = -1 if options.include? '-'
+          special = true if options.include? '@'
         end
         
-        case field
-        when "@name"
-          av = a.name
-          bv = b.name
+        if special
+          case field
+          when "name"
+            av = a.name
+            bv = b.name
+          else
+            av = nil
+            bv = nil
+          end
         else
           av = a.attrs[field].value
           bv = b.attrs[field].value
+        end
+        
+        if numeric
+          av = av.try(:to_f)
+          bv = bv.try(:to_f)
         end
         
         result = if av.nil? && bv.nil?

@@ -129,9 +129,11 @@ class VPubContextTest < ActiveSupport::TestCase
             
           @tim.attrs['Favorite Color'].value = 'green'
           @tim.attrs['Sandwich'].value = 'BLT'
+          @tim.attrs['Number'].value = '13'
           @tim.save
           @joe.attrs['Favorite Color'].value = 'blue'
           @joe.attrs['Sandwich'].value = 'BLT'
+          @joe.attrs['Number'].value = '5'
           @joe.save
           
           @bob.reload
@@ -152,6 +154,11 @@ class VPubContextTest < ActiveSupport::TestCase
             @parser.parse('<v:each_related how="is taller than" sort="Sandwich, Favorite Color"><v:name/></v:each_related>')
           assert_equal "#{@tim.name}#{@joe.name}",
             @parser.parse('<v:each_related how="is taller than" sort="-Sandwich, -Favorite Color"><v:name/></v:each_related>')
+          
+          assert_equal "#{@joe.name}#{@tim.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="#Number"><v:name/></v:each_related>')
+          assert_equal "#{@tim.name}#{@joe.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="-#Number"><v:name/></v:each_related>')
         end
       end
     end
