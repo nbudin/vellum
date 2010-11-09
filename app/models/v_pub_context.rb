@@ -36,7 +36,7 @@ class VPubContext < Radius::Context
       end
       tag.locals.do_not_recurse += related
 
-      related.collect do |d|
+      sort_docs(tag, related).collect do |d|
         tag.locals.doc = d
         tag.expand
       end.join("")
@@ -49,7 +49,8 @@ class VPubContext < Radius::Context
       end
       
       prev_doc = tag.locals.doc
-      content = project.docs.all(:conditions => conds).collect do |d|
+      docs = project.docs.all(:conditions => conds)
+      content = sort_docs(tag, docs).collect do |d|
         tag.locals.doc = d
         tag.expand
       end.join
@@ -84,6 +85,66 @@ class VPubContext < Radius::Context
   def get_attr(tag)
     if tag.attr['name']
       tag.locals.attr = tag.locals.doc.attrs[tag.attr['name']]
+    end
+  end
+  
+  def sort_docs(tag, docs)
+    return docs unless tag.attr['sort']
+    
+    fields = tag.attr['sort'].split(/\s*,\s*/)
+    docs.sort do |a, b|
+      fields_to_try = fields.dup
+      result = 0
+      
+      while fields_to_try.size > 0 && result == 0
+        field = fields_to_try.shift
+
+        desc = 1
+        numeric = false
+        special = false
+
+        if field =~ /([^A-Za-z0-9]+)(.*)$/
+          options = $1
+          field = $2
+          
+          numeric = true if options.include? '#'
+          desc = -1 if options.include? '-'
+          special = true if options.include? '@'
+        end
+        
+        if special
+          case field
+          when "name"
+            av = a.name
+            bv = b.name
+          else
+            av = nil
+            bv = nil
+          end
+        else
+          av = a.attrs[field].value
+          bv = b.attrs[field].value
+        end
+        
+        if numeric
+          av = av.try(:to_f)
+          bv = bv.try(:to_f)
+        end
+        
+        result = if av.nil? && bv.nil?
+          0
+        elsif av.nil?
+          -1
+        elsif bv.nil?
+          1
+        else
+          av <=> bv
+        end
+        
+        result *= desc
+      end
+      
+      result
     end
   end
   
