@@ -15,8 +15,8 @@ class DocsControllerTest < ActionController::TestCase
       get :index, :project_id => @project.id
     end
 
-    should_respond_with :success
-    should_assign_to :docs
+    should respond_with(:success)
+    should assign_to(:docs)
   end
 
   context "on GET to :new" do
@@ -24,9 +24,9 @@ class DocsControllerTest < ActionController::TestCase
       get :new, :project_id => @project.id, :template_id => @tmpl.id
     end
 
-    should_respond_with :success
-    should_assign_to :doc
-    should_render_template "new"
+    should respond_with(:success)
+    should assign_to(:doc)
+    should render_template("new")
   end
 
   context "on POST to :create" do
@@ -44,9 +44,9 @@ class DocsControllerTest < ActionController::TestCase
       }
     end
 
-    should_respond_with :redirect
-    should_assign_to :doc
-    should_not_set_the_flash
+    should respond_with(:redirect)
+    should assign_to(:doc)
+    should_not set_the_flash
 
     should "create a doc with the appropriate attrs" do
       assert_equal @old_count + 1, Doc.count
@@ -81,8 +81,8 @@ class DocsControllerTest < ActionController::TestCase
         get :index, :project_id => @project.id, :template_id => @tmpl.id, :format => "json"
       end
 
-      should_respond_with :success
-      should_assign_to :docs
+      should respond_with(:success)
+      should assign_to(:docs)
       should_respond_with_json
     end
 
@@ -91,9 +91,9 @@ class DocsControllerTest < ActionController::TestCase
         get :show, :id => @doc.id, :project_id => @project.id
       end
 
-      should_respond_with :success
-      should_assign_to :doc
-      should_render_template "show"
+      should respond_with(:success)
+      should assign_to(:doc)
+      should render_template("show")
     end
     
     context "on GET to :edit" do
@@ -101,9 +101,9 @@ class DocsControllerTest < ActionController::TestCase
         get :edit, :id => @doc.id, :project_id => @project.id
       end
       
-      should_respond_with :success
-      should_assign_to :doc
-      should_render_template "edit"
+      should respond_with(:success)
+      should assign_to(:doc)
+      should render_template("edit")
     end
 
     context "on PUT to :update" do
@@ -118,9 +118,9 @@ class DocsControllerTest < ActionController::TestCase
           }
       end
 
-      should_respond_with :redirect
-      should_assign_to :doc
-      should_not_set_the_flash
+      should respond_with(:redirect)
+      should assign_to(:doc)
+      should_not set_the_flash
 
       should "set the new version's author" do
         assert_equal @person.id, assigns(:doc).versions.latest.author_id
@@ -148,20 +148,18 @@ class DocsControllerTest < ActionController::TestCase
           :doc => { :assignee_id => @person.id }
       end
 
-      should_assign_to :doc
+      should assign_to(:doc)
 
       should "reassign the doc" do
         assert_equal @person.id, assigns(:doc).assignee.id
       end
 
-      should "send email to the new assignee" do
-        assert_sent_email do |email|
-          email.subject =~ /\[#{@project.name}\]/ &&
-            email.subject.include?(@doc.name) &&
-            email.from.include?(@site_settings.site_email) &&
-            email.to.include?(@person.primary_email_address) &&
-            email.body.include?("assigned to you")
-        end
+      should have_sent_email do |email|
+        email.subject =~ /\[#{@project.name}\]/ &&
+          email.subject.include?(@doc.name) &&
+          email.from.include?(@site_settings.site_email) &&
+          email.to.include?(@person.primary_email_address) &&
+          email.body.include?("assigned to you")
       end
     end
 
@@ -171,10 +169,10 @@ class DocsControllerTest < ActionController::TestCase
         delete :destroy, :id => @doc.id, :project_id => @project.id
       end
 
-      should_respond_with :redirect
-      should_assign_to :doc
-      should_not_set_the_flash
-      should_redirect_to("the project") { project_path @project }
+      should respond_with(:redirect)
+      should assign_to(:doc)
+      should_not set_the_flash
+      should redirect_to("the project") { project_path @project }
 
       should "destroy a doc" do
         assert_equal @old_count - 1, Doc.count
@@ -195,7 +193,7 @@ class DocsControllerTest < ActionController::TestCase
             "docs_#{@tmpl.id}".to_sym => [ @d2.id.to_s, @doc.id.to_s ]
         end
 
-        should_respond_with :success
+        should respond_with(:success)
 
         should "sort the docs" do
           @doc.reload

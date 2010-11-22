@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class AttrTest < ActiveSupport::TestCase
-  should_belong_to :doc_version
+  should belong_to(:doc_version)
 
   context "with an existing Attr" do
     setup do
@@ -11,8 +11,12 @@ class AttrTest < ActiveSupport::TestCase
     end
 
     subject { @attr }
-    should_allow_values_for :name, "a name", "rather-usual", "10 lbs"
-    should_not_allow_values_for :name, "field_name", "can't", "include!", "weirdness.", nil, ""
+    ["a name", "rather-usual", "10 lbs"].each do |value|
+      should allow_value(value).for(:name)
+    end
+    ["field_name", "can't", "include!", "weirdness.", nil, ""].each do |value|
+      should_not allow_value(value).for(:name)
+    end
 
     should "normalize for slug properly" do
       assert_equal "test_name", @attr.slug

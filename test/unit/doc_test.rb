@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class DocTest < ActiveSupport::TestCase
-  should_belong_to :project
-  should_belong_to :doc_template
-  should_belong_to :creator
-  should_have_many :versions
+  should belong_to(:project)
+  should belong_to(:doc_template)
+  should belong_to(:creator)
+  should have_many(:versions)
 
   context "A doc" do
     setup do
@@ -30,6 +30,12 @@ class DocTest < ActiveSupport::TestCase
 
     should "not start out assigned to anyone" do
       assert_nil @doc.assignee
+    end
+    
+    should "automatically sanitize content on save" do
+      @doc.content = "<span class=\"invalid-class\">Sanitized</span>"
+      assert @doc.save
+      assert_equal "Sanitized", @doc.content
     end
 
     context "having been saved" do
@@ -67,6 +73,12 @@ class DocTest < ActiveSupport::TestCase
                 2 => { 'choice' => "blue", 'selected' => false } } } ]
           assert_equal "red, green", @attr.value
         end
+      end
+      
+      should "sanitize attr content on save" do
+        @attr.value = "<table><tr><td>A table cell</td></tr></table>"
+        assert @doc.save
+        assert_equal "A table cell", @doc.attrs[@attr_name].value
       end
 
       context "having a value" do

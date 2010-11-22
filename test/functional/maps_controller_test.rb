@@ -12,9 +12,9 @@ class MapsControllerTest < ActionController::TestCase
       get :index, :project_id => @project.id
     end
 
-    should_assign_to :maps
-    should_respond_with :success
-    should_render_template "index"
+    should assign_to(:maps)
+    should respond_with(:success)
+    should render_template("index")
   end
 
   context "on POST to :create" do
@@ -23,9 +23,9 @@ class MapsControllerTest < ActionController::TestCase
       post :create, :project_id => @project.id, :map => { :name => "My map" }
     end
 
-    should_assign_to :map
-    should_respond_with :redirect
-    should_not_set_the_flash
+    should assign_to(:map)
+    should respond_with(:redirect)
+    should_not set_the_flash
 
     should "create map" do
       assert_equal @old_count + 1, Map.count
@@ -43,9 +43,9 @@ class MapsControllerTest < ActionController::TestCase
         get :show, :project_id => @project.id, :id => @map.id
       end
 
-      should_assign_to :map
-      should_respond_with :success
-      should_render_template "show"
+      should assign_to(:map)
+      should respond_with(:success)
+      should render_template("show")
     end
 
     context "on PUT to :update" do
@@ -53,9 +53,9 @@ class MapsControllerTest < ActionController::TestCase
         put :update, :project_id => @project.id, :id => @map.id, :map => { :name => "Renamed" }
       end
 
-      should_assign_to :map
-      should_respond_with :redirect
-      should_not_set_the_flash
+      should assign_to(:map)
+      should respond_with(:redirect)
+      should_not set_the_flash
 
       should "update the map" do
         assert_equal "Renamed", assigns(:map).name
@@ -72,10 +72,10 @@ class MapsControllerTest < ActionController::TestCase
         delete :destroy, :project_id => @project.id, :id => @map.id
       end
 
-      should_assign_to :map
-      should_respond_with :redirect
-      should_not_set_the_flash
-      should_redirect_to("the map list") { maps_path @project }
+      should assign_to(:map)
+      should respond_with(:redirect)
+      should_not set_the_flash
+      should redirect_to("the map list") { maps_path @project }
 
       should "destroy a map" do
         assert_equal @old_count - 1, Map.count

@@ -1,4 +1,4 @@
-<p>
+
 <ul class="UIAPIPlugin-toc">
 <li><a href="#overview">Overview</a></li>
 <li><a href="#options">Options</a></li>
@@ -11,11 +11,10 @@
   <div id="overview">
     <h2 class="top-header">Overview</h2>
     <div id="overview-main">
-        A dialog is a floating window that contains a title bar and a content area. The dialog window can be moved, resized and closed with the 'x' icon by default.
-</p><p>If the content length exceeds the maximum height, a scrollbar will automatically appear.
-</p><p>A bottom button bar and semi-transparent modal overlay layer are common options that can be added.
-</p>
-A call to <code>$(foo).dialog()</code> will initialize a dialog instance and will auto-open the dialog by default. If you want to reuse a dialog, the easiest way is to disable the "auto-open" option with: <code>$(foo).dialog({ autoOpen: false })</code> and open it with <code>$(foo).dialog('open')</code>. To close it, use <code>$foo.dialog('close')</code>. A more in-depth explanation with a full demo is available on <a href="http://blog.nemikor.com/2009/04/08/basic-usage-of-the-jquery-ui-dialog/" class="external text" title="http://blog.nemikor.com/2009/04/08/basic-usage-of-the-jquery-ui-dialog/">the Nemikor blog</a>.
+        <p>A dialog is a floating window that contains a title bar and a content area. The dialog window can be moved, resized and closed with the 'x' icon by default.</p>
+<p>If the content length exceeds the maximum height, a scrollbar will automatically appear.</p>
+<p>A bottom button bar and semi-transparent modal overlay layer are common options that can be added.</p>
+<p>A call to <code>$(foo).dialog()</code> will initialize a dialog instance and will auto-open the dialog by default. If you want to reuse a dialog, the easiest way is to disable the "auto-open" option with: <code>$(foo).dialog({ autoOpen: false })</code> and open it with <code>$(foo).dialog('open')</code>. To close it, use <code>$(foo).dialog('close')</code>. A more in-depth explanation with a full demo is available on <a href="http://blog.nemikor.com/2009/04/08/basic-usage-of-the-jquery-ui-dialog/" class="external text" title="http://blog.nemikor.com/2009/04/08/basic-usage-of-the-jquery-ui-dialog/">the Nemikor blog</a>.</p>
     </div>
     <div id="overview-dependencies">
         <h3>Dependencies</h3>
@@ -87,7 +86,7 @@ A simple jQuery UI Dialog.<br />
   Initialize a dialog with the <code>disabled</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { disabled: true } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ disabled: true });</code></pre>
 </dd>
 
     
@@ -129,7 +128,7 @@ $( ".selector" ).dialog( "option", "disabled", true );</code></pre>
   Initialize a dialog with the <code>autoOpen</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { autoOpen: false } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ autoOpen: false });</code></pre>
 </dd>
 
     
@@ -172,7 +171,7 @@ $( ".selector" ).dialog( "option", "autoOpen", false );</code></pre>
   Initialize a dialog with the <code>buttons</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { buttons: { &quot;Ok&quot;: function() { $(this).dialog(&quot;close&quot;); } } } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ buttons: { &quot;Ok&quot;: function() { $(this).dialog(&quot;close&quot;); } } });</code></pre>
 </dd>
 
     
@@ -214,7 +213,7 @@ $( ".selector" ).dialog( "option", "buttons", { &quot;Ok&quot;: function() { $(t
   Initialize a dialog with the <code>closeOnEscape</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { closeOnEscape: false } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ closeOnEscape: false });</code></pre>
 </dd>
 
     
@@ -256,7 +255,7 @@ $( ".selector" ).dialog( "option", "closeOnEscape", false );</code></pre>
   Initialize a dialog with the <code>closeText</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { closeText: 'hide' } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ closeText: 'hide' });</code></pre>
 </dd>
 
     
@@ -298,7 +297,7 @@ $( ".selector" ).dialog( "option", "closeText", 'hide' );</code></pre>
   Initialize a dialog with the <code>dialogClass</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { dialogClass: 'alert' } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ dialogClass: 'alert' });</code></pre>
 </dd>
 
     
@@ -340,7 +339,7 @@ $( ".selector" ).dialog( "option", "dialogClass", 'alert' );</code></pre>
   Initialize a dialog with the <code>draggable</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { draggable: false } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ draggable: false });</code></pre>
 </dd>
 
     
@@ -382,7 +381,7 @@ $( ".selector" ).dialog( "option", "draggable", false );</code></pre>
   Initialize a dialog with the <code>height</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { height: 530 } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ height: 530 });</code></pre>
 </dd>
 
     
@@ -424,7 +423,7 @@ $( ".selector" ).dialog( "option", "height", 530 );</code></pre>
   Initialize a dialog with the <code>hide</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { hide: 'slide' } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ hide: 'slide' });</code></pre>
 </dd>
 
     
@@ -466,7 +465,7 @@ $( ".selector" ).dialog( "option", "hide", 'slide' );</code></pre>
   Initialize a dialog with the <code>maxHeight</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { maxHeight: 400 } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ maxHeight: 400 });</code></pre>
 </dd>
 
     
@@ -508,7 +507,7 @@ $( ".selector" ).dialog( "option", "maxHeight", 400 );</code></pre>
   Initialize a dialog with the <code>maxWidth</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { maxWidth: 600 } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ maxWidth: 600 });</code></pre>
 </dd>
 
     
@@ -550,7 +549,7 @@ $( ".selector" ).dialog( "option", "maxWidth", 600 );</code></pre>
   Initialize a dialog with the <code>minHeight</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { minHeight: 300 } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ minHeight: 300 });</code></pre>
 </dd>
 
     
@@ -592,7 +591,7 @@ $( ".selector" ).dialog( "option", "minHeight", 300 );</code></pre>
   Initialize a dialog with the <code>minWidth</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { minWidth: 400 } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ minWidth: 400 });</code></pre>
 </dd>
 
     
@@ -634,7 +633,7 @@ $( ".selector" ).dialog( "option", "minWidth", 400 );</code></pre>
   Initialize a dialog with the <code>modal</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { modal: true } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ modal: true });</code></pre>
 </dd>
 
     
@@ -676,7 +675,7 @@ $( ".selector" ).dialog( "option", "modal", true );</code></pre>
   Initialize a dialog with the <code>position</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { position: 'top' } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ position: 'top' });</code></pre>
 </dd>
 
     
@@ -718,7 +717,7 @@ $( ".selector" ).dialog( "option", "position", 'top' );</code></pre>
   Initialize a dialog with the <code>resizable</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { resizable: false } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ resizable: false });</code></pre>
 </dd>
 
     
@@ -760,7 +759,7 @@ $( ".selector" ).dialog( "option", "resizable", false );</code></pre>
   Initialize a dialog with the <code>show</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { show: 'slide' } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ show: 'slide' });</code></pre>
 </dd>
 
     
@@ -802,7 +801,7 @@ $( ".selector" ).dialog( "option", "show", 'slide' );</code></pre>
   Initialize a dialog with the <code>stack</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { stack: false } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ stack: false });</code></pre>
 </dd>
 
     
@@ -834,7 +833,7 @@ $( ".selector" ).dialog( "option", "stack", false );</code></pre>
     </dl>
   </div>
   <div class="option-description">
-    <p>Specifies the title of the dialog. The title can also be specified by the title attribute on the dialog source element.</p>
+    <p>Specifies the title of the dialog. Any valid HTML may be set as the title. The title can also be specified by the title attribute on the dialog source element.</p>
   </div>
   <div class="option-examples">
     <h4>Code examples</h4>
@@ -844,7 +843,7 @@ $( ".selector" ).dialog( "option", "stack", false );</code></pre>
   Initialize a dialog with the <code>title</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { title: 'Dialog Title' } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ title: 'Dialog Title' });</code></pre>
 </dd>
 
     
@@ -886,7 +885,7 @@ $( ".selector" ).dialog( "option", "title", 'Dialog Title' );</code></pre>
   Initialize a dialog with the <code>width</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { width: 460 } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ width: 460 });</code></pre>
 </dd>
 
     
@@ -928,7 +927,7 @@ $( ".selector" ).dialog( "option", "width", 460 );</code></pre>
   Initialize a dialog with the <code>zIndex</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).dialog( { zIndex: 3999 } );</code></pre>
+<pre><code>$( ".selector" ).dialog({ zIndex: 3999 });</code></pre>
 </dd>
 
     
@@ -952,33 +951,33 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
     <h2 class="top-header">Events</h2>
     <ul class="events-list">
       
-<li class="event" id="event-beforeclose">
+<li class="event" id="event-beforeClose">
   <div class="event-header">
-    <h3 class="event-name"><a href="#event-beforeclose">beforeclose</a></h3>
+    <h3 class="event-name"><a href="#event-beforeClose">beforeClose</a></h3>
     <dl>
       <dt class="event-type-label">Type:</dt>
         <dd class="event-type">dialogbeforeclose</dd>
     </dl>
   </div>
   <div class="event-description">
-    <p>This event is triggered when a dialog attempts to close. If the beforeclose event handler (callback function) returns false, the close will be prevented.</p>
+    <p>This event is triggered when a dialog attempts to close. If the beforeClose event handler (callback function) returns false, the close will be prevented.</p>
   </div>
   <div class="event-examples">
     <h4>Code examples</h4>
     <dl class="event-examples-list">
     
 <dt>
-  Supply a callback function to handle the <code>beforeclose</code> event as an init option.
+  Supply a callback function to handle the <code>beforeClose</code> event as an init option.
 </dt>
 <dd>
 <pre><code>$( &quot;.selector&quot; ).dialog({
-   beforeclose: function(event, ui) { ... }
+   beforeClose: function(event, ui) { ... }
 });</code></pre>
 </dd>
 
     
 <dt>
-  Bind to the <code>beforeclose</code> event by type: <code>dialogbeforeclose</code>.
+  Bind to the <code>beforeClose</code> event by type: <code>dialogbeforeclose</code>.
 </dt>
 <dd>
 <pre><code>$( &quot;.selector&quot; ).bind( &quot;dialogbeforeclose&quot;, function(event, ui) {
@@ -1074,7 +1073,7 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
     <h3 class="event-name"><a href="#event-dragStart">dragStart</a></h3>
     <dl>
       <dt class="event-type-label">Type:</dt>
-        <dd class="event-type">dragStart</dd>
+        <dd class="event-type">dialogdragstart</dd>
     </dl>
   </div>
   <div class="event-description">
@@ -1095,10 +1094,10 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
 
     
 <dt>
-  Bind to the <code>dragStart</code> event by type: <code>dragStart</code>.
+  Bind to the <code>dragStart</code> event by type: <code>dialogdragstart</code>.
 </dt>
 <dd>
-<pre><code>$( &quot;.selector&quot; ).bind( &quot;dragStart&quot;, function(event, ui) {
+<pre><code>$( &quot;.selector&quot; ).bind( &quot;dialogdragstart&quot;, function(event, ui) {
   ...
 });</code></pre>
 </dd>
@@ -1113,7 +1112,7 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
     <h3 class="event-name"><a href="#event-drag">drag</a></h3>
     <dl>
       <dt class="event-type-label">Type:</dt>
-        <dd class="event-type">drag</dd>
+        <dd class="event-type">dialogdrag</dd>
     </dl>
   </div>
   <div class="event-description">
@@ -1134,10 +1133,10 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
 
     
 <dt>
-  Bind to the <code>drag</code> event by type: <code>drag</code>.
+  Bind to the <code>drag</code> event by type: <code>dialogdrag</code>.
 </dt>
 <dd>
-<pre><code>$( &quot;.selector&quot; ).bind( &quot;drag&quot;, function(event, ui) {
+<pre><code>$( &quot;.selector&quot; ).bind( &quot;dialogdrag&quot;, function(event, ui) {
   ...
 });</code></pre>
 </dd>
@@ -1152,7 +1151,7 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
     <h3 class="event-name"><a href="#event-dragStop">dragStop</a></h3>
     <dl>
       <dt class="event-type-label">Type:</dt>
-        <dd class="event-type">dragStop</dd>
+        <dd class="event-type">dialogdragstop</dd>
     </dl>
   </div>
   <div class="event-description">
@@ -1173,10 +1172,10 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
 
     
 <dt>
-  Bind to the <code>dragStop</code> event by type: <code>dragStop</code>.
+  Bind to the <code>dragStop</code> event by type: <code>dialogdragstop</code>.
 </dt>
 <dd>
-<pre><code>$( &quot;.selector&quot; ).bind( &quot;dragStop&quot;, function(event, ui) {
+<pre><code>$( &quot;.selector&quot; ).bind( &quot;dialogdragstop&quot;, function(event, ui) {
   ...
 });</code></pre>
 </dd>
@@ -1191,7 +1190,7 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
     <h3 class="event-name"><a href="#event-resizeStart">resizeStart</a></h3>
     <dl>
       <dt class="event-type-label">Type:</dt>
-        <dd class="event-type">resizeStart</dd>
+        <dd class="event-type">dialogresizestart</dd>
     </dl>
   </div>
   <div class="event-description">
@@ -1212,10 +1211,10 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
 
     
 <dt>
-  Bind to the <code>resizeStart</code> event by type: <code>resizeStart</code>.
+  Bind to the <code>resizeStart</code> event by type: <code>dialogresizestart</code>.
 </dt>
 <dd>
-<pre><code>$( &quot;.selector&quot; ).bind( &quot;resizeStart&quot;, function(event, ui) {
+<pre><code>$( &quot;.selector&quot; ).bind( &quot;dialogresizestart&quot;, function(event, ui) {
   ...
 });</code></pre>
 </dd>
@@ -1230,11 +1229,11 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
     <h3 class="event-name"><a href="#event-resize">resize</a></h3>
     <dl>
       <dt class="event-type-label">Type:</dt>
-        <dd class="event-type">resize</dd>
+        <dd class="event-type">dialogresize</dd>
     </dl>
   </div>
   <div class="event-description">
-    <p>This event is triggered when the dialog is resized.</p>
+    <p>This event is triggered when the dialog is resized. <a href="http://www.jsfiddle.net/Jp7TM/18/" class="external text" title="http://www.jsfiddle.net/Jp7TM/18/">demo</a></p>
   </div>
   <div class="event-examples">
     <h4>Code examples</h4>
@@ -1251,10 +1250,10 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
 
     
 <dt>
-  Bind to the <code>resize</code> event by type: <code>resize</code>.
+  Bind to the <code>resize</code> event by type: <code>dialogresize</code>.
 </dt>
 <dd>
-<pre><code>$( &quot;.selector&quot; ).bind( &quot;resize&quot;, function(event, ui) {
+<pre><code>$( &quot;.selector&quot; ).bind( &quot;dialogresize&quot;, function(event, ui) {
   ...
 });</code></pre>
 </dd>
@@ -1269,7 +1268,7 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
     <h3 class="event-name"><a href="#event-resizeStop">resizeStop</a></h3>
     <dl>
       <dt class="event-type-label">Type:</dt>
-        <dd class="event-type">resizeStop</dd>
+        <dd class="event-type">dialogresizestop</dd>
     </dl>
   </div>
   <div class="event-description">
@@ -1290,10 +1289,10 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
 
     
 <dt>
-  Bind to the <code>resizeStop</code> event by type: <code>resizeStop</code>.
+  Bind to the <code>resizeStop</code> event by type: <code>dialogresizestop</code>.
 </dt>
 <dd>
-<pre><code>$( &quot;.selector&quot; ).bind( &quot;resizeStop&quot;, function(event, ui) {
+<pre><code>$( &quot;.selector&quot; ).bind( &quot;dialogresizestop&quot;, function(event, ui) {
   ...
 });</code></pre>
 </dd>
@@ -1431,6 +1430,28 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
   </div>
   <div class="method-description">
     <p>Get or set any dialog option. If no value is specified, will act as a getter.</p>
+  </div>
+</li>
+
+
+<li class="method" id="method-option">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-option">option</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.dialog( "option"
+
+, options
+
+
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Set multiple dialog options at once by providing an options object.</p>
   </div>
 </li>
 
@@ -1573,10 +1594,10 @@ $( ".selector" ).dialog( "option", "zIndex", 3999 );</code></pre>
 </div>
 
 </p><!-- 
-Pre-expand include size: 62123 bytes
-Post-expand include size: 103888 bytes
-Template argument size: 58089 bytes
+Pre-expand include size: 63516 bytes
+Post-expand include size: 107006 bytes
+Template argument size: 59321 bytes
 Maximum: 2097152 bytes
 -->
 
-<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3775-1!1!0!!en!2 and timestamp 20100318122801 -->
+<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3775-1!1!0!!en!2 and timestamp 20100910144113 -->

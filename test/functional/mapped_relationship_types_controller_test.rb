@@ -20,9 +20,9 @@ class MappedRelationshipTypesControllerTest < ActionController::TestCase
         :relationship_type_id => @relationship_type.id
     end
 
-    should_assign_to :mapped_relationship_type
-    should_respond_with :redirect
-    should_not_set_the_flash
+    should assign_to(:mapped_relationship_type)
+    should respond_with(:redirect)
+    should_not set_the_flash
 
     should "create a mapped relationship type" do
       assert_equal @old_count + 1, MappedRelationshipType.count
@@ -45,9 +45,9 @@ class MappedRelationshipTypesControllerTest < ActionController::TestCase
           :mapped_relationship_type => { :color => "black" }
       end
 
-      should_assign_to :mapped_relationship_type
-      should_respond_with :redirect
-      should_not_set_the_flash
+      should assign_to(:mapped_relationship_type)
+      should respond_with(:redirect)
+      should_not set_the_flash
 
       should "update the mapped relationship type" do
         assert_equal "black", assigns(:mapped_relationship_type).color
@@ -66,9 +66,9 @@ class MappedRelationshipTypesControllerTest < ActionController::TestCase
         delete :destroy, :id => @mrt.id, :map_id => @mrt.map.id, :project_id => @mrt.map.project.id
       end
 
-      should_assign_to :mapped_relationship_type
-      should_respond_with :redirect
-      should_not_set_the_flash
+      should assign_to(:mapped_relationship_type)
+      should respond_with(:redirect)
+      should_not set_the_flash
 
       should "destroy a mapped relationship type" do
         assert_equal @old_count - 1, MappedRelationshipType.count

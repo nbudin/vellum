@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100514183842) do
+ActiveRecord::Schema.define(:version => 20101014142211) do
 
   create_table "attrs", :force => true do |t|
     t.integer "doc_version_id"
@@ -96,6 +96,16 @@ ActiveRecord::Schema.define(:version => 20100514183842) do
 
   add_index "docs", ["project_id"], :name => "index_docs_v2_on_project_id"
 
+  create_table "documents", :force => true do |t|
+    t.text     "title"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "structure_template_id"
+    t.integer  "version"
+    t.integer  "project_id"
+  end
+
   create_table "mapped_doc_templates", :force => true do |t|
     t.integer  "map_id"
     t.integer  "doc_template_id"
@@ -141,18 +151,6 @@ ActiveRecord::Schema.define(:version => 20100514183842) do
     t.string "setting"
     t.binary "value"
   end
-
-  create_table "permission_caches", :force => true do |t|
-    t.integer "person_id"
-    t.integer "permissioned_id"
-    t.string  "permissioned_type"
-    t.string  "permission_name"
-    t.boolean "result"
-  end
-
-  add_index "permission_caches", ["permission_name"], :name => "index_permission_caches_on_permission_name"
-  add_index "permission_caches", ["permissioned_id", "permissioned_type"], :name => "perm_id_type_key"
-  add_index "permission_caches", ["person_id"], :name => "index_permission_caches_on_person_id"
 
   create_table "permissions", :force => true do |t|
     t.integer "role_id"
@@ -204,5 +202,15 @@ ActiveRecord::Schema.define(:version => 20100514183842) do
     t.string   "site_email"
     t.text     "welcome_html"
   end
+
+  create_table "workflow_steps", :force => true do |t|
+    t.string   "name"
+    t.integer  "position"
+    t.integer  "workflow_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "workflow_steps", ["workflow_id"], :name => "index_workflow_steps_on_workflow_id"
 
 end

@@ -50,6 +50,8 @@ GEM
     ruby-graphviz (0.9.17)
     ruby-openid (2.1.8)
     rubyzip (0.9.4)
+    sanitize (1.2.1)
+      nokogiri (~> 1.4.1)
     shoulda (2.11.3)
     term-ansicolor (1.0.5)
     trollop (1.16.2)
@@ -71,10 +73,12 @@ DEPENDENCIES
   jrails
   mysql
   nbudin-version_fu
+  nokogiri (>= 1.4.1)
   radius
   rails (= 2.3.5)
   ruby-graphviz (>= 0.9.2)
   ruby-openid (~> 2.1.4)
   rubyzip
+  sanitize
   shoulda
   webrat

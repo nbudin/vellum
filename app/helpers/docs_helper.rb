@@ -4,7 +4,7 @@ module DocsHelper
 
     case attr.ui_type.try(:to_sym)
     when :textarea
-      attr_fields.text_area :value, :class => "mceEditor"
+      attr_fields.text_area :value, :class => "wymeditor"
     when :radio
       content_tag(:ul, :style => "list-style-type: none;") do
         attr.choices.collect do |choice|
@@ -51,13 +51,14 @@ module DocsHelper
     
     attr_fields.hidden_field(:name) +
     content_tag(:dt, attr_fields.label(:value, attr.name)) +
-    content_tag(:dd, render_attr_value_editor(attr_fields), :class => attr_class(attr))
+    content_tag(:dd, render_attr_value_editor(attr_fields), :class => "vellumEditExpander #{attr_class(attr)}", 
+      :"data-edit-expander-preview" => truncate(strip_tags(attr.value), 100))
   end
 
   def render_attr_value(attr)
     case (attr.ui_type.try(:to_sym))
     when :textarea
-      content_tag(:div, sanitize(attr.value), :class => "document_content")
+      content_tag(:div, attr.value, :class => "document_content")
     else
       attr.value
     end

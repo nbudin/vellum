@@ -6,6 +6,10 @@
       <%= image_tag "arrow_left.png" %>
       Cancel editing
     <% end -%>
+    <button type="submit" class="edit wymupdate">
+      Save changes
+      <%= image_tag "structure_edit.png" %>
+    </button>
   </div>
     
   <h2><%= @doc.name %></h2>
@@ -30,7 +34,6 @@
 </div>
 
 <%= render :partial => 'form', :locals => { :f => f } %>
-<p><%= submit_tag "Save changes", :class => "save" %></p>
 <% end -%>
 
 <script type="text/javascript">

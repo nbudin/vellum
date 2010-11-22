@@ -13,8 +13,8 @@ class RelationshipTypesControllerTest < ActionController::TestCase
       get :new, :project_id => @project.id
     end
     
-    should_assign_to :relationship_type
-    should_render_template :choose_templates
+    should assign_to(:relationship_type)
+    should render_template(:choose_templates)
   end
   
   context "on POST to :create without templates" do
@@ -25,9 +25,9 @@ class RelationshipTypesControllerTest < ActionController::TestCase
       }
     end
 
-    should_assign_to :relationship_type
-    should_render_template :choose_templates
-    should_not_set_the_flash
+    should assign_to(:relationship_type)
+    should render_template(:choose_templates)
+    should_not set_the_flash
 
     should "not create a relationship type" do
       assert_equal @old_count, RelationshipType.count
@@ -48,8 +48,8 @@ class RelationshipTypesControllerTest < ActionController::TestCase
         }
       end
       
-      should_assign_to :relationship_type
-      should_render_template :new
+      should assign_to(:relationship_type)
+      should render_template(:new)
     end
   
     context "on POST to :create" do
@@ -62,9 +62,9 @@ class RelationshipTypesControllerTest < ActionController::TestCase
         }
       end
   
-      should_assign_to :relationship_type
-      should_respond_with :redirect
-      should_not_set_the_flash
+      should assign_to(:relationship_type)
+      should respond_with(:redirect)
+      should_not set_the_flash
   
       should "create a relationship type" do
         assert_equal @old_count + 1, RelationshipType.count
@@ -86,9 +86,9 @@ class RelationshipTypesControllerTest < ActionController::TestCase
         get :edit, :id => @rt.id, :project_id => @project.id
       end
 
-      should_assign_to :relationship_type
-      should_respond_with :success
-      should_render_template "edit"
+      should assign_to(:relationship_type)
+      should respond_with(:success)
+      should render_template("edit")
     end
 
     context "on PUT to :update" do
@@ -98,9 +98,9 @@ class RelationshipTypesControllerTest < ActionController::TestCase
           :relationship_type => { :left_description => @new_desc }
       end
 
-      should_assign_to :relationship_type
-      should_respond_with :redirect
-      should_not_set_the_flash
+      should assign_to(:relationship_type)
+      should respond_with(:redirect)
+      should_not set_the_flash
 
       should "update the relationship type" do
         assert_equal @new_desc, assigns(:relationship_type).left_description
@@ -119,9 +119,9 @@ class RelationshipTypesControllerTest < ActionController::TestCase
         delete :destroy, :id => @rt.id, :project_id => @project.id
       end
 
-      should_assign_to :relationship_type
-      should_respond_with :redirect
-      should_not_set_the_flash
+      should assign_to(:relationship_type)
+      should respond_with(:redirect)
+      should_not set_the_flash
 
       should "destroy a relationship type" do
         assert_equal @old_count - 1, RelationshipType.count
