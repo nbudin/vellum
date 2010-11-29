@@ -322,7 +322,7 @@ jQuery(function() {
        {'name': 'Redo', 'title': 'Redo', 'css': 'wym_tools_redo'},
 //           {'name': 'InsertImage', 'title': 'Image', 'css': 'wym_tools_image'},
        {'name': 'ToggleHtml', 'title': 'HTML', 'css': 'wym_tools_html'},
-       {'name': 'Paste', 'title': 'Paste_From_Word', 'css': 'wym_tools_paste'},
+       {'name': 'Paste', 'title': 'Paste_From_Word', 'css': 'wym_tools_paste'}
      ],
      containersItems: [
        {'name': 'P', 'title': 'Paragraph', 'css': 'wym_containers_p'},
