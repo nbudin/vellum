@@ -1,1 +1,1 @@
-AeUsers.js_framework = :jquery
+AeUsers.js_framework = "jquery"
