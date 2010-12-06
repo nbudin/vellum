@@ -20,7 +20,8 @@ group :test do
   gem 'database_cleaner'
   gem 'shoulda'
   gem 'factory_girl', "~> 1.2.3"
-  gem 'webrat'
+  gem 'capybara'
+  gem 'akephalos', :git => "https://github.com/thoughtbot/akephalos.git"
   gem 'cucumber'
   gem 'cucumber-rails'
 end
