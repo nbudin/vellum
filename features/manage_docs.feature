@@ -56,12 +56,12 @@ Feature: Manage docs
     And a Character doc named "Governor Sanford" in "Test Project"
 
     When I am on the doc page for Governor Sanford
-    Then the "Assigned to" field should have "nobody" selected
+    Then the "Assigned to" field should contain "nobody"
 
     When I select "Joe User" from "Assigned to"
     And I press "Reassign"
     Then I should be on the doc page for Governor Sanford
-    And the "Assigned to" field should have "Joe User" selected
+    And the "Assigned to" field should contain "Joe User"
 
     When I am on the project page for Test Project
     Then I should see "Assigned to Joe User"

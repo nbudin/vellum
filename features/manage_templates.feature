@@ -59,7 +59,7 @@ Feature: Manage templates
     When I am on the template page for Organization
     And I follow "Create relationship type..."
     
-    And I fill in "Relationship type" with "Organization membership"
+    And I fill in "Relationship Type" with "Organization membership"
     And I select "Character" from "Second template"
     And I press "Continue"
     Then I should see "Phrasing"

@@ -5,7 +5,11 @@ Given /^a project named "(.*)" owned by (.*) (.*)$/ do |name, firstname, lastnam
 end
 
 Given /^a project named "(.*)"$/ do |name|
-  Given %{a project named "#{name}" owned by #{controller.logged_in_person.name}}
+  Given "I am on the projects page"
+  And %{I follow "Create project..."}
+  And %{I fill in "Project Name" with "#{name}"}
+  And %{I press "Create"}
+  Then %{I should see "#{name}"}
 end
 
 Given /^the following projects owned by (.*) (.*):$/ do |firstname, lastname, projects|
@@ -16,13 +20,13 @@ end
 
 Given /^the following projects:$/ do |projects|
   projects.hashes.each do |project_hash|
-    Given %{a project named "#{project_hash[:name]}" owned by #{controller.logged_in_person.name}}
+    Given %{a project named "#{project_hash[:name]}"}
   end
 end
 
 Given /^the Louisiana Purchase project$/ do
   project = Factory.create(:louisiana_purchase)
-  project.grant(controller.logged_in_person)
+  project.grant(Person.find_by_firstname_and_lastname("Joe", "User"))
 end
 
 When /^I delete the (\d+)(?:st|nd|rd|th) project$/ do |pos|
