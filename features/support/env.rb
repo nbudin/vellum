@@ -26,9 +26,9 @@ Capybara.default_selector = :css
 #require 'akephalos'
 #Capybara.javascript_driver = :akephalos
 
-require 'selenium/webdriver'
+#require 'selenium/webdriver'
 Capybara.javascript_driver = :selenium
-Selenium::WebDriver::Firefox.path = '/Applications/Firefox 3.6.app/Contents/MacOS/firefox-bin'
+#Selenium::WebDriver::Firefox.path = '/Applications/Firefox 3.6.app/Contents/MacOS/firefox-bin'
 
 # If you set this to false, any error raised from within your app will bubble 
 # up to your step definition and out to cucumber unless you catch it somewhere
