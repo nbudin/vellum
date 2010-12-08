@@ -3,6 +3,7 @@ Feature: Manage maps
   As a user
   I want to view, create and manage maps in a project
 
+  @javascript
   Scenario: Create a new map
     Given I am logged in as Joe User
     And a project named "Test Project"

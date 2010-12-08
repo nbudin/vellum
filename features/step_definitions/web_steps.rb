@@ -149,7 +149,19 @@ end
 Then /^the "([^"]*)" field(?: within "([^"]*)")? should contain "([^"]*)"$/ do |field, selector, value|
   with_scope(selector) do
     field = find_field(field)
-    field_value = (field.tag_name == 'textarea') ? field.text : field.value
+    field_value = case field.tag_name
+    when 'textarea'
+      field.text
+    when 'select'
+      case field.value
+      when Array
+        field.value.join
+      else
+        field.value
+      end
+    else
+      field.value
+    end
     if field_value.respond_to? :should
       field_value.should =~ /#{value}/
     else

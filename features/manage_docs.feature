@@ -32,6 +32,7 @@ Feature: Manage docs
       |Affiliations|North, East, North West|
       |GM Notes    |Grognar is a moron.    |
 
+  @javascript
   Scenario: Link two docs
     Given I am logged in as Joe User
     And a project named "Test Project"
@@ -49,6 +50,7 @@ Feature: Manage docs
     And I add a new "includes" relationship to "King Louis"
     Then I should see "includes King Louis"
 
+  @javascript
   Scenario: Reassign a doc
     Given I am logged in as Joe User
     And a project named "Test Project"
@@ -63,5 +65,5 @@ Feature: Manage docs
     Then I should be on the doc page for Governor Sanford
     And the "Assigned to" field should contain "Joe User"
 
-    When I am on the project page for Test Project
+    When I go to the project page for Test Project
     Then I should see "Assigned to Joe User"
