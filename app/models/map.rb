@@ -51,19 +51,16 @@ class Map < ActiveRecord::Base
 
     nodes = {}
     mapped_doc_templates.each do |mdt|
-      project.docs.all(:conditions => ["doc_template_id = ?",
-                                       mdt.doc_template.id]).each do |doc|
-        nodes[doc] = g.add_node("doc_#{doc.id}",
+      mdt.doc_template.docs.all(:conditions => { :project_id => project.id }).each do |doc|
+        nodes[doc.id] = g.add_node("doc_#{doc.id}",
                                 doc_options(doc, mdt))
       end
     end
     
     mapped_relationship_types.each do |mrt|
-      project.relationships.all(:conditions => ["relationship_type_id = ?",
-                                                mrt.relationship_type.id]).each do |relationship|
-        g.add_edge(nodes[relationship.left], nodes[relationship.right],
+      mrt.relationship_type.relationships.all(:conditions => { :project_id => project.id }).each do |relationship|
+        g.add_edge(nodes[relationship.left_id], nodes[relationship.right_id],
                  relationship_options(relationship, mrt))
-        
       end
     end
     
