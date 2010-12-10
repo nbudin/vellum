@@ -72,6 +72,12 @@
     </div>
   <% end -%>
 </div>
+
+<p>
+  <%= image_tag "map_download.png" %> Download map:
+  <%= link_to "PDF", map_path(:format => "pdf") %>
+  <%= link_to "SVG", map_path(:format => "svg") %>
+</p>
     
 <!--[if IE]>
 <object src="<%=map_path(:format => "svg") %>" classid="image/svg+xml"
