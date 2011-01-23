@@ -1,7 +1,7 @@
 class DocsController < ApplicationController
   perm_options = { :class_name => "Project", :id_param => "project_id" }
-  rest_permissions perm_options
-  require_permission "edit", {:only => [:sort]}.update(perm_options)
+  require_permission "show", {:only => [:index, :show]}.update(perm_options)
+  require_permission "edit", {:only => [:sort, :destroy, :edit, :new, :create, :update]}.update(perm_options)
   before_filter :get_project
   
   # GET /docs
