@@ -43,6 +43,11 @@ class DocsController < ApplicationController
       end
     end
     
+    other_docs = @project.docs.all(:conditions => {:doc_template_id => @doc.doc_template.id}, :order => 'position')
+    my_index = other_docs.index(@doc)
+    @prev_doc = (my_index > 0) && other_docs[my_index - 1]
+    @next_doc = (my_index < other_docs.length - 1) && other_docs[my_index + 1]
+    
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @doc.to_xml }

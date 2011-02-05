@@ -21,6 +21,20 @@
       <% end -%>
     <% end -%>
   </div>
+  <table style="border: 0; border-collapse: collapse; width: 100%;">
+    <tr>
+      <td style="text-align: left;">
+        <% if @prev_doc -%>
+          <%= link_to "<< #{@prev_doc.name}", doc_path(@prev_doc.project, @prev_doc) %>
+        <% end -%>
+      </td>
+      <td style="text-align: right;">
+        <% if @next_doc -%>
+          <%= link_to "#{@next_doc.name} >>", doc_path(@next_doc.project, @next_doc) %>
+        <% end -%>
+      </td>
+    </tr>
+  </table>
 
   <h2><%=h @doc.name %></h2>
   <p>
