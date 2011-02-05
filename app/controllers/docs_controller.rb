@@ -29,6 +29,7 @@ class DocsController < ApplicationController
       :include => { :doc_template => [],
                     :outward_relationships => { :left => [], :relationship_type => [:left_template, :right_template] }, 
                     :inward_relationships => { :right => [], :relationship_type => [:left_template, :right_template] } })
+    @doc.project = @project
     @relationships = @doc.relationships.sort_by do |rel|
       other = rel.other(@doc)
       "#{rel.description_for(@doc)} #{other.name.sort_normalize}"
