@@ -13,7 +13,7 @@
   <p><%= @error.to_s %></p>
   
   <div class="code">
-    <%=simple_format(h(@error.backtrace.join "\n")) %>
+    <pre><%=h(@error.backtrace.join "\n") %></pre>
   </div>
 <% else -%>
   <% if @publication_template.output_format == "html" -%>
@@ -24,6 +24,6 @@
   <% end -%>
   
   <div class="code">
-    <%=simple_format(h(@output)) %>
+    <pre><%=h(@output) %></pre>
   </div>
 <% end -%>
