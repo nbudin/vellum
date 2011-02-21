@@ -9,6 +9,8 @@ class VPubContext < Radius::Context
     globals.doc = @doc
     self.format = init_options[:format] || 'html'
     
+    @pub_template_cache = {}
+    
     define_tag 'attr' do |tag|
       get_attr tag
       tag.expand
@@ -71,6 +73,16 @@ class VPubContext < Radius::Context
       else
         content
       end
+    end
+    
+    define_tag 'include' do |tag|
+      tmpl = get_pub_template(tag)
+      
+      if tmpl.doc_template && tmpl.doc_template != @doc.doc_template
+        raise "Included template \"#{tmpl.name}\" requires a #{tmpl.doc_template.name} but the current doc is a #{doc.doc_template.name}"
+      end
+
+      tmpl.execute(:doc => @doc, :project => @project)
     end
   end
   
@@ -163,5 +175,10 @@ class VPubContext < Radius::Context
     if cond
       tag.expand
     end
+  end
+  
+  def get_pub_template(tag)
+    template_name = tag.attr['template']
+    @pub_template_cache[template_name] ||= @project.publication_templates.find_by_name(template_name)
   end
 end

@@ -162,5 +162,29 @@ class VPubContextTest < ActiveSupport::TestCase
         end
       end
     end
+    
+    context "with an included PublicationTemplate" do
+      setup do
+        @other_template = Factory.create(:publication_template, :project => @project, :name => "Another template",
+          :content => "Included content, with the doc name <v:name/>")
+      end
+      
+      should "include the content from the other PublicationTemplate with appropriate context" do
+        assert_equal "My content\nIncluded content, with the doc name Bob\nMore content Bob",
+          @parser.parse("My content\n<v:include template=\"Another template\"/>\nMore content <v:name/>")
+      end
+      
+      should "enforce doc template restrictions" do
+        assert @tree = @project.doc_templates.create(:name => "Tree")
+        @other_template.doc_template = @tree
+        assert @other_template.save
+        
+        exc = assert_raise RuntimeError do
+          @parser.parse("My content\n<v:include template=\"Another template\"/>\nMore content <v:name/>")
+        end
+        
+        assert_equal "Included template \"Another template\" requires a Tree but the current doc is a Person", exc.message
+      end
+    end
   end
 end
