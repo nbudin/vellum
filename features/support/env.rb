@@ -15,7 +15,7 @@ require 'cucumber/web/tableish'
 require 'capybara/rails'
 require 'capybara/cucumber'
 require 'capybara/session'
-require 'cucumber/rails/capybara_javascript_emulation' # Lets you click links with onclick javascript handlers without using @culerity or @javascript
+#require 'cucumber/rails/capybara_javascript_emulation' # Lets you click links with onclick javascript handlers without using @culerity or @javascript
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd
@@ -26,9 +26,14 @@ Capybara.default_selector = :css
 #require 'akephalos'
 #Capybara.javascript_driver = :akephalos
 
-#require 'selenium/webdriver'
-Capybara.javascript_driver = :selenium
-#Selenium::WebDriver::Firefox.path = '/Applications/Firefox 3.6.app/Contents/MacOS/firefox-bin'
+require 'selenium/webdriver'
+
+Capybara.register_driver :selenium_chrome do |app|
+  Capybara::Driver::Selenium.new(app, :browser => :chrome)
+end
+   
+Capybara.javascript_driver = :selenium_chrome
+#Selenium::WebDriver::Firefox.path = '/Applications/Firefox.app/Contents/MacOS/firefox-bin'
 
 # If you set this to false, any error raised from within your app will bubble 
 # up to your step definition and out to cucumber unless you catch it somewhere

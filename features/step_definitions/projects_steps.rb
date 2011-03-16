@@ -30,9 +30,8 @@ Given /^the Louisiana Purchase project$/ do
 end
 
 When /^I delete the (\d+)(?:st|nd|rd|th) project$/ do |pos|
-  visit projects_url
-  within("ul.itemlist li:nth-child(#{pos.to_i})") do
-    click_link "Delete"
+  within(:xpath, "//ul[@class='itemlist']/li[position() = #{pos.to_i}]") do
+    click_on "Delete"
   end
 end
 

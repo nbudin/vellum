@@ -50,7 +50,6 @@ Feature: Manage docs
     And I add a new "includes" relationship to "King Louis"
     Then I should see "includes King Louis"
 
-  @javascript
   Scenario: Reassign a doc
     Given I am logged in as Joe User
     And a project named "Test Project"

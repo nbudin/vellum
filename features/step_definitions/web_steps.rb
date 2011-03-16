@@ -153,11 +153,12 @@ Then /^the "([^"]*)" field(?: within "([^"]*)")? should contain "([^"]*)"$/ do |
     when 'textarea'
       field.text
     when 'select'
-      case field.value
+      v = field.all('option[selected]').collect { |o| o.text }
+      case v
       when Array
-        field.value.join
+        v.join
       else
-        field.value
+        v
       end
     else
       field.value

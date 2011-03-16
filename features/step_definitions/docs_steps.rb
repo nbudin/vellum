@@ -22,7 +22,7 @@ When /^I add a new "([^\"]*)" relationship to "([^\"]*)"$/ do |relationship_type
     When %{I select "#{target}" from "relationship[target_id]"}
     assert_equal 1, page.evaluate_script("jQuery('.vellumRelationshipBuilder button:enabled').size()")
   
-    click('Add')
+    click_on('Add')
   end
   Then %{I should see "#{relationship_type_name} #{target}" within "\#relationships ul"}
 end
