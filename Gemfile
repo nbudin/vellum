@@ -17,6 +17,7 @@ gem "jrails"
 gem "rubyzip"
 gem "nokogiri", ">= 1.4.1"
 gem "sanitize"
+gem "ae_users_legacy"
 
 group :development do
   gem "bullet"

@@ -14,6 +14,8 @@ GEM
     activesupport (2.3.5)
     acts_as_singleton (0.0.5)
       activerecord
+    ae_users_legacy (0.6.3)
+      ruby-openid (>= 2.0.4)
     builder (2.1.2)
     bullet (2.0.1)
       uniform_notifier (~> 1.0.0)
@@ -107,6 +109,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord-jdbc-adapter
   acts_as_singleton
+  ae_users_legacy
   bullet
   capybara
   cucumber
