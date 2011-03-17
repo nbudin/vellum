@@ -125,7 +125,7 @@ jQuery.fn.vellumAttrList = function() {
     this.append($newAttrDiv);
     
     var $attrList = this;
-    this.sortable({'handle': '.sort_handle', 'items': 'tr', 'stop': function (event, ui) {
+    this.sortable({'handle': '.sort_handle', 'items': 'tr:not(.fromTemplate)', 'stop': function (event, ui) {
         $attrList.find('tr').each(function(index) {
             var $this = jQuery(this);
             $this.find('input.position').val(index + 1);
