@@ -37,12 +37,6 @@
     background-color: #aaf;
 }
 
-.name {
-    padding: 2px;
-    font-weight: bold;
-    display: inline-block;
-}
-
 .complex_item .actions {
     clear: both;
     background-color: rgba(0, 0, 0, 0.3);
@@ -299,35 +293,74 @@ li.tab a.active {
     background-color: #c9f;
 }
 
-dl.doc_attrs dt, dl.doc_template_attrs dt {
-  min-width: 10em;
+table.doc_attrs, table.doc_template_attrs {
+  border-spacing: 0 0.5em;
+  width: 90%;
+  margin-left: 20px;
+}
+
+dl.doc_attrs dt {
   margin-left: 15px;
   margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 0;
   padding-right: 0.5em;
 }
 
-dl.doc_attrs dt, dl.doc_template_attrs dt input {
+table.doc_attrs tr td.name, table.doc_template_attrs tr td.name, tr.attr_sortable_helper td.name {
+  min-width: 10em;
+  padding: 0.5em;
+  vertical-align: top;
+}
+
+table.doc_attrs tr td.name input, table.doc_template_attrs tr td.name input, tr.attr_sortable_helper td.name input {
   width: 10em;
 }
 
-dl.doc_attrs dd, dl.doc_template_attrs dd {
+dl.doc_attrs dd {
   display: block;
-  padding: 0.5em;
   padding-left: 16em;
-  background-color: #ddd;
+  max-width: 45em;
   border-radius: 0.5em;
   -moz-border-radius: 0.5em;
   -webkit-border-radius: 0.5em;
-  max-width: 45em;
+}
+
+table.doc_attrs tr, table.doc_template_attrs tr, tr.attr_sortable_helper {
+  padding: 0.5em;
   min-height: 12pt;
+  background-color: #ddd;
 }
 
-dl.doc_attrs dd textarea {
-    width: 100%;
+table.doc_attrs tr td.name, table.doc_template_attrs tr td.name, tr.attr_sortable_helper td.name {
+  -moz-border-radius-topleft: 0.5em;
+  -moz-border-radius-bottomleft: 0.5em;
+  -webkit-border-top-left-radius: 0.5em;
+  -webkit-border-bottom-left-radius: 0.5em;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+  font-weight: bold;
 }
 
-dl.doc_attrs dd input[type=text] {
-    width: 99%;
+table.doc_attrs tr td.value, table.doc_template_attrs tr td.value, tr.attr_sortable_helper td.value {
+  -moz-border-radius-topright: 0.5em;
+  -moz-border-radius-bottomright: 0.5em;
+  -webkit-border-top-right-radius: 0.5em;
+  -webkit-border-bottom-right-radius: 0.5em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+
+dl.doc_attrs img.sort_handle {
+  margin-left: -201px;
+}
+
+table.doc_attrs img.sort_handle, table.doc_template_attrs img.sort_handle {
+  margin-left: -25px;
+}
+
+table.doc_attrs td.value textarea, table.doc_attrs td.value input[type=text], table.doc_attrs td.value .edit-expander-preview {
+    width: 85%;
 }
 
 .willDelete {

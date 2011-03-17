@@ -5,7 +5,7 @@
     function updateChoicesVisibility() {
         var $this = jQuery(this);
         var value = $this.val();
-        var target = $this.parents('dd').find('.choices');
+        var target = $this.parents('td').find('.choices');
 
         if (value == "radio" || value == "dropdown" || value == "multiple") {
           target.show();
@@ -19,7 +19,7 @@
             checkbox = this;
         }
         checkbox = jQuery(checkbox);
-        var target = checkbox.parents('dd');
+        var target = checkbox.parents('tr');
 
         if (checkbox.is(':checked')) {
             target.addClass('willDelete');
@@ -66,6 +66,14 @@
 
         updateDeleteButtonText($this);
     }
+    
+    function makePositionIntoDraggable() {
+        var $this = jQuery(this);
+        
+        $this.hide();
+        var sortHandleImgPath = $this.attr('data-sort-handle-img');
+        $this.parents('tr').find('td.name').prepend("<img class=\"sort_handle\" src=\""+sortHandleImgPath+"\"/>");
+    }
 
     jQuery.fn.vellumTemplateAttr = function() {
         this.find('select.ui_type_select')
@@ -76,6 +84,9 @@
             .bind('change', updateMarkForDeletionClass)
             .each(updateMarkForDeletionClass)
             .each(makeDeleteCheckboxAButton);
+            
+        this.parent().find('input.position')
+            .each(makePositionIntoDraggable);
 
         return this;
     }
@@ -90,29 +101,47 @@ jQuery.fn.zebrify = function(selector) {
 };
 
 jQuery.fn.vellumAttrList = function() {
-    this.children('dd').vellumTemplateAttr();
+    this.find('tr').vellumTemplateAttr();
 
-    var $lastAttr = this.children('dt:last, dd:last');
-    var newAttrHtml = jQuery("<p>").append($lastAttr.clone()).html();
+    var $lastAttr = this.find('tr').last();
+    var newAttrHtml = $lastAttr.clone().html();
 
-    var $newAttrDiv = jQuery("<p><button class=\"new\" type=\"button\">Add field</button></p>");
+    var $newAttrDiv = jQuery("<tr style=\"background-color: transparent\"><td colspan=\"2\"><button class=\"new\" type=\"button\">Add field</button></td></tr>");
     $newAttrDiv.find("button").bind('click', {'list': this, 'newAttrDiv': $newAttrDiv, 'rawHtml': newAttrHtml},
         function(event) {
             var timedHtml = event.data.rawHtml.replace(/99999/g, new Date().getTime());
-            var newAttr = jQuery(timedHtml);
+            var newAttr = jQuery("<tr class=\"willAdd\">" + timedHtml + "</tr>");
 
             var cancelButton = jQuery("<button class=\"delete\" type=\"button\">Remove</button>").
                 bind("click", {'target': newAttr, 'list': event.data.list}, function(event) {
                     event.data.target.remove();
             });
-            newAttr.filter('dd').append(jQuery("<span style=\"float: right\"></span>").append(cancelButton));
-            newAttr.addClass('willAdd');
+            newAttr.filter('td.value').append(jQuery("<span style=\"float: right\"></span>").append(cancelButton));
 
             newAttr.vellumTemplateAttr();
             event.data.newAttrDiv.before(newAttr);
         });
     $lastAttr.remove();
     this.append($newAttrDiv);
+    
+    var $attrList = this;
+    this.sortable({'handle': '.sort_handle', 'items': 'tr', 'stop': function (event, ui) {
+        $attrList.find('tr').each(function(index) {
+            var $this = jQuery(this);
+            $this.find('input.position').val(index + 1);
+        })
+    }, 'helper': function(event, tr) {
+            var $originals = tr.children();
+            var $helper = tr.clone();
+            $helper.children().each(function(index) {
+                // Set helper cell sizes to match the original sizes
+                $(this).width($originals.eq(index).width())
+            });
+            $helper.addClass('attr_sortable_helper');
+            console.log($helper);
+            return $helper;
+        }
+    });
     
     return this;
 };
@@ -142,8 +171,6 @@ jQuery.fn.vellumDocSummaryPopup = function() {
             jQuery('a#popupDoc').remove();
             
             jQuery.getJSON(href + '.json', function(data) {
-                console.log(data);
-                
                 var content = data.content;
                 if (content == null || content.length == 0) {
                     content = "<p><i>No content</i></p>";
@@ -288,7 +315,6 @@ jQuery.fn.vellumColorPicker = function() {
         
         var popupPlaceholder = function() {
             var offset = $placeholder.show().offset();
-            console.log(offset);
             $placeholder.detach().appendTo("body")
                 .css('left', offset.left)
                 .css('top', offset.top);

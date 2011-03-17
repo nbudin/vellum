@@ -309,7 +309,7 @@ dl dt {
   -webkit-border-radius: 5px;
 }
 
-.cardform .callout p {
+.cardform .callout p, .cardform .callout td {
   font-size: 12px;
 }
 

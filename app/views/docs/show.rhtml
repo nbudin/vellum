@@ -55,11 +55,11 @@
   </div>  
 </div>
     
-<dl style="margin-top: .75em;" class="doc_attrs">
+<table style="margin-top: .75em;" class="doc_attrs">
     <% @doc.attrs.each do |attr| -%>
-		<%= attr_row(attr) %>
+		  <%= attr_row(attr) %>
     <% end -%>
-</dl>
+</table>
 
 <div class="document_content" id="doc_content">
   <%= @doc.content %>

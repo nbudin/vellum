@@ -48,8 +48,8 @@ h2 {
 	  <% sortlist(@docs[tmpl], "docs_#{tmpl.id}",
 				  :url => sort_docs_path(@project)
 				  ) do |doc| -%>
-		<%= render :partial => 'docs/show_external',
-			:locals => { :doc => doc } %>
+		  <%= render :partial => 'docs/show_external',
+			           :locals => { :doc => doc } %>
 	  <% end -%>
   </div>
 <% end -%>

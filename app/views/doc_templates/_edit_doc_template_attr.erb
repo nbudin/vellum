@@ -1,20 +1,24 @@
-<dt>
-  <%= dta_fields.label "name", dta_fields.object.new_record? ? "Add:" : "Name:" %>
-  <%= dta_fields.text_field "name" %>
-</dt>
-<dd <% if dta_fields.object.new_record? %>class="willAdd"<% end %>  >
-  <% unless dta_fields.object.new_record? -%>
-    <span style="float: right; color: red; font-weight: bold; margin-right: 10px;">
-      <%= dta_fields.label(:_destroy, "Remove") %>
-      <%= dta_fields.check_box(:_destroy, :class => "delete") %>
-    </span>
-  <% end -%>
-  <%= dta_fields.label "ui_type", "Display as:" %>
-  <%= dta_fields.select "ui_type", DocTemplateAttr.ui_types_for_select,
-    {}, {:class => "ui_type_select"} %>
-  <div class="choices">
-    <%= dta_fields.label "human_choices", "Choices:" %>
-    <%= dta_fields.text_field "human_choices",
-      :placeholder => "Example: apple, banana, pear" %>
-  </div>
-</dd>
+<tr <% if dta_fields.object.new_record? %>class="willAdd"<% end %>>
+  <td class="name">
+    <%= dta_fields.text_field "position", :style => "width: 1.5em;", 
+        :"data-sort-handle-img" => image_path("sort_handle.png"), :class => "position" %>
+    <%= dta_fields.label "name", dta_fields.object.new_record? ? "Add:" : "Name:" %>
+    <%= dta_fields.text_field "name" %>
+  </td>
+  <td class="value">
+    <% unless dta_fields.object.new_record? -%>
+      <span style="float: right; color: red; font-weight: bold; margin-right: 10px;">
+        <%= dta_fields.label(:_destroy, "Remove") %>
+        <%= dta_fields.check_box(:_destroy, :class => "delete") %>
+      </span>
+    <% end -%>
+    <%= dta_fields.label "ui_type", "Display as:" %>
+    <%= dta_fields.select "ui_type", DocTemplateAttr.ui_types_for_select,
+      {}, {:class => "ui_type_select"} %>
+    <div class="choices">
+      <%= dta_fields.label "human_choices", "Choices:" %>
+      <%= dta_fields.text_field "human_choices",
+        :placeholder => "Example: apple, banana, pear" %>
+    </div>
+  </td>
+</tr>
