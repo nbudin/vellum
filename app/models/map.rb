@@ -32,8 +32,42 @@ class Map < ActiveRecord::Base
     }
   end
   
+  def dot_output_for_gvapi(options={})
+    generate_output("none", options).gsub(/\s+/, " ")
+  end
+  
   def output(format, options={})
+    if ENV["GVAPI_URL"]
+      url = URI.parse(ENV["GVAPI_URL"])
+      req = Net::HTTP::Post.new(url.path)
+      req.form_data = gvapi_params(format, options)
+      req.basic_auth url.user, url.password if url.user
+      
+      Proc.new do |response, output|
+        Net::HTTP.new(url.host, url.port).start do |http|
+          http.request(req) do |response|
+            response.read_body do |data|
+              output.write data
+            end
+          end
+        end
+      end
+    else
+      generate_output(format, options)
+    end
+  end
+  
+  def generate_output(format, options={})
     graphviz.output(options.update(format.to_sym => String))
+  end
+  
+  def gvapi_params(format, options={})
+    key = ENV["GVAPI_KEY"]
+    params = { :data => dot_output_for_gvapi(options) }
+    params[:format] = format if format
+    params[:key] = key if key
+
+    params
   end
   
   def graphviz_method

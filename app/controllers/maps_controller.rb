@@ -20,22 +20,23 @@ class MapsController < ApplicationController
     @map = @project.maps.find(params[:id], :include => {
       :mapped_relationship_types => { :relationship_type => :relationships }, 
       :mapped_doc_templates => { :doc_template => :docs }})
-
+      
+    attachment_filename = "#{@project.name} #{@map.name}.#{params[:format]}"
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @map }
       format.json { render :json => @map }
       format.png  {
-        send_data @map.output("png"), :filename => "#{@project.name} #{@map.name}.png",
-                  :disposition => 'inline', :type => 'png'
+        headers['Content-Disposition'] = "inline; filename=#{attachment_filename}"
+        render :text => @map.output("png")
       }
       format.pdf {
-        send_data @map.output("pdf"), :filename => "#{@project.name} #{@map.name}.pdf",
-                  :disposition => 'attachment', :type => 'pdf'
+        headers['Content-Disposition'] = "attachment; filename=#{attachment_filename}"
+        render :text => @map.output("pdf")
       }
       format.svg {
-        send_data @map.output("svg"), :filename => "#{@project.name} #{@map.name}.svg",
-                  :disposition => 'inline', :type => 'svg'
+        headers['Content-Disposition'] = "inline; filename=#{attachment_filename}"
+        render :text => @map.output("svg")
       }
     end
   end
