@@ -25,8 +25,8 @@ Given /^a template named "([^\"]*)" in "([^\"]*)" with the following fields:$/ d
 end
 
 Given /^a project with the following templates:$/ do |table|
-  assert project = Factory.create(:project)
-  project.grant(controller.logged_in_person)
+  Given %{a project named "Test Project"}
+  assert project = Project.find_by_name("Test Project")
 
   table.hashes.each do |tmpl_hash|
     project.doc_templates.create(tmpl_hash)

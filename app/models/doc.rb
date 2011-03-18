@@ -1,11 +1,21 @@
 require 'rexml/parsers/sax2parser'
 
+class AttrSetEditException < Exception
+  attr_reader :errors
+  
+  def initialize(errors)
+    @errors = errors
+  end
+end
+
 class Doc < ActiveRecord::Base
   version_fu :foreign_key => "doc_id" do
     belongs_to :author, :class_name => "::Person"
     has_many :attrs, :class_name => "::Attr",
       :foreign_key => "doc_version_id", :autosave => true
   end
+  
+  validate :check_attrs_error
   
   before_save do |doc|
     unless doc.content.blank?
@@ -152,6 +162,8 @@ class Doc < ActiveRecord::Base
     end
 
     def nested_attributes=(nested_attributes = [])
+      errors = []
+      
       nested_attributes_array = case nested_attributes
       when Array
         nested_attributes
@@ -163,18 +175,40 @@ class Doc < ActiveRecord::Base
         raise "Nested attributes must be an array or hash"
       end
       
+      #first pass: eliminate dupes
+      seen = Set.new
+      dupes = Set.new
+      nested_attributes_array.each do |item|
+        name = item['name']
+        next unless name
+        
+        if seen.include?(name)
+          errors << "Duplicate attribute name '#{name}'"
+        else
+          seen << name
+        end
+      end
+      
+      #second pass: do the edit
       nested_attributes_array.each do |item|
         name = item['name']
         if name.nil?
-          raise "Item #{item.inspect} has no specified name"
+          errors << "Item #{item.inspect} has no specified name"
+          next
         end
-
+        
+        next if dupes.include?(name)
+        
         if ActiveRecord::ConnectionAdapters::Column.value_to_boolean(item['_destroy']) ||
             ActiveRecord::ConnectionAdapters::Column.value_to_boolean(item['_delete'])
           self.delete(name)
         else
           self[name].value = item['value']
         end
+      end
+      
+      if errors.size > 0
+        raise AttrSetEditException.new(errors)
       end
       
       self.nested_attributes
@@ -227,7 +261,11 @@ class Doc < ActiveRecord::Base
   end
 
   def attrs_attributes=(nested_attributes)
-    attrs.nested_attributes = nested_attributes
+    begin
+      attrs.nested_attributes = nested_attributes
+    rescue AttrSetEditException => e
+      @attrs_error = e
+    end
   end
 
   def relationships
@@ -275,6 +313,14 @@ class Doc < ActiveRecord::Base
   def save_versions
     versions.each do |v|
       v.save(false)
+    end
+  end
+  
+  def check_attrs_error
+    if @attrs_error
+      @attrs_error.errors.each do |attr_error|
+        errors.add_to_base(attr_error)
+      end
     end
   end
 end

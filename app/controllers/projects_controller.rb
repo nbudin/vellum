@@ -20,15 +20,13 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.xml
   def show
-    @project = Project.find(params[:id], 
-      :include => { :docs => { :doc_template => [] },
-                               :permissions => [] })
+    @project = Project.find(params[:id])
 
     respond_to do |format|
       format.html do
         @templates = @project.doc_templates.sort_by { |t| t.name.sort_normalize }
         @docs = {}
-        @project.docs.all.each do |d|
+        @project.docs.all(:include => [:doc_template, :assignee]).each do |d|
           @docs[d.doc_template] ||= []
           @docs[d.doc_template] << d
         end
@@ -74,8 +72,8 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if @project.update_attributes(params[:project])
         format.html { redirect_to project_url(@project) }
-        format.xml  { head :ok }
-        format.json { head :ok }
+        format.xml  { render :xml => @project.to_xml }
+        format.json { render :json => @project.to_json }
       else
         format.html { render :action => "show" }
         format.xml  { render :xml => @project.errors.to_xml }

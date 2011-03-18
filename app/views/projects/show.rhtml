@@ -1,15 +1,10 @@
-<script type="text/javascript">
-  Resource.model("Project", {format: 'json'});
-  Resource.model("Doc", {prefix: '<%=project_path(@project)%>', format: 'json'})
-</script>
-
 <style type="text/css">
 h2 {
    border-bottom: 1px dotted black;
 }
 </style>
 
-<h1><%= jipe_editor_if_permitted(@project, "name") %></h1>
+<%= in_place_editor @project, :name, :tag => "h1" %>
 
 <div class="jumpbox">
   <div class="navigation">
@@ -40,7 +35,7 @@ h2 {
   </ol>
 </div>
 
-<%= jipe_editor_if_permitted(@project, "blurb", :rows => 4) %>
+<%= in_place_editor @project, :blurb, :rows => 4 %>
 
 <% @templates.each do |tmpl| -%>
   <h2><%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a></h2>
@@ -53,8 +48,8 @@ h2 {
 	  <% sortlist(@docs[tmpl], "docs_#{tmpl.id}",
 				  :url => sort_docs_path(@project)
 				  ) do |doc| -%>
-		<%= render :partial => 'docs/show_external',
-			:locals => { :doc => doc } %>
+		  <%= render :partial => 'docs/show_external',
+			           :locals => { :doc => doc } %>
 	  <% end -%>
   </div>
 <% end -%>

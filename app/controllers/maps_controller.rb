@@ -17,7 +17,9 @@ class MapsController < ApplicationController
   # GET /maps/1
   # GET /maps/1.xml
   def show
-    @map = @project.maps.find(params[:id])
+    @map = @project.maps.find(params[:id], :include => {
+      :mapped_relationship_types => { :relationship_type => :relationships }, 
+      :mapped_doc_templates => { :doc_template => :docs }})
 
     respond_to do |format|
       format.html # show.html.erb
@@ -26,6 +28,10 @@ class MapsController < ApplicationController
       format.png  {
         send_data @map.output("png"), :filename => "#{@project.name} #{@map.name}.png",
                   :disposition => 'inline', :type => 'png'
+      }
+      format.pdf {
+        send_data @map.output("pdf"), :filename => "#{@project.name} #{@map.name}.pdf",
+                  :disposition => 'attachment', :type => 'pdf'
       }
       format.svg {
         send_data @map.output("svg"), :filename => "#{@project.name} #{@map.name}.svg",
@@ -60,8 +66,8 @@ class MapsController < ApplicationController
     respond_to do |format|
       if @map.update_attributes(params[:map])
         format.html { redirect_to map_url(@project, @map) }
-        format.xml  { head :ok }
-        format.json { head :ok }
+        format.xml  { render :xml => @map.to_xml }
+        format.json { render :json => @map.to_json }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @map.errors, :status => :unprocessable_entity }

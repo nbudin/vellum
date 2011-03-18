@@ -1,5 +1,3 @@
-<p><%= link_to "<- Back to #{@project.name}", project_path(@project) %></p>
-
 <% form_for(@doc, :url => docs_path(@project)) do |f| -%>
   <div class="jumpbox">
     <div class="navigation">
@@ -26,3 +24,9 @@
   <%= hidden_field_tag "template_id", @doc.doc_template.id %>
   <%= render :partial => "form", :locals => { :f => f } %>
 <% end -%>
+
+<script type="text/javascript">
+  jQuery(function() {
+    jQuery('table.doc_attrs').vellumAttrList();
+  });
+</script>

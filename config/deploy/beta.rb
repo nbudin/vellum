@@ -4,4 +4,4 @@ role :app, "sakai.natbudin.com"
 role :web, "sakai.natbudin.com"
 role :db,  "sakai.natbudin.com", :primary => true
 
-set :branch, "wymeditor"
+#set :branch, "wymeditor"

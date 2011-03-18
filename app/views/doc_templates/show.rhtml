@@ -27,9 +27,9 @@
 
 <p>The following fields will appear on <strong>all</strong> <%= @doc_template.name.pluralize %>:</p>
 
-<dl class="doc_template_attrs">
+<table class="doc_template_attrs">
   <%= render :partial => "doc_template_attr", :collection => @doc_template.doc_template_attrs %>
-</dl>
+</table>
 
 <h2>Relationship Types</h2>
 

@@ -6,13 +6,16 @@ def password_from_name(firstname, lastname)
   "MyNameIs#{firstname}#{lastname}"
 end
 
+def logged_in?
+  find('.authbox a:last').text =~ /Log\s*out/i
+end
+
 Then /^I should be logged in$/ do
-  assert session[:person]
+  assert logged_in?
 end
 
 Then /^I should be logged in as (.*) (.*)$/ do |firstname, lastname|
-  person = Person.find_by_firstname_and_lastname(firstname, lastname)
-  assert_equal person.id, session[:person]
+  assert find('.authbox a:first').text =~ /#{firstname}\s*#{lastname}/
 end
 
 Given /^the user (.*) (.*) exists$/ do |firstname, lastname|
@@ -28,7 +31,7 @@ end
 
 Given /^I log in as (.*) (.*)$/ do |firstname, lastname|
   Given "I am on the home page"
-  unless controller.logged_in?
+  unless logged_in?
     Given "I am on the login page"
     And "I fill in \"Email address\" with \"#{email_address_from_name(firstname, lastname)}\""
     And "I choose \"Yes, my password is:\""

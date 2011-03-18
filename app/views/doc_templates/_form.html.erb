@@ -18,7 +18,7 @@
       be able to choose which family the character comes from.  You could make that
       a set of radio buttons.</p>
 
-    <dl class="doc_template_attrs">
+    <table class="doc_template_attrs">
       <% f.fields_for :doc_template_attrs do |dta_fields| %>
         <%= render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields } %>
       <% end -%>
@@ -28,7 +28,7 @@
           <%= render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields } %>
         <% end -%>
       <% end -%>
-    </dl>
+    </table>
   </div>
 
   <div class="submit">
@@ -45,6 +45,6 @@
 
 <script type="text/javascript">
   jQuery(function() {
-    jQuery('dl.doc_template_attrs').vellumAttrList();
+    jQuery('table.doc_template_attrs').vellumAttrList();
   });
 </script>

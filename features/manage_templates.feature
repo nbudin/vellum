@@ -59,7 +59,7 @@ Feature: Manage templates
     When I am on the template page for Organization
     And I follow "Create relationship type..."
     
-    And I fill in "Relationship type" with "Organization membership"
+    And I fill in "Relationship Type" with "Organization membership"
     And I select "Character" from "Second template"
     And I press "Continue"
     Then I should see "Phrasing"
@@ -79,7 +79,7 @@ Feature: Manage templates
     And a relationship type where "Organization" includes "Character" in "Test Project"
 
     When I am on the template page for Organization
-    And I follow "Delete" within "li:has(a:contains('includes'))"
+    And I press "Delete" within "li:has(a:contains('includes'))"
     Then I should be on the template page for Organization
     And I should not see "includes Character"
 
@@ -89,6 +89,6 @@ Feature: Manage templates
     And a template named "Character" in "Test Project"
 
     When I am on the templates page for Test Project
-    And I follow "Delete" within "li:has(a:contains('Character'))"
+    And I press "Delete" within "li:has(a:contains('Character'))"
     Then I should be on the templates page for Test Project
     And I should not see "Character"

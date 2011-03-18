@@ -11,7 +11,7 @@ class DocsController < ApplicationController
     if params[:template_id]
       conds[:doc_template_id] = @project.doc_templates.find(params[:template_id]).id
     end
-    @docs = @project.docs.all(:conditions => conds).sort_by {|s| s.name.sort_normalize }
+    @docs = @project.docs.all(:conditions => conds).sort_by {|s| s.name.try(:sort_normalize) || "" }
 
     respond_to do |format|
       format.xml  { render :xml => @docs.to_xml(:methods => [:name]) }
@@ -32,7 +32,7 @@ class DocsController < ApplicationController
     @doc.project = @project
     @relationships = @doc.relationships.sort_by do |rel|
       other = rel.other(@doc)
-      "#{rel.description_for(@doc)} #{other.name.sort_normalize}"
+      "#{rel.description_for(@doc)} #{other.name.try(:sort_normalize)}"
     end
     @relationship_types = {}
     @doc.doc_template.relationship_types.each do |typ|
@@ -108,8 +108,8 @@ class DocsController < ApplicationController
     respond_to do |format|
       if successful_save
         format.html { redirect_to doc_url(@project, @doc) }
-        format.xml  { head :ok }
-        format.json { head :ok }
+        format.xml  { render :xml => @doc.to_xml }
+        format.json { render :json => @doc.to_json }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @doc.errors.to_xml }

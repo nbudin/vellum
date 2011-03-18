@@ -30,7 +30,7 @@ table.structure > tbody > tr > td:first-child {
 
 .external_view .summary {
 	margin-top: 0;
-	overflow: auto;
+	overflow: hidden;
 }
 
 .external_view .summary h3 {

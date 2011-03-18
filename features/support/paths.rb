@@ -28,7 +28,7 @@ module NavigationHelpers
       map = Map.find_by_name($1)
       map_path(map.project, map)
     when /the login page/
-      url_for({ :controller => "auth", :action => "login" })
+      url_for(:controller => "auth", :action => "login", :only_path => true)
     
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
