@@ -39,7 +39,7 @@
     <% end -%>
   <% form_for @doc, :url => doc_path(@project, @doc), :html => {:class => "assignee"} do |f| -%>
     <%= f.label "assignee_id", "Assigned to" %>
-    <%= f.select "assignee_id", [["nobody", nil]] + @project.authors.sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
+    <%= f.select "assignee_id", [["nobody", nil]] + @project.permitted_people("edit").sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
                  :include_blank => false %>
     
     <button class="transition">
