@@ -22,6 +22,7 @@ gem "heroku_external_db"
 
 group :development do
   gem "bullet"
+  gem "thin"
 end
 
 group :test do

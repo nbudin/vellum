@@ -4,6 +4,8 @@ class DocsController < ApplicationController
   require_permission "edit", {:only => [:sort, :destroy, :edit, :new, :create, :update]}.update(perm_options)
   before_filter :get_project
   
+  cache_sweeper :project_sweeper, :only => [:create, :update, :destroy, :sort]
+  
   # GET /docs
   # GET /docs.xml
   def index

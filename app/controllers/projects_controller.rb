@@ -2,6 +2,7 @@ class ProjectsController < ApplicationController
   rest_permissions
 
   before_filter :get_visible_projects, :only => [:index, :new]
+  cache_sweeper :project_sweeper, :only => [:update, :create]
 
   # GET /projects
   # GET /projects.xml
