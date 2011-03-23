@@ -175,6 +175,8 @@ class Doc < ActiveRecord::Base
         raise "Nested attributes must be an array or hash"
       end
       
+      nested_attributes_array.reject! { |item| item['name'].blank? && item['value'].blank? }
+      
       #first pass: eliminate dupes
       seen = Set.new
       dupes = Set.new
