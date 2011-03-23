@@ -58,9 +58,9 @@ class RelationshipsControllerTest < ActionController::TestCase
       context "on POST to :create with a new doc specified on the left" do
         setup do
           post :create, :project_id => @project.id, :relationship => {
-            :relationship_type_id => @rt.id,
-            :left_id => "new",
-            :right_id => @right.id
+            :relationship_type_id_and_source_direction => "#{@rt.id}_right",
+            :target_id => "new",
+            :source_id => @right.id
           }
         end
 
@@ -81,9 +81,9 @@ class RelationshipsControllerTest < ActionController::TestCase
       context "on POST to :create with a new doc specified on the right" do
         setup do
           post :create, :project_id => @project.id, :relationship => {
-            :relationship_type_id => @rt.id,
-            :left_id => @left.id,
-            :right_id => "new"
+            :relationship_type_id_and_source_direction => "#{@rt.id}_left",
+            :source_id => @left.id,
+            :target_id => "new"
           }
         end
 
