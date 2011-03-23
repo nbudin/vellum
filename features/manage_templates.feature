@@ -43,7 +43,7 @@ Feature: Manage templates
 
     When I am on the template page for Character
     And I follow "Edit"
-    And I check "Remove" within "dt:contains(HP) + dd"
+    And I check "Remove" within "td:contains(HP) + td"
     And I press "Save changes"
     
     Then I should be on the template page for Character

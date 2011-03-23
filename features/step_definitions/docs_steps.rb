@@ -5,7 +5,7 @@ Given /^an? (.*) doc named \"([^\"]*)\" in \"([^\"]*)\"$/ do |tmpl_name, name, p
 end
 
 Then /^I should see the following fields:$/ do |expected_fields_table|
-  display_table = tableish('dl.doc_attrs dt', lambda{|dt| [dt, dt.next]})
+  display_table = tableish('table.doc_attrs tr', 'td.name, td.value')
   actual_table = table([['name', 'value']] + display_table)
   expected_fields_table.diff!(actual_table)
 end
