@@ -2,6 +2,8 @@ class DocTemplatesController < ApplicationController
   rest_edit_permissions :class_name => "Project", :id_param => "project_id"
   before_filter :get_project
   
+  cache_sweeper :project_sweeper, :only => [:create, :update, :destroy]
+  
   # GET /doc_templates
   # GET /doc_templates.xml
   def index
