@@ -23,7 +23,7 @@ GEM
       activerecord
     ae_users_legacy (0.6.3)
       ruby-openid (>= 2.0.4)
-    ae_users_migrator (1.0.3)
+    ae_users_migrator (1.0.4)
       activerecord (>= 2.3)
     builder (2.1.2)
     bullet (1.7.6)
@@ -120,7 +120,7 @@ DEPENDENCIES
   activerecord-jdbc-adapter
   acts_as_singleton
   ae_users_legacy
-  ae_users_migrator
+  ae_users_migrator (>= 1.0.4)
   bullet
   cancan
   capybara

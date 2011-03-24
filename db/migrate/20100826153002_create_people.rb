@@ -6,27 +6,6 @@ class CreatePeople < ActiveRecord::Migration
   end
   
   def self.up
-    create_table :people do |t|
-      t.string :email
-      t.string :firstname
-      t.string :lastname
-      t.string :gender
-      t.timestamp :birthdate
-      
-      t.boolean :admin
-      
-      t.cas_authenticatable
-      t.trackable
-      t.timestamps
-    end
-    add_index :people, :username, :unique => true
-    
-    create_table :project_memberships do |t|
-      t.references :project, :person
-      t.boolean :author
-      t.boolean :admin
-    end
-    
     person_ids = Doc.all(:group => "creator_id").map(&:creator_id)
     person_ids += Doc.all(:group => "assignee_id").map(&:assignee_id)
     person_ids += Doc::Version.all(:group => "author_id").map(&:author_id)
@@ -43,6 +22,27 @@ class CreatePeople < ActiveRecord::Migration
       end
       @@dumpfile = AeUsersMigrator::Import::Dumpfile.load(File.new("ae_users.json"))
       
+      create_table :people do |t|
+        t.string :email
+        t.string :firstname
+        t.string :lastname
+        t.string :gender
+        t.timestamp :birthdate
+      
+        t.boolean :admin
+      
+        t.cas_authenticatable
+        t.trackable
+        t.timestamps
+      end
+      add_index :people, :username, :unique => true
+    
+      create_table :project_memberships do |t|
+        t.references :project, :person
+        t.boolean :author
+        t.boolean :admin
+      end
+    
       @@merged_person_ids = {}
       role_ids.each do |role_id|
         person_ids += @@dumpfile.roles[role_id].people.map(&:id)
