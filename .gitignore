@@ -10,3 +10,4 @@ rerun.txt
 .bundle
 .idea
 vendor/bundle/*
+public/stylesheets/site_theme.css
