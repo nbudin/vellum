@@ -99,7 +99,7 @@ Makes the div droppable (a drop target for a draggable).<br />
   Initialize a droppable with the <code>disabled</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).droppable( { disabled: true } );</code></pre>
+<pre><code>$( ".selector" ).droppable({ disabled: true });</code></pre>
 </dd>
 
     
@@ -141,7 +141,7 @@ $( ".selector" ).droppable( "option", "disabled", true );</code></pre>
   Initialize a droppable with the <code>accept</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).droppable( { accept: '.special' } );</code></pre>
+<pre><code>$( ".selector" ).droppable({ accept: '.special' });</code></pre>
 </dd>
 
     
@@ -183,7 +183,7 @@ $( ".selector" ).droppable( "option", "accept", '.special' );</code></pre>
   Initialize a droppable with the <code>activeClass</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).droppable( { activeClass: '.ui-state-highlight' } );</code></pre>
+<pre><code>$( ".selector" ).droppable({ activeClass: 'ui-state-highlight' });</code></pre>
 </dd>
 
     
@@ -194,7 +194,7 @@ $( ".selector" ).droppable( "option", "accept", '.special' );</code></pre>
 <pre><code>//getter
 var activeClass = $( ".selector" ).droppable( "option", "activeClass" );
 //setter
-$( ".selector" ).droppable( "option", "activeClass", '.ui-state-highlight' );</code></pre>
+$( ".selector" ).droppable( "option", "activeClass", 'ui-state-highlight' );</code></pre>
 </dd>
 
     </dl>
@@ -225,7 +225,7 @@ $( ".selector" ).droppable( "option", "activeClass", '.ui-state-highlight' );</c
   Initialize a droppable with the <code>addClasses</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).droppable( { addClasses: false } );</code></pre>
+<pre><code>$( ".selector" ).droppable({ addClasses: false });</code></pre>
 </dd>
 
     
@@ -267,7 +267,7 @@ $( ".selector" ).droppable( "option", "addClasses", false );</code></pre>
   Initialize a droppable with the <code>greedy</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).droppable( { greedy: true } );</code></pre>
+<pre><code>$( ".selector" ).droppable({ greedy: true });</code></pre>
 </dd>
 
     
@@ -309,7 +309,7 @@ $( ".selector" ).droppable( "option", "greedy", true );</code></pre>
   Initialize a droppable with the <code>hoverClass</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).droppable( { hoverClass: 'drophover' } );</code></pre>
+<pre><code>$( ".selector" ).droppable({ hoverClass: 'drophover' });</code></pre>
 </dd>
 
     
@@ -351,7 +351,7 @@ $( ".selector" ).droppable( "option", "hoverClass", 'drophover' );</code></pre>
   Initialize a droppable with the <code>scope</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).droppable( { scope: 'tasks' } );</code></pre>
+<pre><code>$( ".selector" ).droppable({ scope: 'tasks' });</code></pre>
 </dd>
 
     
@@ -401,7 +401,7 @@ $( ".selector" ).droppable( "option", "scope", 'tasks' );</code></pre>
   Initialize a droppable with the <code>tolerance</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).droppable( { tolerance: 'fit' } );</code></pre>
+<pre><code>$( ".selector" ).droppable({ tolerance: 'fit' });</code></pre>
 </dd>
 
     
@@ -714,6 +714,28 @@ ui.draggable represents the draggable.</p>
 </li>
 
 
+<li class="method" id="method-option">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-option">option</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.droppable( "option"
+
+, options
+
+
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Set multiple droppable options at once by providing an options object.</p>
+  </div>
+</li>
+
+
 <li class="method" id="method-widget">
   <div class="method-header">
     <h3 class="method-name"><a href="#method-widget">widget</a></h3>
@@ -757,10 +779,10 @@ ui.draggable represents the draggable.</p>
 </div>
 
 </p><!-- 
-Pre-expand include size: 30837 bytes
-Post-expand include size: 49718 bytes
-Template argument size: 26138 bytes
+Pre-expand include size: 32197 bytes
+Post-expand include size: 50778 bytes
+Template argument size: 26267 bytes
 Maximum: 2097152 bytes
 -->
 
-<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3769-1!1!0!!en!2 and timestamp 20100318122746 -->
+<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3769-1!1!0!!en!2 and timestamp 20100909220227 -->

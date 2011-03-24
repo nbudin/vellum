@@ -7,7 +7,7 @@ Feature: Manage projects
     Given I am logged in as Joe User
     And I am on the projects page
     And I follow "Create project..."
-    And I fill in "Project name" with "My awesome project"
+    And I fill in "Project Name" with "My awesome project"
     And I press "Create"
     Then I should see "My awesome project"
 
@@ -16,7 +16,7 @@ Feature: Manage projects
     And the Louisiana Purchase project
     And I am on the projects page
     And I follow "Create project..."
-    And I fill in "Project name" with "A new project"
+    And I fill in "Project Name" with "A new project"
     And I select "Louisiana Purchase" from "Choose a project to copy templates from:"
     And I press "Create"
     Then I should not be on the projects page

@@ -1,4 +1,4 @@
-<p>
+
 <ul class="UIAPIPlugin-toc">
 <li><a href="#overview">Overview</a></li>
 <li><a href="#options">Options</a></li>
@@ -11,24 +11,24 @@
   <div id="overview">
     <h2 class="top-header">Overview</h2>
     <div id="overview-main">
-        Autocomplete, when added to an input field, enables users to quickly find and select from a pre-populated list of values as they type, leveraging searching and filtering.
-</p><p>By giving an Autocomplete field focus or entering something into it, the plugin starts searching for entries that match and displays a list of values to choose from. By entering more characters, the user can filter down the list to better matches.
-</p><p>This can be used to enter previous selected values, for example you could use Autocomplete for entering tags, to complete an address, you could enter a city name and get the zip code, or maybe enter email addresses from an address book.
-</p><p>You can pull data in from a local and/or a remote source: Local is good for small data sets (like an address book with 50 entries), remote is necessary for big data sets, like a database with hundreds or millions of entries to select from.
-</p><p>Autocomplete can be customized to work with various data sources, by just specifying the source option. A data source can be:
-</p>
-<ul><li> an Array with local data
-</li><li> a String, specifying a URL
-</li><li> a Callback
-</li></ul>
-<p>The local data can be a simple Array of Strings, or it contains Objects for each item in the array, with either a label or value property or both. The label property is displayed in the suggestion menu. The value will be inserted into the input element after the user selected something from the menu. If just one property is specified, it will be used for both, eg. if you provide only value-properties, the value will also be used as the label.
-</p><p>When a String is used, the Autocomplete plugin expects that string to point to a URL resource that will return JSON data. It can be on the same host or on a different one (must provide JSONP). The data itself can be in the same format as the local data described above.
-</p><p>The third variation, the callback, provides the most flexibility, and can be used to connect any data source to Autocomplete. The callback gets two arguments:
-</p>
-<ul><li> A request object, with a single property called "term", which refers to the value currently in the text input. For example, when the user entered "new yo" in a city field, the Autocomplete term will equal "new yo".
-</li><li> A response callback, which expects a single argument to contain the data to suggest to the user. This data should be filtered based on the provided term, and can be in any of the formats described above for simple local data (String-Array or Object-Array with label/value/both properties).
-</li></ul>
-The demos all focus on different variations of the source-option - look for the one that matches your use case, and take a look at the code.
+        <p>Autocomplete, when added to an input field, enables users to quickly find and select from a pre-populated list of values as they type, leveraging searching and filtering.</p>
+<p>By giving an Autocomplete field focus or entering something into it, the plugin starts searching for entries that match and displays a list of values to choose from. By entering more characters, the user can filter down the list to better matches.</p>
+<p>This can be used to enter previous selected values, for example you could use Autocomplete for entering tags, to complete an address, you could enter a city name and get the zip code, or maybe enter email addresses from an address book.</p>
+<p>You can pull data in from a local and/or a remote source: Local is good for small data sets (like an address book with 50 entries), remote is necessary for big data sets, like a database with hundreds or millions of entries to select from.</p>
+<p>Autocomplete can be customized to work with various data sources, by just specifying the source option. A data source can be:</p>
+<ul>
+<li>an Array with local data</li>
+<li>a String, specifying a URL</li>
+<li>a Callback</li>
+</ul>
+<p>The local data can be a simple Array of Strings, or it contains Objects for each item in the array, with either a label or value property or both. The label property is displayed in the suggestion menu. The value will be inserted into the input element after the user selected something from the menu. If just one property is specified, it will be used for both, eg. if you provide only value-properties, the value will also be used as the label.</p>
+<p>When a String is used, the Autocomplete plugin expects that string to point to a URL resource that will return JSON data. It can be on the same host or on a different one (must provide JSONP). The request parameter "term" gets added to that URL. The data itself can be in the same format as the local data described above.</p>
+<p>The third variation, the callback, provides the most flexibility, and can be used to connect any data source to Autocomplete. The callback gets two arguments:</p>
+<ul>
+<li>A request object, with a single property called "term", which refers to the value currently in the text input. For example, when the user entered "new yo" in a city field, the Autocomplete term will equal "new yo".</li>
+<li>A response callback, which expects a single argument to contain the data to suggest to the user. This data should be filtered based on the provided term, and can be in any of the formats described above for simple local data (String-Array or Object-Array with label/value/both properties).</li>
+</ul>
+<p>The demos all focus on different variations of the source-option - look for the one that matches your use case, and take a look at the code.</p>
     </div>
     <div id="overview-dependencies">
         <h3>Dependencies</h3>
@@ -104,7 +104,7 @@ A simple jQuery UI Autocomplete.<br />
   Initialize a autocomplete with the <code>disabled</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).autocomplete( { disabled: true } );</code></pre>
+<pre><code>$( ".selector" ).autocomplete({ disabled: true });</code></pre>
 </dd>
 
     
@@ -146,7 +146,7 @@ $( ".selector" ).autocomplete( "option", "disabled", true );</code></pre>
   Initialize a autocomplete with the <code>delay</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).autocomplete( { delay: 0 } );</code></pre>
+<pre><code>$( ".selector" ).autocomplete({ delay: 0 });</code></pre>
 </dd>
 
     
@@ -188,7 +188,7 @@ $( ".selector" ).autocomplete( "option", "delay", 0 );</code></pre>
   Initialize a autocomplete with the <code>minLength</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).autocomplete( { minLength: 0 } );</code></pre>
+<pre><code>$( ".selector" ).autocomplete({ minLength: 0 });</code></pre>
 </dd>
 
     
@@ -231,7 +231,7 @@ $( ".selector" ).autocomplete( "option", "minLength", 0 );</code></pre>
   Initialize a autocomplete with the <code>source</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).autocomplete( { source: [&quot;c++&quot;, &quot;java&quot;, &quot;php&quot;, &quot;coldfusion&quot;, &quot;javascript&quot;, &quot;asp&quot;, &quot;ruby&quot;] } );</code></pre>
+<pre><code>$( ".selector" ).autocomplete({ source: [&quot;c++&quot;, &quot;java&quot;, &quot;php&quot;, &quot;coldfusion&quot;, &quot;javascript&quot;, &quot;asp&quot;, &quot;ruby&quot;] });</code></pre>
 </dd>
 
     
@@ -342,7 +342,7 @@ $( ".selector" ).autocomplete( "option", "source", [&quot;c++&quot;, &quot;java&
     </dl>
   </div>
   <div class="event-description">
-    <p>Before focus is moved to an item (not selecting), ui.item refers to the focused item. The default action of focus is to replace the text field's value with the value of the focused item. Canceling this event prevents the value from being updated, but does not prevent the menu item from being focused.</p>
+    <p>Before focus is moved to an item (not selecting), ui.item refers to the focused item. The default action of focus is to replace the text field's value with the value of the focused item, though only if the focus event was triggered by a keyboard interaction. Canceling this event prevents the value from being updated, but does not prevent the menu item from being focused.</p>
   </div>
   <div class="event-examples">
     <h4>Code examples</h4>
@@ -582,6 +582,28 @@ $( ".selector" ).autocomplete( "option", "source", [&quot;c++&quot;, &quot;java&
 </li>
 
 
+<li class="method" id="method-option">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-option">option</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.autocomplete( "option"
+
+, options
+
+
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Set multiple autocomplete options at once by providing an options object.</p>
+  </div>
+</li>
+
+
 <li class="method" id="method-widget">
   <div class="method-header">
     <h3 class="method-name"><a href="#method-widget">widget</a></h3>
@@ -679,10 +701,10 @@ $( ".selector" ).autocomplete( "option", "source", [&quot;c++&quot;, &quot;java&
 </div>
 
 </p><!-- 
-Pre-expand include size: 28471 bytes
-Post-expand include size: 46356 bytes
-Template argument size: 26019 bytes
+Pre-expand include size: 29839 bytes
+Post-expand include size: 47753 bytes
+Template argument size: 26499 bytes
 Maximum: 2097152 bytes
 -->
 
-<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3766-1!1!0!!en!2 and timestamp 20100318122756 -->
+<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3766-1!1!0!!en!2 and timestamp 20100909204121 -->

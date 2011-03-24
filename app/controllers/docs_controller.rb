@@ -2,6 +2,8 @@ class DocsController < ApplicationController
   load_and_authorize_resource
   before_filter :get_project
   
+  cache_sweeper :project_sweeper, :only => [:create, :update, :destroy, :sort]
+  
   # GET /docs
   # GET /docs.xml
   def index
@@ -9,7 +11,7 @@ class DocsController < ApplicationController
     if params[:template_id]
       conds[:doc_template_id] = @project.doc_templates.find(params[:template_id]).id
     end
-    @docs = @project.docs.all(:conditions => conds).sort_by {|s| s.name.sort_normalize }
+    @docs = @project.docs.all(:conditions => conds).sort_by {|s| s.name.try(:sort_normalize) || "" }
 
     respond_to do |format|
       format.xml  { render :xml => @docs.to_xml(:methods => [:name]) }
@@ -27,9 +29,10 @@ class DocsController < ApplicationController
       :include => { :doc_template => [],
                     :outward_relationships => { :left => [], :relationship_type => [:left_template, :right_template] }, 
                     :inward_relationships => { :right => [], :relationship_type => [:left_template, :right_template] } })
+    @doc.project = @project
     @relationships = @doc.relationships.sort_by do |rel|
       other = rel.other(@doc)
-      "#{rel.description_for(@doc)} #{other.name.sort_normalize}"
+      "#{rel.description_for(@doc)} #{other.name.try(:sort_normalize)}"
     end
     @relationship_types = {}
     @doc.doc_template.relationship_types.each do |typ|
@@ -40,6 +43,11 @@ class DocsController < ApplicationController
         @relationship_types[typ] = [typ.direction_of(@doc.doc_template)]
       end
     end
+    
+    other_docs = @project.docs.all(:conditions => {:doc_template_id => @doc.doc_template.id}, :order => 'position')
+    my_index = other_docs.index(@doc)
+    @prev_doc = (my_index > 0) && other_docs[my_index - 1]
+    @next_doc = (my_index < other_docs.length - 1) && other_docs[my_index + 1]
     
     respond_to do |format|
       format.html # show.rhtml
@@ -100,8 +108,8 @@ class DocsController < ApplicationController
     respond_to do |format|
       if successful_save
         format.html { redirect_to doc_url(@project, @doc) }
-        format.xml  { head :ok }
-        format.json { head :ok }
+        format.xml  { render :xml => @doc.to_xml }
+        format.json { render :json => @doc.to_json }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @doc.errors.to_xml }

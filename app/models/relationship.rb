@@ -9,6 +9,8 @@ class Relationship < ActiveRecord::Base
   validate :check_project_membership
   validate :check_duplicate
   validate :check_templates
+  
+  attr_reader :source_direction, :source_id, :target_id
 
   def other(struct)
     if struct == left
@@ -33,8 +35,59 @@ class Relationship < ActiveRecord::Base
       right_description
     end
   end
+  
+  def relationship_type_id_and_source_direction
+    if @source_direction
+      "#{relationship_type.id}_#{@source_direction}"
+    end
+  end
+  
+  def relationship_type_id_and_source_direction=(str)
+    if str =~ /^(\d+)_(left|right)$/
+      self.relationship_type_id = $1.to_i
+      @source_direction = $2
+      setup_from_source_and_target!
+    end
+  end
+  
+  def source_direction=(source_direction)
+    @source_direction = source_direction
+    setup_from_source_and_target!
+  end
+  
+  def target_direction
+    case @source_direction
+    when "left"
+      "right"
+    when "right"
+      "left"
+    end
+  end
+  
+  def source_id=(source_id)
+    @source_id = source_id
+    setup_from_source_and_target!
+  end
+  
+  def target_id=(target_id)
+    @target_id = target_id
+    setup_from_source_and_target!
+  end
 
   private
+  def setup_from_source_and_target!
+    if @source_direction and @source_id and @target_id
+      case @source_direction
+      when "left"
+        self.left_id = @source_id
+        self.right_id = @target_id
+      when "right"
+        self.right_id = @source_id
+        self.left_id = @target_id
+      end
+    end
+  end
+  
   def check_circular
     if left == right
       errors.add_to_base("This relationship is circular.")

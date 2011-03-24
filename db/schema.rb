@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100826153002) do
+ActiveRecord::Schema.define(:version => 20110222201026) do
 
   create_table "attrs", :force => true do |t|
     t.integer "doc_version_id"

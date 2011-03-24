@@ -62,6 +62,12 @@ class PublicationTemplatesController < ApplicationController
     rescue Exception => e
       @error = e
     end
+    
+    if params[:raw_preview]
+      render :text => @output
+    else
+      @raw_preview_url = url_for(params.update(:raw_preview => true))
+    end
   end
   
   def publish

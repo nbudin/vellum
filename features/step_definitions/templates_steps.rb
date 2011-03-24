@@ -14,9 +14,9 @@ Given /^a template named "([^\"]*)" in "([^\"]*)" with the following fields:$/ d
     Given "I am on the template page for #{name}"
     And "I follow \"Edit\""
     And "I fill in \"Add:\" with \"#{field[:name]}\""
-    And "I select \"#{field[:type]}\" from \"Display as:\" within \"dd.willAdd\""
+    And "I select \"#{field[:type]}\" from \"Display as:\" within \"tr.willAdd\""
     unless field[:choices].blank?
-      And "I fill in \"Choices:\" with \"#{field[:choices]}\" within \"dd.willAdd\""
+      And "I fill in \"Choices:\" with \"#{field[:choices]}\" within \"tr.willAdd\""
     end
     And "I press \"Save changes\""
 
@@ -25,8 +25,8 @@ Given /^a template named "([^\"]*)" in "([^\"]*)" with the following fields:$/ d
 end
 
 Given /^a project with the following templates:$/ do |table|
-  assert project = Factory.create(:project)
-  project.grant(controller.logged_in_person)
+  Given %{a project named "Test Project"}
+  assert project = Project.find_by_name("Test Project")
 
   table.hashes.each do |tmpl_hash|
     project.doc_templates.create(tmpl_hash)
@@ -44,7 +44,7 @@ Given /^a relationship type where "([^\"]*)" (.*) "([^\"]*)" in "([^\"]*)"$/ do 
 end
 
 Then /^I should see the following template fields:$/ do |expected_fields_table|
-  display_table = tableish('dl.doc_template_attrs dt', lambda{|dt| [dt, dt.next.next]})
+  display_table = tableish('table.doc_template_attrs tr', 'td.name, td.value')
   actual_table = table([['name', 'type']] + display_table)
   expected_fields_table.diff!(actual_table)
 end

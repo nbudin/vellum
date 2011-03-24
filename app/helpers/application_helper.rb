@@ -1,8 +1,23 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  def jipe_editor_if_permitted(object, attr, options={})
-    options[:editing] = can?(:update, object)
-    jipe_editor(object, attr, options)
+  def in_place_editor(object, attr, options = {})
+    tag = options.delete(:tag) || "p"
+    rows = options.delete(:rows)
+    url = options.delete(:url) || polymorphic_url(object, :format => 'json')
+    
+    editor_attrs = {
+      'data-in-place-edit-url' => url,
+      'data-in-place-edit-object' => object.class.name.underscore,
+      'data-in-place-edit-field' => attr,
+      'class' => 'vellumInPlaceEdit'
+    }
+    editor_attrs['data-in-place-edit-rows'] = rows unless rows.nil?
+    
+    content_tag(tag, options) do
+      content_tag(:span, editor_attrs) do
+        h(object.send(attr))
+      end + " " + image_tag('edit-field.png')
+    end
   end
   
   def indefinite_article_for(string)
@@ -93,11 +108,9 @@ module ApplicationHelper
 
   def item_actions(item, options={})
     html = ""
-    if options[:delete_path]
-      if (not item.respond_to? "permitted?") or (person_signed_in? and logged_in_person.permitted?(item, "destroy"))
-        html << link_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",
-                        :method => :delete, :class => "button delete")
-      end
+    if options[:delete_path] && current_ability.can?(:destroy, item)
+      html << button_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",
+                      :style => "margin: 0;", :method => :delete, :class => "button delete")
     end
     return html
   end
@@ -226,16 +239,11 @@ module ApplicationHelper
   end
   
   def color_picker(f, field_name, options={})
-    html = f.hidden_field "color"
-    html << content_tag("button", "", :class => "color_swatch", :type => "button",
-                        :id => "#{f.object_name}_color_swatch")
-    html << javascript_tag(<<EOJS
-      new Control.ColorPicker("#{f.object_name}_color",
-                                      {
-                                        "swatch": "#{f.object_name}_color_swatch",
-                                        "IMAGE_BASE": "#{ url_for "/images/colorPicker/" }"
-                                      });
-EOJS
-)
+    html = f.hidden_field(field_name)
+    placeholder_id = "#{f.object_name}_#{field_name}_swatch"
+    html << content_tag("div", :class => "vellumColorPicker",
+                        "data-colorpicker-field" => "#{f.object_name}[#{field_name}]") do
+      content_tag("div", "", :class => "vellumColorPickerPlaceholder")
+    end
   end
 end

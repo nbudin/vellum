@@ -1,11 +1,5 @@
-<script type="text/javascript">
-    Resource.model("RelationshipType", {prefix: '<%=project_path(@project)%>', format: 'json'});
-    Resource.model("Doc", {prefix: '<%=project_path(@project)%>', format: 'json'});
-    Resource.model("DocTemplate", {prefix: '<%=project_path(@project)%>', format: 'json'});
-</script>
-
 <p style="margin-top: 2em;">
-  <span style="font-weight: bold; font-size: 200%;"><%= jipe_editor_if_permitted @doc, "name" %></span>
+  <span style="font-weight: bold; font-size: 200%;"><%=h @doc.name %></span>
     (<%=h @doc.doc_template.name %>)</p>
 
 <div class="jumpbox">
@@ -21,6 +15,20 @@
       <% end -%>
     <% end -%>
   </div>
+  <table style="border: 0; border-collapse: collapse; width: 100%;">
+    <tr>
+      <td style="text-align: left;">
+        <% if @prev_doc -%>
+          <%= link_to "<< #{@prev_doc.name}", doc_path(@prev_doc.project, @prev_doc) %>
+        <% end -%>
+      </td>
+      <td style="text-align: right;">
+        <% if @next_doc -%>
+          <%= link_to "#{@next_doc.name} >>", doc_path(@next_doc.project, @next_doc) %>
+        <% end -%>
+      </td>
+    </tr>
+  </table>
 
   <h2><%=h @doc.name %></h2>
   <p>
@@ -31,7 +39,7 @@
     <% end -%>
   <% form_for @doc, :url => doc_path(@project, @doc), :html => {:class => "assignee"} do |f| -%>
     <%= f.label "assignee_id", "Assigned to" %>
-    <%= f.select "assignee_id", [["nobody", nil]] + @project.authors.sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
+    <%= f.select "assignee_id", [["nobody", nil]] + @project.permitted_people("edit").sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
                  :include_blank => false %>
     
     <button class="transition">
@@ -61,12 +69,12 @@
   </div>  
 </div>
     
-<dl style="margin-top: .75em;" class="doc_attrs">
+<table style="margin-top: .75em;" class="doc_attrs">
     <% @doc.attrs.each do |attr| -%>
-		<%= attr_row(attr) %>
+		  <%= attr_row(attr) %>
     <% end -%>
-</dl>
+</table>
 
 <div class="document_content" id="doc_content">
-  <%= sanitize @doc.content %>
+  <%= @doc.content %>
 </div>

@@ -16,8 +16,8 @@ class RelationshipsControllerTest < ActionController::TestCase
       get :index, :format => "json", :project_id => @project.id
     end
 
-    should_respond_with :success
-    should_assign_to :relationships
+    should respond_with(:success)
+    should assign_to(:relationships)
     should_respond_with_json
   end
 
@@ -37,9 +37,9 @@ class RelationshipsControllerTest < ActionController::TestCase
         }
       end
 
-      should_respond_with :redirect
-      should_assign_to :relationship
-      should_not_set_the_flash
+      should respond_with(:redirect)
+      should assign_to(:relationship)
+      should_not set_the_flash
 
       should "create a relationship" do
         assert_equal @old_count + 1, Relationship.count
@@ -58,15 +58,15 @@ class RelationshipsControllerTest < ActionController::TestCase
       context "on POST to :create with a new doc specified on the left" do
         setup do
           post :create, :project_id => @project.id, :relationship => {
-            :relationship_type_id => @rt.id,
-            :left_id => "new",
-            :right_id => @right.id
+            :relationship_type_id_and_source_direction => "#{@rt.id}_right",
+            :target_id => "new",
+            :source_id => @right.id
           }
         end
 
-        should_respond_with :redirect
-        should_assign_to :relationship
-        should_not_set_the_flash
+        should respond_with(:redirect)
+        should assign_to(:relationship)
+        should_not set_the_flash
 
         should "create a relationship and a doc" do
           assert_equal @old_count + 1, Relationship.count
@@ -81,15 +81,15 @@ class RelationshipsControllerTest < ActionController::TestCase
       context "on POST to :create with a new doc specified on the right" do
         setup do
           post :create, :project_id => @project.id, :relationship => {
-            :relationship_type_id => @rt.id,
-            :left_id => @left.id,
-            :right_id => "new"
+            :relationship_type_id_and_source_direction => "#{@rt.id}_left",
+            :source_id => @left.id,
+            :target_id => "new"
           }
         end
 
-        should_respond_with :redirect
-        should_assign_to :relationship
-        should_not_set_the_flash
+        should respond_with(:redirect)
+        should assign_to(:relationship)
+        should_not set_the_flash
 
         should "create a relationship and a structure" do
           assert_equal @old_count + 1, Relationship.count
@@ -115,8 +115,8 @@ class RelationshipsControllerTest < ActionController::TestCase
           :format => "json"
       end
 
-      should_respond_with :success
-      should_assign_to :relationship
+      should respond_with(:success)
+      should assign_to(:relationship)
 
       should "update the relationship" do
         assert_equal @left.id, assigns(:relationship).left_id
@@ -131,9 +131,9 @@ class RelationshipsControllerTest < ActionController::TestCase
         delete :destroy, :id => @relationship.id, :project_id => @project.id
       end
 
-      should_respond_with :redirect
-      should_assign_to :relationship
-      should_not_set_the_flash
+      should respond_with(:redirect)
+      should assign_to(:relationship)
+      should_not set_the_flash
 
       should "destroy a relationship" do
         assert_equal @old_count - 1, Relationship.count

@@ -20,9 +20,9 @@ class MappedDocTemplatesControllerTest < ActionController::TestCase
         :doc_template_id => @doc_template.id
     end
 
-    should_assign_to :mapped_doc_template
-    should_respond_with :redirect
-    should_not_set_the_flash
+    should assign_to(:mapped_doc_template)
+    should respond_with(:redirect)
+    should_not set_the_flash
 
     should "create a mapped doc template" do
       assert_equal @old_count + 1, MappedDocTemplate.count
@@ -45,9 +45,9 @@ class MappedDocTemplatesControllerTest < ActionController::TestCase
           :mapped_doc_template => { :color => "black" }
       end
 
-      should_assign_to :mapped_doc_template
-      should_respond_with :redirect
-      should_not_set_the_flash
+      should assign_to(:mapped_doc_template)
+      should respond_with(:redirect)
+      should_not set_the_flash
 
       should "update the mapped doc template" do
         assert_equal "black", assigns(:mapped_doc_template).color
@@ -66,9 +66,9 @@ class MappedDocTemplatesControllerTest < ActionController::TestCase
         delete :destroy, :id => @mdt.id, :map_id => @mdt.map.id, :project_id => @mdt.map.project.id
       end
 
-      should_assign_to :mapped_doc_template
-      should_respond_with :redirect
-      should_not_set_the_flash
+      should assign_to(:mapped_doc_template)
+      should respond_with(:redirect)
+      should_not set_the_flash
 
       should "destroy a mapped doc template" do
         assert_equal @old_count - 1, MappedDocTemplate.count

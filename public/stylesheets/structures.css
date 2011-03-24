@@ -1,0 +1,48 @@
+table.structure {
+    min-width: 30em;
+    margin-right: 0;
+}
+
+table.structure > tbody > tr > td {
+    width: 100%;
+}
+
+table.structure > tbody > tr > td:first-child {
+    width: 10em;
+    vertical-align: top;
+    border-top: 1px #666 dashed;
+}
+
+.external_view {
+    background-color: #eee; 
+	padding: 0.5em; 
+	margin-bottom: 0.5em; 
+	border-radius: 5px; 
+	-moz-border-radius: 5px; 
+	-webkit-border-radius: 5px; 
+	position: relative;
+}
+
+.external_view textarea {
+	width: 95%;
+	min-height: 4em;
+}
+
+.external_view .summary {
+	margin-top: 0;
+	overflow: hidden;
+}
+
+.external_view .summary h3 {
+	margin-top: 0;
+	overflow: auto;
+	display: inline;
+}
+
+.external_view .actions {
+	float: right;
+}
+
+.external_view label {
+  font-weight: bold;
+}

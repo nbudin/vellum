@@ -5,23 +5,15 @@
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <title><%= page_title %> - <%= @site_settings.site_name %></title>
-  <script src="<%= javascript_path 'svgweb/svg' %>" data-path="<%= url_for '/javascripts/svgweb/' %>"></script>
-  <%= stylesheet_link_tag 'application', 'editors', 'jumpbox', "structures" %>
+  <%= stylesheet_link_tag 'application', 'editors', 'jumpbox', "structures", "jquery-ui.custom", "site_theme" %>
   <%= javascript_include_tag 'jquery', 'jquery-ui', 'jrails' %>
-  <script type="text/javascript">
-    jQuery.noConflict();
-  </script>
-  <%= javascript_include_tag 'prototype', 'effects', 'dragdrop', 'controls' %>
-  <%= javascript_include_tag '/jipe/jester' %>
-  <%= javascript_include_tag '/jipe/jipe' %>
-  <%= javascript_include_tag 'builder', 'slider' %>
-  <%= javascript_include_tag 'colorPicker/yahoo.color.js', 'colorPicker/colorPicker' %>
-  <%= stylesheet_link_tag 'colorPicker' %>
+  <%= javascript_include_tag 'wymeditor/jquery.wymeditor.pack' %>
+  <%= javascript_include_tag 'jquery.jeditable.mini' %>
+  <%= javascript_include_tag 'farbtastic' %>
+  <%= stylesheet_link_tag 'farbtastic/farbtastic' %>
   
   <%= javascript_include_tag 'application' %>
   <%= auto_complete_stylesheet %>
-  <%= include_tiny_mce_if_needed %>
-
 </head>
 <body>
   
@@ -64,7 +56,7 @@
 
 <p style="color: green"><%= flash[:notice] %></p>
 
-<%= yield.unpack("U*").collect { |s| (s > 127 ? "&##{s};" : s.chr) }.join("")  %>
+<%= yield %>
 
 </body>
 </html>

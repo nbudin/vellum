@@ -13,6 +13,7 @@
     <div id="overview-main">
         <p>Tabs are generally used to break content into multiple sections that can be swapped to save space, much like an accordion.</p>
 <p>By default a tab widget will swap between tabbed sections onClick, but the events can be changed to onHover through an option. Tab content can be loaded via Ajax by setting an href on a tab.</p>
+<p><em>NOTE: Tabs created dynamically using .tabs( "add", ... ) are given an id of ui-tabs-NUM, where NUM is an auto-incrementing id. If you use this naming convention for your own elements, you may encounter problems.</em></p>
 <table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
 <ul>
 <li class="toclevel-1"><a href="#Events"><span class="tocnumber">1</span> <span class="toctext">Events</span></a></li>
@@ -260,7 +261,7 @@ A simple jQuery UI Tabs.<br />
   Initialize a tabs with the <code>disabled</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { disabled: true } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ disabled: true });</code></pre>
 </dd>
 
     
@@ -302,7 +303,7 @@ $( ".selector" ).tabs( "option", "disabled", true );</code></pre>
   Initialize a tabs with the <code>ajaxOptions</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { ajaxOptions: { async: false } } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ ajaxOptions: { async: false } });</code></pre>
 </dd>
 
     
@@ -344,7 +345,7 @@ $( ".selector" ).tabs( "option", "ajaxOptions", { async: false } );</code></pre>
   Initialize a tabs with the <code>cache</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { cache: true } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ cache: true });</code></pre>
 </dd>
 
     
@@ -386,7 +387,7 @@ $( ".selector" ).tabs( "option", "cache", true );</code></pre>
   Initialize a tabs with the <code>collapsible</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { collapsible: true } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ collapsible: true });</code></pre>
 </dd>
 
     
@@ -428,7 +429,7 @@ $( ".selector" ).tabs( "option", "collapsible", true );</code></pre>
   Initialize a tabs with the <code>cookie</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { cookie: { expires: 30 } } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ cookie: { expires: 30 } });</code></pre>
 </dd>
 
     
@@ -470,7 +471,7 @@ $( ".selector" ).tabs( "option", "cookie", { expires: 30 } );</code></pre>
   Initialize a tabs with the <code>deselectable</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { deselectable: true } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ deselectable: true });</code></pre>
 </dd>
 
     
@@ -512,7 +513,7 @@ $( ".selector" ).tabs( "option", "deselectable", true );</code></pre>
   Initialize a tabs with the <code>disabled</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { disabled: [1, 2] } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ disabled: [1, 2] });</code></pre>
 </dd>
 
     
@@ -554,7 +555,7 @@ $( ".selector" ).tabs( "option", "disabled", [1, 2] );</code></pre>
   Initialize a tabs with the <code>event</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { event: 'mouseover' } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ event: 'mouseover' });</code></pre>
 </dd>
 
     
@@ -596,7 +597,7 @@ $( ".selector" ).tabs( "option", "event", 'mouseover' );</code></pre>
   Initialize a tabs with the <code>fx</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { fx: { opacity: 'toggle' } } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ fx: { opacity: 'toggle' } });</code></pre>
 </dd>
 
     
@@ -638,7 +639,7 @@ $( ".selector" ).tabs( "option", "fx", { opacity: 'toggle' } );</code></pre>
   Initialize a tabs with the <code>idPrefix</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { idPrefix: 'ui-tabs-primary' } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ idPrefix: 'ui-tabs-primary' });</code></pre>
 </dd>
 
     
@@ -680,7 +681,7 @@ $( ".selector" ).tabs( "option", "idPrefix", 'ui-tabs-primary' );</code></pre>
   Initialize a tabs with the <code>panelTemplate</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { panelTemplate: '&lt;li&gt;&lt;/li&gt;' } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ panelTemplate: '&lt;li&gt;&lt;/li&gt;' });</code></pre>
 </dd>
 
     
@@ -722,7 +723,7 @@ $( ".selector" ).tabs( "option", "panelTemplate", '&lt;li&gt;&lt;/li&gt;' );</co
   Initialize a tabs with the <code>selected</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { selected: 3 } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ selected: 3 });</code></pre>
 </dd>
 
     
@@ -764,7 +765,7 @@ $( ".selector" ).tabs( "option", "selected", 3 );</code></pre>
   Initialize a tabs with the <code>spinner</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { spinner: 'Retrieving data...' } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ spinner: 'Retrieving data...' });</code></pre>
 </dd>
 
     
@@ -806,7 +807,7 @@ $( ".selector" ).tabs( "option", "spinner", 'Retrieving data...' );</code></pre>
   Initialize a tabs with the <code>tabTemplate</code> option specified.
 </dt>
 <dd>
-<pre><code>$( ".selector" ).tabs( { tabTemplate: '&lt;div&gt;&lt;a href&#61;"#&#123;href&#125;"&gt;&lt;span&gt;#&#123;label&#125;&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;' } );</code></pre>
+<pre><code>$( ".selector" ).tabs({ tabTemplate: '&lt;div&gt;&lt;a href&#61;"#&#123;href&#125;"&gt;&lt;span&gt;#&#123;label&#125;&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;' });</code></pre>
 </dd>
 
     
@@ -1196,6 +1197,28 @@ $( ".selector" ).tabs( "option", "tabTemplate", '&lt;div&gt;&lt;a href&#61;"#&#1
 </li>
 
 
+<li class="method" id="method-option">
+  <div class="method-header">
+    <h3 class="method-name"><a href="#method-option">option</a></h3>
+    <dl>
+      <dt class="method-signature-label">Signature:</dt>
+        <dd class="method-signature">.tabs( "option"
+
+, options
+
+
+
+
+
+)</dd>
+    </dl>
+  </div>
+  <div class="method-description">
+    <p>Set multiple tabs options at once by providing an options object.</p>
+  </div>
+</li>
+
+
 <li class="method" id="method-widget">
   <div class="method-header">
     <h3 class="method-name"><a href="#method-widget">widget</a></h3>
@@ -1279,7 +1302,7 @@ $( ".selector" ).tabs( "option", "tabTemplate", '&lt;div&gt;&lt;a href&#61;"#&#1
     </dl>
   </div>
   <div class="method-description">
-    <p>Enable a disabled tab.  To enable more than one tab at once reset the disabled property like: <code>$('#example').data('disabled.tabs', []);</code>. The second argument is the zero-based index of the tab to be enabled.</p>
+    <p>Enable a disabled tab.  To enable more than one tab at once reset the disabled property like: <code>$('#example').tabs("option","disabled",[]);</code>. The second argument is the zero-based index of the tab to be enabled.</p>
   </div>
 </li>
 
@@ -1301,7 +1324,7 @@ $( ".selector" ).tabs( "option", "tabTemplate", '&lt;div&gt;&lt;a href&#61;"#&#1
     </dl>
   </div>
   <div class="method-description">
-    <p>Disable a tab. The selected tab cannot be disabled. To disable more than one tab at once use: <code>$('#example').data('disabled.tabs', [1, 2, 3]);</code>  The second argument is the zero-based index of the tab to be disabled.</p>
+    <p>Disable a tab. The selected tab cannot be disabled. To disable more than one tab at once use: <code>$('#example').tabs("option","disabled", [1, 2, 3]);</code>  The second argument is the zero-based index of the tab to be disabled.</p>
   </div>
 </li>
 
@@ -1481,10 +1504,10 @@ $( ".selector" ).tabs( "option", "tabTemplate", '&lt;div&gt;&lt;a href&#61;"#&#1
 </div>
 
 </p><!-- 
-Pre-expand include size: 54838 bytes
-Post-expand include size: 94599 bytes
-Template argument size: 56912 bytes
+Pre-expand include size: 56145 bytes
+Post-expand include size: 94471 bytes
+Template argument size: 56684 bytes
 Maximum: 2097152 bytes
 -->
 
-<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3777-1!1!0!!en!2 and timestamp 20100318122804 -->
+<!-- Saved in parser cache with key jqdocs_docs:pcache:idhash:3777-1!1!0!!en!2 and timestamp 20100910172930 -->

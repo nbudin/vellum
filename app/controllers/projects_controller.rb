@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
   load_and_authorize_resource :except => [:index]
   before_filter :get_visible_projects, :only => [:index, :new]
+  cache_sweeper :project_sweeper, :only => [:update, :create]
 
   # GET /projects
   # GET /projects.xml
@@ -27,7 +28,7 @@ class ProjectsController < ApplicationController
       format.html do
         @templates = @project.doc_templates.sort_by { |t| t.name.sort_normalize }
         @docs = {}
-        @project.docs.all.each do |d|
+        @project.docs.all(:include => [:doc_template, :assignee]).each do |d|
           @docs[d.doc_template] ||= []
           @docs[d.doc_template] << d
         end
@@ -77,8 +78,8 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if @project.update_attributes(params[:project])
         format.html { redirect_to project_url(@project) }
-        format.xml  { head :ok }
-        format.json { head :ok }
+        format.xml  { render :xml => @project.to_xml }
+        format.json { render :json => @project.to_json }
       else
         format.html { render :action => "edit" }
         format.xml  { render :xml => @project.errors.to_xml }

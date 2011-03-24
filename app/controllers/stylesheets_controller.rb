@@ -1,16 +1,7 @@
 class StylesheetsController < ApplicationController
   layout nil
-  caches_page :application, :editors, :jumpbox, :structures
+  caches_page :site_theme
   
-  def application
-  end
-  
-  def editors
-  end
-  
-  def jumpbox
-  end
-  
-  def structures
+  def site_theme
   end
 end

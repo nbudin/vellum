@@ -26,20 +26,14 @@ class RelationshipsController < ApplicationController
   # POST /relationships
   # POST /relationships.xml
   def create
-    @relationship_type = RelationshipType.find(params[:relationship][:relationship_type_id])
+    @relationship = @project.relationships.new(params[:relationship])
     html_redirect = :back
-    if params[:relationship][:left_id] == "new"
-      left = Doc.create(:project => @project, :doc_template => @relationship_type.left_template)
-      params[:relationship][:left_id] = left.id
-      html_redirect = edit_doc_url(@project, left)
-    elsif params[:relationship][:right_id] == "new"
-      right = Doc.create(:project => @project, :doc_template => @relationship_type.right_template)
-      params[:relationship][:right_id] = right.id
-      html_redirect = edit_doc_url(@project, right)
+    if params[:relationship][:target_id] == "new"
+      tmpl = @relationship.relationship_type.send("#{@relationship.target_direction}_template")
+      target = Doc.create(:project => @project, :doc_template => tmpl, :name => "New #{tmpl.name}")
+      @relationship.target_id = target.id
+      html_redirect = edit_doc_url(@project, target)
     end
-
-    @relationship = Relationship.new(params[:relationship])
-    @relationship.project = @project
 
     respond_to do |format|
       if @relationship.save

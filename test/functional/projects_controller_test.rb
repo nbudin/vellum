@@ -10,9 +10,9 @@ class ProjectsControllerTest < ActionController::TestCase
       get :index
     end
 
-    should_respond_with :success
-    should_assign_to :projects
-    should_render_template "index"
+    should respond_with(:success)
+    should assign_to(:projects)
+    should render_template("index")
   end
 
   context "on GET to :new" do
@@ -20,8 +20,8 @@ class ProjectsControllerTest < ActionController::TestCase
       get :new
     end
 
-    should_respond_with :success
-    should_render_template "new"
+    should respond_with(:success)
+    should render_template("new")
   end
 
   context "on POST to :create with project" do
@@ -30,9 +30,9 @@ class ProjectsControllerTest < ActionController::TestCase
       post :create, { :project => { :name => "My project" }}
     end
 
-    should_respond_with :redirect
-    should_assign_to :project
-    should_not_set_the_flash
+    should respond_with(:redirect)
+    should assign_to(:project)
+    should_not set_the_flash
 
     should "create a project" do
       assert_equal @old_count + 1, Project.count
@@ -61,9 +61,9 @@ class ProjectsControllerTest < ActionController::TestCase
         get :show, :id => @project.id
       end
 
-      should_respond_with :success
-      should_render_template :show
-      should_assign_to :project
+      should respond_with(:success)
+      should render_template(:show)
+      should assign_to(:project)
     end
 
     context "on GET to :edit" do
@@ -71,9 +71,9 @@ class ProjectsControllerTest < ActionController::TestCase
         get :edit, :id => @project.id
       end
 
-      should_respond_with :success
-      should_render_template :edit
-      should_assign_to :project
+      should respond_with(:success)
+      should render_template(:edit)
+      should assign_to(:project)
     end
 
     context "on PUT to :update" do
@@ -81,9 +81,9 @@ class ProjectsControllerTest < ActionController::TestCase
         put :update, :id => @project.id, :project => { :name => "New name" }
       end
 
-      should_respond_with :redirect
-      should_assign_to :project
-      should_not_set_the_flash
+      should respond_with(:redirect)
+      should assign_to(:project)
+      should_not set_the_flash
 
       should "update the project" do
         assert_equal "New name", assigns(:project).name
@@ -100,9 +100,9 @@ class ProjectsControllerTest < ActionController::TestCase
         delete :destroy, :id => @project.id
       end
 
-      should_respond_with :redirect
-      should_assign_to :project
-      should_not_set_the_flash
+      should respond_with(:redirect)
+      should assign_to(:project)
+      should_not set_the_flash
 
       should "destroy the project" do
         assert_equal @old_count - 1, Project.count

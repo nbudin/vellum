@@ -1,9 +1,11 @@
-<dt>
-  <%= doc_template_attr.name %>
-</dt>
-<dd>
-  <%= doc_template_attr.ui_type_name %>
-  <% if doc_template_attr.multiple_choice? -%>
-    (Choices: <%= doc_template_attr.human_choices %>)
-  <% end -%>
-</dd>
+<tr>
+  <td class="name">
+    <%= doc_template_attr.name %>
+  </td>
+  <td class="value">
+    <%= doc_template_attr.ui_type_name %>
+    <% if doc_template_attr.multiple_choice? -%>
+      (Choices: <%= doc_template_attr.human_choices %>)
+    <% end -%>
+  </td>
+</tr>

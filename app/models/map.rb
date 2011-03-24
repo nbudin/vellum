@@ -32,8 +32,42 @@ class Map < ActiveRecord::Base
     }
   end
   
+  def dot_output_for_gvapi(options={})
+    generate_output("none", options).gsub(/\s+/, " ")
+  end
+  
   def output(format, options={})
+    if ENV["GVAPI_URL"]
+      url = URI.parse(ENV["GVAPI_URL"])
+      req = Net::HTTP::Post.new(url.path)
+      req.form_data = gvapi_params(format, options)
+      req.basic_auth url.user, url.password if url.user
+      
+      Proc.new do |response, output|
+        Net::HTTP.new(url.host, url.port).start do |http|
+          http.request(req) do |response|
+            response.read_body do |data|
+              output.write data
+            end
+          end
+        end
+      end
+    else
+      generate_output(format, options)
+    end
+  end
+  
+  def generate_output(format, options={})
     graphviz.output(options.update(format.to_sym => String))
+  end
+  
+  def gvapi_params(format, options={})
+    key = ENV["GVAPI_KEY"]
+    params = { :data => dot_output_for_gvapi(options) }
+    params[:format] = format if format
+    params[:key] = key if key
+
+    params
   end
   
   def graphviz_method
@@ -51,19 +85,16 @@ class Map < ActiveRecord::Base
 
     nodes = {}
     mapped_doc_templates.each do |mdt|
-      project.docs.all(:conditions => ["doc_template_id = ?",
-                                       mdt.doc_template.id]).each do |doc|
-        nodes[doc] = g.add_node("doc_#{doc.id}",
+      mdt.doc_template.docs.all(:conditions => { :project_id => project.id }).each do |doc|
+        nodes[doc.id] = g.add_node("doc_#{doc.id}",
                                 doc_options(doc, mdt))
       end
     end
     
     mapped_relationship_types.each do |mrt|
-      project.relationships.all(:conditions => ["relationship_type_id = ?",
-                                                mrt.relationship_type.id]).each do |relationship|
-        g.add_edge(nodes[relationship.left], nodes[relationship.right],
+      mrt.relationship_type.relationships.all(:conditions => { :project_id => project.id }).each do |relationship|
+        g.add_edge(nodes[relationship.left_id], nodes[relationship.right_id],
                  relationship_options(relationship, mrt))
-        
       end
     end
     

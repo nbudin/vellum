@@ -9,6 +9,8 @@ class VPubContext < Radius::Context
     globals.doc = @doc
     self.format = init_options[:format] || 'html'
     
+    @pub_template_cache = {}
+    
     define_tag 'attr' do |tag|
       get_attr tag
       tag.expand
@@ -36,7 +38,7 @@ class VPubContext < Radius::Context
       end
       tag.locals.do_not_recurse += related
 
-      related.collect do |d|
+      sort_docs(tag, related).collect do |d|
         tag.locals.doc = d
         tag.expand
       end.join("")
@@ -49,7 +51,8 @@ class VPubContext < Radius::Context
       end
       
       prev_doc = tag.locals.doc
-      content = project.docs.all(:conditions => conds).collect do |d|
+      docs = project.docs.all(:conditions => conds)
+      content = sort_docs(tag, docs).collect do |d|
         tag.locals.doc = d
         tag.expand
       end.join
@@ -71,6 +74,16 @@ class VPubContext < Radius::Context
         content
       end
     end
+    
+    define_tag 'include' do |tag|
+      tmpl = get_pub_template(tag)
+      
+      if tmpl.doc_template && tmpl.doc_template != @doc.doc_template
+        raise "Included template \"#{tmpl.name}\" requires a #{tmpl.doc_template.name} but the current doc is a #{doc.doc_template.name}"
+      end
+
+      tmpl.execute(:doc => @doc, :project => @project)
+    end
   end
   
   def format_for_tag(tag)
@@ -84,6 +97,66 @@ class VPubContext < Radius::Context
   def get_attr(tag)
     if tag.attr['name']
       tag.locals.attr = tag.locals.doc.attrs[tag.attr['name']]
+    end
+  end
+  
+  def sort_docs(tag, docs)
+    return docs unless tag.attr['sort']
+    
+    fields = tag.attr['sort'].split(/\s*,\s*/)
+    docs.sort do |a, b|
+      fields_to_try = fields.dup
+      result = 0
+      
+      while fields_to_try.size > 0 && result == 0
+        field = fields_to_try.shift
+
+        desc = 1
+        numeric = false
+        special = false
+
+        if field =~ /([^A-Za-z0-9]+)(.*)$/
+          options = $1
+          field = $2
+          
+          numeric = true if options.include? '#'
+          desc = -1 if options.include? '-'
+          special = true if options.include? '@'
+        end
+        
+        if special
+          case field
+          when "name"
+            av = a.name
+            bv = b.name
+          else
+            av = nil
+            bv = nil
+          end
+        else
+          av = a.attrs[field].value
+          bv = b.attrs[field].value
+        end
+        
+        if numeric
+          av = av.try(:to_f)
+          bv = bv.try(:to_f)
+        end
+        
+        result = if av.nil? && bv.nil?
+          0
+        elsif av.nil?
+          -1
+        elsif bv.nil?
+          1
+        else
+          av <=> bv
+        end
+        
+        result *= desc
+      end
+      
+      result
     end
   end
   
@@ -102,5 +175,10 @@ class VPubContext < Radius::Context
     if cond
       tag.expand
     end
+  end
+  
+  def get_pub_template(tag)
+    template_name = tag.attr['template']
+    @pub_template_cache[template_name] ||= @project.publication_templates.find_by_name(template_name)
   end
 end

@@ -103,8 +103,8 @@ class VPubContextTest < ActiveSupport::TestCase
       end
       
       should "iterate through docs by template" do
-        text = @parser.parse('<v:each_doc template="Person"><v:name/></v:each_doc>')
-        assert_equal "BobJoe", text
+        assert_equal "BobJoe", @parser.parse('<v:each_doc template="Person"><v:name/></v:each_doc>')
+        assert_equal "JoeBob", @parser.parse('<v:each_doc template="Person" sort="-@name"><v:name/></v:each_doc>')
       end
       
       context "in a recursive loop" do
@@ -118,6 +118,72 @@ class VPubContextTest < ActiveSupport::TestCase
         should "not enter an infinite loop" do
           assert_equal @joe.name, @parser.parse('<v:each_related how="is taller than"><v:name/></v:each_related>')
         end
+      end
+      
+      context "and another related structure" do
+        setup do
+          @tim = Factory.create(:doc, :doc_template => @person,
+            :project => @project, :name => "Tim")
+          @tim_taller = Factory.create(:relationship, :relationship_type => @taller,
+            :left => @bob, :right => @tim, :project => @project)
+            
+          @tim.attrs['Favorite Color'].value = 'green'
+          @tim.attrs['Sandwich'].value = 'BLT'
+          @tim.attrs['Number'].value = '13'
+          @tim.save
+          @joe.attrs['Favorite Color'].value = 'blue'
+          @joe.attrs['Sandwich'].value = 'BLT'
+          @joe.attrs['Number'].value = '5'
+          @joe.save
+          
+          @bob.reload
+        end
+        
+        should "sort properly" do
+          assert_equal "#{@joe.name}#{@tim.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="@name"><v:name/></v:each_related>')
+          assert_equal "#{@tim.name}#{@joe.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="-@name"><v:name/></v:each_related>')
+          
+          assert_equal "#{@joe.name}#{@tim.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="Favorite Color"><v:name/></v:each_related>')
+          assert_equal "#{@tim.name}#{@joe.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="-Favorite Color"><v:name/></v:each_related>')
+          
+          assert_equal "#{@joe.name}#{@tim.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="Sandwich, Favorite Color"><v:name/></v:each_related>')
+          assert_equal "#{@tim.name}#{@joe.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="-Sandwich, -Favorite Color"><v:name/></v:each_related>')
+          
+          assert_equal "#{@joe.name}#{@tim.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="#Number"><v:name/></v:each_related>')
+          assert_equal "#{@tim.name}#{@joe.name}",
+            @parser.parse('<v:each_related how="is taller than" sort="-#Number"><v:name/></v:each_related>')
+        end
+      end
+    end
+    
+    context "with an included PublicationTemplate" do
+      setup do
+        @other_template = Factory.create(:publication_template, :project => @project, :name => "Another template",
+          :content => "Included content, with the doc name <v:name/>")
+      end
+      
+      should "include the content from the other PublicationTemplate with appropriate context" do
+        assert_equal "My content\nIncluded content, with the doc name Bob\nMore content Bob",
+          @parser.parse("My content\n<v:include template=\"Another template\"/>\nMore content <v:name/>")
+      end
+      
+      should "enforce doc template restrictions" do
+        assert @tree = @project.doc_templates.create(:name => "Tree")
+        @other_template.doc_template = @tree
+        assert @other_template.save
+        
+        exc = assert_raise RuntimeError do
+          @parser.parse("My content\n<v:include template=\"Another template\"/>\nMore content <v:name/>")
+        end
+        
+        assert_equal "Included template \"Another template\" requires a Tree but the current doc is a Person", exc.message
       end
     end
   end
