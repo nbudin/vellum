@@ -108,7 +108,7 @@ module ApplicationHelper
 
   def item_actions(item, options={})
     html = ""
-    if options[:delete_path] && current_ability.can?(:destroy, item)
+    if options[:delete_path] && can?(:destroy, item)
       html << button_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",
                       :style => "margin: 0;", :method => :delete, :class => "button delete")
     end

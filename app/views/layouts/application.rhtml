@@ -43,14 +43,9 @@
   <% end -%>
 </div>
 
-<% if flash[:error_messages] and flash[:error_messages].length > 0 -%>
+<% if flash[:error] -%>
   <div class="error_messages">
-    <h2>There were some errors processing your request:</h2>
-    <ul>
-      <% flash[:error_messages].each do |msg| -%>
-        <li><%= msg%></li>
-      <% end -%>
-    </ul>
+    <%= flash[:error] %>
   </div>
 <% end -%>
 

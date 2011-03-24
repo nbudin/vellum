@@ -41,7 +41,7 @@ class RelationshipsController < ApplicationController
         format.xml  { render :xml => @relationship, :status => :created, :location => @relationship }
       else
         format.html { 
-          flash[:error_messages] = @relationship.errors.full_messages
+          flash[:error] = @relationship.errors.full_messages.join(", ")
           redirect_to :back 
         }
         format.xml  { render :xml => @relationship.errors, :status => :unprocessable_entity }
@@ -61,7 +61,7 @@ class RelationshipsController < ApplicationController
         format.json { head :ok }
       else
         format.html { 
-          flash[:error_messages] = @relationship.errors.full_messages
+          flash[:errors] = @relationship.errors.full_messages.join(", ")
           redirect_to :back 
         }
         format.xml  { render :xml => @relationship.errors, :status => :unprocessable_entity }

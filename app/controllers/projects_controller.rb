@@ -57,7 +57,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
-        @project.grant(logged_in_person)
+        @project.project_memberships.create(:person => current_person, :author => true, :admin => true)
         format.html { redirect_to project_url(@project) }
         format.xml  { head :created, :location => project_url(@project) }
         format.json { head :created, :location => project_url(@project) }

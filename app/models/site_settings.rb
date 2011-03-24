@@ -3,10 +3,6 @@ class SiteSettings < ActiveRecord::Base
   
   belongs_to :admin, :class_name => "Person"
   
-  def is_admin?(person)
-    person and person.permitted?(SiteSettings, "admin")
-  end
-  
   def site_name
     sn = read_attribute(:site_name) 
     if sn.blank?

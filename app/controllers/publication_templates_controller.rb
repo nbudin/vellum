@@ -40,7 +40,6 @@ class PublicationTemplatesController < ApplicationController
         format.xml  { head :created, :location => publication_template_url(@project, @publication_template, :format => "xml" ) }
         format.json { head :created, :location => publication_template_url(@project, @publication_template, :format => "json") }
       else
-        flash[:error_messages] = @publication_template.errors.full_messages
         format.html { render :action => "new" }
         format.xml  { render :xml => @publication_template.errors.to_xml }
         format.json { render :json => @publication_template.errors.to_json }

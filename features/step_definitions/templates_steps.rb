@@ -1,6 +1,6 @@
 Given /^a template named "([^\"]*)"$/ do |name|
   assert tmpl = Factory.create(:doc_template, :name => name)
-  tmpl.project.grant(controller.logged_in_person)
+  tmpl.project.project_memberships.create(:person => controller.current_person, :author => true)
 end
 
 Given /^a template named "([^\"]*)" in "([^\"]*)"$/ do |name, project_name|

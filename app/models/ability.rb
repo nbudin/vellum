@@ -8,15 +8,19 @@ class Ability
     
     if person.admin?
       can [:read, :update, :destroy, :change_permissions], Project
+      can :manage, Doc
     else
-      can(:read, Project) { |project| find_membership(person, project) }
-      can(:update, Project) { |project| find_membership(person, project).try(:author?) }
-      can([:destroy, :change_permissions], Project) { |project| find_membership(person, project).try(:admin?) }
+      memberships = person.project_memberships
+      read_project_ids = memberships.map(&:project_id)
+      author_project_ids = memberships.select(&:author?).map(&:project_id)
+      admin_project_ids = memberships.select(&:admin?).map(&:project_id)
+      
+      can(:read, Project, :id => read_project_ids)
+      can(:update, Project, :id => author_project_ids)
+      can([:destroy, :change_permissions], Project, :id => admin_project_ids)
+      
+      can(:read, Doc, :project_id => read_project_ids)
+      can(:manage, Doc, :project_id => author_project_ids)
     end
-  end
-  
-  protected
-  def find_membership(person, project)
-    ProjectMembership.first(:conditions => {:project_id => project.id, :person_id => person.id})
   end
 end

@@ -1,1 +1,0 @@
-AeUsers.js_framework = "jquery"

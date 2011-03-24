@@ -1,6 +1,6 @@
 class DocsController < ApplicationController
-  load_and_authorize_resource
-  before_filter :get_project
+  load_resource :project
+  load_and_authorize_resource :doc, :through => :project
   
   cache_sweeper :project_sweeper, :only => [:create, :update, :destroy, :sort]
   
@@ -77,7 +77,7 @@ class DocsController < ApplicationController
 
     @doc = @project.docs.new(params[:doc].update(
         :doc_template => @doc_template,
-        :creator => logged_in_person))
+        :creator => current_person))
 
     respond_to do |format|
       if @doc.save
@@ -85,7 +85,6 @@ class DocsController < ApplicationController
         format.xml  { head :created, :location => doc_url(@project, @doc, :format => "xml" ) }
         format.json { head :created, :location => doc_url(@project, @doc, :format => "json") }
       else
-        flash[:error_messages] = @doc.errors.full_messages
         format.html { render :action => "new" }
         format.xml  { render :xml => @doc.errors.to_xml }
         format.json { render :json => @doc.errors.to_json }
@@ -101,7 +100,7 @@ class DocsController < ApplicationController
     successful_save = @doc.update_attributes(params[:doc])
     if successful_save
       v = @doc.versions.latest
-      v.author = logged_in_person
+      v.author = current_person
       successful_save = v.save
     end
 
@@ -144,10 +143,5 @@ class DocsController < ApplicationController
       end
     end
     head :ok
-  end
-  
-  private
-  def get_project
-    @project = Project.find(params[:project_id])
   end
 end

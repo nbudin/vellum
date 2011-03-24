@@ -11,12 +11,12 @@
   </div>
   
   <h2><%=h @map.name %></h2>  
-    <% if person_signed_in? and logged_in_person.permitted?(@project, "edit") -%>
+    <% if can?(:destroy, @map) -%>
         <%= button_to "Delete", map_path(@project, @map), :method => "delete",
             :class => "delete", :confirm => "Are you sure you want to delete the #{@map.name} map?" %>
     <% end -%>
 
-  <% if person_signed_in? and logged_in_person.permitted?(@project, "edit") -%>
+  <% if can(:edit, @map) -%>
     <h2>Documents</h2>
     <div id="docs">
       Include all...

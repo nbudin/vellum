@@ -12,15 +12,12 @@ class AboutController < ApplicationController
     if @site_settings.update_attributes(params[:site_settings])
       redirect_to :action => "index"
     else
-      flash[:error_messages] = @site_settings.errors.messages
       render :action => "edit_settings"
     end
   end
   
   private
   def check_admin
-    unless SiteSettings.instance.is_admin?(logged_in_person)
-      redirect_to :action => "index"
-    end
+    authorize! :edit, SiteSettings.instance
   end
 end

@@ -22,8 +22,8 @@ gem "jrails"
 gem "rubyzip"
 gem "nokogiri", ">= 1.4.1"
 gem "sanitize"
-gem "ae_users_legacy"
 gem "heroku_external_db"
+gem "illyan_client"
 
 group :development do
   gem "bullet"

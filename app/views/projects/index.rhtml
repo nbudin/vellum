@@ -48,5 +48,5 @@
 
 
 <% unless person_signed_in? -%>
-<p>To see your projects, please <%= link_to "log in", :controller => "auth", :action => "login" %>.</p>
+<p>To see your projects, please <%= link_to "log in", new_person_session_path %>.</p>
 <% end -%>

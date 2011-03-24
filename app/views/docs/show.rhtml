@@ -8,7 +8,7 @@
       <%= image_tag "arrow_left.png" %>
       <%=h @project.name %>
     <% end -%>
-    <% if person_signed_in? and logged_in_person.permitted?(@project, "edit") -%>
+    <% if can?(:edit, @doc) -%>
       <% link_to edit_doc_path(@project, @doc), :class => "button edit" do -%>
         Edit
         <%= image_tag "structure_edit.png" %>
@@ -39,7 +39,7 @@
     <% end -%>
   <% form_for @doc, :url => doc_path(@project, @doc), :html => {:class => "assignee"} do |f| -%>
     <%= f.label "assignee_id", "Assigned to" %>
-    <%= f.select "assignee_id", [["nobody", nil]] + @project.permitted_people("edit").sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
+    <%= f.select "assignee_id", [["nobody", nil]] + @project.authors.sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
                  :include_blank => false %>
     
     <button class="transition">
@@ -47,7 +47,7 @@
         Reassign
     </button>
   <% end -%>
-	<% if person_signed_in? and logged_in_person.permitted?(@doc, "destroy") -%>
+	<% if can?(:destroy, @doc) -%>
 		<br/>
 		<%= button_to "Delete #{@doc.name}", doc_path(@project, @doc), :method => "delete",
 			:class => "delete", :confirm => "Are you sure you want to delete #{@doc.name}?" %>

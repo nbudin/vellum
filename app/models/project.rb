@@ -9,19 +9,15 @@ class Project < ActiveRecord::Base
   has_many :maps, :dependent => :destroy
   
   has_many :project_memberships
+  has_many :members, :class_name => "Person", :through => :project_memberships, :source => :person
+  has_many :authors, :class_name => "Person", :through => :project_memberships, :source => :person, :conditions => { "project_memberships.author" => true }
+  has_many :admins, :class_name => "Person", :through => :project_memberships, :source => :person, :conditions => { "project_memberships.admin" => true }
   accepts_nested_attributes_for :project_memberships, :allow_destroy => true
 
   attr_reader :template_source_project_id
   validates_associated :doc_templates
   validates_associated :relationship_types
   validates_presence_of :name
-
-  def authors
-    ids = docs.collect { |doc| doc.versions.collect { |version| version.author_id }.uniq }.flatten.uniq
-    people = ids.collect { |id| id and Person.find(id) }.compact
-    people += self.permitted_people("edit")
-    people.uniq
-  end
   
   def to_param
     if name
