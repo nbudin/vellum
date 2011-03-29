@@ -19,6 +19,7 @@ gem "nokogiri", ">= 1.4.1"
 gem "sanitize"
 gem "ae_users_legacy"
 gem "heroku_external_db"
+gem "hoptoad_notifier"
 
 group :development do
   gem "bullet"
