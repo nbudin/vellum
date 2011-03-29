@@ -14,7 +14,7 @@ GEM
     activesupport (2.3.5)
     acts_as_singleton (0.0.5)
       activerecord
-    ae_users_legacy (0.6.3)
+    ae_users_legacy (0.6.4)
       ruby-openid (>= 2.0.4)
     builder (2.1.2)
     bullet (2.0.1)
