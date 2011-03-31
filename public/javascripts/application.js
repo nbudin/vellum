@@ -138,7 +138,6 @@ jQuery.fn.vellumAttrList = function() {
                 $(this).width($originals.eq(index).width())
             });
             $helper.addClass('attr_sortable_helper');
-            console.log($helper);
             return $helper;
         }
     });
