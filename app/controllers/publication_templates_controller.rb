@@ -1,7 +1,9 @@
 require 'zip/zip'
 
 class PublicationTemplatesController < ApplicationController
-  rest_edit_permissions :class_name => "Project", :id_param => "project_id"
+  perm_options = { :class_name => "Project", :id_param => "project_id" }
+  rest_edit_permissions perm_options
+  require_permission "show", {:only => [:test, :publish]}.update(perm_options)
   before_filter :get_project
   
   def index
