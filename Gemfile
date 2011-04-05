@@ -22,7 +22,7 @@ gem "heroku_external_db"
 gem "hoptoad_notifier"
 
 group :development do
-  gem "bullet"
+  gem "newrelic_rpm"
   gem "thin"
 end
 
