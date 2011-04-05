@@ -43,6 +43,15 @@ class Attr < ActiveRecord::Base
   include Attr::Base
   include Attr::WithSlug
   attr_accessor :doc
+  
+  def shim_for_attr_set(doc)
+    shim = Attr.new(:doc => doc)
+    %w{name slug value position format}.each do |field|
+      shim.write_attribute(field, self.read_attribute(field))
+    end
+    
+    shim
+  end
 
   def value(format='html')
     raw_content = read_attribute(:value)
@@ -71,6 +80,14 @@ class Attr < ActiveRecord::Base
     else
       Sanitize.clean(value.to_s, Sanitize::Config::VELLUM)
     end)
+  end
+  
+  def raw_value
+    read_attribute(:value)
+  end
+  
+  def value_unsafe=(value)
+    write_attribute(:value, value)
   end
 
   def template_attr

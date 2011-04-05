@@ -32,27 +32,29 @@ class Doc < ActiveRecord::Base
       @deleted_attrs = []
       @doc = doc
       @attrs_by_slug = {}
-
+      
       unless doc_version.nil?
         doc_version.attrs.each do |attr|
           # We create a clone of the attr with the version ref removed
           # but the @doc variable remaining set
 
-          working_attr = attr.clone
-          working_attr.doc = @doc
-          
-          working_attr.doc_version_id = nil
-          working_attr.doc_version = nil
-          self << working_attr
+          self.push(attr.shim_for_attr_set(@doc), true)
         end
       end
+      update_slug_hash!
 
       # ensure we have all template attributes
       unless @doc.doc_template.nil?
         @doc.doc_template.doc_template_attrs.each do |dta|
-          self[dta.name]
+          slug = Attr::WithSlug.slug_for(dta.name)
+          unless @attrs_by_slug.has_key?(slug)
+            new_attr = Attr.new(:name => dta.name, :doc => @doc)
+            self.push(new_attr, true)
+          end
         end
       end
+      
+      after_change
     end
 
     def [](index_or_slug)
@@ -77,9 +79,9 @@ class Doc < ActiveRecord::Base
       after_change
     end
 
-    def push(attr)
+    def push(attr, skip_update = false)
       super(attr)
-      after_change
+      after_change unless skip_update
     end
 
     def insert(index, attr)
@@ -96,7 +98,7 @@ class Doc < ActiveRecord::Base
       @attrs_by_slug = self.inject({}) do |memo, attr|
         memo[attr.slug] = attr
         memo
-      end
+      end      
     end
 
     def resort!
@@ -123,7 +125,7 @@ class Doc < ActiveRecord::Base
         self[index_or_slug]
       else
         slug = Attr::WithSlug.slug_for(index_or_slug)
-        @attrs_by_slug[slug] ||= self.select { |attr| attr.slug == slug }.first
+        @attrs_by_slug[slug] #||= self.select { |attr| attr.slug == slug }.first
       end
     end
 
