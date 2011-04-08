@@ -11,6 +11,7 @@ end
 
 gem "devise", "~> 1.0.8"
 gem "devise_cas_authenticatable", :path => "/Users/nbudin/code/devise_cas_authenticatable"
+gem "json"
 gem "ae_users_migrator", ">= 1.0.4"
 gem "cancan"
 
