@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110222201026) do
+ActiveRecord::Schema.define(:version => 20110407194737) do
 
   create_table "attrs", :force => true do |t|
     t.integer "doc_version_id"
@@ -157,7 +157,10 @@ ActiveRecord::Schema.define(:version => 20110222201026) do
   create_table "projects", :force => true do |t|
     t.string "name"
     t.text   "blurb"
+    t.string "public_visibility", :default => "hidden", :null => false
   end
+
+  add_index "projects", ["public_visibility"], :name => "index_projects_on_public_visibility"
 
   create_table "publication_templates", :force => true do |t|
     t.integer  "project_id"

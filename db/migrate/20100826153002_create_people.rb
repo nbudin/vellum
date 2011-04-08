@@ -17,51 +17,63 @@ class CreatePeople < ActiveRecord::Migration
     role_ids = role_ids.uniq.compact
     
     if person_ids.count > 0 or role_ids.count > 0
+      # preflight checks for person/role migration
       unless File.exist?("ae_users.json")
         raise "There are users to migrate, and ae_users.json does not exist.  Please use export_ae_users.rb to create it."
       end
       @@dumpfile = AeUsersMigrator::Import::Dumpfile.load(File.new("ae_users.json"))
       
-      create_table :people do |t|
-        t.string :email
-        t.string :firstname
-        t.string :lastname
-        t.string :gender
-        t.timestamp :birthdate
-      
-        t.boolean :admin
-      
-        t.cas_authenticatable
-        t.trackable
-        t.timestamps
-      end
-      add_index :people, :username, :unique => true
-    
-      create_table :project_memberships do |t|
-        t.references :project, :person
-        t.boolean :author
-        t.boolean :admin
-      end
-    
       @@merged_person_ids = {}
       role_ids.each do |role_id|
         person_ids += @@dumpfile.roles[role_id].people.map(&:id)
       end
       person_ids = person_ids.uniq.compact
       
-      say "Migrating #{person_ids.size} existing people from ae_users"
-      
+      errors = false
       person_ids.each do |person_id|
         person = @@dumpfile.people[person_id]
         if person.nil?
           say "Person ID #{person_id.inspect} not found in ae_users.json!  Dangling references may be left in database."
-          next
+          errors = true
         end
         
         if person.primary_email_address.nil?
           say "Person ID #{person.id} (#{person.firstname} #{person.lastname}) has no primary email address!  Cannot create, so dangling references may be left in database."
-          next
+          errors = true
         end
+      end
+      
+      if errors
+        raise "Aborting due to above problems.  Please fix them and try the migration again."
+      end
+    end
+    
+    create_table :people do |t|
+      t.string :email
+      t.string :firstname
+      t.string :lastname
+      t.string :gender
+      t.timestamp :birthdate
+    
+      t.boolean :admin
+    
+      t.cas_authenticatable
+      t.trackable
+      t.timestamps
+    end
+    add_index :people, :username, :unique => true
+  
+    create_table :project_memberships do |t|
+      t.references :project, :person
+      t.boolean :author
+      t.boolean :admin
+    end
+    
+    if person_ids.count > 0 or role_ids.count > 0    
+      say "Migrating #{person_ids.size} existing people from ae_users"
+      
+      person_ids.each do |person_id|
+        person = @@dumpfile.people[person_id]
         
         merge_into = Person.find_by_username(person.primary_email_address.address)
         if merge_into.nil?
