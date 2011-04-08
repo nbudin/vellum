@@ -18,6 +18,7 @@ class Project < ActiveRecord::Base
   validates_associated :doc_templates
   validates_associated :relationship_types
   validates_presence_of :name
+  validates_inclusion_of :public_visibility, :in => %w(hidden visible copy_templates)
   
   def to_param
     if name

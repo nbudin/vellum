@@ -16,10 +16,12 @@ class Ability
       admin_project_ids = memberships.select(&:admin?).map(&:project_id)
       
       can(:read, Project, :id => read_project_ids)
+      can(:read, Project, :public_visibility => "visible")
       can(:update, Project, :id => author_project_ids)
       can([:destroy, :change_permissions], Project, :id => admin_project_ids)
       
       can(:read, Doc, :project_id => read_project_ids)
+      can(:read, Doc, :project => {:public_visibility => "visible"})
       can(:manage, Doc, :project_id => author_project_ids)
     end
   end

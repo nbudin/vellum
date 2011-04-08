@@ -1,32 +1,21 @@
-<h1>Members for <%=h @project.name %></h1>
-
-<div class="jumpbox">
-  <div class="navigation">
-    <% link_to project_path(@project), :class => "button back" do %>
-      <%= image_tag "arrow_left.png" %>
-      Back to <%=h @project.name %>
-    <% end -%>
-  </div>
-</div>
-
 <style type="text/css">
-#members {
+.sharing {
   border-collapse: collapse;
   max-width: 50em;
   width: 100%;
 }
 
-#members th {
+.sharing th {
   background-color: #000;
   color: #fff;
   text-align: left;
 }
 
-#members tr.odd {
+.sharing tr.odd {
   background-color: #eee;
 }
 
-#members tr.even {
+.sharing tr.even {
   background-color: #ddd;
 }
 </style>
@@ -42,47 +31,64 @@
 <% end -%>
 
 <% form_for @project do |f| %>
+  <div class="cardform">
+    <p style="font-size: 200%; font-weight: bold; margin-top: 0;">Sharing options for <%= @project.name%></p>
 
-  <p>Only the people listed in the table below will be able to see this project and its contents.  Authors can edit the 
-  documents and templates in the project, and admins can delete the project and change its members.</p>
 
-  <table id="members">
-    <tr>
-      <th></th>
-      <th>Email address</th>
-      <th>Author?</th>
-      <th>Admin?</th>
-      <th></th>
-    </tr>
-    <% f.fields_for :project_memberships do |membership_fields| -%>
-      <tr class="<%= cycle "odd", "even" %>">
-        <% if membership_fields.object.new_record? -%>
-          <td style="text-align: right;"><%= membership_fields.label :email, "Add:" %></td>
-          <td><%= membership_fields.text_field :email %></td>
-        <% else -%>
-          <td></td>
-          <td><%= membership_fields.object.person.email %></td>
-        <% end -%>
-        
-        <% if membership_fields.object.person == current_person -%>
-          <td><%= membership_fields.check_box :author, :disabled => true %></td>
-          <td><%= membership_fields.check_box :admin, :disabled => true %></td>
-          <td></td>
-        <% else -%>
-          <td><%= membership_fields.check_box :author %></td>
-          <td><%= membership_fields.check_box :admin %></td>
-          <td style="text-align: right;">
-            <% unless membership_fields.object.new_record? -%>
-              <%= membership_fields.label :_destroy, "Remove?" %> <%= membership_fields.check_box :_destroy %>
+    <p>Should the general public be able to read this project?  You can choose to make the project documents public,
+      or just the templates.  Select an option from the drop-down menu below:</p>
+    
+    <p style="margin-left: 1em;"><%= f.select :public_visibility, [["Only members can see this project", "hidden"], 
+                                         ["Anyone can copy the templates from this project", "copy_templates"],
+                                         ["Anyone can see, read, and copy the templates from this project", "visible"]]%></p>
+  
+    <div class="callout" style="margin-top: 0.5em;">
+      <h2>Members</h2>
+      
+      <p>Anyone listed in the table below will be able to see this project and its documents.  Authors can edit the 
+      documents and templates in the project, and admins can delete the project and change its members.</p>
+  
+      <table class="sharing">
+        <tr>
+          <th></th>
+          <th>Email address</th>
+          <th title="Authors can edit the documents and templates in the project.">Author?</th>
+          <th title="Admins can delete the project and change its members.">Admin?</th>
+          <th></th>
+        </tr>
+        <% f.fields_for :project_memberships do |membership_fields| -%>
+          <tr class="<%= cycle "odd", "even" %>">
+            <% if membership_fields.object.new_record? -%>
+              <td style="text-align: right;"><%= membership_fields.label :email, "Add:" %></td>
+              <td><%= membership_fields.text_field :email %></td>
+            <% else -%>
+              <td></td>
+              <td><%= membership_fields.object.person.email %></td>
             <% end -%>
-          </td>
+        
+            <% if membership_fields.object.person == current_person -%>
+              <td><%= membership_fields.check_box :author, :disabled => true %></td>
+              <td><%= membership_fields.check_box :admin, :disabled => true %></td>
+              <td></td>
+            <% else -%>
+              <td><%= membership_fields.check_box :author %></td>
+              <td><%= membership_fields.check_box :admin %></td>
+              <td style="text-align: right;">
+                <% unless membership_fields.object.new_record? -%>
+                  <%= membership_fields.label :_destroy, "Remove?" %> <%= membership_fields.check_box :_destroy %>
+                <% end -%>
+              </td>
+            <% end -%>
+          </tr>
         <% end -%>
-      </tr>
-    <% end -%>
-    <tr>
-      <td style="text-align: right;" colspan="5">
-        <%= f.submit %>
-      </td>
-    </tr>
-  </table>
+      </table>
+    </div>
+    
+    <div class="submit">
+      <% link_to :back, :class => "button cancel" do -%>
+        Cancel
+      <% end -%>
+      <%= f.submit "Save changes", :class => "save" %>
+    </div>
+  </div>
 <% end -%>
