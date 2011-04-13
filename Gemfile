@@ -40,6 +40,7 @@ group :test do
   gem 'cucumber'
   gem 'cucumber-rails'
   gem 'thin'
+  gem 'capybara-webkit'
 #  gem 'culerity'
 #  platforms :jruby do
 #    gem 'celerity'

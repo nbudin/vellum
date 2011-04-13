@@ -1,7 +1,7 @@
 Given /^a project named "(.*)" owned by (.*) (.*)$/ do |name, firstname, lastname|
   person = Person.find_by_firstname_and_lastname(firstname, lastname)
   project = Factory.create(:project, :name => name)
-  project.grant(person)
+  project.project_memberships.create(:person => person, :admin => true, :author => true)
 end
 
 Given /^a project named "(.*)"$/ do |name|
@@ -26,7 +26,7 @@ end
 
 Given /^the Louisiana Purchase project$/ do
   project = Factory.create(:louisiana_purchase)
-  project.grant(Person.find_by_firstname_and_lastname("Joe", "User"))
+  project.project_memberships.create(:person => person, :admin => true, :author => true)
 end
 
 When /^I delete the (\d+)(?:st|nd|rd|th) project$/ do |pos|
