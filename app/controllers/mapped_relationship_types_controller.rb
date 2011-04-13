@@ -1,5 +1,5 @@
 class MappedRelationshipTypesController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :through => :map
   before_filter :get_project_and_map
 
   # POST /mapped_relationship_types

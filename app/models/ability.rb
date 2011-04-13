@@ -20,8 +20,7 @@ class Ability
       can(:update, Project, :id => author_project_ids)
       can([:destroy, :change_permissions], Project, :id => admin_project_ids)
       
-      project_contents = [Doc, DocTemplate, MappedDocTemplate, MappedRelationshipType, Map, PublicationTemplate,
-        RelationshipType, Relationship]
+      project_contents = [Doc, DocTemplate, Map, PublicationTemplate, RelationshipType, Relationship]
       can(:read, project_contents, :project_id => read_project_ids)
       can(:read, project_contents, :project => {:public_visibility => "visible"})
       can(:manage, project_contents, :project_id => author_project_ids)

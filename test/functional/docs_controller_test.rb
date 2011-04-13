@@ -7,7 +7,7 @@ class DocsControllerTest < ActionController::TestCase
     assert @attr = Factory.create(:doc_template_attr, :name => "Favorite color")
     assert @tmpl = @attr.doc_template
     assert @project = @tmpl.project
-    @project.grant(@person)
+    @project.project_memberships.create(:person => @person, :admin => true, :author => true)
   end
 
   context "on GET to :index" do

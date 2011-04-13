@@ -16,7 +16,7 @@
             :class => "delete", :confirm => "Are you sure you want to delete the #{@map.name} map?" %>
     <% end -%>
 
-  <% if can(:edit, @map) -%>
+  <% if can?(:edit, @map) -%>
     <h2>Documents</h2>
     <div id="docs">
       Include all...

@@ -5,7 +5,7 @@ class MappedDocTemplatesControllerTest < ActionController::TestCase
     create_logged_in_person
     @doc_template = Factory.create(:doc_template)
     @project = @doc_template.project
-    @project.grant(@person)
+    @project.project_memberships.create(:person => @person, :admin => true, :author => true)
     @map = Factory.create(:map, :project => @project)
 
     @referer = "http://back.com"

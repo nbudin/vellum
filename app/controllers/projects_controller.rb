@@ -53,7 +53,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.xml
   def create
-    @project = Project.new(params[:project], :include => {:project_memberships => :person})
+    @project = Project.new(params[:project])
 
     respond_to do |format|
       if @project.save

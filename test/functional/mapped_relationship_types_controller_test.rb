@@ -5,7 +5,7 @@ class MappedRelationshipTypesControllerTest < ActionController::TestCase
     create_logged_in_person
     @relationship_type = Factory.create(:relationship_type)
     @project = @relationship_type.project
-    @project.grant(@person)
+    @project.project_memberships.create(:person => @person, :admin => true, :author => true)
     @map = Factory.create(:map, :project => @project)
 
     @referer = "http://back.com"

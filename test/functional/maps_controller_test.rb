@@ -4,7 +4,7 @@ class MapsControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
     @project = Factory.create(:project)
-    @project.grant(@person)
+    @project.project_memberships.create(:person => @person, :admin => true, :author => true)
   end
 
   context "on GET to :index" do
