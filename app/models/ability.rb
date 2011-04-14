@@ -17,6 +17,7 @@ class Ability
       
       can(:read, Project, :id => read_project_ids)
       can(:read, Project, :public_visibility => "visible")
+      can(:copy_templates, Project, :public_visibility => "copy_templates")
       can(:update, Project, :id => author_project_ids)
       can([:destroy, :change_permissions], Project, :id => admin_project_ids)
       
