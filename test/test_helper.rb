@@ -24,28 +24,13 @@ class ActiveSupport::TestCase
   # instantiated fixtures translates to a database query per test method),
   # then set this back to true.
   self.use_instantiated_fixtures  = false
-
-  # Add more helper methods to be used by all tests here...
-  #def build_schema_for_attr_value(field_type, value_type)
-  #  @field = Factory.build(field_type)
-  #  @attr = Factory.build(:attr)
-  #  @attr.attr_configuration = @field
-  #  @t = @attr.doc_template
-  #  @project = @t.project
-  #  @structure = Factory.build(:structure, :project => @project, :doc_template => @t)
-  #  @avm = Factory.build(:attr_value_metadata, :structure => @structure, :attr => @attr)
-  #  @value = Factory.build(value_type, :attr_value_metadata => @avm)
-  #end
 end
 
 class ActionController::TestCase
   include Devise::TestHelpers
   
   def create_logged_in_person
-    @person = Person.create
-    @person.email = "test#{@person.id}@example.com"
-    assert @person.save
-
+    @person = Factory.create(:person)
     sign_in(@person)
   end
 

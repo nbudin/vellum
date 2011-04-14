@@ -30,6 +30,7 @@ class DocTemplatesControllerTest < ActionController::TestCase
 
   context "on GET to :new" do
     setup do
+      debugger
       get :new, :project_id => @project.id
     end
 
