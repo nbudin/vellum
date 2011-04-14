@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class AbilityTest < ActiveSupport::TestCase
   def assert_has_project_abilities(abilities)
-    %w{read create update destroy}.each do |action|
+    %w{read create update destroy copy_templates change_permissions}.each do |action|
       if abilities.include?(action)
         assert @ability.can?(action.to_sym, @project), "Should be able to #{action} the project"
       else
@@ -31,11 +31,24 @@ class AbilityTest < ActiveSupport::TestCase
     @ability = Ability.new(@person)
   end
   
+  context "A global admin" do
+    setup do
+      @project = Factory.create(:project)
+      @person = Factory.create(:person, :admin => true)
+      @ability = Ability.new(@person)
+    end
+    
+    should "have all permissions" do
+      assert_has_project_abilities(%w{read create update destroy copy_templates change_permissions})
+      assert_has_content_abilities(%w{read create update destroy})
+    end
+  end
+  
   context "A project admin/author" do
     setup { build_membership_and_ability(:admin => true, :author => true) }
     
     should "have appropriate permissions" do
-      assert_has_project_abilities(%w{read create update destroy})
+      assert_has_project_abilities(%w{read create update destroy copy_templates change_permissions})
       assert_has_content_abilities(%w{read create update destroy})
     end
   end
@@ -45,7 +58,7 @@ class AbilityTest < ActiveSupport::TestCase
 
     
     should "have appropriate permissions" do
-      assert_has_project_abilities(%w{read create destroy})
+      assert_has_project_abilities(%w{read create destroy copy_templates change_permissions})
       assert_has_content_abilities(%w{read})
     end
   end
@@ -53,9 +66,8 @@ class AbilityTest < ActiveSupport::TestCase
   context "A project author" do
     setup { build_membership_and_ability(:admin => false, :author => true) }
 
-    
     should "have appropriate permissions" do
-      assert_has_project_abilities(%w{read create update})
+      assert_has_project_abilities(%w{read create update copy_templates})
       assert_has_content_abilities(%w{read create update destroy})
     end
   end
@@ -64,7 +76,7 @@ class AbilityTest < ActiveSupport::TestCase
     setup { build_membership_and_ability(:admin => false, :author => false) }
     
     should "have appropriate permissions" do
-      assert_has_project_abilities(%w{read create})
+      assert_has_project_abilities(%w{read create copy_templates})
       assert_has_content_abilities(%w{read})
     end
   end
@@ -102,9 +114,22 @@ class AbilityTest < ActiveSupport::TestCase
       
       should "be able to copy templates from the project" do
         @ability = Ability.new(@person)
-        assert_has_project_abilities(%w{create})
+        assert_has_project_abilities(%w{create copy_templates})
         assert_has_content_abilities([])
-        assert @ability.can?(:copy_templates, @project)
+      end
+    end
+    
+    context "An anonymous user" do
+      setup do
+        @project = Factory.create(:project)
+        @person = nil
+        @ability = Ability.new(@person)
+      end
+      
+      should "have no permissions" do
+        @ability = Ability.new(@person)
+        assert_has_project_abilities([])
+        assert_has_content_abilities([])
       end
     end
   end
