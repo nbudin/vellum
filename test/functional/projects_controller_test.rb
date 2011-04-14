@@ -45,7 +45,7 @@ class ProjectsControllerTest < ActionController::TestCase
     should "grant permissions to the logged in user" do
       ability = Ability.new(@person)
       %w{read update destroy}.each do |action|
-        assert ability.can?(action.to_sym, @project)
+        assert ability.can?(action.to_sym, assigns(:project))
       end
     end
   end
