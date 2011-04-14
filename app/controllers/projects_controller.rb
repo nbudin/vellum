@@ -54,10 +54,10 @@ class ProjectsController < ApplicationController
   # POST /projects.xml
   def create
     @project = Project.new(params[:project])
+    @project.project_memberships.build(:person => current_person, :project => @project, :author => true, :admin => true)
 
     respond_to do |format|
       if @project.save
-        @project.project_memberships.create(:person => current_person, :author => true, :admin => true)
         format.html { redirect_to project_url(@project) }
         format.xml  { head :created, :location => project_url(@project) }
         format.json { head :created, :location => project_url(@project) }
