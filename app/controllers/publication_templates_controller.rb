@@ -1,8 +1,8 @@
 require 'zip/zip'
 
 class PublicationTemplatesController < ApplicationController
-  load_and_authorize_resource
-  before_filter :get_project
+  load_and_authorize_resource :project
+  load_and_authorize_resource :publication_template, :through => :project
   
   def index
     @publication_templates = @project.publication_templates.all(:order => :name)
@@ -148,10 +148,5 @@ class PublicationTemplatesController < ApplicationController
       format.xml  { head :ok }
       format.json { head :ok }
     end
-  end
-  
-  private
-  def get_project
-    @project = Project.find(params[:project_id])
   end
 end

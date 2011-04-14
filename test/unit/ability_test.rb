@@ -12,9 +12,20 @@ class AbilityTest < ActiveSupport::TestCase
   end
 
   def assert_has_content_abilities(abilities)
+    map = @project.maps.create
+
     %w{read create update destroy}.each do |action|
       [Doc, DocTemplate, Map, PublicationTemplate, RelationshipType, Relationship].each do |klass|
         obj = klass.new(:project => @project)
+        if abilities.include?(action)
+          assert @ability.can?(action.to_sym, obj), "Should be able to #{action} a #{klass.name} in the project"
+        else
+          assert !@ability.can?(action.to_sym, obj), "Should not be able to #{action} a #{klass.name} in the project"
+        end
+      end
+      
+      [MappedDocTemplate, MappedRelationshipType].each do |klass|
+        obj = klass.new(:map => map)
         if abilities.include?(action)
           assert @ability.can?(action.to_sym, obj), "Should be able to #{action} a #{klass.name} in the project"
         else

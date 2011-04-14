@@ -1,5 +1,6 @@
 class RelationshipsController < ApplicationController
   load_and_authorize_resource :project
+  load_and_authorize_resource :relationship, :through => :project
   
   # GET /relationships
   # GET /relationships.xml

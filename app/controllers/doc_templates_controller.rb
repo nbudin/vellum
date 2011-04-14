@@ -1,6 +1,6 @@
 class DocTemplatesController < ApplicationController
-  load_and_authorize_resource
-  before_filter :get_project
+  load_and_authorize_resource :project
+  load_and_authorize_resource :doc_template, :through => :project
   
   cache_sweeper :project_sweeper, :only => [:create, :update, :destroy]
   
@@ -88,9 +88,5 @@ class DocTemplatesController < ApplicationController
       format.html { redirect_to doc_templates_url(@project) }
       format.xml  { head :ok }
     end
-  end
-  
-  def get_project
-    @project = Project.find(params[:project_id])
   end
 end

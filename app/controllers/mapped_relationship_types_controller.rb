@@ -1,6 +1,7 @@
 class MappedRelationshipTypesController < ApplicationController
-  load_and_authorize_resource :through => :map
-  before_filter :get_project_and_map
+  load_and_authorize_resource :project
+  load_and_authorize_resource :map, :through => :project
+  load_and_authorize_resource :mapped_relationship_type, :through => :map
 
   # POST /mapped_relationship_types
   # POST /mapped_relationship_types.xml
@@ -44,11 +45,5 @@ class MappedRelationshipTypesController < ApplicationController
       format.html { redirect_to :back }
       format.xml  { head :ok }
     end
-  end
-  
-  private
-  def get_project_and_map
-    @project = Project.find params[:project_id]
-    @map = Map.find params[:map_id]
   end
 end

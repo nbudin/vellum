@@ -1,5 +1,5 @@
 class DocsController < ApplicationController
-  load_resource :project
+  load_and_authorize_resource :project
   load_and_authorize_resource :doc, :through => :project
   
   cache_sweeper :project_sweeper, :only => [:create, :update, :destroy, :sort]

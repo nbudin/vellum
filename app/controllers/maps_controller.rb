@@ -1,6 +1,6 @@
 class MapsController < ApplicationController
-  load_and_authorize_resource
-  before_filter :get_project
+  load_and_authorize_resource :project
+  load_and_authorize_resource :map, :through => :project
 
   def index
     @maps = @project.maps

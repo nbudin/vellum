@@ -1,5 +1,6 @@
 class RelationshipTypesController < ApplicationController
   load_and_authorize_resource :project
+  load_and_authorize_resource :relationship_type, :through => :project
   
   def new
     set_relationship_type_return_url
