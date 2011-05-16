@@ -24,11 +24,9 @@ gem "rubyzip"
 gem "nokogiri", ">= 1.4.1"
 gem "sanitize"
 gem "heroku_external_db"
-gem "illyan_client"
+gem "illyan_client", ">= 1.0.2"
 
 group :development do
-  gem "bullet"
-  gem "thin"
 end
 
 group :test do
@@ -39,8 +37,10 @@ group :test do
   gem 'capybara'
   gem 'cucumber'
   gem 'cucumber-rails'
-  gem 'thin'
   gem 'capybara-webkit'
+  gem 'sham_rack'
+#  gem 'castronaut', :git => 'http://github.com/nbudin/castronaut.git', :branch => 'dam5s-merge'
+  gem 'castronaut', :path => '/Users/nbudin/code/castronaut'
 #  gem 'culerity'
 #  platforms :jruby do
 #    gem 'celerity'

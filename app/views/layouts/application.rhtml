@@ -24,7 +24,7 @@
   <div class="authbox">
     <% if person_signed_in? -%>
         <%= image_tag('ae_users/user.png') %>
-        <%= link_to  current_person.name, "http://accounts.sugarpond.net/profile" %>
+        <%= link_to current_person.name, "http://#{IllyanClient.base_url}/profile" %>
         |
         <%= image_tag "ae_users/logout.png" %>
         <%= link_to "Log out", destroy_person_session_path %>

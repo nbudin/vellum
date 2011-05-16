@@ -17,6 +17,45 @@ require 'capybara/cucumber'
 require 'capybara/session'
 #require 'cucumber/rails/capybara_javascript_emulation' # Lets you click links with onclick javascript handlers without using @culerity or @javascript
 
+require 'castronaut'
+
+class AlwaysSucceedAdapter
+  def self.authenticate(username, password)
+    Castronaut::AuthenticationResult.new(username, nil)
+  end
+end
+
+Castronaut::Adapters.register("always_succeed", AlwaysSucceedAdapter)
+
+Castronaut.config = Castronaut::Configuration.load(File.expand_path("../castronaut.yml", __FILE__))
+require 'castronaut/application'
+
+Castronaut::Application.set(:path, "/cas")
+Castronaut::Application.set(:logging, false)
+
+capp = Capybara.app
+Capybara.app = Rack::Builder.new do
+  map "/cas" do
+    run Castronaut::Application
+  end
+  
+  map "/" do
+    run capp
+  end
+end
+Capybara.server_port = 28537
+Capybara.run_server = true
+
+require 'sham_rack'
+
+Devise.cas_base_url = "http://localhost:#{Capybara.server_port}/cas"
+ShamRack.at("localhost", Capybara.server_port) do |env|
+  request = Rack::Request.new(env)
+  request.path_info = request.path_info.sub(/^\/cas/, '')
+  
+  Castronaut::Application.call(request.env)
+end
+
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd
 # prefer to use XPath just remove this line and adjust any selectors in your
@@ -28,14 +67,15 @@ Capybara.default_selector = :css
 
 #require 'selenium/webdriver'
 
-#Capybara.register_driver :selenium_chrome do |app|
-#  Capybara::Driver::Selenium.new(app, :browser => :chrome)
-#end
+Capybara.register_driver :selenium_chrome do |app|
+  Capybara::Driver::Selenium.new(app, :browser => :chrome)
+end
    
-#Capybara.javascript_driver = :selenium_chrome
+Capybara.javascript_driver = :selenium_chrome
 #Selenium::WebDriver::Firefox.path = '/Applications/Firefox.app/Contents/MacOS/firefox-bin'
 
-Capybara.javascript_driver = :webkit
+#require 'capybara-webkit'
+#Capybara.javascript_driver = :webkit
 
 # If you set this to false, any error raised from within your app will bubble 
 # up to your step definition and out to cucumber unless you catch it somewhere

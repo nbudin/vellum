@@ -24,7 +24,8 @@ Given /^the following projects:$/ do |projects|
   end
 end
 
-Given /^the Louisiana Purchase project$/ do
+Given /^the Louisiana Purchase project owned by (.*) (.*)$/ do |firstname, lastname|
+  person = Person.find_by_firstname_and_lastname(firstname, lastname)
   project = Factory.create(:louisiana_purchase)
   project.project_memberships.create(:person => person, :admin => true, :author => true)
 end

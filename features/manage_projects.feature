@@ -13,7 +13,7 @@ Feature: Manage projects
 
   Scenario: Create a new project using templates from a different project
     Given I am logged in as Joe User
-    And the Louisiana Purchase project
+    And the Louisiana Purchase project owned by Joe User
     And I am on the projects page
     And I follow "Create project..."
     And I fill in "Project Name" with "A new project"
@@ -27,6 +27,7 @@ Feature: Manage projects
     And I should not see "France"
 
   Scenario: Delete projects
+    When I am logged in as Joe User
     Given the following projects owned by Joe User:
       |name|
       |Groucho|
@@ -34,7 +35,6 @@ Feature: Manage projects
       |Chico|
       |Zeppo|
       |Gummo|
-    When I am logged in as Joe User
     And I am on the projects page
     And I delete the 4th project
     Then I should see the following projects:
