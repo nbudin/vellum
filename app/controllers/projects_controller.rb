@@ -15,7 +15,7 @@ class ProjectsController < ApplicationController
   end
 
   def new
-    @template_sources = Project.accessible_by(current_ability, :read)
+    @template_sources = Project.accessible_by(current_ability, :copy_templates)
     
     render :action => "new"
   end
