@@ -6,8 +6,10 @@
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <title><%= page_title %> - <%= @site_settings.site_name %></title>
   <%= stylesheet_link_tag 'application', 'editors', 'jumpbox', "structures", "jquery-ui.custom", "site_theme" %>
+  <%= hoptoad_javascript_notifier %>
   <%= javascript_include_tag 'jquery', 'jquery-ui', 'jrails' %>
   <%= javascript_include_tag 'wymeditor/jquery.wymeditor.pack' %>
+  <%= javascript_include_tag 'wymeditor-patches' %>
   <%= javascript_include_tag 'jquery.jeditable.mini' %>
   <%= javascript_include_tag 'farbtastic' %>
   <%= stylesheet_link_tag 'farbtastic/farbtastic' %>

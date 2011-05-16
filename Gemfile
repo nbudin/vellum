@@ -25,8 +25,11 @@ gem "nokogiri", ">= 1.4.1"
 gem "sanitize"
 gem "heroku_external_db"
 gem "illyan_client", ">= 1.0.2"
+gem "hoptoad_notifier"
 
 group :development do
+  gem "newrelic_rpm"
+  gem "thin"
 end
 
 group :test do
