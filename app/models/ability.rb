@@ -12,6 +12,7 @@ class Ability
       can [:read, :update, :destroy, :change_permissions, :copy_templates], Project
       can :manage, project_contents
       can :manage, map_contents
+      can :manage, SiteSettings
     else
       memberships = person.project_memberships
       read_project_ids = memberships.map(&:project_id)
