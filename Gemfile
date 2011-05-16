@@ -10,7 +10,7 @@ platforms :jruby do
 end
 
 gem "devise", "~> 1.0.8"
-gem "devise_cas_authenticatable", :path => "/Users/nbudin/code/devise_cas_authenticatable"
+gem "devise_cas_authenticatable", ">= 1.0.0.alpha8"
 gem "json"
 gem "ae_users_migrator", ">= 1.0.4"
 gem "cancan"
@@ -37,13 +37,6 @@ group :test do
   gem 'capybara'
   gem 'cucumber'
   gem 'cucumber-rails'
-  gem 'capybara-webkit'
   gem 'sham_rack'
-#  gem 'castronaut', :git => 'http://github.com/nbudin/castronaut.git', :branch => 'dam5s-merge'
-  gem 'castronaut', :path => '/Users/nbudin/code/castronaut'
-#  gem 'culerity'
-#  platforms :jruby do
-#    gem 'celerity'
-#  end
-#  gem 'akephalos', :path => '/Users/nbudin/code/akephalos'
+  gem 'castronaut', :git => 'http://github.com/nbudin/castronaut.git', :branch => 'dam5s-merge'
 end

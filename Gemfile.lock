@@ -1,5 +1,7 @@
-PATH
-  remote: /Users/nbudin/code/castronaut
+GIT
+  remote: http://github.com/nbudin/castronaut.git
+  revision: 63dd854c8da38c1625a631e47bb3e37dd9b8f174
+  branch: dam5s-merge
   specs:
     castronaut (0.7.5)
       activerecord (>= 2.0)
@@ -11,15 +13,6 @@ PATH
       ruby-net-ldap
       sinatra (>= 1.0)
       sqlite3 (~> 1.3.1)
-
-PATH
-  remote: /Users/nbudin/code/devise_cas_authenticatable
-  specs:
-    devise_cas_authenticatable (1.0.0.alpha8)
-      devise (>= 1.0.6)
-      devise
-      devise_cas_authenticatable
-      rubycas-client (>= 2.2.1)
 
 GEM
   remote: http://rubygems.org/
@@ -50,8 +43,6 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (>= 0.0.27)
       xpath (~> 0.1.3)
-    capybara-webkit (0.1.4)
-      capybara (~> 0.4.1)
     celerity (0.8.8)
     childprocess (0.1.7)
       ffi (~> 0.6.3)
@@ -69,6 +60,11 @@ GEM
     database_cleaner (0.5.2)
     devise (1.0.8)
       warden (~> 0.10.3)
+    devise_cas_authenticatable (1.0.0.alpha8)
+      devise (>= 1.0.6)
+      devise
+      devise_cas_authenticatable
+      rubycas-client (>= 2.2.1)
     diff-lcs (1.1.2)
     factory_girl (1.2.4)
     ffi (0.6.3)
@@ -143,13 +139,12 @@ DEPENDENCIES
   ae_users_migrator (>= 1.0.4)
   cancan
   capybara
-  capybara-webkit
   castronaut!
   cucumber
   cucumber-rails
   database_cleaner
   devise (~> 1.0.8)
-  devise_cas_authenticatable!
+  devise_cas_authenticatable (>= 1.0.0.alpha8)
   factory_girl (~> 1.2.3)
   heroku_external_db
   illyan_client (>= 1.0.2)
