@@ -28,6 +28,9 @@ class Ability
       can(:read, project_contents, :project => {:public_visibility => "visible"})
       can(:manage, project_contents, :project_id => author_project_ids)
       
+      can([:test, :publish], PublicationTemplate, :project_id => read_project_ids)
+      can([:test, :publish], PublicationTemplate, :project => {:public_visibility => "visible"})
+      
       can(:read, map_contents, :map => { :project_id => read_project_ids })
       can(:read, map_contents, :map => { :project => {:public_visibility => "visible"} })
       can(:manage, map_contents, :map => { :project_id => author_project_ids })
