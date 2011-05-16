@@ -70,7 +70,7 @@ class ProjectsController < ApplicationController
         format.xml  { head :created, :location => project_url(@project) }
         format.json { head :created, :location => project_url(@project) }
       else
-        format.html { get_visible_projects ; self.new }
+        format.html { self.new }
         format.xml  { render :xml => @project.errors.to_xml }
         format.json { render :json => @project.errors.to_json }
       end
