@@ -56,7 +56,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.xml
   def create
-    if params[:project][:template_source_project_id]
+    unless params[:project][:template_source_project_id].blank?
       source_project = Project.find(params[:project][:template_source_project_id])
       authorize! :copy_templates, source_project
     end
