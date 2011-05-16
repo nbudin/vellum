@@ -1,11 +1,12 @@
 class ProjectsController < ApplicationController
   load_and_authorize_resource :except => [:index]
-  before_filter :get_visible_projects, :only => [:index, :new]
   cache_sweeper :project_sweeper, :only => [:update, :create]
 
   # GET /projects
   # GET /projects.xml
   def index
+    @projects = Project.accessible_by(current_ability, :read)
+    
     respond_to do |format|
       format.html { render :action => "index" }
       format.xml  { render :xml => @projects.to_xml }
@@ -14,6 +15,8 @@ class ProjectsController < ApplicationController
   end
 
   def new
+    @template_sources = Project.accessible_by(current_ability, :read)
+    
     render :action => "new"
   end
 
@@ -53,6 +56,11 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.xml
   def create
+    if params[:project][:template_source_project_id]
+      source_project = Project.find(params[:project][:template_source_project_id])
+      authorize! :copy_templates, source_project
+    end
+    
     @project = Project.new(params[:project])
     @project.project_memberships.build(:person => current_person, :project => @project, :author => true, :admin => true)
 
@@ -99,11 +107,5 @@ class ProjectsController < ApplicationController
       format.xml  { head :ok }
       format.json { head :ok }
     end
-  end
-  
-  private
-
-  def get_visible_projects
-    @projects = Project.accessible_by(current_ability, :read)
   end
 end

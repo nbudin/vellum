@@ -10,7 +10,7 @@
     </p>
 
     <div class="callout">
-    <% if @projects.size > 0 -%>
+    <% if @template_sources.size > 0 -%>
       <h2>Get started faster</h2>
       <p>
         If you want, you can use some templates from an existing project as a starting point.  This will
@@ -23,7 +23,7 @@
 
       <p style="font-weight: bold;">
         <%= f.label "template_source_project_id", "Choose a project to copy templates from:" %>
-        <%= f.select "template_source_project_id", [["I will make my own templates.", ""]] + @projects.collect {|p| [p.name, p.id]} %>
+        <%= f.select "template_source_project_id", [["I will make my own templates.", ""]] + @template_sources.collect {|p| [p.name, p.id]} %>
       </p>
     <% else -%>
       <h2>Getting started</h2>
