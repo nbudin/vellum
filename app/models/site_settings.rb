@@ -20,12 +20,4 @@ class SiteSettings < ActiveRecord::Base
       sc
     end
   end
-  
-  def admin_kid=(kid)
-    m = kid.match(/^Person:(\d+)/)
-    if m
-      self.admin = Person.find(m[1])
-      save!
-    end
-  end
 end
