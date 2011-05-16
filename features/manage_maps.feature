@@ -5,6 +5,9 @@ Feature: Manage maps
 
   @javascript
   Scenario: Create a new map
+    Given I am on the projects page
+    And I follow "Log in"
+    
     Given I am logged in as Joe User
     And a project named "Test Project"
 
