@@ -9,6 +9,11 @@ class ProjectMembership < ActiveRecord::Base
   end
   
   def email=(email)
+    if email.blank?
+      self.person = nil
+      return
+    end
+    
     logger.debug "Trying to find person with email #{email}"
     self.person = Person.find_by_email(email)
     if email and self.person.nil?
