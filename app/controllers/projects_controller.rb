@@ -104,10 +104,6 @@ class ProjectsController < ApplicationController
   private
 
   def get_visible_projects
-    @projects = if current_person
-      current_person.project_memberships.all(:include => :project).map(&:project).uniq.compact
-    else
-      []
-    end
+    @projects = Project.accessible_by(current_ability, :read)
   end
 end
