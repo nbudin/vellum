@@ -1,16 +1,13 @@
 <div class="external_view">
     <div class="summary">
 		  <div class="actions">
-	      <% link_to(doc_path(@project, doc), :class => "button edit") do -%>
-	        <%= image_tag "structure.png" %> Details
-        <% end -%>
         <% if doc.blurb.nil? -%>
 		      <button class="edit add_description" style="margin-right: 0.5em;">
 		    	  Add description
 		      </button>
 		    <% end -%>
 		  </div>	
-		  <%= in_place_editor doc, :name, :tag => 'h3' %>
+		  <h3><%= link_to(doc.name, doc_path(@project, doc)) %></h3>
 	    <span class="assignee">
   	    <% if doc.assignee -%>
           (Assigned to <%=h doc.assignee.name -%>)

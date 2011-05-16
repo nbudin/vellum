@@ -42,11 +42,13 @@ h2 {
   <% @templates.each do |tmpl| -%>
     <h2><%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a></h2>
     <div style="margin-left: 20px;">
-  	  <p>
-  	    <% link_to new_doc_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
-  		  <%= image_tag "structure_add.png" %> Add new <%= tmpl.name %>
-  	    <% end -%>
-  	  </p>
+      <% if can?(:create, @project.docs.new(:doc_template_id => tmpl.id)) -%>
+  	    <p>
+  	      <% link_to new_doc_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
+  		      <%= image_tag "structure_add.png" %> Add new <%= tmpl.name %>
+  	      <% end -%>
+  	    </p>
+  	  <% end -%>
   	  <% sortlist(@docs[tmpl], "docs_#{tmpl.id}",
   				  :url => sort_docs_path(@project)
   				  ) do |doc| -%>
@@ -72,9 +74,11 @@ h2 {
   <% end -%>
 
   <p>
-    <% link_to new_doc_template_path(@project), :class => "button new" do %>
-      <%= image_tag "template_add.png" %>
-      Add new template...
-    <% end %>
+    <% if can?(:create, @project.doc_templates.new) -%>
+      <% link_to new_doc_template_path(@project), :class => "button new" do %>
+        <%= image_tag "template_add.png" %>
+        Add new template...
+      <% end %>
+    <% end -%>
   </p>
 <% end -%>
