@@ -34,11 +34,11 @@ body {
 }
 
 .jumpbox ul.itemlist li.odd {
-    background-color: #dd6;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .jumpbox ul.itemlist li.even {
-    background-color: #ee7;
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .jumpbox .navigation {
