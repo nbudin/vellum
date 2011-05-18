@@ -22,7 +22,8 @@ if Gem::VERSION >= "1.3.6"
 end
 
 Rails::Initializer.run do |config|
-  config.action_controller.session = { :session_key => "_vellum_session", :secret => "63ea170329157855f848f779804184d8aff7f7582478f4b75baddef6a803e94f616c39ede4db43c15a73a4d2d63ed282f30dc0cfb14dcaf8aab852a8f6256112" }
+  config.action_controller.session = { :session_key => "_vellum_session", 
+    :secret => (ENV["SESSION_SECRET"] || "63ea170329157855f848f779804184d8aff7f7582478f4b75baddef6a803e94f616c39ede4db43c15a73a4d2d63ed282f30dc0cfb14dcaf8aab852a8f6256112") }
   
   config.load_paths << "#{RAILS_ROOT}/app/sweepers"
   
