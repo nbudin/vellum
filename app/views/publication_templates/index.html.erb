@@ -3,15 +3,15 @@
 <h2>Publication Templates</h2>
 
 <ul class="itemlist">
-  <% itemlist_items(@publication_templates,
+  <%= itemlist_items(@publication_templates,
                     :delete_path => publication_templates_path(@project)) do |t| %>
-    <% link_to(publication_template_path(@project, t)) do -%>
+    <%= link_to(publication_template_path(@project, t)) do -%>
       <%= image_tag "publication_template.png" %>
       <%= t.name %>
     <% end -%>
   <% end %>
   <li>
-    <% link_to new_publication_template_path(@project), :class => "button new" do %>
+    <%= link_to new_publication_template_path(@project), :class => "button new" do %>
       <%= image_tag "publication_template_add.png" %>
       Add new template...
     <% end %>

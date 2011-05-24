@@ -21,7 +21,7 @@
     <div id="docs">
       Include all...
       <ul class="itemlist">
-        <% itemlist_items(@map.mapped_doc_templates,
+        <%= itemlist_items(@map.mapped_doc_templates,
                           :delete_path => mapped_doc_templates_path(@project, @map)) do |mdt| -%>
           <span style="font-weight: bold; color: <%= mdt.color %>;">
             <%=h mdt.doc_template && mdt.doc_template.name.pluralize %>
@@ -48,7 +48,7 @@
     <div id="relationships">
       Draw arrows for...
       <ul class="itemlist">
-        <% itemlist_items(@map.mapped_relationship_types,
+        <%= itemlist_items(@map.mapped_relationship_types,
                           :delete_path => mapped_relationship_types_path(@project, @map)) do |mrt| -%>
           <span style="font-weight: bold; color: <%= mrt.color %>;">
             <%=h mrt.relationship_type && mrt.relationship_type.left_name %>

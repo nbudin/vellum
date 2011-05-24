@@ -2,7 +2,7 @@
 
 <div class="jumpbox">
   <div class="navigation">
-    <% link_to doc_path(@project, @doc), :class => "button cancel" do -%>
+    <%= link_to doc_path(@project, @doc), :class => "button cancel" do -%>
       <%= image_tag "arrow_left.png" %>
       Cancel editing
     <% end -%>
@@ -25,7 +25,7 @@
   <div id="relationships">
     <%= @doc.name %>...
     <ul class="itemlist">
-      <% itemlist_items(@doc.relationships) do |rel| -%>
+      <%= itemlist_items(@doc.relationships) do |rel| -%>
         <%= rel.description_for(@doc) %>
         <%= link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)), :target => "_blank" %>
       <% end -%>

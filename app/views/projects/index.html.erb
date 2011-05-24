@@ -3,7 +3,7 @@
 <% if current_person.try(:admin?) -%>
   <div class="jumpbox">
     <div class="navigation">
-      <% link_to({ :controller => "about", :action => "edit_settings" }, :class => "button edit") do %>
+      <%= link_to({ :controller => "about", :action => "edit_settings" }, :class => "button edit") do %>
         Edit site settings
       <% end -%>
     </div>
@@ -26,19 +26,19 @@
 
   <p>Vellum is a collaborative space for online writing projects.</p>
 <% else -%>
-  <%= @site_settings.welcome_html %>
+  <%=raw @site_settings.welcome_html %>
 <% end -%>
 
 <ul class="itemlist">
-  <% itemlist_items(@projects, :delete_path => projects_path) do |project| %>
-    <% link_to(project_path(project)) do -%>
+  <%= itemlist_items(@projects, :delete_path => projects_path) do |project| %>
+    <%= link_to(project_path(project)) do -%>
       <%= image_tag "project.png" %>
       <%= project.name %>
     <% end -%>
   <% end %>
   <% if person_signed_in? -%>
     <li style="overflow: hidden;">
-      <% link_to new_project_path, :class => "button new" do %>
+      <%= link_to new_project_path, :class => "button new" do %>
           <%= image_tag "project_add.png" %>
           Create project...
       <% end %>

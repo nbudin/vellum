@@ -15,7 +15,7 @@ module ApplicationHelper
     
     content_tag(tag, options) do
       content_tag(:span, editor_attrs) do
-        h(object.send(attr))
+        object.send(attr)
       end + " " + image_tag('edit-field.png')
     end
   end
@@ -107,34 +107,28 @@ module ApplicationHelper
   end
 
   def item_actions(item, options={})
-    html = ""
     if options[:delete_path] && can?(:destroy, item)
-      html << button_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",
+      button_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",
                       :style => "margin: 0;", :method => :delete, :class => "button delete")
     end
-    return html
   end
 
   def itemlist_items(items, options={}, &block)
-    full_html = items.collect do |item|
-      content_tag(:li, :class => cycle("odd", "even")) do
-        html = ""
-        html << content_tag(:div, :style => "float: right;") do
-          item_actions(item, options)
+    with_output_buffer do
+      items.each do |item|
+        output_buffer << content_tag(:li, :class => cycle("odd", "even")) do
+          output_buffer << content_tag(:div, :style => "float: right;") do
+            item_actions(item, options)
+          end
+          if options[:partial]
+            output_buffer << render(:partial => options[:partial], :locals => { :item => item })
+          end
+          if block_given?
+            block.call(item)
+          end
         end
-        if options[:partial]
-          html << render(:partial => options[:partial], :locals => { :item => item })
-        end
-        if block_given?
-          html << block.call(item)
-        end
-        html
       end
-    end.join("\n")
-    if block_given?
-      concat(full_html)
-    else
-      full_html
+      output_buffer << "\n"
     end
   end
 

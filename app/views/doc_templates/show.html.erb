@@ -36,8 +36,8 @@
 <p><%= @doc_template.name %>...</p>
 
 <ul class="itemlist">
-  <% itemlist_items(@relationship_types, :delete_path => relationship_types_path(@project)) do |typ| -%>
-          <% link_to(edit_relationship_type_path(@project, typ)) do -%>
+  <%= itemlist_items(@relationship_types, :delete_path => relationship_types_path(@project)) do |typ| -%>
+    <%= link_to(edit_relationship_type_path(@project, typ)) do -%>
 	    <%= image_tag "relationship_type.png" %>
 	    <%= typ.description_for(@doc_template) %>
 	    <%= typ.other_template(@doc_template).name %>
@@ -46,7 +46,7 @@
 
     <li>
       <div style="float: right;">
-      	<% link_to(new_relationship_type_path(@project, 
+      	<%= link_to(new_relationship_type_path(@project, 
       	           :relationship_type => {:left_template_id => @doc_template.id}), :class => "button new") do %>
       	  <%= image_tag "relationship_type.png" %>
       	  Create relationship type...

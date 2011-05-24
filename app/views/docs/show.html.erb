@@ -58,12 +58,12 @@
   <div id="relationships">
     <%= @doc.name %>...
     <ul class="itemlist">
-      <% itemlist_items(@relationships, :delete_path => relationships_path(@project)) do |rel| -%>
-		<%= rel.description_for(@doc) %>
-		<%= link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)) %>
-	  <% end -%>
+      <%= itemlist_items(@relationships, :delete_path => relationships_path(@project)) do |rel| -%>
+		    <%= rel.description_for(@doc) %>
+		    <%= link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)) %>
+	    <% end -%>
       <li>
-	<%= render :partial => 'new_relationship', :locals => { :doc => @doc } %>
+	      <%= render :partial => 'new_relationship', :locals => { :doc => @doc } %>
       </li>
     </ul>
   </div>  

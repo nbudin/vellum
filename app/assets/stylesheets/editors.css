@@ -86,7 +86,7 @@ button, a.button, input[type=submit], #other_login_options li a {
     border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
-    background-image: url(/images/button-bg.png);
+    background-image: url(/assets/button-bg.png);
     background-position: 50% 50%;
     background-repeat: repeat-x;
     font-family: sans-serif;
@@ -102,11 +102,11 @@ button[disabled], a.button.disabled, input[type=submit][disabled] {
 
 
 input[type=submit]:hover, input[type=submit]:focus, a.button:hover, a.button:focus, button:hover, button:focus {
-    background-image: url(/images/button-bg-prelight.png);
+    background-image: url(/assets/button-bg-prelight.png);
 }
 
 input[type=submit]:active, a.button:active, button:active {
-    background-image: url(/images/button-bg-pressed.png);
+    background-image: url(/assets/button-bg-pressed.png);
 }
 
 input[type=submit]::-moz-focus-inner, a.button::-moz-focus-inner, button::-moz-focus-inner {
@@ -262,7 +262,7 @@ li.tab {
 
 li.tab a {
     background-color: #a6f;
-    background-image: url(/images/button-bg.png);
+    background-image: url(/assets/button-bg.png);
     background-position: 50% 50%;
     background-repeat: repeat-x;
     color: #000;
@@ -281,15 +281,15 @@ li.tab a {
 
 li.tab a:focus {
     -moz-outline: 0;
-    background-image: url(/images/button-bg-prelight.png);
+    background-image: url(/assets/button-bg-prelight.png);
 }
 
 li.tab a:hover {
-    background-image: url(/images/button-bg-prelight.png);
+    background-image: url(/assets/button-bg-prelight.png);
 }
 
 li.tab a.active {
-    background-image: url(/images/button-bg-prelight.png);
+    background-image: url(/assets/button-bg-prelight.png);
     background-color: #c9f;
 }
 
