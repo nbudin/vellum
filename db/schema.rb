@@ -1,10 +1,11 @@
-# This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of Active Record to incrementally modify your database, and
-# then regenerate this schema definition.
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your database schema. If you need
-# to create the application database on another system, you should be using db:schema:load, not running
-# all the migrations from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# Note that this schema.rb definition is the authoritative source for your
+# database schema. If you need to create the application database on another
+# system, you should be using db:schema:load, not running all the migrations
+# from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended to check this file into your version control system.
@@ -21,24 +22,6 @@ ActiveRecord::Schema.define(:version => 20110407194737) do
   end
 
   add_index "attrs", ["doc_version_id", "slug"], :name => "index_attrs_v2_on_doc_version_id_and_slug", :unique => true
-
-  create_table "choice_values_choices", :id => false, :force => true do |t|
-    t.integer "choice_id"
-    t.integer "choice_value_id"
-  end
-
-  add_index "choice_values_choices", ["choice_id"], :name => "index_choice_values_choices_on_choice_id"
-  add_index "choice_values_choices", ["choice_value_id"], :name => "index_choice_values_choices_on_choice_value_id"
-
-  create_table "choices", :force => true do |t|
-    t.string   "value"
-    t.integer  "choice_field_id"
-    t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "choices", ["choice_field_id"], :name => "index_choices_on_choice_field_id"
 
   create_table "doc_template_attrs", :force => true do |t|
     t.string  "name"
@@ -86,16 +69,6 @@ ActiveRecord::Schema.define(:version => 20110407194737) do
 
   add_index "docs", ["project_id"], :name => "index_docs_v2_on_project_id"
 
-  create_table "documents", :force => true do |t|
-    t.text     "title"
-    t.text     "content"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "structure_template_id"
-    t.integer  "version"
-    t.integer  "project_id"
-  end
-
   create_table "mapped_doc_templates", :force => true do |t|
     t.integer  "map_id"
     t.integer  "doc_template_id"
@@ -121,11 +94,6 @@ ActiveRecord::Schema.define(:version => 20110407194737) do
     t.string   "graphviz_method"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "open_id_authentication_settings", :force => true do |t|
-    t.string "setting"
-    t.binary "value"
   end
 
   create_table "people", :force => true do |t|
