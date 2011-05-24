@@ -6,12 +6,12 @@
 <%= error_messages_for :doc, :object => f.object %>
 
 <table class="doc_attrs">
-  <% f.fields_for :attrs do |attr_fields| %>
+  <%= f.fields_for :attrs do |attr_fields| %>
     <%= edit_attr_row(attr_fields) %>
   <% end -%>
   
-  <% f.fields_for :attrs_attributes, nil do |outer_fields| -%>
-    <% outer_fields.fields_for '99999',  Attr.new(:doc => @doc) do |attr_fields| %>
+  <%= f.fields_for :attrs_attributes, nil do |outer_fields| -%>
+    <%= outer_fields.fields_for '99999',  Attr.new(:doc => @doc) do |attr_fields| %>
       <%= edit_attr_row(attr_fields) %>
     <% end -%>
   <% end -%>

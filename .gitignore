@@ -1,13 +1,12 @@
-log/*
+log/*.log
 config/database.yml
 config/scout.yml
 .loadpath
 .project
 *.kpf
 nbproject/*
-tmp/*
+tmp/
 rerun.txt
 .bundle
-.idea
 vendor/bundle/*
-public/stylesheets/site_theme.css
+.sass-cache/

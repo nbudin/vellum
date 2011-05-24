@@ -10,7 +10,7 @@
     <%= render :partial => 'maps/show_external', :locals => { :map => map } %>
   <% end -%>
   <li class="external_view">
-    <% form_for(:map, :url => maps_path(@project)) do |f| %>
+    <%= form_for(:map, :url => maps_path(@project)) do |f| %>
     <div style="float: right;">
       <button class="new">
         <%= image_tag "map_add.png" %>

@@ -30,7 +30,7 @@
   </ul>
 <% end -%>
 
-<% form_for @project do |f| %>
+<%= form_for @project do |f| %>
   <div class="cardform">
     <p style="font-size: 200%; font-weight: bold; margin-top: 0;">Sharing options for <%= @project.name%></p>
 
@@ -56,7 +56,7 @@
           <th title="Admins can delete the project and change its members.">Admin?</th>
           <th></th>
         </tr>
-        <% f.fields_for :project_memberships do |membership_fields| -%>
+        <%= f.fields_for :project_memberships do |membership_fields| -%>
           <tr class="<%= cycle "odd", "even" %>">
             <% if membership_fields.object.new_record? -%>
               <td style="text-align: right;"><%= membership_fields.label :email, "Add:" %></td>
@@ -85,7 +85,7 @@
     </div>
     
     <div class="submit">
-      <% link_to :back, :class => "button cancel" do -%>
+      <%= link_to :back, :class => "button cancel" do -%>
         Cancel
       <% end -%>
       <%= f.submit "Save changes", :class => "save" %>

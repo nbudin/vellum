@@ -1,6 +1,6 @@
 <h1>New relationship type</h1>
 
-<% form_for @relationship_type, :url => new_relationship_type_path(@project), :html => { :method => :get } do |f| %>
+<%= form_for @relationship_type, :url => new_relationship_type_path(@project), :html => { :method => :get } do |f| %>
     <div class="cardform">
       <p>
         <b><%= f.label :name, "Relationship Type" %></b><br/>
@@ -30,7 +30,7 @@
       </div>
 
       <div class="submit">
-        <% link_to :back, :class => "button cancel" do -%>
+        <%= link_to :back, :class => "button cancel" do -%>
           Cancel
         <% end -%>
         <%= submit_tag "Continue", :class => "new" %>

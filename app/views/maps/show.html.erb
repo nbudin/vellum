@@ -4,7 +4,7 @@
 
 <div class="jumpbox">
   <div class="navigation">
-    <% link_to maps_path(@project), :class => "button back" do -%>
+    <%= link_to maps_path(@project), :class => "button back" do -%>
       <%= image_tag "arrow_left.png" %>
       Maps
     <% end -%>
@@ -28,7 +28,7 @@
           </span>
         <% end -%>
         <li style="overflow: visible;">
-          <% form_for :mapped_doc_template, :url => mapped_doc_templates_path(@project, @map) do |f| -%>
+          <%= form_for :mapped_doc_template, :url => mapped_doc_templates_path(@project, @map) do |f| -%>
             <span style="float: right;">
               <%= submit_tag "Add", :class => "new" %>
             </span>
@@ -55,7 +55,7 @@
           </span>
         <% end -%>
         <li style="overflow: visible;">
-          <% form_for :mapped_relationship_type, :url => mapped_relationship_types_path(@project, @map) do |f| -%>
+          <%= form_for :mapped_relationship_type, :url => mapped_relationship_types_path(@project, @map) do |f| -%>
             <span style="float: right;">
               <%= submit_tag "Add", :class => "new" %>
             </span>

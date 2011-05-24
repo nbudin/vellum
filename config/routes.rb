@@ -1,62 +1,39 @@
-ActionController::Routing::Routes.draw do |map|
-  map.devise_for :people
+Vellum::Application.routes.draw do
+  devise_for :people
 
-  map.resources :workflows do |workflows|
-    workflows.resources :workflow_steps, :name_prefix => nil, :collection => { :sort => :post } do |steps|
-      steps.resources :workflow_transitions, :name_prefix => nil do |transitions|
-        transitions.resources :workflow_actions, :name_prefix => nil, :collection => { :sort => :post }
+  resources :projects do
+    resources :doc_templates do
+      resources :doc_template_attrs do
+        collection do
+          post :sort
+        end
+      end
+    end
+
+    resources :relationship_types
+    resources :docs do
+      collection do
+        post :sort
+      end
+    end
+
+    resources :relationships
+    resources :maps do
+      resources :mapped_doc_templates
+      resources :mapped_relationship_types
+    end
+
+    resources :publication_templates do
+      member do
+        get :test
+        post :test
+        get :publish
+        post :publish
       end
     end
   end
 
-  map.resources :projects do |projects|
-    projects.resources :doc_templates, :name_prefix => nil do |templates|
-      templates.resources :doc_template_attrs, :collection => { :sort => :post }, :name_prefix => nil
-    end
-    projects.resources :relationship_types, :name_prefix => nil
-    projects.resources :docs, :name_prefix => nil, :collection => { :sort => :post }
-    projects.resources :relationships, :name_prefix => nil
-    projects.resources :maps, :name_prefix => nil, :collection => { :sort => :post } do |maps|
-      maps.resources :mapped_doc_templates, :name_prefix => nil
-      maps.resources :mapped_relationship_types, :name_prefix => nil
-    end
-    projects.resources :publication_templates, :name_prefix => nil, 
-      :member => { :test => [:get, :post], :publish => [:get, :post] }
-  end
-
-  map.connect('projects/:project_id/structure_templates/:structure_template_id/attrs/:id/config.:format',
-              :conditions => { :method => :get },
-              :controller => 'attrs',
-              :action => 'show_config')
-              
-  map.connect('projects/:project_id/structure_templates/:structure_template_id/attrs/:id/config.:format',
-              :conditions => { :method => :put },
-              :controller => 'attrs',
-              :action => 'update_config')
-              
-
-  # The priority is based upon order of creation: first created -> highest priority.
-  
-  # Sample of regular route:
-  # map.connect 'products/:id', :controller => 'catalog', :action => 'view'
-  # Keep in mind you can assign values other than :controller and :action
-
-  # Sample of named route:
-  # map.purchase 'products/:id/purchase', :controller => 'catalog', :action => 'purchase'
-  # This route can be invoked with purchase_url(:id => product.id)
-
-  #AeUsers.map_openid(map)
-  
-  # You can have the root of your site routed by hooking up '' 
-  # -- just remember to delete public/index.html.
-  map.root :controller => "projects"
-
-  # Allow downloading Web Service WSDL as a file with an extension
-  # instead of a file named 'wsdl'
-  map.connect ':controller/service.wsdl', :action => 'wsdl'
-
-  # Install the default route as the lowest priority.
-  map.connect ':controller/:action/:id.:format'
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action.:format'
+  root :to => 'projects#index'
+#  match '/:controller(/:action(/:id))'
+#  match ':controller/:action.:format' => '#index'
 end

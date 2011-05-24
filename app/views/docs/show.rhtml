@@ -4,7 +4,7 @@
 
 <div class="jumpbox">
   <div class="navigation">
-    <% link_to project_path(@project), :class => "button back" do -%>
+    <%= link_to project_path(@project), :class => "button back" do -%>
       <%= image_tag "arrow_left.png" %>
       <%=h @project.name %>
     <% end -%>
@@ -33,11 +33,11 @@
   <h2><%=h @doc.name %></h2>
   <p>
     <b>Template:</b> 
-    <% link_to doc_template_path(@doc.project, @doc.doc_template) do -%>
+    <%= link_to doc_template_path(@doc.project, @doc.doc_template) do -%>
       <%= image_tag "template.png" %>
       <%= @doc.doc_template.name %>
     <% end -%>
-  <% form_for @doc, :url => doc_path(@project, @doc), :html => {:class => "assignee"} do |f| -%>
+  <%= form_for @doc, :url => doc_path(@project, @doc), :html => {:class => "assignee"} do |f| -%>
     <%= f.label "assignee_id", "Assigned to" %>
     <%= f.select "assignee_id", [["nobody", nil]] + @project.authors.sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
                  :include_blank => false %>

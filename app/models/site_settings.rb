@@ -1,7 +1,9 @@
 class SiteSettings < ActiveRecord::Base
-  acts_as_singleton
-  
   belongs_to :admin, :class_name => "Person"
+  
+  def self.instance
+    @@instance ||= (first || new)
+  end
   
   def site_name
     sn = read_attribute(:site_name) 

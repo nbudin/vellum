@@ -1,6 +1,6 @@
 <%= javascript_include_tag "relationship_builder" %>
 
-<% form_for @project.relationships.new, { :html => {'data-project-url' => project_url(@project), :class => "vellumRelationshipBuilder"} } do |f| -%>
+<%= form_for @project.relationships.new, { :html => {'data-project-url' => project_url(@project), :class => "vellumRelationshipBuilder"} } do |f| -%>
   <div style="float: right;">
     <button class="new">
       <%= image_tag "relationship_add.png" %>
