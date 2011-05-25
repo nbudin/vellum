@@ -90,10 +90,18 @@ class VPubContext < Radius::Context
     define_tag 'include' do |tag|
       tmpl = get_pub_template(tag)
       
-      if tmpl.doc_template && tmpl.doc_template != @doc.doc_template
-        raise VPubRuntimeError.new(
-          "Included template \"#{tmpl.name}\" requires a #{tmpl.doc_template.name} but the current doc is a #{doc.doc_template.name}",
-          @publication_template, @doc)
+      if tmpl.doc_template 
+        if tag.locals.doc
+          if tmpl.doc_template != tag.locals.doc.doc_template
+            raise VPubRuntimeError.new(
+            "Included template \"#{tmpl.name}\" requires a #{tmpl.doc_template.name} but the current doc is a #{doc.doc_template.name}",
+            @publication_template, tag.locals.doc)
+          end
+        else
+          raise VPubRuntimeError.new(
+          "Included template \"#{tmpl.name}\" requires a #{tmpl.doc_template.name} but there is no current doc",
+          @publication_template, tag.locals.doc)
+        end
       end
 
       tmpl.execute(:doc => @doc, :project => @project)
@@ -198,7 +206,7 @@ class VPubContext < Radius::Context
     if tmpl
       return tmpl
     else
-      raise VPubRuntimeError.new("Couldn't find publication template called '#{template_name}'", @publication_template, @doc)
+      raise VPubRuntimeError.new("Couldn't find publication template called '#{template_name}'", @publication_template, tag.locals.doc)
     end
   end
 end
