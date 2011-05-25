@@ -10,15 +10,13 @@ class VPubContext < Radius::Context
     end
   end
     
-  attr_reader :project, :doc, :format, :publication_template
+  attr_reader :format, :publication_template
   
   def initialize(init_options = {})
     super()
-    @doc = init_options[:doc]
-    @project = init_options[:project] || @doc.project
     @publication_template = init_options[:publication_template]
-    globals.project = @project
-    globals.doc = @doc
+    globals.doc = init_options[:doc]
+    globals.project = init_options[:project] || (globals.doc && globals.doc.project)
     self.format = init_options[:format] || 'html'
     
     @pub_template_cache = {}
@@ -59,11 +57,11 @@ class VPubContext < Radius::Context
     define_tag 'each_doc' do |tag|
       conds = {}
       if tag.attr['template']
-        conds[:doc_template_id] = project.doc_templates.find_by_name(tag.attr['template']).id
+        conds[:doc_template_id] = tag.locals.project.doc_templates.find_by_name(tag.attr['template']).id
       end
       
       prev_doc = tag.locals.doc
-      docs = project.docs.all(:conditions => conds)
+      docs = tag.locals.project.docs.all(:conditions => conds)
       content = sort_docs(tag, docs).collect do |d|
         tag.locals.doc = d
         tag.expand
@@ -94,7 +92,7 @@ class VPubContext < Radius::Context
         if tag.locals.doc
           if tmpl.doc_template != tag.locals.doc.doc_template
             raise VPubRuntimeError.new(
-            "Included template \"#{tmpl.name}\" requires a #{tmpl.doc_template.name} but the current doc is a #{doc.doc_template.name}",
+            "Included template \"#{tmpl.name}\" requires a #{tmpl.doc_template.name} but the current doc is a #{tag.locals.doc.doc_template.name}",
             @publication_template, tag.locals.doc)
           end
         else
@@ -104,7 +102,7 @@ class VPubContext < Radius::Context
         end
       end
 
-      tmpl.execute(:doc => @doc, :project => @project)
+      tmpl.execute(:doc => tag.locals.doc, :project => tag.locals.project)
     end
   end
   
@@ -201,7 +199,7 @@ class VPubContext < Radius::Context
   
   def get_pub_template(tag)
     template_name = tag.attr['template']
-    tmpl = (@pub_template_cache[template_name] ||= @project.publication_templates.find_by_name(template_name))
+    tmpl = (@pub_template_cache[template_name] ||= tag.locals.project.publication_templates.find_by_name(template_name))
     
     if tmpl
       return tmpl
