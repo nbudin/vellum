@@ -49,7 +49,7 @@ h2 {
   	      <% end -%>
   	    </p>
   	  <% end -%>
-  	  <% sortlist(@docs[tmpl], "docs_#{tmpl.id}",
+  	  <%= sortlist(@docs[tmpl], "docs_#{tmpl.id}",
   				  :url => sort_docs_path(@project)
   				  ) do |doc| -%>
   		  <%= render :partial => 'docs/show_external',

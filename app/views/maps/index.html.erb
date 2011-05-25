@@ -5,8 +5,8 @@
 <p>Maps let you create a visual diagram of the project.  You can choose a set of
   templates and see how they are connected to each other.</p>
 
-<ul class="sortlist">
-  <% sortlist_items(@project.maps, "maps") do |map| -%>
+<ul class="sortlist" data-url="<%=sort_maps_path(@project)%>">
+  <%= sortlist_items(@project.maps, "maps") do |map| -%>
     <%= render :partial => 'maps/show_external', :locals => { :map => map } %>
   <% end -%>
   <li class="external_view">
@@ -22,6 +22,5 @@
     <% end -%>
   </li>
 </ul>
-<%= sortlist_sortable("maps", sort_maps_path(@project)) %>
 
 

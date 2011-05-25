@@ -66,7 +66,7 @@
 
         return this;
     }
-})(jQuery);
+}(jQuery));
 
 jQuery(function() {
     jQuery(".vellumRelationshipBuilder").vellumRelationshipBuilder();

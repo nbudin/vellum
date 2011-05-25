@@ -5,5 +5,9 @@
 // the compiled file.
 //
 //= require jquery
+//= require jquery-ui
 //= require jquery_ujs
+//= require jquery.jeditable
+//= require farbtastic
+//= require wymeditor/jquery.wymeditor.pack
 //= require_tree .

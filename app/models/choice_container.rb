@@ -1,28 +1,31 @@
 module ChoiceContainer
-  def choices
-    choice_str = read_attribute(:choices)
-    case choice_str
-    when String
-      choice_str.split(/,/).collect { |choice| choice.strip }
-    else
-      []
+  class ChoicesCoder
+    def dump(obj)
+      obj.join(",")
+    end
+    
+    def load(str)
+      if str
+        str.split(/,/).collect(&:strip)
+      else
+        []
+      end
     end
   end
-
-  def choices=(new_choices)
-    write_attribute :choices, case new_choices
-    when Array
-      new_choices.join(",")
-    else
-      new_choices
+  
+  extend ActiveSupport::Concern
+  
+  included do
+    serialize :choices, ChoicesCoder.new
+  end
+  
+  module InstanceMethods
+    def human_choices
+      choices.join(", ")
     end
-  end
 
-  def human_choices
-    choices.join(", ")
-  end
-
-  def human_choices=(human_choices)
-    self.choices = human_choices.split(/,/).collect { |choice| choice.strip }
+    def human_choices=(human_choices)
+      self.choices = human_choices.split(/,/).collect { |choice| choice.strip }
+    end
   end
 end

@@ -316,7 +316,7 @@ class Doc < ActiveRecord::Base
 
   def save_versions
     versions.each do |v|
-      v.save(false)
+      v.save(:validate => false)
     end
   end
   

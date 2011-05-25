@@ -1,6 +1,3 @@
-// Place your application-specific JavaScript functions and classes here
-// This file is automatically included by javascript_include_tag :defaults
-
 (function(jQuery) {
     function updateChoicesVisibility() {
         var $this = jQuery(this);
@@ -90,7 +87,7 @@
 
         return this;
     }
-})(jQuery);
+}(jQuery));
 
 jQuery.fn.zebrify = function(selector) {
     var children = this.children(selector);
@@ -98,6 +95,8 @@ jQuery.fn.zebrify = function(selector) {
     // stupid zero-based indexing: :even gives you the odd ones and vice versa
     children.filter(":even").removeClass("even").addClass("odd");
     children.filter(":odd").removeClass("odd").addClass("even");
+    
+    return this;
 };
 
 jQuery.fn.vellumAttrList = function() {
@@ -333,6 +332,27 @@ jQuery.fn.vellumColorPicker = function() {
     });
 }
 
+jQuery.fn.vellumSortList = function () {
+    this.each(function() {
+        var $this = jQuery(this);
+        var url = $this.attr('data-url');
+        var id = $this.attr('id');
+        
+        $this.sortable({
+            'axis': 'y',
+            'dropOnEmpty': false,
+            'handle': '.sort_handle',
+            'update': function() {
+                jQuery.ajax({
+                    'data': jQuery(this).sortable('serialize', {'key': id + '[]' }),
+                    'dataType': 'script',
+                    'type': 'post',
+                    'url': url})
+            }
+        })
+    });
+}
+
 jQuery(function() {
   jQuery(".wymeditor").wymeditor({
     'skin': 'vellum',
@@ -397,6 +417,7 @@ jQuery(function() {
   jQuery(".vellumAutoResizeWym").vellumAutoResizeWym();
   jQuery(".vellumInPlaceEdit").vellumInPlaceEdit();
   jQuery(".vellumColorPicker").vellumColorPicker();
+  jQuery(".sortlist").vellumSortList();
   jQuery(".external_view .add_description").bind('click', function () {
       var $this = jQuery(this);
       $this.parents('.external_view').find('.blurb_display').show();

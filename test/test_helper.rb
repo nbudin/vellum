@@ -1,7 +1,11 @@
 ENV["RAILS_ENV"] = "test"
-require File.expand_path("/../config/environment", __FILE__)
+require File.expand_path("../../config/environment", __FILE__)
 require 'rails/test_help'
 require 'capybara/rails'
+
+# Shoulda looks for RAILS_ROOT before loading shoulda/rails, and Rails 3.1
+# doesn't have that anymore.
+require 'shoulda/rails'
 
 class ActiveSupport::TestCase
   # Transactional fixtures accelerate your tests by wrapping each test method

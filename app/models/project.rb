@@ -33,15 +33,13 @@ class Project < ActiveRecord::Base
 
     project.doc_templates.each do |tmpl|
       logger.debug "Duplicating #{tmpl.name} template"
-      new_tmpl = tmpl.clone
-      new_tmpl.project = nil
-      self.doc_templates << new_tmpl
+      new_tmpl = self.doc_templates.build(tmpl.attributes)
       new_templates[tmpl.id] = new_tmpl
 
       tmpl.doc_template_attrs.each do |dta|
-        new_attr = dta.clone
-        new_attr.doc_template = nil
-        new_tmpl.doc_template_attrs << new_attr
+        new_attr = new_tmpl.doc_template_attrs.build(dta.attributes)
+#        new_attr.doc_template = new_tmpl
+#        new_tmpl.doc_template_attrs << new_attr
       end
     end
 

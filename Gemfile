@@ -1,12 +1,13 @@
 source "http://rubygems.org"
 gem "rails", "3.1.0.rc1"
+gem "rake", "~> 0.8.7"
 gem "json"
 gem "sass"
 gem 'coffee-script'
 gem 'uglifier'
 
 platforms :ruby do
-  gem "mysql2"
+  gem "mysql"
 end
 platforms :jruby do
   gem "activerecord-jdbc-adapter", :require => false
@@ -19,7 +20,7 @@ gem "cancan"
 
 gem "ruby-graphviz", ">= 0.9.2", :require => "graphviz"
 gem "radius"
-gem "nbudin-version_fu", :require => "version_fu"
+gem "version_fu", "~> 1.0.1"
 gem "jquery-rails"
 gem "rubyzip"
 gem "nokogiri", ">= 1.4.1"
@@ -35,7 +36,7 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'shoulda'
-  gem 'factory_girl', "~> 1.2.3"
+  gem 'factory_girl_rails'
   gem 'launchy'
   gem 'capybara'
   gem 'cucumber'

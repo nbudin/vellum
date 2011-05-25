@@ -1,36 +1,38 @@
 class Attr < ActiveRecord::Base
   module Base
-    def self.included(klass)
-      klass.class_eval do
-        validates_format_of :name, :with => /^[A-Za-z0-9 \-]*$/,
-          :message => "can only contain letters, numbers, spaces, and hypens"
+    extend ActiveSupport::Concern
+    
+    included do
+      validates_format_of :name, :with => /^[A-Za-z0-9 \-]*$/,
+        :message => "can only contain letters, numbers, spaces, and hypens"
 
-        validates_presence_of :name
-      end
+      validates_presence_of :name
     end    
   end
 
   module WithSlug
-    def self.included(klass)
-      klass.class_eval do
-        validates_format_of :slug, :with => /^[a-z0-9\-\_]*$/,
-          :message => "can only contain lowercase letters, numbers, underscores, and hyphens"
+    extend ActiveSupport::Concern
+    
+    included do
+      validates_format_of :slug, :with => /^[a-z0-9\-\_]*$/,
+        :message => "can only contain lowercase letters, numbers, underscores, and hyphens"
 
-        validates_presence_of :slug
-      end
+      validates_presence_of :slug
     end
-
+    
     def self.slug_for(name)
       name && name.downcase.gsub(/ /, "_")
     end
+    
+    module InstanceMethods
+      def name=(new_name)
+        write_attribute(:name, new_name)
+        write_attribute(:slug, Attr::WithSlug.slug_for(new_name))
+      end
 
-    def name=(new_name)
-      write_attribute(:name, new_name)
-      write_attribute(:slug, Attr::WithSlug.slug_for(new_name))
-    end
-
-    def slug=(new_slug)
-      raise "You cannot directly set the slug of this object.  Set the name instead."
+      def slug=(new_slug)
+        raise "You cannot directly set the slug of this object.  Set the name instead."
+      end
     end
   end
 
@@ -46,9 +48,10 @@ class Attr < ActiveRecord::Base
   
   def shim_for_attr_set(doc)
     shim = Attr.new(:doc => doc)
-    %w{name slug value position format}.each do |field|
-      shim.write_attribute(field, self.read_attribute(field))
+    %w{name position format}.each do |field|
+      shim.send("#{field}=", self.read_attribute(field))
     end
+    shim.value_unsafe = value
     
     shim
   end

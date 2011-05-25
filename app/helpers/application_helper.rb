@@ -37,12 +37,10 @@ module ApplicationHelper
       selected = request.path =~ /^#{destination}/
     end
     
-    label_html = if image_path
-                   "#{image_tag(image_path, :alt => label)} #{h label}"
-                 else
-                   h(label)
-                 end
-    link_to(label_html, destination, {:class => selected ? "selected" : "" })
+    link_to(destination, {:class => selected ? "selected" : ""}) do
+      output_buffer << image_tag(image_path, :alt => label) if image_path
+      output_buffer << label
+    end
   end
   
   def page_title
@@ -133,48 +131,32 @@ module ApplicationHelper
   end
 
   def itemlist(items, options={}, &block)
-    html = content_tag(:ul, {:class => "itemlist"}.update(options)) do
+    content_tag(:ul, {:class => "itemlist"}.update(options)) do
       itemlist_items(items, options, &block)
-    end
-    if block_given?
-      concat html
-    else
-      html
     end
   end
 
   def sortlist_items(items, list_id, options={}, &block)
-    full_html = items.collect do |item|
-      content_tag(:li, :id => "#{list_id.singularize}_#{item.id}") do
-        inner_html = image_tag("sort_handle.png", :class => "sort_handle")
-        if block_given?
-          inner_html << block.call(item)
+    with_output_buffer do
+      items.each do |item|
+        output_buffer << content_tag(:li, :id => "#{list_id.singularize}_#{item.id}") do
+          output_buffer << image_tag("sort_handle.png", :class => "sort_handle")
+          block.call(item) if block_given?
         end
-        inner_html
+        output_buffer << "\n"
       end
-    end.join("\n")
-    
-    if block_given?
-      concat full_html
-    else
-      full_html
     end
-  end
-
-  def sortlist_sortable(list_id, url)
-    sortable_element(list_id, :handle => "sort_handle", :url => url)
   end
 
   def sortlist(items, list_id, options={}, &block)
-    url = options.delete(:url)
-    html = content_tag(:ul, {:class => "sortlist", :id => list_id}.update(options)) do
+    ul_attrs = {
+      :class => "sortlist",
+      :id => list_id,
+      :"data-url" => options.delete(:url)
+    }.merge(options)
+    
+    content_tag(:ul, ul_attrs) do
       sortlist_items(items, list_id, options, &block)
-    end
-    html << sortlist_sortable(list_id, url)
-    if block_given?
-      concat html
-    else
-      html
     end
   end
 

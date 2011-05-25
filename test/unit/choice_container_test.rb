@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'choice_container'
 
-class SimpleChoiceContainer
+class SimpleChoiceContainer < ActiveModel::Base
   attr_accessor :choices_str
 
   def read_attribute(name)

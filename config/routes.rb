@@ -1,9 +1,11 @@
 Vellum::Application.routes.draw do
   devise_for :people
 
-  resources :projects do
-    resources :doc_templates do
-      resources :doc_template_attrs do
+  resources :projects
+  scope 'projects/:project_id' do
+    resources :doc_templates
+    scope 'doc_templates/:doc_template_id' do
+      resources :doc_template_attrs, :name_prefix => nil do
         collection do
           post :sort
         end
@@ -18,7 +20,8 @@ Vellum::Application.routes.draw do
     end
 
     resources :relationships
-    resources :maps do
+    resources :maps
+    scope 'maps/:map_id' do
       resources :mapped_doc_templates
       resources :mapped_relationship_types
     end
