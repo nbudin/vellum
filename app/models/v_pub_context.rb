@@ -179,6 +179,12 @@ class VPubContext < Radius::Context
   
   def get_pub_template(tag)
     template_name = tag.attr['template']
-    @pub_template_cache[template_name] ||= @project.publication_templates.find_by_name(template_name)
+    tmpl = (@pub_template_cache[template_name] ||= @project.publication_templates.find_by_name(template_name))
+    
+    if tmpl
+      return tmpl
+    else
+      raise "Couldn't find publication template called '#{template_name}'"
+    end
   end
 end

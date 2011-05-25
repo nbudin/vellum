@@ -86,7 +86,9 @@ class PublicationTemplatesController < ApplicationController
     
         Zip::ZipOutputStream.open(@tempfile.path) do |zipfile|
           @publication_template.doc_template.docs.each do |doc|
-            zipfile.put_next_entry("#{doc.name}.#{@publication_template.output_format}")
+            filename = doc.name.gsub(/[\/\\]/, "_")
+            filename << ".#{@publication_template.output_format}"
+            zipfile.put_next_entry(filename)
             zipfile.print @publication_template.execute(:project => @project, :doc => doc)
           end
         end
