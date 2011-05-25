@@ -16,7 +16,11 @@ module ChoiceContainer
   extend ActiveSupport::Concern
   
   included do
-    serialize :choices, ChoicesCoder.new
+    if respond_to?(:serialize)
+      serialize :choices, ChoicesCoder.new
+    else
+      attr_accessor :choices
+    end
   end
   
   module InstanceMethods

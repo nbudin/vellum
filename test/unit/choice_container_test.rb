@@ -1,18 +1,20 @@
 require 'test_helper'
 require 'choice_container'
 
-class SimpleChoiceContainer < ActiveModel::Base
-  attr_accessor :choices_str
-
-  def read_attribute(name)
-    self.send("#{name}_str")
-  end
-
-  def write_attribute(name, value)
-    self.send("#{name}_str=", value)
-  end
-
+class SimpleChoiceContainer
   include ChoiceContainer
+  
+  def initialize
+    @choices = []
+  end
+  
+  def choices_str=(str)
+    self.choices = ChoiceContainer::ChoicesCoder.new.load(str)
+  end
+  
+  def choices_str
+    ChoiceContainer::ChoicesCoder.new.dump(self.choices)
+  end
 end
 
 class ChoiceContainerTest < ActiveSupport::TestCase

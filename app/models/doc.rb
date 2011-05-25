@@ -323,7 +323,7 @@ class Doc < ActiveRecord::Base
   def check_attrs_error
     if @attrs_error
       @attrs_error.errors.each do |attr_error|
-        errors.add_to_base(attr_error)
+        errors.add(:base, attr_error)
       end
     end
   end

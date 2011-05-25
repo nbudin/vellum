@@ -90,7 +90,7 @@ class Relationship < ActiveRecord::Base
   
   def check_circular
     if left == right
-      errors.add_to_base("This relationship is circular.")
+      errors.add(:base, "This relationship is circular.")
     end
   end
 
@@ -117,7 +117,7 @@ class Relationship < ActiveRecord::Base
          rel.relationship_type == relationship_type)
       end
       if others.size > 0
-        errors.add_to_base("#{left.name} already #{relationship_type.left_description} #{right.name}")
+        errors.add(:base, "#{left.name} already #{relationship_type.left_description} #{right.name}")
       end
     end
   end

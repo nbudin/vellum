@@ -6,27 +6,20 @@ remove_non_vellum_classes = lambda do |env|
   
   unless cls.blank?
     classes = cls.split.select { |c| c =~ /^vellum-/ }
+
     if classes.empty?
       node.remove_attribute("class")
     else
       node.set_attribute("class", classes.join(" "))
     end
   end
-  
-  { :node => node }
 end
 
 remove_unneeded_spans = lambda do |env|
   node = env[:node]
   
-  if node.name == "span"
-    if node.attributes.size == 0
-      nil
-    else
-      { :whitelist => true }
-    end
-  else
-    { :node => node }
+  if node.name == "span" && node.attributes.size > 0
+    { :node_whitelist => [node] }
   end
 end
 
@@ -55,7 +48,7 @@ convert_css_to_tags = lambda do |env|
     end
   end
   
-  { :node => node }
+  node.remove_attribute("style")
 end
 
 convert_line_endings_to_unix = lambda do |env|
@@ -65,11 +58,10 @@ convert_line_endings_to_unix = lambda do |env|
     text.content = text.content.gsub(/\r\n/, "\n")
     text.content = text.content.gsub(/\r/, "\n")
   end
-  
-  { :node => node }
 end
 
 Sanitize::Config::VELLUM = {
+  :output => :xhtml,
   :elements => %w{p h1 h2 h3 h4 h5 h6 ul ol li b i em strong br u},
   :attributes => {
     :all => %w{class}

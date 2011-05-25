@@ -25,7 +25,7 @@ class SanitizeTest < ActiveSupport::TestCase
   end
   
   test "remove non-allowed styles and tags" do
-    assert_sanitized("<span class=\"MsoNormal\" style=\"margin-left: 3px;\">Some text</span>", "<span>Some text</span>")
+    assert_sanitized("<p class=\"MsoNormal\" style=\"margin-left: 3px;\">Some text</p>", "<p>Some text</p>")
     assert_sanitized("<center>Centered text</center>", "Centered text")
   end
   
