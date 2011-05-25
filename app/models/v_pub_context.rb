@@ -1,10 +1,22 @@
 class VPubContext < Radius::Context
-  attr_reader :project, :doc, :format
+  class VPubRuntimeError < Exception
+    attr_reader :publication_template, :line, :doc
+    
+    def initialize(msg, publication_template, doc)
+      super(msg)
+      @template = publication_template
+      @line = line
+      @doc = doc
+    end
+  end
+    
+  attr_reader :project, :doc, :format, :publication_template
   
   def initialize(init_options = {})
     super()
     @doc = init_options[:doc]
     @project = init_options[:project] || @doc.project
+    @publication_template = init_options[:publication_template]
     globals.project = @project
     globals.doc = @doc
     self.format = init_options[:format] || 'html'
@@ -79,7 +91,9 @@ class VPubContext < Radius::Context
       tmpl = get_pub_template(tag)
       
       if tmpl.doc_template && tmpl.doc_template != @doc.doc_template
-        raise "Included template \"#{tmpl.name}\" requires a #{tmpl.doc_template.name} but the current doc is a #{doc.doc_template.name}"
+        raise VPubRuntimeError.new(
+          "Included template \"#{tmpl.name}\" requires a #{tmpl.doc_template.name} but the current doc is a #{doc.doc_template.name}",
+          @publication_template, @doc)
       end
 
       tmpl.execute(:doc => @doc, :project => @project)
@@ -184,7 +198,7 @@ class VPubContext < Radius::Context
     if tmpl
       return tmpl
     else
-      raise "Couldn't find publication template called '#{template_name}'"
+      raise VPubRuntimeError.new("Couldn't find publication template called '#{template_name}'", @publication_template, @doc)
     end
   end
 end
