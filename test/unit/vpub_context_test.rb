@@ -179,7 +179,7 @@ class VPubContextTest < ActiveSupport::TestCase
         @other_template.doc_template = @tree
         assert @other_template.save
         
-        exc = assert_raise RuntimeError do
+        exc = assert_raise VPubContext::VPubRuntimeError do
           @parser.parse("My content\n<v:include template=\"Another template\"/>\nMore content <v:name/>")
         end
         
