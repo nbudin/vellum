@@ -2,19 +2,13 @@
   <h1>Create a Project</h1>
 
   <div class="cardform">
+    <%= error_messages_for @project %>
+
     <p>
       <b><%= f.label :name, "Project Name" %></b><br/>
       <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold; width: 99%;" %>
     </p>
     
-    <% if @project.errors.any? -%>
-      <div class="error_messages">
-        <% @project.errors.full_messages.each do |msg| -%>
-          <li><%= msg %></li>
-        <% end -%>
-      </div>
-    <% end -%>
-
     <div class="callout">
     <% if @template_sources.size > 0 -%>
       <h2>Get started faster</h2>

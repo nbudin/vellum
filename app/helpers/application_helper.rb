@@ -222,4 +222,18 @@ module ApplicationHelper
       content_tag("div", "", :class => "vellumColorPickerPlaceholder")
     end
   end
+  
+  def error_messages_for(target)
+    if target.errors.any?
+      content_tag(:div, :class => "error_messages") do
+        content_tag(:ul) do
+          with_output_buffer do
+            target.errors.full_messages.each do |msg|
+              output_buffer << content_tag(:li, msg)
+            end
+          end
+        end
+      end
+    end
+  end
 end

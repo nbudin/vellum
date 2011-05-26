@@ -2,12 +2,12 @@
   <%= render :partial => "vpub_help" %>
 </div>
 
+<%= error_messages_for f.object %>
+
 <p style="margin-top: 2em;">
   <b><%= f.label :name, "Publication Template Name" %></b><br/>
   <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold; width: 99%;" %>
 </p>
-
-<%= error_messages_for :publication_template, :object => f.object %>
 
 <p>
   <b><%= f.label :format, "Output Format" %></b><br/>
