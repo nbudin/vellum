@@ -1,11 +1,16 @@
-<%= f.error_messages %>
-
 <div class="cardform">
   <p>
     <b><%= f.label :name, "Template name" %></b><br/>
     <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold; width: 99%;" %>
   </p>
 
+  <% if f.object.errors.any? -%>
+    <div class="error_messages">
+      <% f.object.errors.full_messages.each do |msg| -%>
+        <li><%= msg %></li>
+      <% end -%>
+    </div>
+  <% end -%>
 
   <div class="callout">
     <h2>Template Fields</h2>

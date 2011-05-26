@@ -20,7 +20,11 @@ Vellum::Application.routes.draw do
     end
 
     resources :relationships
-    resources :maps
+    resources :maps do
+      collection do
+        post :sort
+      end
+    end
     scope 'maps/:map_id' do
       resources :mapped_doc_templates
       resources :mapped_relationship_types

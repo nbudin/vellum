@@ -3,7 +3,13 @@
   <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold; width: 99%;" %>
 </p>
 
-<%= error_messages_for :doc, :object => f.object %>
+<% if f.object.errors.any? -%>
+  <div class="error_messages">
+    <% f.object.errors.full_messages.each do |msg| -%>
+      <li><%= msg %></li>
+    <% end -%>
+  </div>
+<% end -%>
 
 <table class="doc_attrs">
   <%= f.fields_for :attrs do |attr_fields| %>

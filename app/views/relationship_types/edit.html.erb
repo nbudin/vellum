@@ -1,4 +1,4 @@
-<% form_for(:relationship_type, @relationship_type, :url => relationship_type_path(@project, @relationship_type),
-            :html => { :method => :put }) do |f| -%>
+<% form_for(@relationship_type, :as => :relationship_type, :url => relationship_type_path(@project, @relationship_type),
+            :method => :put ) do |f| -%>
   <%= render :partial => "form", :locals => { :f => f } %>
 <% end -%>

@@ -12,11 +12,12 @@ class DocsControllerTest < ActionController::TestCase
 
   context "on GET to :index" do
     setup do
-      get :index, :project_id => @project.id
+      get :index, :project_id => @project.id, :format => 'json'
     end
 
     should respond_with(:success)
     should assign_to(:docs)
+    should_respond_with_json
   end
 
   context "on GET to :new" do
