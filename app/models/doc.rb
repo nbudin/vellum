@@ -218,8 +218,8 @@ class Doc < ActiveRecord::Base
       self.nested_attributes
     end
     
-    def as_json
-      collect { |attr| attr.as_json }
+    def as_json(options={})
+      collect { |attr| attr.as_json(options) }
     end
   end
 
@@ -235,8 +235,8 @@ class Doc < ActiveRecord::Base
   before_create :set_version_creators
   after_save :save_versions
   
-  def as_json
-    super.update("attrs" => attrs.as_json)
+  def as_json(options={})
+    super(options).update("attrs" => attrs.as_json)
   end
 
   def attrs
