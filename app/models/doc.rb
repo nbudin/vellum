@@ -217,6 +217,10 @@ class Doc < ActiveRecord::Base
       
       self.nested_attributes
     end
+    
+    def as_json
+      collect { |attr| attr.as_json }
+    end
   end
 
   belongs_to :project
@@ -230,6 +234,10 @@ class Doc < ActiveRecord::Base
 
   before_create :set_version_creators
   after_save :save_versions
+  
+  def as_json
+    super.update("attrs" => attrs.as_json)
+  end
 
   def attrs
     @attrs || reload_working_attrs
