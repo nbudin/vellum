@@ -234,10 +234,6 @@ class Doc < ActiveRecord::Base
 
   before_create :set_version_creators
   after_save :save_versions
-  
-  def as_json(options={})
-    super(options).update("attrs" => attrs.as_json)
-  end
 
   def attrs
     @attrs || reload_working_attrs
