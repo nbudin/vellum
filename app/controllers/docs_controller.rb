@@ -13,7 +13,7 @@ class DocsController < ApplicationController
     end
     @docs = @project.docs.all(:conditions => conds).sort_by {|s| s.name.try(:sort_normalize) || "" }
 
-    serialization_options = { :only => [:name, :version, :blurb, :doc_template_id] }
+    serialization_options = { :only => [:id, :name, :version, :blurb, :doc_template_id] }
     respond_to do |format|
       format.xml  { render :xml => @docs.to_xml(serialization_options) }
       format.json { render :json => @docs.to_json(serialization_options) }
