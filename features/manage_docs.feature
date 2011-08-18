@@ -46,7 +46,7 @@ Feature: Manage docs
     Then I should see "King Louis" within "h2:contains('Characters') + div"
     And I should see "France" within "h2:contains('Organizations') + div"
 
-    When I follow "Details" within "li:contains('France')"
+    When I follow "France"
     And I add a new "includes" relationship to "King Louis"
     Then I should see "includes King Louis"
 
