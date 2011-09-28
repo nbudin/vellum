@@ -4,4 +4,5 @@ rvm:
 gemfile:
   - Gemfile
 script: 
+  - mkdir -p tmp
   - bundle exec rake db:migrate test cucumber
