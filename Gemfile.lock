@@ -62,8 +62,8 @@ GEM
     devise (1.0.8)
       warden (~> 0.10.3)
     devise_cas_authenticatable (1.0.0.alpha8)
-      devise (>= 1.0.6)
       devise
+      devise (>= 1.0.6)
       devise_cas_authenticatable
       rubycas-client (>= 2.2.1)
     diff-lcs (1.1.2)
@@ -174,4 +174,5 @@ DEPENDENCIES
   sanitize
   sham_rack
   shoulda
+  sqlite3
   thin
