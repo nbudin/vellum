@@ -26,6 +26,7 @@ gem "sanitize"
 gem "heroku_external_db"
 gem "illyan_client", ">= 1.0.2"
 gem "hoptoad_notifier"
+gem "sqlite3", :groups => [:development, :test]
 
 group :development do
   gem "newrelic_rpm"

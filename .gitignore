@@ -1,5 +1,4 @@
 log/*
-config/database.yml
 config/scout.yml
 .loadpath
 .project
@@ -11,3 +10,4 @@ rerun.txt
 .idea
 vendor/bundle/*
 public/stylesheets/site_theme.css
+db/*.sqlite3
