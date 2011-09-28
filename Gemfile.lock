@@ -100,7 +100,7 @@ GEM
       weakling (>= 0.0.3)
     rack (1.1.2)
     rack-test (0.5.4)
-    radius (0.6.1)
+    radius (0.7.1)
     rails (2.3.14)
       actionmailer (= 2.3.14)
       actionpack (= 2.3.14)
