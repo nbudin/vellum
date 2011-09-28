@@ -1,5 +1,5 @@
 source :rubygems
-gem "rails", "2.3.5"
+gem "rails", "2.3.14"
 gem "ruby-openid", "~> 2.1.4", :require => "openid"
 
 platforms :ruby do
