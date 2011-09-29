@@ -3,7 +3,8 @@ rvm:
   - 1.9.2
 gemfile:
   - Gemfile
-script: 
+before_script: 
   - sh -e /etc/init.d/xvfb start
   - mkdir -p tmp
-  - export DISPLAY=:99.0 && bundle exec rake db:migrate test cucumber
+script:
+  - bundle exec rake travis
