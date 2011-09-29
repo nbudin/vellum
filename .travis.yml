@@ -4,5 +4,6 @@ rvm:
 gemfile:
   - Gemfile
 script: 
+  - sh -e /etc/init.d/xvfb start
   - mkdir -p tmp
-  - bundle exec rake db:migrate test cucumber
+  - export DISPLAY=:99.0 && bundle exec rake db:migrate test cucumber
