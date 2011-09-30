@@ -16,7 +16,7 @@ Feature: Manage maps
     And I fill in "Name" with "Plot web"
     And I press "Create map"
     Then I should see "Plot web"
-    And I should be on the map page for Plot Web
+    And I should be on the map page for Plot web
 
   Scenario: Add templates and relationship types to a map
     Given I am logged in as Joe User
