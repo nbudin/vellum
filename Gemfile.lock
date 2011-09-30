@@ -43,6 +43,8 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (>= 0.0.27)
       xpath (~> 0.1.3)
+    capybara-webkit (0.5.0)
+      capybara (~> 0.4.1)
     celerity (0.8.8)
     childprocess (0.1.7)
       ffi (~> 0.6.3)
@@ -149,6 +151,7 @@ DEPENDENCIES
   ae_users_migrator (>= 1.0.4)
   cancan
   capybara
+  capybara-webkit
   castronaut!
   cucumber
   cucumber-rails
