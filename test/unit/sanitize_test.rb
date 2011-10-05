@@ -19,9 +19,9 @@ class SanitizeTest < ActiveSupport::TestCase
   end
   
   test "convert CSS to tags" do
-    assert_sanitized("<p style=\"font-weight: bold\">Bold text!</p>", "<p><strong>Bold text!</strong></p>")
-    assert_sanitized("<p style=\"font-style: italic\">Italic text!</p>", "<p><em>Italic text!</em></p>")
-    assert_sanitized("<p style=\"text-decoration: underline\">Underlined text!</p>", "<p><u>Underlined text!</u></p>")
+    assert_sanitized("<p style=\"font-weight: bold\">Bold text!</p>", %r{<p>\s*<strong>Bold text!</strong>\s*</p>})
+    assert_sanitized("<p style=\"font-style: italic\">Italic text!</p>", %r{<p>\s*<em>Italic text!</em>\s*</p>})
+    assert_sanitized("<p style=\"text-decoration: underline\">Underlined text!</p>", %r{<p>\s*<u>Underlined text!</u>\s*</p>})
   end
   
   test "remove non-allowed styles and tags" do
@@ -39,6 +39,11 @@ class SanitizeTest < ActiveSupport::TestCase
   private
   def assert_sanitized(input, expected)
     output = Sanitize.clean(input, Sanitize::Config::VELLUM)
-    assert_equal expected, output
+    case expected
+    when String
+      assert_equal expected, output
+    when Regexp
+      assert_match expected, output
+    end
   end
 end
