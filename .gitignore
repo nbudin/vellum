@@ -1,5 +1,4 @@
 log/*.log
-config/database.yml
 config/scout.yml
 .loadpath
 .project
@@ -10,3 +9,4 @@ rerun.txt
 .bundle
 vendor/bundle/*
 .sass-cache/
+db/*.sqlite3

@@ -217,6 +217,10 @@ class Doc < ActiveRecord::Base
       
       self.nested_attributes
     end
+    
+    def as_json(options={})
+      collect { |attr| attr.as_json(options) }
+    end
   end
 
   belongs_to :project

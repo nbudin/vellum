@@ -2,8 +2,8 @@ class Map < ActiveRecord::Base
   belongs_to :project
   has_many :mapped_doc_templates, :dependent => :destroy
   has_many :mapped_relationship_types, :dependent => :destroy
-  has_many :doc_templates, :through => :mapped_doc_templates, :order => "id"
-  has_many :relationship_types, :through => :mapped_relationship_types, :order => "id"
+  has_many :doc_templates, :through => :mapped_doc_templates, :order => "doc_templates.id"
+  has_many :relationship_types, :through => :mapped_relationship_types, :order => "relationship_types.id"
   
   COLORS = %w{red darkgreen blue orange purple black}
   

@@ -13,12 +13,10 @@ class DocsController < ApplicationController
     end
     @docs = @project.docs.all(:conditions => conds).sort_by {|s| s.name.try(:sort_normalize) || "" }
 
+    serialization_options = { :only => [:id, :name, :version, :blurb, :doc_template_id] }
     respond_to do |format|
-      format.xml  { render :xml => @docs.to_xml(:methods => [:name]) }
-      format.json { 
-        # We have to do this to work around the json gem overriding to_json
-        render :json => ActiveSupport::JSON.encode(@docs, :methods => [:name])
-      }
+      format.xml  { render :xml => @docs.to_xml(serialization_options) }
+      format.json { render :json => @docs.to_json(serialization_options) }
     end
   end
 
@@ -51,8 +49,8 @@ class DocsController < ApplicationController
     
     respond_to do |format|
       format.html # show.rhtml
-      format.xml  { render :xml => @doc.to_xml }
-      format.json { render :json => @doc.to_json }
+      format.xml  { render :xml => @doc.to_xml(:methods => [:attrs]) }
+      format.json { render :json => @doc.to_json(:methods => [:attrs]) }
       format.fo   { render :layout => false }
     end
   end

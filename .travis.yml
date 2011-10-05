@@ -1,0 +1,10 @@
+rvm:
+  - 1.8.7 # (current default)
+  - 1.9.2
+gemfile:
+  - Gemfile
+before_script: 
+  - sh -e /etc/init.d/xvfb start
+  - mkdir -p tmp
+script:
+  - bundle exec rake travis

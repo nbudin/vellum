@@ -1,33 +1,36 @@
 source "http://rubygems.org"
-gem "rails", "3.1.0.rc1"
-gem "rake", "~> 0.8.7"
+gem "rails", "3.1.0"
 gem "json"
 gem "sass"
 gem 'coffee-script'
 gem 'uglifier'
 
 platforms :ruby do
-  gem "mysql"
+  gem "mysql2"
 end
 platforms :jruby do
   gem "activerecord-jdbc-adapter", :require => false
 end
 
-gem "devise", "~> 1.3.0"
-gem "devise_cas_authenticatable", ">= 1.0.0.alpha8"
+gem 'ruby-debug',   :groups => [:development, :test], :platform => :ruby_18
+gem 'ruby-debug19', :groups => [:development, :test], :platform => :ruby_19, :require => 'ruby-debug'
+
+gem "devise", "~> 1.4.0"
+gem "devise_cas_authenticatable", :git => "http://github.com/nbudin/devise_cas_authenticatable.git"
 gem "ae_users_migrator", ">= 1.0.4"
 gem "cancan"
 
 gem "ruby-graphviz", ">= 0.9.2", :require => "graphviz"
 gem "radius"
 gem "version_fu", "~> 1.0.1"
-gem "jquery-rails"
+gem "jquery-rails", '>= 1.0.12'
 gem "rubyzip"
 gem "nokogiri", ">= 1.4.1"
 gem "sanitize", "~> 2.0.2"
 gem "heroku_external_db"
 gem "illyan_client", ">= 1.0.2"
 gem "hoptoad_notifier"
+gem "sqlite3", :groups => [:development, :test]
 
 group :development do
   gem "thin"
@@ -39,6 +42,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'capybara'
+  gem 'capybara-webkit'
   gem 'cucumber'
   gem 'cucumber-rails'
   gem 'sham_rack'

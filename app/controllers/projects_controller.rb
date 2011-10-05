@@ -9,8 +9,8 @@ class ProjectsController < ApplicationController
     
     respond_to do |format|
       format.html { render :action => "index" }
-      format.xml  { render :xml => @projects.to_xml }
-      format.json { render :json => @projects.to_json }
+      format.xml  { authorize! :create, Project ; render :xml => @projects.to_xml }
+      format.json { authorize! :create, Project ; render :json => @projects.to_json }
     end
   end
 

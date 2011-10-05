@@ -35,7 +35,7 @@ module DocsHelper
                 choice_fields.check_box(:selected, :checked => attr_fields.object.value.try(:include?, choice)) +
                 choice_fields.label(:selected, choice)
               end
-            end
+            end.join
           end
         end
       else
