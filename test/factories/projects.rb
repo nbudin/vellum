@@ -51,9 +51,8 @@ end
 Factory.define :character, :class => "DocTemplate" do |tmpl|
   tmpl.name "Character"
   tmpl.after_build do |t|
-    hp = t.doc_template_attrs.new(:name => "HP")
+    hp = t.doc_template_attrs.build(:name => "HP")
     hp.ui_type = "text"
-    t.doc_template_attrs << hp
   end
 end
 

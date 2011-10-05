@@ -33,24 +33,23 @@ class Project < ActiveRecord::Base
 
     project.doc_templates.each do |tmpl|
       logger.debug "Duplicating #{tmpl.name} template"
-      new_tmpl = self.doc_templates.build(tmpl.attributes)
+      new_tmpl = self.doc_templates.build(:name => tmpl.name)
       new_templates[tmpl.id] = new_tmpl
 
       tmpl.doc_template_attrs.each do |dta|
-        new_attr = new_tmpl.doc_template_attrs.build(dta.attributes)
-#        new_attr.doc_template = new_tmpl
-#        new_tmpl.doc_template_attrs << new_attr
+        new_attr = new_tmpl.doc_template_attrs.build(:name => dta.name, 
+          :position => dta.position, :ui_type => dta.ui_type,
+          :choices => dta.choices)
       end
     end
 
     logger.debug "Duplicating relationship types from project #{project.name}"
     project.relationship_types.each do |rt|
-      self.relationship_types << RelationshipType.new(:name => rt.name,
+      self.relationship_types.build(:name => rt.name,
         :left_description => rt.left_description,
         :right_description => rt.right_description,
         :left_template => new_templates[rt.left_template.id],
-        :right_template => new_templates[rt.right_template.id],
-        :project => self
+        :right_template => new_templates[rt.right_template.id]
       )
     end
   end
