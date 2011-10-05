@@ -22,7 +22,7 @@ table.versions tbody tr.odd {
 
 <div class="jumpbox">
   <div class="navigation">
-    <% link_to structure_path(@project, @structure), :class => "button back" do -%>
+    <%= link_to structure_path(@project, @structure), :class => "button back" do -%>
       <%= image_tag "arrow_left.png" %>
       <%=h @structure.name %>
     <% end -%>
@@ -31,7 +31,7 @@ table.versions tbody tr.odd {
   <h2><%= @doc_value.name %></h2>
   <p>
     <b>Defined in template:</b> 
-    <% link_to doc_template_path(@structure.project.template_schema, @structure.doc_template) do -%>
+    <%= link_to doc_template_path(@structure.project.template_schema, @structure.doc_template) do -%>
       <%= image_tag "template.png" %>
       <%= @structure.doc_template.name %>
     <% end -%>

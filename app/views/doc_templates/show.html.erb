@@ -2,11 +2,11 @@
 
 <div class="jumpbox">
   <div class="navigation">
-    <% link_to doc_templates_path(@project), :class => "button back" do %>
+    <%= link_to doc_templates_path(@project), :class => "button back" do %>
       <%= image_tag "arrow_left.png" %>
       Templates
     <% end -%>
-    <% link_to edit_doc_template_path(@project, @doc_template), :class => "button edit" do %>
+    <%= link_to edit_doc_template_path(@project, @doc_template), :class => "button edit" do %>
       <%= image_tag "template_edit.png" %>
       Edit
     <% end -%>
@@ -16,7 +16,7 @@
 
   <p>
     Part of
-    <% link_to @project do %>
+    <%= link_to @project do %>
       <%= image_tag "project.png" %>
       <%=h @project.name %>
     <% end -%>

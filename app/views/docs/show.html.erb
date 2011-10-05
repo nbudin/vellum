@@ -9,7 +9,7 @@
       <%=h @project.name %>
     <% end -%>
     <% if can?(:edit, @doc) -%>
-      <% link_to edit_doc_path(@project, @doc), :class => "button edit" do -%>
+      <%= link_to edit_doc_path(@project, @doc), :class => "button edit" do -%>
         Edit
         <%= image_tag "structure_edit.png" %>
       <% end -%>

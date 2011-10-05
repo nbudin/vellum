@@ -8,12 +8,12 @@ h2 {
 
 <div class="jumpbox">
   <div class="navigation">
-    <% link_to projects_path, :class => "button back" do %>
+    <%= link_to projects_path, :class => "button back" do %>
       <%= image_tag "arrow_left.png" %>
       Projects
     <% end -%>
     <% if can? :update, @project -%>
-      <% link_to edit_project_path(@project), :class => "button edit" do -%>
+      <%= link_to edit_project_path(@project), :class => "button edit" do -%>
         Sharing
         <%= image_tag "project_edit.png" %>
       <% end -%>
@@ -44,7 +44,7 @@ h2 {
     <div style="margin-left: 20px;">
       <% if can?(:create, @project.docs.new(:doc_template_id => tmpl.id)) -%>
   	    <p>
-  	      <% link_to new_doc_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
+  	      <%= link_to new_doc_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
   		      <%= image_tag "structure_add.png" %> Add new <%= tmpl.name %>
   	      <% end -%>
   	    </p>
@@ -75,7 +75,7 @@ h2 {
 
   <p>
     <% if can?(:create, @project.doc_templates.new) -%>
-      <% link_to new_doc_template_path(@project), :class => "button new" do %>
+      <%= link_to new_doc_template_path(@project), :class => "button new" do %>
         <%= image_tag "template_add.png" %>
         Add new template...
       <% end %>

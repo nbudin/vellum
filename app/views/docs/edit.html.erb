@@ -15,7 +15,7 @@
   <h2><%= @doc.name %></h2>
   <p>
     <b>Template:</b> 
-    <% link_to doc_template_path(@doc.project, @doc.doc_template) do -%>
+    <%= link_to doc_template_path(@doc.project, @doc.doc_template) do -%>
       <%= image_tag "template.png" %>
       <%= @doc.doc_template.name %>
     <% end -%>

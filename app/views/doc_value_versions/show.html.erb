@@ -2,7 +2,7 @@
 
 <div class="jumpbox">
   <div class="navigation">
-    <% link_to doc_value_path(@project, @structure, @doc_value), :class => "button back" do -%>
+    <%= link_to doc_value_path(@project, @structure, @doc_value), :class => "button back" do -%>
       <%= image_tag "arrow_left.png" %>
       <%=h @doc_value.name %>
     <% end -%>

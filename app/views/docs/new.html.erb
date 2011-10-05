@@ -1,7 +1,7 @@
 <%= form_for(@doc, :url => docs_path(@project)) do |f| -%>
   <div class="jumpbox">
     <div class="navigation">
-      <% link_to project_path(@project), :class => "button cancel" do -%>
+      <%= link_to project_path(@project), :class => "button cancel" do -%>
         <%= image_tag "arrow_left.png" %>
         Cancel
       <% end -%>
@@ -14,7 +14,7 @@
     <h2>New document</h2>
     <p>
       <b>Template:</b> 
-      <% link_to doc_template_path(@doc.project, @doc.doc_template) do -%>
+      <%= link_to doc_template_path(@doc.project, @doc.doc_template) do -%>
         <%= image_tag "template.png" %>
         <%= @doc.doc_template.name %>
       <% end -%>
