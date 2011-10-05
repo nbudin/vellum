@@ -1,6 +1,6 @@
 class DocTemplatesController < ApplicationController
-  load_and_authorize_resource :project
-  load_and_authorize_resource :doc_template, :through => :project
+  load_resource :project
+  load_and_authorize_resource :through => :project
   
   cache_sweeper :project_sweeper, :only => [:create, :update, :destroy]
   
