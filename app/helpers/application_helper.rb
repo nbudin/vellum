@@ -15,7 +15,7 @@ module ApplicationHelper
     
     content_tag(tag, options) do
       content_tag(:span, editor_attrs) do
-        object.send(attr).html_safe
+        object.send(attr).try(:html_safe)
       end + " " + image_tag('edit-field.png')
     end
   end
