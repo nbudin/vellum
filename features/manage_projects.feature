@@ -19,7 +19,6 @@ Feature: Manage projects
     And I fill in "Project Name" with "A new project"
     And I select "Louisiana Purchase" from "Choose a project to copy templates from:"
     And I press "Create"
-	Then show me the page
     Then I should not be on the projects page
     And I should see "A new project"
     And I should see "Characters"
