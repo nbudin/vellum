@@ -32,7 +32,7 @@ gem "sqlite3", :groups => [:development, :test]
 gem "pry-rails", :groups => [:development, :test]
 
 gem "unicorn"
-gem "asset_sync"
+#gem "asset_sync"
 
 group :test do
   gem 'database_cleaner'

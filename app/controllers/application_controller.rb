@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   before_filter :get_site_settings
   protect_from_forgery
   
-  after_filter :set_access_control_headers
+  #after_filter :set_access_control_headers
   
   def current_ability
     Ability.new(current_person)
@@ -22,9 +22,9 @@ class ApplicationController < ActionController::Base
   end
   
   protected
-  def set_access_control_headers
-    headers["Access-Control-Allow-Origin"] = "//#{ENV["AWS_BUCKET"]}.s3.amazonaws.com" if ENV["AWS_BUCKET"]
-  end
+  #def set_access_control_headers
+  #  headers["Access-Control-Allow-Origin"] = "//#{ENV["AWS_BUCKET"]}.s3.amazonaws.com" if ENV["AWS_BUCKET"]
+  #end
   
   def get_site_settings
     @site_settings = SiteSettings.instance
