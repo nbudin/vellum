@@ -31,9 +31,7 @@ gem "hoptoad_notifier"
 gem "sqlite3", :groups => [:development, :test]
 gem "pry-rails", :groups => [:development, :test]
 
-group :development do
-  gem "thin"
-end
+gem "unicorn"
 
 group :test do
   gem 'database_cleaner'
