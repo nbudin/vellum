@@ -24,15 +24,13 @@ class Attr < ActiveRecord::Base
       name && name.downcase.gsub(/ /, "_")
     end
     
-    module InstanceMethods
-      def name=(new_name)
-        write_attribute(:name, new_name)
-        write_attribute(:slug, Attr::WithSlug.slug_for(new_name))
-      end
+    def name=(new_name)
+      write_attribute(:name, new_name)
+      write_attribute(:slug, Attr::WithSlug.slug_for(new_name))
+    end
 
-      def slug=(new_slug)
-        raise "You cannot directly set the slug of this object.  Set the name instead."
-      end
+    def slug=(new_slug)
+      raise "You cannot directly set the slug of this object.  Set the name instead."
     end
   end
 

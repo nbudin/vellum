@@ -35,7 +35,7 @@ gem "unicorn"
 
 group :test do
   gem 'database_cleaner'
-  gem 'shoulda'
+  gem 'shoulda', '~> 3.0.0.beta2'
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'capybara'

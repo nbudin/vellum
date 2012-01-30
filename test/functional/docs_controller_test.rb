@@ -17,7 +17,7 @@ class DocsControllerTest < ActionController::TestCase
 
     should respond_with(:success)
     should assign_to(:docs)
-    should_respond_with_json
+    should respond_with_json
   end
 
   context "on GET to :new" do
@@ -84,7 +84,7 @@ class DocsControllerTest < ActionController::TestCase
 
       should respond_with(:success)
       should assign_to(:docs)
-      should_respond_with_json
+      should respond_with_json
     end
 
     context "on GET to :show" do

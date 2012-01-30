@@ -25,7 +25,7 @@ class DocTemplatesControllerTest < ActionController::TestCase
 
     should respond_with(:success)
     should assign_to(:doc_templates)
-    should_respond_with_json
+    should respond_with_json
   end
 
   context "on GET to :new" do

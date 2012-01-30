@@ -4,10 +4,6 @@ require 'rails/test_help'
 require 'capybara/rails'
 require 'turn'
 
-# Shoulda looks for RAILS_ROOT before loading shoulda/rails, and Rails 3.1
-# doesn't have that anymore.
-require 'shoulda/rails'
-
 class ActiveSupport::TestCase
   # Transactional fixtures accelerate your tests by wrapping each test method
   # in a transaction that's rolled back on completion.  This ensures that the
@@ -47,12 +43,19 @@ class ActionController::TestCase
   end
 end
 
-module Shoulda
-  class Context
-    def should_respond_with_json
-      should "respond with valid JSON" do
-        assert parse_json_response
-      end
+module Shoulda::Matchers::ActionController
+  def respond_with_json
+    RespondWithJsonMatcher.new
+  end
+  
+  class RespondWithJsonMatcher
+    def matches?(controller)
+      valid_json(controller.response)
+    end
+    
+    protected
+    def valid_json(response)
+      JSON.parse(response.body) rescue nil
     end
   end
 end

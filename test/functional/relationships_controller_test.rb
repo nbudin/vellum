@@ -18,7 +18,7 @@ class RelationshipsControllerTest < ActionController::TestCase
 
     should respond_with(:success)
     should assign_to(:relationships)
-    should_respond_with_json
+    should respond_with_json
   end
 
   context "creating a new relationship" do

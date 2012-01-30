@@ -27,11 +27,11 @@ class DocTemplateAttr < ActiveRecord::Base
   end
 
   def self.ui_types_for_select
-    self.ui_types.collect { |t| [self.ui_type_name(t), t] }
+    ui_types.collect { |t| [ui_type_name(t), t] }
   end
 
   def ui_type_name
-    DocTemplateAttr.ui_type_name(ui_type)
+    self.class.ui_type_name(ui_type)
   end
 
   def multiple_choice?

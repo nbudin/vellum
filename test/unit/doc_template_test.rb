@@ -12,7 +12,7 @@ class DocTemplateTest < ActiveSupport::TestCase
     end
 
     should "save cleanly" do
-      assert_save @veg
+      assert @veg.save
     end
   end
 end

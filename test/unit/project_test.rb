@@ -49,7 +49,7 @@ class ProjectTest < ActiveSupport::TestCase
       end
 
       should "be valid" do
-        assert_valid @project
+        assert @project.valid?
         assert @project.save
       end
     end

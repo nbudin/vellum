@@ -12,7 +12,7 @@ class DocTest < ActiveSupport::TestCase
     end
     
     should "be valid" do
-      assert_valid @doc
+      assert @doc.valid?
     end
 
     should "generate attrs correctly" do
