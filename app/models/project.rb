@@ -49,7 +49,8 @@ class Project < ActiveRecord::Base
         :left_description => rt.left_description,
         :right_description => rt.right_description,
         :left_template => new_templates[rt.left_template.id],
-        :right_template => new_templates[rt.right_template.id]
+        :right_template => new_templates[rt.right_template.id],
+        :project => self
       )
     end
   end

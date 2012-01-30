@@ -9,23 +9,23 @@ Given /^a template named "([^\"]*)" in "([^\"]*)"$/ do |name, project_name|
 end
 
 Given /^a template named "([^\"]*)" in "([^\"]*)" with the following fields:$/ do |name, project_name, fields|
-  Given "a template named \"#{name}\" in \"#{project_name}\""
+  step "a template named \"#{name}\" in \"#{project_name}\""
   fields.hashes.each do |field|
-    Given "I am on the template page for #{name}"
-    And "I follow \"Edit\""
-    And "I fill in \"Add:\" with \"#{field[:name]}\""
-    And "I select \"#{field[:type]}\" from \"Display as:\" within \"tr.willAdd\""
+    step "I am on the template page for #{name}"
+    step "I follow \"Edit\""
+    step "I fill in \"Add:\" with \"#{field[:name]}\""
+    step "I select \"#{field[:type]}\" from \"Display as:\" within \"tr.willAdd\""
     unless field[:choices].blank?
-      And "I fill in \"Choices:\" with \"#{field[:choices]}\" within \"tr.willAdd\""
+      step "I fill in \"Choices:\" with \"#{field[:choices]}\" within \"tr.willAdd\""
     end
-    And "I press \"Save changes\""
+    step "I press \"Save changes\""
 
-    Then "I should see \"#{field[:name]}\""
+    step "I should see \"#{field[:name]}\""
   end
 end
 
 Given /^a project with the following templates:$/ do |table|
-  Given %{a project named "Test Project"}
+  step %{a project named "Test Project"}
   assert project = Project.find_by_name("Test Project")
 
   table.hashes.each do |tmpl_hash|
@@ -44,7 +44,8 @@ Given /^a relationship type where "([^\"]*)" (.*) "([^\"]*)" in "([^\"]*)"$/ do 
 end
 
 Then /^I should see the following template fields:$/ do |expected_fields_table|
-  display_table = tableish('table.doc_template_attrs tr', 'td.name, td.value')
+  rows = find('table.doc_template_attrs').all('tr')
+  display_table = rows.map { |r| r.all('td.name, td.value').map { |c| c.text.strip } }
   actual_table = table([['name', 'type']] + display_table)
   expected_fields_table.diff!(actual_table)
 end

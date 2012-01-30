@@ -5,22 +5,22 @@ Given /^a project named "(.*)" owned by (.*) (.*)$/ do |name, firstname, lastnam
 end
 
 Given /^a project named "(.*)"$/ do |name|
-  Given "I am on the projects page"
-  And %{I follow "Create project..."}
-  And %{I fill in "Project Name" with "#{name}"}
-  And %{I press "Create"}
-  Then %{I should see "#{name}"}
+  step "I am on the projects page"
+  step %{I follow "Create project..."}
+  step %{I fill in "Project Name" with "#{name}"}
+  step %{I press "Create"}
+  step %{I should see "#{name}"}
 end
 
 Given /^the following projects owned by (.*) (.*):$/ do |firstname, lastname, projects|
   projects.hashes.each do |project_hash|
-    Given %{a project named "#{project_hash[:name]}" owned by #{firstname} #{lastname}}
+    step %{a project named "#{project_hash[:name]}" owned by #{firstname} #{lastname}}
   end
 end
 
 Given /^the following projects:$/ do |projects|
   projects.hashes.each do |project_hash|
-    Given %{a project named "#{project_hash[:name]}"}
+    step %{a project named "#{project_hash[:name]}"}
   end
 end
 
@@ -37,7 +37,8 @@ When /^I delete the (\d+)(?:st|nd|rd|th) project$/ do |pos|
 end
 
 Then /^I should see the following projects:$/ do |expected_projects_table|
-  display_table = tableish('ul.itemlist li', 'a:not(.button)')
+  rows = find('ul.itemlist').all('li')
+  display_table = rows.map { |r| r.all('a:not(.button)').map { |c| c.text.strip } }
   actual_table = table([['name']] + display_table.slice(0..-2))
   expected_projects_table.diff!(actual_table)
 end

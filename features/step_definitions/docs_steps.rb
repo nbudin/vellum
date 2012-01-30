@@ -5,7 +5,8 @@ Given /^an? (.*) doc named \"([^\"]*)\" in \"([^\"]*)\"$/ do |tmpl_name, name, p
 end
 
 Then /^I should see the following fields:$/ do |expected_fields_table|
-  display_table = tableish('table.doc_attrs tr', 'td.name, td.value')
+  rows = find('table.doc_attrs').all('tr')
+  display_table = rows.map { |r| r.all('td.name, td.value').map { |c| c.text.strip } }
   actual_table = table([['name', 'value']] + display_table)
   expected_fields_table.diff!(actual_table)
 end
@@ -19,10 +20,10 @@ When /^I add a new "([^\"]*)" relationship to "([^\"]*)"$/ do |relationship_type
     sleep 2
     assert_equal 1, page.evaluate_script("jQuery('.vellumRelationshipBuilder select[name=\"relationship[target_id]\"]:visible').size()")
   
-    When %{I select "#{target}" from "relationship[target_id]"}
+    step %{I select "#{target}" from "relationship[target_id]"}
     assert_equal 1, page.evaluate_script("jQuery('.vellumRelationshipBuilder button:enabled').size()")
   
     click_on('Add')
   end
-  Then %{I should see "#{relationship_type_name} #{target}" within "\#relationships ul"}
+  step %{I should see "#{relationship_type_name} #{target}" within "\#relationships ul"}
 end

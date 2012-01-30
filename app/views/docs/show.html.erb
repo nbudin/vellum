@@ -39,8 +39,8 @@
     <% end -%>
   <%= form_for @doc, :url => doc_path(@project, @doc), :html => {:class => "assignee"} do |f| -%>
     <%= f.label "assignee_id", "Assigned to" %>
-    <%= f.select "assignee_id", [["nobody", nil]] + @project.authors.sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
-                 :include_blank => false %>
+    <%= f.select "assignee_id", [["nobody", ""]] + @project.authors.sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
+                 :include_blank => false, :selected => (@doc.assignee ? @doc.assignee_id : "") %>
     
     <button class="transition">
         <%= image_tag "workflow_transition.png" %>

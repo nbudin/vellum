@@ -49,9 +49,9 @@
         var $button = $form.find('button');
         
         if ($form.find('select').filter(function () { return (jQuery(this).val() == '') }).size() > 0) {
-            $button.disable();
+            $button.attr('disabled', 'disabled');
         } else {
-            $button.enable();
+            $button.removeAttr('disabled');
         }
     };
 

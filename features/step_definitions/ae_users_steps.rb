@@ -25,17 +25,17 @@ Given /^the user (.*) (.*) exists$/ do |firstname, lastname|
 end
 
 Given /^I log in as (.*) (.*)$/ do |firstname, lastname|
-  Given "I am on the home page"
+  step "I am on the home page"
   unless logged_in?
-    Given "I follow \"Log in\""
-    And "I fill in \"Username\" with \"#{email_address_from_name(firstname, lastname)}\""
-    And "I fill in \"Password\" with \"#{password_from_name(firstname, lastname)}\""
-    And "I press \"Login\""
-    Then "I should be logged in as #{firstname} #{lastname}"
+    step "I follow \"Log in\""
+    step "I fill in \"Username\" with \"#{email_address_from_name(firstname, lastname)}\""
+    step "I fill in \"Password\" with \"#{password_from_name(firstname, lastname)}\""
+    step "I press \"Login\""
+    step "I should be logged in as #{firstname} #{lastname}"
   end
 end
 
 Given /^I am logged in as (.*) (.*)$/ do |firstname, lastname|
-  Given "the user #{firstname} #{lastname} exists"
-  And "I log in as #{firstname} #{lastname}"
+  step "the user #{firstname} #{lastname} exists"
+  step "I log in as #{firstname} #{lastname}"
 end
