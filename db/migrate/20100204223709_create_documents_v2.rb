@@ -313,7 +313,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
 
   def self.up
     say "Doing pre-migration data dump..."
-    File.open(File.join(RAILS_ROOT, "all-data-structures-v1.txt"), "w") do |file|
+    File.open(File.join(Rails.root, "all-data-structures-v1.txt"), "w") do |file|
       Project.all(:order => "name").each do |project|
         file.puts "Project: #{project.name}"
 
@@ -660,7 +660,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
     drop_table :docs
 
     say "Doing post-migration data dump..."
-    File.open(File.join(RAILS_ROOT, "all-data-structures-v2.txt"), "w") do |file|
+    File.open(File.join(Rails.root, "all-data-structures-v2.txt"), "w") do |file|
       Project.all(:order => "name").each do |project|
         file.puts "Project: #{project.name}"
 
@@ -705,8 +705,8 @@ class CreateDocumentsV2 < ActiveRecord::Migration
 
     # Sanity check: compare old and new data dumps, raise a warning if they differ
     digest = Digest::SHA1.new
-    v1_hash = digest.hexdigest(File.open(File.join(RAILS_ROOT, "all-data-structures-v1.txt")).read)
-    v2_hash = digest.hexdigest(File.open(File.join(RAILS_ROOT, "all-data-structures-v2.txt")).read)
+    v1_hash = digest.hexdigest(File.open(File.join(Rails.root, "all-data-structures-v1.txt")).read)
+    v2_hash = digest.hexdigest(File.open(File.join(Rails.root, "all-data-structures-v2.txt")).read)
     if v1_hash != v2_hash
       say "!!!!!!!!!!! WARNING !!!!!!!!!!!!!!!!"
       say "Data seems to be different after migration!"
