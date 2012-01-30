@@ -1,5 +1,5 @@
 source "http://rubygems.org"
-gem "rails", "3.1.1"
+gem "rails", "3.1.3"
 gem "json"
 gem "sass"
 gem 'coffee-script'
@@ -15,8 +15,8 @@ end
 gem 'ruby-debug',   :groups => [:development, :test], :platform => :ruby_18
 gem 'ruby-debug19', :groups => [:development, :test], :platform => :ruby_19, :require => 'ruby-debug'
 
-gem "devise", "~> 1.4.0"
-gem "devise_cas_authenticatable", :git => "http://github.com/nbudin/devise_cas_authenticatable.git"
+gem "devise"
+gem "devise_cas_authenticatable"
 gem "ae_users_migrator", ">= 1.0.4"
 gem "cancan"
 

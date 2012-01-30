@@ -5,6 +5,10 @@ Devise.setup do |config|
   
   # Configure the e-mail address which will be shown in DeviseMailer.
   config.mailer_sender = "noreply@sugarpond.net"
+  
+  config.case_insensitive_keys = []
+  config.use_salt_as_remember_token = true
+  config.reset_password_within = 24.hours
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating an user. By default is
