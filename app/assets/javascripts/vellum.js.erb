@@ -379,7 +379,8 @@ jQuery(function() {
        {'name': 'H6', 'title': 'Heading_6', 'css': 'wym_containers_h6'}
      ],
      logoHtml: '',
-     iframeBasePath: '/javascripts/wymeditor/iframe/vellum/',
+	 wymPath: '<%= javascript_path "wymeditor/jquery.wymeditor" %>',
+     iframeBasePath: '<%= File.join(File.split(javascript_path("wymeditor/jquery.wymeditor")).first, 'iframe', 'vellum') %>/',
      postInit: function(wym) {
        wym.parser._Listener.block_tags.push("u");
        
@@ -394,7 +395,7 @@ jQuery(function() {
                   + "<a href='#'"
                   + " title='Underline'"
                   + " style='background-image:"
-                  + " url(/images/text_underline.png); "
+                  + " url(<%= image_path 'text_underline.png' %>); "
                   + " background-position: 50% 50%;'>"
                   + "Underline"
                   + "</a></li>";

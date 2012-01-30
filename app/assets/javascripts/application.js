@@ -9,5 +9,5 @@
 //= require jquery_ujs
 //= require jquery.jeditable
 //= require farbtastic
-//= require wymeditor/jquery.wymeditor.pack
+//= require wymeditor/jquery.wymeditor
 //= require_tree .
