@@ -12,9 +12,6 @@ platforms :jruby do
   gem "activerecord-jdbc-adapter", :require => false
 end
 
-gem 'ruby-debug',   :groups => [:development, :test], :platform => :ruby_18
-gem 'ruby-debug19', :groups => [:development, :test], :platform => :ruby_19, :require => 'ruby-debug'
-
 gem "devise"
 gem "devise_cas_authenticatable"
 gem "ae_users_migrator", ">= 1.0.4"
@@ -32,6 +29,7 @@ gem "heroku_external_db"
 gem "illyan_client", ">= 1.0.2"
 gem "hoptoad_notifier"
 gem "sqlite3", :groups => [:development, :test]
+gem "pry-rails", :groups => [:development, :test]
 
 group :development do
   gem "thin"
