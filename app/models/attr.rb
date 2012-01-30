@@ -76,10 +76,11 @@ class Attr < ActiveRecord::Base
   def value=(value)
     write_attribute(:value, case value
     when Hash
-      selected_choices = value.values.select { |choice| 
-        ActiveRecord::ConnectionAdapters::Column.value_to_boolean(choice['selected'])
+      keys = value.keys.sort
+      selected_keys = keys.select { |key| 
+        ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value[key]['selected'])
       }
-      selected_choices.collect { |choice| choice['choice'] }.join(", ")
+      selected_keys.collect { |key| value[key]['choice'] }.join(", ")
     else
       Sanitize.clean(value.to_s, Sanitize::Config::VELLUM)
     end)
