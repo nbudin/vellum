@@ -14,6 +14,7 @@ Vellum::Application.configure do
   # Compress both stylesheets and JavaScripts
   config.assets.js_compressor  = :uglifier
   config.assets.css_compressor = :scss
+  config.assets.compress = true
 
   # Specifies the header that your server uses for sending files
   # (comment out if your front-end server doesn't support this)
@@ -36,6 +37,8 @@ Vellum::Application.configure do
     protocol = (request && request.ssl?) ? "https" : "http"
     "#{protocol}://#{ENV['AWS_BUCKET']}.s3.amazonaws.com"
   end
+  
+  config.assets.digest = true
 
   # Precompile additional assets (application.js, application.css, and all non-JS/CSS are already added)
   # config.assets.precompile += %w( search.js )
