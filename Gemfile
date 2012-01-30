@@ -27,7 +27,7 @@ gem "nokogiri", ">= 1.4.1"
 gem "sanitize", "~> 2.0.2"
 gem "heroku_external_db"
 gem "illyan_client", ">= 1.0.2"
-gem "hoptoad_notifier"
+gem "airbrake"
 gem "sqlite3", :groups => [:development, :test]
 gem "pry-rails", :groups => [:development, :test]
 
