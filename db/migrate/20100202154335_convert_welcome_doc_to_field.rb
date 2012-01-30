@@ -1,6 +1,8 @@
 class ConvertWelcomeDocToField < ActiveRecord::Migration
   class SiteSettings < ActiveRecord::Base
-    acts_as_singleton
+    def self.instance
+      @@instance ||= (first || new)
+    end
 
     belongs_to :welcome_doc, :class_name => "Doc"
   end
