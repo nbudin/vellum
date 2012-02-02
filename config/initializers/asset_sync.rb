@@ -4,7 +4,7 @@
 #  config.aws_bucket = ENV['AWS_BUCKET']
 #  config.existing_remote_files = "keep"
   
-  # Increase upload performance by configuring your region
+  # Increase upload performance by configuring your region#
 #  config.aws_region = "us-east-1"
   
   # Automatically replace files with their equivalent gzip compressed version
