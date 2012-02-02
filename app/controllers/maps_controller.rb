@@ -26,15 +26,15 @@ class MapsController < ApplicationController
       format.json { render :json => @map }
       format.png  {
         headers['Content-Disposition'] = "inline; filename=#{attachment_filename}"
-        self.response_body = @map.output("png")
+        render :text => @map.output("png")
       }
       format.pdf {
         headers['Content-Disposition'] = "attachment; filename=#{attachment_filename}"
-        self.response_body = @map.output("pdf")
+        render :text => @map.output("pdf")
       }
       format.svg {
         headers['Content-Disposition'] = "inline; filename=#{attachment_filename}"
-        self.response_body = @map.output("svg")
+        render :text => @map.output("svg")
       }
     end
   end

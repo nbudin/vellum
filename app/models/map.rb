@@ -43,14 +43,8 @@ class Map < ActiveRecord::Base
       req.form_data = gvapi_params(format, options)
       req.basic_auth url.user, url.password if url.user
       
-      Proc.new do |response, output|
-        Net::HTTP.new(url.host, url.port).start do |http|
-          http.request(req) do |response|
-            response.read_body do |data|
-              output.write data
-            end
-          end
-        end
+      Net::HTTP.new(url.host, url.port).start do |http|
+        return http.request(req).body
       end
     else
       generate_output(format, options)
