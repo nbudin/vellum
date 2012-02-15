@@ -5,7 +5,7 @@ class Ability
     return if person.nil?
 
     can :create, Project
-    project_contents = [Doc, DocTemplate, Map, PublicationTemplate, RelationshipType, Relationship]
+    project_contents = [Doc, DocTemplate, CsvExport, Map, PublicationTemplate, RelationshipType, Relationship]
     map_contents = [MappedDocTemplate, MappedRelationshipType]
     
     if person.admin?

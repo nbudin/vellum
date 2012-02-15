@@ -1,0 +1,25 @@
+<div class="jumpbox">
+  <p>CSV exports allow you to quickly get a spreadsheet dump of all the documents based on a particular
+  template.  You can select which attributes of the document to export.</p>
+  
+  <p>The spreadsheet can be opened using Excel, Numbers, Google Docs, OpenOffice, or any other 
+  spreadsheet program.  It can also be used in word processing programs with a "Mail Merge" feature,
+  such as Word, OpenOffice, or Pages.</p>
+</div>
+
+<%= error_messages_for f.object %>
+
+<p style="margin-top: 2em;">
+  <b><%= f.label :name, "Spreadsheet Name" %></b><br/>
+  <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold; width: 99%;" %>
+</p>
+
+<p>
+  <b><%= f.label :doc_template_id, "Contains:" %></b>
+  <%= f.select :doc_template_id, @project.doc_templates.collect {|t| [t.name, t.id]} %>
+</p>
+
+<p>
+  <b><%= f.label :attr_names_commasep, "Attribute Names" %></b>
+  <%= f.text_field :attr_names_commasep %>
+</p>

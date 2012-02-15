@@ -7,6 +7,7 @@ class Project < ActiveRecord::Base
 
   has_many :publication_templates, :dependent => :destroy
   has_many :maps, :dependent => :destroy
+  has_many :csv_exports, :dependent => :destroy
   
   has_many :project_memberships
   has_many :members, :class_name => "Person", :through => :project_memberships, :source => :person

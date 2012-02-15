@@ -38,6 +38,8 @@ Vellum::Application.routes.draw do
         post :publish
       end
     end
+    
+    resources :csv_exports
   end
 
   root :to => 'projects#index'

@@ -1,0 +1,22 @@
+<div class="jumpbox">
+  <div class="navigation">
+    <%= link_to csv_exports_path(@project), :class => "button back" do -%>
+      <%= image_tag "arrow_left.png" %> CSVs
+    <% end -%>
+    <% if can?(:edit, @csv_export) -%>
+      <%= link_to edit_csv_export_path(@project, @csv_export), :class => "button edit" do -%>
+        Edit
+        <%= image_tag "csv_export.png" %>
+      <% end -%>
+    <% end -%>
+  </div>
+
+  <h2><%= @csv_export.name %></h2>
+    
+  <p>
+    <%= link_to csv_export_path(@project, @csv_export, :format => "csv"), :class => "button delete" do  %>
+      <%= image_tag "csv_export.png" %>
+      Export
+    <% end -%>
+  </p>
+</div>

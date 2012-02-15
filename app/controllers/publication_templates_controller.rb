@@ -2,7 +2,7 @@ require 'zip/zip'
 
 class PublicationTemplatesController < ApplicationController
   load_and_authorize_resource :project
-  load_and_authorize_resource :publication_template, :through => :project
+  load_and_authorize_resource :through => :project
   
   def index
     @publication_templates = @project.publication_templates.all(:order => :name)
