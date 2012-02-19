@@ -7,7 +7,7 @@ class AssignmentMailer < ActionMailer::Base
 
     mail(:subject => "[#{@doc.project ? @doc.project.name : "Vellum"}] #{@doc.name} has been assigned to you",
          :from => @site_settings.site_email,
-         :recipients => @assignee.email,
+         :to => @assignee.email,
          :date => sent_at)
   end
 
