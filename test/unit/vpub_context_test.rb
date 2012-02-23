@@ -64,6 +64,34 @@ class VPubContextTest < ActiveSupport::TestCase
       end
     end
     
+    context "with a per-document attribute" do
+      setup do
+        @bob.attrs["Favorite candy"].value = "Snickers"
+        assert @person.save
+      end
+      
+      should "render the attribute" do
+        tmpl = '<v:attr:value name="Favorite Candy"/>'
+        assert_equal "Snickers", @parser.parse(tmpl)
+      end
+      
+      should "correctly evaluate an if_value for that attribute" do
+        tmpl = '<v:attr:if_value name="Favorite Candy" eq="Snickers">yum</v:attr:if_value>'
+        assert_equal "yum", @parser.parse(tmpl)
+
+        tmpl = '<v:attr:if_value name="Favorite Candy" ne="Smarties">yuck</v:attr:if_value>'
+        assert_equal "yuck", @parser.parse(tmpl)
+      end
+      
+      should "evaluate nonexistent per-document attributes as an empty string" do
+        tmpl = '<v:attr:value name="Favorite Dog"/>'
+        assert_equal "", @parser.parse(tmpl)
+        
+        tmpl = '<v:attr:if_value name="Favorite Dog" eq="">Guess he doesn\'t like dogs then</v:attr:if_value>'
+        assert_equal "Guess he doesn't like dogs then", @parser.parse(tmpl)
+      end
+    end
+    
     context "with a rich text attribute" do
       setup do
         @notes_attr = @person.doc_template_attrs.create(:name => "Notes", :ui_type => "textarea")

@@ -35,7 +35,7 @@ class VPubContext < Radius::Context
     define_tag 'attr:if_value' do |tag|
       get_attr tag
       
-      eval_conditional_tag(tag, tag.locals.attr.value)
+      eval_conditional_tag(tag, tag.locals.attr.value || "")
     end
     
     define_tag 'each_related' do |tag|
