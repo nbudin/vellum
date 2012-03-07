@@ -1,5 +1,5 @@
 source "http://rubygems.org"
-gem "rails", "3.2.1"
+gem "rails", "3.2.2"
 gem "json"
 gem "sass-rails", "~> 3.2.3"
 gem 'coffee-rails', "~> 3.2.1"
@@ -36,7 +36,7 @@ gem "unicorn"
 
 group :test do
   gem 'database_cleaner'
-  gem 'shoulda', '~> 3.0.0.beta2'
+  gem 'shoulda', '~> 3.0.0'
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'capybara'
