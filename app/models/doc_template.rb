@@ -1,9 +1,13 @@
-class DocTemplate < ActiveRecord::Base
+class DocTemplate
+  include Mongoid::Document
+  
+  field :name, type: String
   belongs_to :project
+  index :project
 
-  has_many :doc_template_attrs, :order => "position", :dependent => :destroy, :autosave => true
-  has_many :outward_relationship_types, :foreign_key => :left_template_id, :class_name => "RelationshipType", :dependent => :destroy
-  has_many :inward_relationship_types, :foreign_key => :right_template_id, :class_name => "RelationshipType", :dependent => :destroy
+  embeds_many :doc_template_attrs, :order => "position", :dependent => :destroy, :autosave => true  
+  has_many :outward_relationship_types, :inverse_of => :left_template, :class_name => "RelationshipType", :dependent => :destroy
+  has_many :inward_relationship_types, :inverse_of => :right_template, :class_name => "RelationshipType", :dependent => :destroy
   has_many :docs, :dependent => :destroy, :order => "name"
 
   accepts_nested_attributes_for :doc_template_attrs, :allow_destroy => true

@@ -1,10 +1,16 @@
-class DocTemplateAttr < ActiveRecord::Base
+class DocTemplateAttr
+  include Mongoid::Document
+  
   belongs_to :doc_template
+  
+  field :name, type: String
+  field :position, type: Integer
+  field :ui_type, type: Symbol
+  field :choices, type: Array
 
   acts_as_list :scope => :doc_template
-  validates_uniqueness_of :name, :scope => :doc_template_id
+  validates_uniqueness_of :name, :scope => :doc_template
 
-  include ChoiceContainer
   include Attr::Base
 
   def self.ui_types

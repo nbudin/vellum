@@ -1,4 +1,11 @@
-class Project < ActiveRecord::Base
+class Project
+  include Mongoid::Document
+  
+  field :name, type: String
+  field :blurb, type: String
+  field :public_visibility, type: Symbol
+  index :public_visibility
+  
   has_many :doc_templates, :dependent => :destroy, :autosave => true
   has_many :docs, :dependent => :destroy, :include => [:doc_template]
 
@@ -9,7 +16,7 @@ class Project < ActiveRecord::Base
   has_many :maps, :dependent => :destroy
   has_many :csv_exports, :dependent => :destroy
   
-  has_many :project_memberships
+  embeds_many :project_memberships
   has_many :members, :class_name => "Person", :through => :project_memberships, :source => :person
   has_many :authors, :class_name => "Person", :through => :project_memberships, :source => :person, :conditions => { "project_memberships.author" => true }
   has_many :admins, :class_name => "Person", :through => :project_memberships, :source => :person, :conditions => { "project_memberships.admin" => true }

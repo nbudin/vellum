@@ -1,8 +1,10 @@
-class RelationshipType < ActiveRecord::Base
+class RelationshipType
+  include Mongoid::Document
+  
   belongs_to :project
   has_many :relationships, :dependent => :destroy
-  belongs_to :left_template, :class_name => "DocTemplate"
-  belongs_to :right_template, :class_name => "DocTemplate"
+  belongs_to :left_template, :class_name => "DocTemplate", :inverse_of => :outward_relationship_types
+  belongs_to :right_template, :class_name => "DocTemplate", :inverse_of => :inward_relationship_types
  
   validates_presence_of :left_template, :right_template, :project
   validate :check_templates_in_project
