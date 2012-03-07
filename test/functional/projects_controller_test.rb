@@ -52,7 +52,7 @@ class ProjectsControllerTest < ActionController::TestCase
 
   context "with project" do
     setup do
-      @project = Factory.create(:project)
+      @project = FactoryGirl.create(:project)
       @project.project_memberships.create(:person => @person, :author => true, :admin => true)
     end
 

@@ -5,12 +5,12 @@ class ProjectTest < ActiveSupport::TestCase
 
   context "A project" do
     setup do
-      assert @project = Factory.create(:project)
+      assert @project = FactoryGirl.create(:project)
     end
 
     context "cloning another project's templates" do
       setup do
-        assert @lp = Factory.create(:louisiana_purchase)
+        assert @lp = FactoryGirl.create(:louisiana_purchase)
         assert @character = @lp.doc_templates.find_by_name("Character")
         assert @hp = @character.doc_template_attrs.find_by_name("HP")
         assert @org = @lp.doc_templates.find_by_name("Organization")

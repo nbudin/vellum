@@ -4,7 +4,7 @@ class DocsControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
     
-    assert @attr = Factory.create(:doc_template_attr, :name => "Favorite color")
+    assert @attr = FactoryGirl.create(:doc_template_attr, :name => "Favorite color")
     assert @tmpl = @attr.doc_template
     assert @project = @tmpl.project
     @project.project_memberships.create(:person => @person, :admin => true, :author => true)

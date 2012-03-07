@@ -3,10 +3,10 @@ require 'test_helper'
 class MappedDocTemplatesControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
-    @doc_template = Factory.create(:doc_template)
+    @doc_template = FactoryGirl.create(:doc_template)
     @project = @doc_template.project
     @project.project_memberships.create(:person => @person, :admin => true, :author => true)
-    @map = Factory.create(:map, :project => @project)
+    @map = FactoryGirl.create(:map, :project => @project)
 
     @referer = "http://back.com"
     @request.env["HTTP_REFERER"] = @referer

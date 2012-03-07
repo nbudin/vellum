@@ -8,7 +8,7 @@ class DocTest < ActiveSupport::TestCase
 
   context "A doc" do
     setup do
-      @doc = Factory.build(:doc, :name => "Bob")
+      @doc = FactoryGirl.build(:doc, :name => "Bob")
     end
     
     should "be valid" do

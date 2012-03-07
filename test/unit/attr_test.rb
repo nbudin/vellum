@@ -5,7 +5,7 @@ class AttrTest < ActiveSupport::TestCase
 
   context "with an existing Attr" do
     setup do
-      assert @doc = Factory.create(:doc)
+      assert @doc = FactoryGirl.create(:doc)
       assert @attr = @doc.attrs["Test name"]
       assert @doc.save
     end
@@ -33,12 +33,12 @@ class AttrTest < ActiveSupport::TestCase
   context "with an existing template attr" do
     setup do
       # create a different template attr too, to make sure we're getting the right positions
-      assert @other_ta = Factory.create(:doc_template_attr, :name => "Gender",
+      assert @other_ta = FactoryGirl.create(:doc_template_attr, :name => "Gender",
         :ui_type => "text")
       assert @tmpl = @other_ta.doc_template
-      assert @ta = Factory.create(:doc_template_attr, :name => "Quest",
+      assert @ta = FactoryGirl.create(:doc_template_attr, :name => "Quest",
         :ui_type => "textarea", :doc_template => @tmpl)
-      assert @doc = Factory.create(:doc, :doc_template => @tmpl,
+      assert @doc = FactoryGirl.create(:doc, :doc_template => @tmpl,
         :project => @tmpl.project)
       assert @attr = @doc.attrs["Quest"]
     end

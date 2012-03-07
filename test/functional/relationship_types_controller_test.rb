@@ -4,7 +4,7 @@ class RelationshipTypesControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
 
-    @project = Factory.create(:project)
+    @project = FactoryGirl.create(:project)
     @project.project_memberships.create(:person => @person, :author => true)
   end
   
@@ -78,7 +78,7 @@ class RelationshipTypesControllerTest < ActionController::TestCase
   
   context "with a relationship type" do
     setup do
-      @rt = Factory.create(:relationship_type, :project => @project)
+      @rt = FactoryGirl.create(:relationship_type, :project => @project)
     end
 
     context "on GET to :edit" do

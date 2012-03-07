@@ -31,7 +31,7 @@ class ActionController::TestCase
   include Devise::TestHelpers
   
   def create_logged_in_person
-    @person = Factory.create(:person)
+    @person = FactoryGirl.create(:person)
     sign_in(@person)
   end
 

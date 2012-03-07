@@ -4,11 +4,11 @@ class RelationshipsControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
 
-    @rt = Factory.create(:relationship_type)
+    @rt = FactoryGirl.create(:relationship_type)
     @project = @rt.project
     @project.project_memberships.create(:person => @person, :author => true)
-    @left = Factory.create(:doc, :project => @project, :doc_template => @rt.left_template)
-    @right = Factory.create(:doc, :project => @project, :doc_template => @rt.right_template)
+    @left = FactoryGirl.create(:doc, :project => @project, :doc_template => @rt.left_template)
+    @right = FactoryGirl.create(:doc, :project => @project, :doc_template => @rt.right_template)
   end
 
   context "on GET to :index.json" do
@@ -105,7 +105,7 @@ class RelationshipsControllerTest < ActionController::TestCase
 
   context "with a relationship" do
     setup do
-      @relationship = Factory.create(:relationship, :project => @project, :relationship_type => @rt)
+      @relationship = FactoryGirl.create(:relationship, :project => @project, :relationship_type => @rt)
     end
 
     context "on PUT to :update.json" do

@@ -3,10 +3,10 @@ require File.dirname(__FILE__) + '/../test_helper'
 class VPubContextTest < ActiveSupport::TestCase
   context "A VPub context" do
     setup do
-      @person = Factory.create(:doc_template, :name => "Person")
+      @person = FactoryGirl.create(:doc_template, :name => "Person")
         
       @project = @person.project
-      @bob = Factory.build(:doc, :doc_template => @person,
+      @bob = FactoryGirl.build(:doc, :doc_template => @person,
         :project => @project, :name => "Bob", :content => "<p>Here we have <b>Bob</b>.<br/>Bob likes to ski.</p>")
       
       @context = VPubContext.new(:project => @project, :doc => @bob)
@@ -119,9 +119,9 @@ class VPubContextTest < ActiveSupport::TestCase
           :left_description => "is taller than", :right_description => "is shorter than")
         
         @bob.save
-        @joe = Factory.create(:doc, :doc_template => @person,
+        @joe = FactoryGirl.create(:doc, :doc_template => @person,
           :project => @project, :name => "Joe")
-        @bob_taller = Factory.create(:relationship, :relationship_type => @taller,
+        @bob_taller = FactoryGirl.create(:relationship, :relationship_type => @taller,
           :left => @bob, :right => @joe, :project => @project)
         @bob.reload
       end
@@ -137,7 +137,7 @@ class VPubContextTest < ActiveSupport::TestCase
       
       context "in a recursive loop" do
         setup do
-          @joe_taller = Factory.create(:relationship, :relationship_type => @taller,
+          @joe_taller = FactoryGirl.create(:relationship, :relationship_type => @taller,
             :left => @joe, :right => @bob, :project => @project)
           @bob.reload
           @joe.reload
@@ -150,9 +150,9 @@ class VPubContextTest < ActiveSupport::TestCase
       
       context "and another related structure" do
         setup do
-          @tim = Factory.create(:doc, :doc_template => @person,
+          @tim = FactoryGirl.create(:doc, :doc_template => @person,
             :project => @project, :name => "Tim")
-          @tim_taller = Factory.create(:relationship, :relationship_type => @taller,
+          @tim_taller = FactoryGirl.create(:relationship, :relationship_type => @taller,
             :left => @bob, :right => @tim, :project => @project)
             
           @tim.attrs['Favorite Color'].value = 'green'
@@ -193,7 +193,7 @@ class VPubContextTest < ActiveSupport::TestCase
     
     context "with an included PublicationTemplate" do
       setup do
-        @other_template = Factory.create(:publication_template, :project => @project, :name => "Another template",
+        @other_template = FactoryGirl.create(:publication_template, :project => @project, :name => "Another template",
           :content => "Included content, with the doc name <v:name/>")
       end
       

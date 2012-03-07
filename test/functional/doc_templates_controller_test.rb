@@ -4,7 +4,7 @@ class DocTemplatesControllerTest < ActionController::TestCase
   def setup
     create_logged_in_person
 
-    @project = Factory.create(:project)
+    @project = FactoryGirl.create(:project)
     @project.project_memberships.create(:person => @person, :admin => true, :author => true)
   end
 
@@ -60,7 +60,7 @@ class DocTemplatesControllerTest < ActionController::TestCase
 
   context "with a doc template" do
     setup do
-      @tmpl = Factory.create(:doc_template, :project => @project)
+      @tmpl = FactoryGirl.create(:doc_template, :project => @project)
     end
 
     context "on GET to :show" do

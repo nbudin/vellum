@@ -36,7 +36,7 @@ class AbilityTest < ActiveSupport::TestCase
   end
   
   def build_membership_and_ability(attributes={})
-    @membership = Factory.create(:project_membership, attributes)
+    @membership = FactoryGirl.create(:project_membership, attributes)
     @project = @membership.project
     @person = @membership.person
     @ability = Ability.new(@person)
@@ -44,8 +44,8 @@ class AbilityTest < ActiveSupport::TestCase
   
   context "A global admin" do
     setup do
-      @project = Factory.create(:project)
-      @person = Factory.create(:person, :admin => true)
+      @project = FactoryGirl.create(:project)
+      @person = FactoryGirl.create(:person, :admin => true)
       @ability = Ability.new(@person)
     end
     
@@ -94,8 +94,8 @@ class AbilityTest < ActiveSupport::TestCase
   
   context "A non-member" do
     setup do
-      @project = Factory.create(:project)
-      @person = Factory.create(:person)
+      @project = FactoryGirl.create(:project)
+      @person = FactoryGirl.create(:person)
     end
     
     should "have appropriate permissions" do
@@ -132,7 +132,7 @@ class AbilityTest < ActiveSupport::TestCase
     
     context "An anonymous user" do
       setup do
-        @project = Factory.create(:project)
+        @project = FactoryGirl.create(:project)
         @person = nil
         @ability = Ability.new(@person)
       end

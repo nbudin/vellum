@@ -5,11 +5,11 @@ class PublicationTemplateTest < ActiveSupport::TestCase
   
   context "A publication template" do
     setup do
-      @person = Factory.create(:doc_template, :name => "Person")
+      @person = FactoryGirl.create(:doc_template, :name => "Person")
         
       @project = @person.project
-      @tmpl = Factory.build(:publication_template, :project => @project)
-      @bob = Factory.build(:doc, :doc_template => @person,
+      @tmpl = FactoryGirl.build(:publication_template, :project => @project)
+      @bob = FactoryGirl.build(:doc, :doc_template => @person,
         :project => @project, :name => "Bob")
     end
     

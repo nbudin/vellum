@@ -13,7 +13,7 @@ class AssignmentMailerTest < ActionMailer::TestCase
   
   context "just assigned a character" do
     setup do
-      @tmpl = Factory.create(:doc_template, :name => "Character")
+      @tmpl = FactoryGirl.create(:doc_template, :name => "Character")
       @project = @tmpl.project
       @project.name = "Intrigue Under the Big Tent"
       assert @project.save
