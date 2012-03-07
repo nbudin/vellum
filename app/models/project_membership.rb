@@ -23,7 +23,6 @@ class ProjectMembership < ActiveRecord::Base
         invitee.save
         logger.info "Invite successful!  Got back #{invitee.inspect}"
         
-        invitee = invitee.person
         self.person = Person.create(:email => email, :username => email, :firstname => invitee.firstname, 
           :lastname => invitee.lastname, :gender => invitee.gender, :birthdate => invitee.birthdate)
       rescue
