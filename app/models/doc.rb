@@ -8,7 +8,10 @@ class AttrSetEditException < Exception
   end
 end
 
-class Doc < ActiveRecord::Base
+class Doc
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  
   version_fu :foreign_key => "doc_id" do
     belongs_to :author, :class_name => "::Person"
     has_many :attrs, :class_name => "::Attr",

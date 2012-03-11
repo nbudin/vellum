@@ -1,6 +1,11 @@
-class ProjectMembership < ActiveRecord::Base
+class ProjectMembership
+  include Mongoid::Document
+  
+  embedded_in :project  
   belongs_to :person
-  belongs_to :project
+  
+  field :author, type: Boolean
+  field :admin, type: Boolean
   
   validates_presence_of :person, :project
   

@@ -1,9 +1,14 @@
-class Map < ActiveRecord::Base
+class Map
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  
   belongs_to :project
-  has_many :mapped_doc_templates, :dependent => :destroy
-  has_many :mapped_relationship_types, :dependent => :destroy
-  has_many :doc_templates, :through => :mapped_doc_templates, :order => "doc_templates.id"
-  has_many :relationship_types, :through => :mapped_relationship_types, :order => "relationship_types.id"
+  embeds_many :mapped_doc_templates
+  embeds_many :mapped_relationship_types
+  
+  field :name, type: String
+  field :blurb, type: String
+  field :graphviz_method, type: Boolean
   
   COLORS = %w{red darkgreen blue orange purple black}
   

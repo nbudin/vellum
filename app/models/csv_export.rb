@@ -1,8 +1,12 @@
-class CsvExport < ActiveRecord::Base
+class CsvExport
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  
   belongs_to :project
   belongs_to :doc_template
   
-  serialize :attr_names, JSON
+  field :name, type: String
+  field :attr_names, type: Array
   
   def attr_names_commasep
     return "" unless attr_names
