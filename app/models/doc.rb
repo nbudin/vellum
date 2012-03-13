@@ -11,12 +11,8 @@ end
 class Doc
   include Mongoid::Document
   include Mongoid::Timestamps
-  
-  version_fu :foreign_key => "doc_id" do
-    belongs_to :author, :class_name => "::Person"
-    has_many :attrs, :class_name => "::Attr",
-      :foreign_key => "doc_version_id", :autosave => true
-  end
+  include Mongoid::Paranoia
+  include Mongoid::Versioning
   
   validate :check_attrs_error
   
@@ -26,11 +22,9 @@ class Doc
     end
   end
 
-  if self.versioned_columns
-    self.versioned_columns -= %w{ author_id }
-  end
-
   class AttrSet < Array
+    include Mongoid::Fields::Serializable
+    
     def initialize(doc, doc_version = nil)
       @deleted_attrs = []
       @doc = doc
@@ -223,6 +217,15 @@ class Doc
     
     def as_json(options={})
       collect { |attr| attr.as_json(options) }
+    end
+    
+    def deserialize(object)
+      AttrSet.new.tap do |attr_set|
+      end
+    end
+    
+    def serialize(object)
+      object.as_json
     end
   end
 
