@@ -1,1 +1,0 @@
-ActiveRecord::Base.observers = :doc_observer

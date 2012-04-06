@@ -13,6 +13,11 @@ Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 module Vellum
   class Application < Rails::Application
+    # Observers will not be invoked unless they are instantiated first. If you are 
+    # using Rails, Mongoid will instantiate your observers automatically as long 
+    # as you register them in your config/application.rb file.
+    config.mongoid.observers = :doc_observer
+    
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
