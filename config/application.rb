@@ -1,6 +1,9 @@
 require File.expand_path('../boot', __FILE__)
 
-require 'rails/all'
+require 'action_controller/railtie'
+require 'action_mailer/railtie'
+require 'sprockets/railtie'
+require 'rails/test_unit/railtie'
 require File.expand_path('../../lib/format_conversions', __FILE__)
 require File.expand_path('../../lib/string_extensions', __FILE__)
 
