@@ -5,7 +5,7 @@ class DocTemplate
   belongs_to :project
   index :project
 
-  embeds_many :doc_template_attrs, :order => "position", :dependent => :destroy, :autosave => true  
+  embeds_many :doc_template_attrs, :order => "position"
   has_many :outward_relationship_types, :inverse_of => :left_template, :class_name => "RelationshipType", :dependent => :destroy
   has_many :inward_relationship_types, :inverse_of => :right_template, :class_name => "RelationshipType", :dependent => :destroy
   has_many :docs, :dependent => :destroy, :order => "name"

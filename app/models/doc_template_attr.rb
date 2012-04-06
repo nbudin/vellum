@@ -8,7 +8,6 @@ class DocTemplateAttr
   field :ui_type, type: Symbol
   field :choices, type: Array
 
-  acts_as_list :scope => :doc_template
   validates_uniqueness_of :name, :scope => :doc_template
 
   include Attr::Base

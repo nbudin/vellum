@@ -1,4 +1,4 @@
-class Attr < ActiveRecord::Base
+class Attr
   module Base
     extend ActiveSupport::Concern
     
@@ -34,10 +34,8 @@ class Attr < ActiveRecord::Base
     end
   end
 
-  belongs_to :doc_version, :class_name => "Doc::Version"
-  acts_as_list :scope => :doc_version
-
-  validates_uniqueness_of :slug, :scope => :doc_version_id, :case_sensitive => false
+  include ActiveModel::Validations
+  include ActiveModel::Validations::HelperMethods
 
   include ChoiceContainer
   include Attr::Base

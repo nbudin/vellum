@@ -1,7 +1,10 @@
-class Relationship < ActiveRecord::Base
+class Relationship
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  
   belongs_to :relationship_type
-  belongs_to :left, :class_name => "Doc", :foreign_key => "left_id"
-  belongs_to :right, :class_name => "Doc", :foreign_key => "right_id"
+  belongs_to :left, :class_name => "Doc", :inverse_of => "outward_relationships"
+  belongs_to :right, :class_name => "Doc", :inverse_of => "inward_relationships"
   belongs_to :project
 
   validates_presence_of :left, :right, :relationship_type, :project

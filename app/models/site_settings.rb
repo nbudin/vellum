@@ -1,4 +1,12 @@
-class SiteSettings < ActiveRecord::Base
+class SiteSettings
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  
+  field :site_name, type: String
+  field :site_color, type: String
+  field :site_email, type: String
+  field :welcome_html, type: String
+  
   belongs_to :admin, :class_name => "Person"
   
   def self.instance

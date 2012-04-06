@@ -1,4 +1,4 @@
-class DocObserver < ActiveRecord::Observer
+class DocObserver < Mongoid::Observer
   def before_save(doc)
     if doc.assignee_id_changed? and doc.assignee
       AssignmentMailer.assigned_to_you(doc, doc.assignee).deliver

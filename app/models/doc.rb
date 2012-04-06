@@ -1,5 +1,3 @@
-require 'rexml/parsers/sax2parser'
-
 class AttrSetEditException < Exception
   attr_reader :errors
   
@@ -9,23 +7,10 @@ class AttrSetEditException < Exception
 end
 
 class Doc
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  include Mongoid::Paranoia
-  include Mongoid::Versioning
-  
-  validate :check_attrs_error
-  
-  before_save do |doc|
-    unless doc.content.blank?
-      doc.content = Sanitize.clean(doc.content, Sanitize::Config::VELLUM)
-    end
-  end
-
   class AttrSet < Array
     include Mongoid::Fields::Serializable
     
-    def initialize(doc, doc_version = nil)
+    def ensure_template_attrs(doc_template)
       @deleted_attrs = []
       @doc = doc
       @attrs_by_slug = {}
@@ -41,13 +26,11 @@ class Doc
       update_slug_hash!
 
       # ensure we have all template attributes
-      unless @doc.doc_template.nil?
-        @doc.doc_template.doc_template_attrs.each do |dta|
-          slug = Attr::WithSlug.slug_for(dta.name)
-          unless @attrs_by_slug.has_key?(slug)
-            new_attr = Attr.new(:name => dta.name, :doc => @doc)
-            self.push(new_attr, true)
-          end
+      doc_template.doc_template_attrs.each do |dta|
+        slug = Attr::WithSlug.slug_for(dta.name)
+        unless @attrs_by_slug.has_key?(slug)
+          new_attr = Attr.new(:name => dta.name, :doc => @doc)
+          self.push(new_attr, true)
         end
       end
       
@@ -200,8 +183,7 @@ class Doc
         
         next if dupes.include?(name)
         
-        if ActiveRecord::ConnectionAdapters::Column.value_to_boolean(item['_destroy']) ||
-            ActiveRecord::ConnectionAdapters::Column.value_to_boolean(item['_delete'])
+        if Doc::TRUE_VALUES.include?(item['_destroy']) || Doc::TRUE_VALUES.include?(item['_delete'])
           self.delete(name)
         else
           self[name].value = item['value']
@@ -221,6 +203,11 @@ class Doc
     
     def deserialize(object)
       AttrSet.new.tap do |attr_set|
+        object.each do |attr_attributes|
+          attr_set.push(Attr.new(attr_attributes), true)
+        end
+        
+        attr_set.after_change
       end
     end
     
@@ -228,38 +215,35 @@ class Doc
       object.as_json
     end
   end
+  
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  include Mongoid::Paranoia
+  include Mongoid::Versioning
+  
+  # copied out of ActiveRecord::ConnectionAdapters::Column in order to be able
+  # to avoid an AR dependency
+  TRUE_VALUES = [true, 1, '1', 't', 'T', 'true', 'TRUE', 'on', 'ON'].to_set
+  
+  field :position, type: Integer
+  field :blurb, type: String
+  field :content, type: String
+  field :attrs, type: AttrSet
 
   belongs_to :project
   belongs_to :doc_template
-  belongs_to :creator, :class_name => "Person"
-  belongs_to :assignee, :class_name => "Person"
-
-  has_many :outward_relationships, :foreign_key => :left_id, :class_name => "Relationship", :dependent => :destroy
-  has_many :inward_relationships, :foreign_key => :right_id, :class_name => "Relationship", :dependent => :destroy
-  acts_as_list :scope => :doc_template_id
-
-  before_create :set_version_creators
-  after_save :save_versions
-
-  def attrs
-    @attrs || reload_working_attrs
-  end
-
-  def reload_working_attrs(version=nil)
-    version ||= versions.latest
-    @attrs = AttrSet.new(self, version)
-  end
-
-  def create_new_version?
-    super || attrs.changed?
-  end
-
-  def instatiate_revision
-    super
-
-    new_version = versions.select { |v| v.new_record? }.last
-    attrs.save_to_doc_version(new_version)
-    reload_working_attrs(new_version)
+  belongs_to :assignee, class_name: "Person"
+  belongs_to :creator, class_name: "Person"
+  
+  has_many :outward_relationships, :inverse_of => :left, :class_name => "Relationship"
+  has_many :inward_relationships, :inverse_of => :right, :class_name => "Relationship", :dependent => :destroy
+  
+  validate :check_attrs_error
+  
+  before_save do |doc|
+    unless doc.content.blank?
+      doc.content = Sanitize.clean(doc.content, Sanitize::Config::VELLUM)
+    end
   end
 
   def to_param
@@ -318,18 +302,6 @@ class Doc
   end
 
   private
-  def set_version_creators
-    versions.each do |v|
-      v.author = self.creator
-    end
-  end
-
-  def save_versions
-    versions.each do |v|
-      v.save(:validate => false)
-    end
-  end
-  
   def check_attrs_error
     if @attrs_error
       @attrs_error.errors.each do |attr_error|

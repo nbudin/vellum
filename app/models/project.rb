@@ -7,10 +7,10 @@ class Project
   index :public_visibility
   
   has_many :doc_templates, :dependent => :destroy, :autosave => true
-  has_many :docs, :dependent => :destroy, :include => [:doc_template]
+  has_many :docs, :dependent => :destroy
 
   has_many :relationship_types, :dependent => :destroy, :autosave => true
-  has_many :relationships, :dependent => :destroy, :include => [:relationship_type]
+  has_many :relationships, :dependent => :destroy
 
   has_many :publication_templates, :dependent => :destroy
   has_many :maps, :dependent => :destroy
