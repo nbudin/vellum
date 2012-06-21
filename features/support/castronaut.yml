@@ -12,7 +12,7 @@ ssl_enabled: false
 
 cas_database:
   adapter: sqlite3
-  database: tmp/cas.db
+  database: castronaut.sqlite3
   timeout: 5000
 
 cas_adapter:
