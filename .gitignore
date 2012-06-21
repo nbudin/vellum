@@ -12,3 +12,4 @@ vendor/bundle/*
 .sass-cache/
 db/*.sqlite3
 bin/
+castronaut.sqlite3
