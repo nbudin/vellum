@@ -6,9 +6,5 @@ gemfile:
   - Gemfile
 before_script: 
   - "export DISPLAY=:99.0"
+  - "export CUCUMBER_FORMAT=pretty"
   - "sh -e /etc/init.d/xvfb start"
-  - "mkdir -p tmp"
-script:
-  - "bundle exec rake db:test:load"
-  - "bundle exec rake test"
-  - "bundle exec cucumber --format pretty features"
