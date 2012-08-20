@@ -1,14 +1,10 @@
 rvm:
   - 1.9.2
   - 1.9.3
+language: en
 gemfile:
   - Gemfile
 before_script: 
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - "mkdir -p tmp"
-  - "rake --trace db:schema:load"
-  - "rake --trace test"
-  - "cucumber --format pretty features"
-script:
-  - bundle exec rake travis
