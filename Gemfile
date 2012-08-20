@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 ruby "1.9.3"
 
-gem "rails", "3.2.6"
+gem "rails", "3.2.8"
 gem "json"
 gem "sass-rails", "~> 3.2.3"
 gem 'coffee-rails', "~> 3.2.1"
