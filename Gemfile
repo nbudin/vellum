@@ -46,7 +46,5 @@ group :test do
   gem 'cucumber'
   gem 'cucumber-rails'
   gem 'sham_rack'
-  gem 'minitest'
   gem 'castronaut', :git => 'http://github.com/nbudin/castronaut.git', :branch => 'dam5s-merge'
-  gem 'turn', :require => false
 end
