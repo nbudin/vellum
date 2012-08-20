@@ -42,7 +42,11 @@ class ProjectsController < ApplicationController
       end
       format.xml  { render :xml => @project.to_xml }
       format.json { render :json => @project.to_json }
-      format.vproj { render :xml => @project.to_vproj(:all_doc_versions => params[:all_doc_versions]) }
+      format.vproj { 
+        tempfile = @project.to_vproj
+        send_file tempfile.path, :type => :vproj, :disposition => 'attachment',
+          :filename => "#{@project.name}.vproj"
+      }
     end
   end
   
