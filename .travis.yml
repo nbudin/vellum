@@ -9,6 +9,6 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
   - "mkdir -p tmp"
 script:
-  - "bundle exec rake db:test:prepare"
+  - "bundle exec rake db:test:load"
   - "bundle exec rake test"
   - "bundle exec cucumber --format pretty features"
