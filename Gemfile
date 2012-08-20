@@ -42,7 +42,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'capybara'
-  gem 'capybara-webkit'
+  gem 'poltergeist'
   gem 'cucumber'
   gem 'cucumber-rails'
   gem 'sham_rack'
