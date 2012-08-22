@@ -2,16 +2,17 @@ source "http://rubygems.org"
 ruby "1.9.3"
 
 gem "rails", "3.2.8"
-gem "json"
 gem "sass-rails", "~> 3.2.3"
 gem 'coffee-rails', "~> 3.2.1"
 gem 'uglifier', ">= 1.0.3"
 
-platforms :ruby do
-  gem "mysql2"
-end
-platforms :jruby do
-  gem "activerecord-jdbc-adapter", :require => false
+group :production do
+  platforms :ruby do
+    gem "mysql2"
+  end
+  platforms :jruby do
+    gem "activerecord-jdbc-adapter", :require => false
+  end
 end
 
 gem "devise"
@@ -30,10 +31,10 @@ gem "sanitize", "~> 2.0.2"
 gem "heroku_external_db"
 gem "illyan_client", ">= 1.0.2"
 gem "airbrake"
-gem "sqlite3", :groups => [:development, :test]
+gem "sqlite3", :groups => [:development, :test, :hangar]
 gem "pry-rails", :groups => [:development, :test]
 
-gem "unicorn"
+gem "puma"
 #gem "asset_sync"
 
 group :test do

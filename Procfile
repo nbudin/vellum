@@ -1,1 +1,1 @@
-web: bundle exec unicorn -p $PORT -c config/unicorn.conf
+web: bundle exec puma -p $PORT
