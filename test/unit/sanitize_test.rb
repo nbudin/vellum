@@ -12,7 +12,7 @@ class SanitizeTest < ActiveSupport::TestCase
   end
 
   test "allow tables" do
-    assert_sanitized("<table><tr><td>A table!</td></tr></table>", "<table><tr><td>A table!</td></tr></table>")
+    assert_sanitized("<table><tr><td>A table!</td></tr></table>", %r{<table>\s*<tr>\s*<td>A table!</td>\s*</tr>\s*</table>})
   end
   
   test "remove non-Vellum classes" do
