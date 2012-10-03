@@ -62,7 +62,7 @@ end
 
 Sanitize::Config::VELLUM = {
   :output => :xhtml,
-  :elements => %w{p h1 h2 h3 h4 h5 h6 ul ol li b i em strong br u table thead tbody tr td th},
+  :elements => %w{p h1 h2 h3 h4 h5 h6 ul ol li b i em strong br u table thead tbody tr td th caption},
   :attributes => {
     :all => %w{class}
   },

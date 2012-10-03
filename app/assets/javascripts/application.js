@@ -10,4 +10,5 @@
 //= require jquery.jeditable
 //= require farbtastic
 //= require wymeditor/jquery.wymeditor
+//= require wymeditor/plugins/table/jquery.wymeditor.table
 //= require_tree .
