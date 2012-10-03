@@ -10,6 +10,10 @@ class SanitizeTest < ActiveSupport::TestCase
     assert_sanitized("<p><span>test<span>2</span></span></p>",
       "<p>test2</p>")
   end
+
+  test "allow tables" do
+    assert_sanitized("<table><tr><td>A table!</td></tr></table>", "<table><tr><td>A table!</td></tr></table>")
+  end
   
   test "remove non-Vellum classes" do
     assert_sanitized("<p>I have a <span class=\"something vellum-something\">vellum</span> class "+

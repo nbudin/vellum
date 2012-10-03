@@ -76,9 +76,9 @@ class DocTest < ActiveSupport::TestCase
       end
       
       should "sanitize attr content on save" do
-        @attr.value = "<table><tr><td>A table cell</td></tr></table>"
+        @attr.value = "<badelement>Content</badelement>"
         assert @doc.save
-        assert_equal "A table cell", @doc.attrs[@attr_name].value
+        assert_equal "Content", @doc.attrs[@attr_name].value
       end
 
       context "having a value" do
