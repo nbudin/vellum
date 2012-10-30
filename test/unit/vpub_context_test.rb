@@ -28,13 +28,25 @@ class VPubContextTest < ActiveSupport::TestCase
       @context.format = "fo"
       assert_equal @fo_content, @parser.parse('<v:content/>')
     end
+
+    should "repeat content a static number of times" do
+      assert_equal "test test test ", @parser.parse('<v:repeat times="3">test </v:repeat>')
+      assert_equal "test test test ", @parser.parse('<v:repeat times="3 times">test </v:repeat>')
+      assert_equal "", @parser.parse('<v:repeat times="0">test </v:repeat>')
+      assert_equal "test ", @parser.parse('<v:repeat times="1">test </v:repeat>')
+      assert_equal "test test test test test test test test test test test test ", @parser.parse('<v:repeat times="12">test </v:repeat>')
+    end
     
     context "with a valued attribute" do
       setup do
         @height_attr = @person.doc_template_attrs.create(:name => "Height")
+        @cats_attr = @person.doc_template_attrs.create(:name => "Cats")
         
         @bob_height = @bob.attrs["Height"]
         @bob_height.value = "5 ft 7 in"
+
+        @bob_cats = @bob.attrs["Cats"]
+        @bob_cats.value = "3"
       end
       
       should "return the attr value" do
@@ -61,6 +73,11 @@ class VPubContextTest < ActiveSupport::TestCase
         assert_equal "yes", @parser.parse(tmpl)
         @bob_height.value = "6 ft 5 in"
         assert_equal "", @parser.parse(tmpl)
+      end
+
+      should "repeat content based on an attr value" do
+        assert_equal "kitty!kitty!kitty!", @parser.parse('<v:repeat times="@Cats">kitty!</v:repeat>')
+        assert_equal "kitty!kitty!kitty!kitty!kitty!", @parser.parse('<v:repeat times="@Height">kitty!</v:repeat>')
       end
     end
     

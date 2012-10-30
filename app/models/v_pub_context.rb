@@ -104,6 +104,22 @@ class VPubContext < Radius::Context
 
       tmpl.execute(:doc => tag.locals.doc, :project => tag.locals.project)
     end
+
+    define_tag 'repeat' do |tag|
+      times_spec = tag.attr['times'].try(:strip)
+      raise VPubRuntimeError.new("v:repeat tags have to specify a 'times' attribute", @publication_template, tag.locals.doc) unless times_spec.present?
+
+      times = if times_spec =~ /^@(.*)/
+        tag.locals.doc.attrs[$1].value.to_i
+      else
+        times_spec.to_i
+      end
+
+      content = ""
+      single_content = tag.expand
+      times.times { content << single_content }
+      content
+    end
   end
   
   def format_for_tag(tag)

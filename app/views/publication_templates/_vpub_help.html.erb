@@ -41,6 +41,12 @@
   <p><b>&lt;v:include template="Another publication template" /&gt;</b><br/>
   Runs another publication template you specify by name and includes the output of that template.  This can be used
   to separate out frequently-used snippets of content into a single template.</p>
+
+  <p><b>&lt;v:repeat times="3"&gt; ... &lt;/v:repeat&gt;</b><br/>
+  Outputs the inner content the specified number of times.</p>
+
+  <p><b>&lt;v:repeat times="@XYZ"&gt; ... &lt;/v:repeat&gt;</b><br/>
+  Outputs the inner content the number of times equal to the current document's XYZ attribute value.</p>
   
   <h3 style="margin-left: -0.5em;">Sorting</h3>
   
