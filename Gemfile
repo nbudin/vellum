@@ -39,7 +39,7 @@ gem "puma"
 
 group :test do
   gem 'database_cleaner'
-  gem 'shoulda', '~> 3.0.0'
+  gem 'shoulda', '~> 3.2.0'
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'capybara'
