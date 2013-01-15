@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 ruby "1.9.3"
 
-gem "rails", "3.2.10"
+gem "rails", "3.2.11"
 gem "sass-rails", "~> 3.2.3"
 gem 'coffee-rails', "~> 3.2.1"
 gem 'uglifier', ">= 1.0.3"
@@ -35,7 +35,7 @@ gem "sqlite3", :groups => [:development, :test, :hangar]
 gem "pry-rails", :groups => [:development, :test]
 
 gem "puma"
-#gem "asset_sync"
+gem "asset_sync"
 
 group :test do
   gem 'database_cleaner'
