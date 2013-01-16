@@ -381,7 +381,7 @@ jQuery(function() {
      ],
      logoHtml: '',
 	 wymPath: '<%= javascript_path "wymeditor/jquery.wymeditor" %>',
-     iframeBasePath: '<%= File.join(File.split(javascript_path("wymeditor/jquery.wymeditor")).first, 'iframe', 'vellum') %>/',
+     iframeBasePath: '<%= asset_path("wymeditor/iframe/vellum") %>/',
      postInit: function(wym) {
        wym.parser._Listener.block_tags.push("u");
        
