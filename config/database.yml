@@ -8,3 +8,6 @@ test: &TEST
 
 cucumber: 
   <<: *TEST
+
+production:
+  <<: *TEST
