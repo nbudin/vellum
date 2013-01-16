@@ -35,7 +35,7 @@ gem "sqlite3", :groups => [:development, :test, :hangar]
 gem "pry-rails", :groups => [:development, :test]
 
 gem "puma"
-gem "asset_sync"
+#gem "asset_sync"
 
 group :test do
   gem 'database_cleaner'
