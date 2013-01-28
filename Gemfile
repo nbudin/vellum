@@ -15,7 +15,7 @@ group :production do
   end
 end
 
-gem "devise"
+gem "devise", "~> 2.0.5"
 gem "devise_cas_authenticatable"
 gem "ae_users_migrator", ">= 1.0.4"
 gem "cancan"
