@@ -33,10 +33,7 @@ Vellum::Application.configure do
   # config.cache_store = :mem_cache_store
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
-  #config.action_controller.asset_host = Proc.new do |source, request=nil|
-  #  protocol = (request && request.ssl?) ? "https" : "http"
-  #  "#{protocol}://#{ENV['AWS_BUCKET']}.s3.amazonaws.com"
-  #end
+  #config.action_controller.asset_host = "//#{ENV['FOG_DIRECTORY']}.s3.amazonaws.com"
   
   config.assets.digest = true
 

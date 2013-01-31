@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 ruby "1.9.3"
 
-gem "rails", "3.2.8"
+gem "rails", "3.2.11"
 gem "sass-rails", "~> 3.2.3"
 gem 'coffee-rails', "~> 3.2.1"
 gem 'uglifier', ">= 1.0.3"
@@ -15,7 +15,7 @@ group :production do
   end
 end
 
-gem "devise"
+gem "devise", "~> 2.0.5"
 gem "devise_cas_authenticatable"
 gem "ae_users_migrator", ">= 1.0.4"
 gem "cancan"

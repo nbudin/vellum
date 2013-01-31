@@ -47,5 +47,8 @@ module Vellum
 
     # Enable the asset pipeline
     config.assets.enabled = true
+
+    # Wymeditor lazy-loads, so we need to make the asset pipeline precompile its stuff separately
+    config.assets.precompile += Dir.glob(File.join(Rails.root, "vendor", "assets", "javascripts", "wymeditor", "**", "*")).select { |f| File.file? f }
   end
 end
