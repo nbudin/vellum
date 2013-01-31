@@ -43,6 +43,4 @@ Vellum::Application.routes.draw do
   end
 
   root :to => 'projects#index'
-  match '/:controller(/:action(/:id))'
-  match ':controller/:action.:format' => '#index'
 end
