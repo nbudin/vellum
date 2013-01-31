@@ -3,7 +3,7 @@ class Attr < ActiveRecord::Base
     extend ActiveSupport::Concern
     
     included do
-      validates_format_of :name, :with => /^[A-Za-z0-9 \-]*$/,
+      validates_format_of :name, :with => /\A[A-Za-z0-9 \-]*\z/,
         :message => "can only contain letters, numbers, spaces, and hypens"
 
       validates_presence_of :name
@@ -14,7 +14,7 @@ class Attr < ActiveRecord::Base
     extend ActiveSupport::Concern
     
     included do
-      validates_format_of :slug, :with => /^[a-z0-9\-\_]*$/,
+      validates_format_of :slug, :with => /\A[a-z0-9\-\_]*\z/,
         :message => "can only contain lowercase letters, numbers, underscores, and hyphens"
 
       validates_presence_of :slug
