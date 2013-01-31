@@ -1,4 +1,6 @@
 class SiteSettings < ActiveRecord::Base
+  include ActiveModel::ForbiddenAttributesProtection
+  
   belongs_to :admin, :class_name => "Person"
   
   def self.instance
