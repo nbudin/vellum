@@ -1,2 +1,2 @@
-require 'capybara/poltergeist'
-Capybara.javascript_driver = :poltergeist
+require 'capybara/webkit'
+Capybara.javascript_driver = :webkit
