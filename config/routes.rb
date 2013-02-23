@@ -41,6 +41,9 @@ Vellum::Application.routes.draw do
     
     resources :csv_exports
   end
+  
+  get '/about/settings' => 'about#edit_settings'
+  post '/about/settings' => 'about#update_settings'
 
   root :to => 'projects#index'
 end
