@@ -15,6 +15,7 @@ Vellum::Application.configure do
   config.assets.js_compressor  = :uglifier
   config.assets.css_compressor = :scss
   config.assets.compress = true
+  config.assets.debug = true
 
   # Specifies the header that your server uses for sending files
   # (comment out if your front-end server doesn't support this)
