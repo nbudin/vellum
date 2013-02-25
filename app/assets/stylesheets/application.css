@@ -4,6 +4,7 @@
  *= require vellum.css
  *= require editors.css
  *= require jumpbox.css
+ *= require wysihtml5.css
  *= require structures.css
  *= require site_theme.css
 */

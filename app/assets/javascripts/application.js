@@ -7,8 +7,7 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
-//= require jquery.jeditable
 //= require farbtastic
-//= require wymeditor/jquery.wymeditor
-//= require wymeditor/plugins/table/jquery.wymeditor.table
+//= require wysihtml5/wysihtml5-0.3.0
+//= require wysihtml5/simple
 //= require_tree .

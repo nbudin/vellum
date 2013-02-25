@@ -14,7 +14,7 @@ module DocsHelper
         :"data-edit-expander-preview" => truncate(strip_tags(attr.value), :length => 100)) do
         case attr.ui_type.try(:to_sym)
         when :textarea
-          attr_fields.text_area :value, :class => "wymeditor"
+          wysihtml5_editor attr_fields, :value
         when :radio
           content_tag(:ul, :style => "list-style-type: none;") do
             attr.choices.collect do |choice|
