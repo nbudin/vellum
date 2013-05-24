@@ -57,7 +57,10 @@ class VPubContext < Radius::Context
     define_tag 'each_doc' do |tag|
       conds = {}
       if tag.attr['template']
-        conds[:doc_template_id] = tag.locals.project.doc_templates.find_by_name(tag.attr['template']).id
+        doc_template = tag.locals.project.doc_templates.find_by_name(tag.attr['template'])
+        raise "Couldn't find any template called #{tag.attr['template']}" unless doc_template
+        
+        conds[:doc_template_id] = doc_template.id
       end
       
       prev_doc = tag.locals.doc
