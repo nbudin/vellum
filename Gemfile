@@ -33,6 +33,7 @@ gem "illyan_client", ">= 1.0.2"
 gem "airbrake"
 gem "sqlite3", :groups => [:development, :test, :hangar]
 gem "pry-rails", :groups => [:development, :test]
+gem "farbtastic-rails"
 
 gem "puma"
 gem "asset_sync"
