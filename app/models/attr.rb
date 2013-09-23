@@ -4,7 +4,7 @@ class Attr < ActiveRecord::Base
     
     included do
       validates_format_of :name, :with => /\A[A-Za-z0-9 \-]*\z/,
-        :message => "can only contain letters, numbers, spaces, and hypens"
+        :message => "can only contain letters, numbers, spaces, and hyphens"
 
       validates_presence_of :name
     end    
