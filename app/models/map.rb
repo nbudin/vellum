@@ -87,6 +87,7 @@ class Map < ActiveRecord::Base
     
     mapped_relationship_types.each do |mrt|
       mrt.relationship_type.relationships.all(:conditions => { :project_id => project.id }).each do |relationship|
+        next unless nodes[relationship.left_id] && nodes[relationship.right_id]
         g.add_edge(nodes[relationship.left_id], nodes[relationship.right_id],
                  relationship_options(relationship, mrt))
       end
