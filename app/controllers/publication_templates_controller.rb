@@ -1,5 +1,3 @@
-require 'zip/zip'
-
 class PublicationTemplatesController < ApplicationController
   load_and_authorize_resource :project
   load_and_authorize_resource :through => :project
@@ -84,7 +82,7 @@ class PublicationTemplatesController < ApplicationController
         
         @filetype = "application/zip"
     
-        Zip::ZipOutputStream.open(@tempfile.path) do |zipfile|
+        Zip::OutputStream.open(@tempfile.path) do |zipfile|
           @publication_template.doc_template.docs.each do |doc|
             filename = doc.name.gsub(/[\/\\]/, "_")
             filename << ".#{@publication_template.output_format}"

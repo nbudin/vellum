@@ -1,5 +1,3 @@
-require 'zip/zip'
-
 class Project < ActiveRecord::Base
   has_many :doc_templates, :dependent => :destroy, :autosave => true
   has_many :docs, :dependent => :destroy, :include => [:doc_template]
@@ -87,7 +85,7 @@ class Project < ActiveRecord::Base
   def to_vproj(options = {})
     tempfile = Tempfile.new("#{name}.vproj")
     
-    Zip::ZipOutputStream.open(tempfile.path) do |zipfile|
+    Zip::OutputStream.open(tempfile.path) do |zipfile|
       zipfile.put_next_entry "project.json"
       zipfile.print(to_vproj_json(options))
     end

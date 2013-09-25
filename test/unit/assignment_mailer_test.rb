@@ -19,7 +19,7 @@ class AssignmentMailerTest < ActionMailer::TestCase
       assert @project.save
       @structure = @project.docs.new(:doc_template => @tmpl, :name => "Joey")
 
-      @person = Person.create(:firstname => "Bob", :lastname => "Writerson")
+      @person = FactoryGirl.create(:person, :firstname => "Bob", :lastname => "Writerson")
 
       @site_settings = SiteSettings.instance
       @site_settings.site_email = "vellumtest@example.com"
@@ -32,6 +32,7 @@ class AssignmentMailerTest < ActionMailer::TestCase
     should "send the assignee an email" do
       @expected.subject = "[#{@project.name}] #{@structure.name} has been assigned to you"
       @expected.from = @site_settings.site_email
+      @expected.to = @person.email
       @expected.body = "The #{@tmpl.name} \"#{@structure.name}\" in the project \"#{@project.name}\" has just been assigned to you."
       @expected.content_type = "text/html"
       @expected.date = Time.now

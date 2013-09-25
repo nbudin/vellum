@@ -1,7 +1,7 @@
 source "http://rubygems.org"
-ruby "1.9.3"
+ruby "2.0.0"
 
-gem "rails", "3.2.12"
+gem "rails", "3.2.14"
 gem "sass-rails", "~> 3.2.3"
 gem 'coffee-rails', "~> 3.2.1"
 gem 'uglifier', ">= 1.0.3"
@@ -25,6 +25,7 @@ gem "ruby-graphviz", ">= 0.9.2", :require => "graphviz"
 gem "radius"
 gem "version_fu", "~> 1.0.1"
 gem "jquery-rails", '>= 1.0.12'
+gem 'jquery-ui-rails'
 gem "rubyzip"
 gem "nokogiri", ">= 1.4.1"
 gem "sanitize", "~> 2.0.2"
@@ -39,14 +40,10 @@ gem "puma"
 gem "asset_sync"
 
 group :test do
-  gem 'database_cleaner'
+  gem 'database_cleaner', '~> 1.0.0'  # 1.1.0 is broken on sqlite3, see https://github.com/bmabey/database_cleaner/issues/224
   gem 'shoulda', '~> 3.2.0'
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'capybara'
-  gem 'capybara-webkit'
-  gem 'cucumber'
-  gem 'cucumber-rails'
-  gem 'sham_rack'
-  gem 'castronaut', :git => 'http://github.com/nbudin/castronaut.git', :branch => 'dam5s-merge'
+  gem 'poltergeist'
 end

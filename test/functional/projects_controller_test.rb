@@ -11,7 +11,6 @@ class ProjectsControllerTest < ActionController::TestCase
     end
 
     should respond_with(:success)
-    should assign_to(:projects)
     should render_template("index")
   end
 
@@ -31,7 +30,6 @@ class ProjectsControllerTest < ActionController::TestCase
     end
 
     should respond_with(:redirect)
-    should assign_to(:project)
     should_not set_the_flash
 
     should "create a project" do
@@ -63,7 +61,6 @@ class ProjectsControllerTest < ActionController::TestCase
 
       should respond_with(:success)
       should render_template(:show)
-      should assign_to(:project)
     end
 
     context "on GET to :edit" do
@@ -73,7 +70,6 @@ class ProjectsControllerTest < ActionController::TestCase
 
       should respond_with(:success)
       should render_template(:edit)
-      should assign_to(:project)
     end
 
     context "on PUT to :update" do
@@ -82,7 +78,6 @@ class ProjectsControllerTest < ActionController::TestCase
       end
 
       should respond_with(:redirect)
-      should assign_to(:project)
       should_not set_the_flash
 
       should "update the project" do
@@ -101,7 +96,6 @@ class ProjectsControllerTest < ActionController::TestCase
       end
 
       should respond_with(:redirect)
-      should assign_to(:project)
       should_not set_the_flash
 
       should "destroy the project" do

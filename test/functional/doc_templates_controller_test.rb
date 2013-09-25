@@ -14,7 +14,6 @@ class DocTemplatesControllerTest < ActionController::TestCase
     end
 
     should respond_with(:success)
-    should assign_to(:doc_templates)
     should render_template("index")
   end
 
@@ -24,8 +23,6 @@ class DocTemplatesControllerTest < ActionController::TestCase
     end
 
     should respond_with(:success)
-    should assign_to(:doc_templates)
-    should respond_with_json
   end
 
   context "on GET to :new" do
@@ -34,7 +31,6 @@ class DocTemplatesControllerTest < ActionController::TestCase
     end
 
     should respond_with(:success)
-    should assign_to(:doc_template)
     should render_template("new")
   end
 
@@ -46,7 +42,6 @@ class DocTemplatesControllerTest < ActionController::TestCase
     end
 
     should respond_with(:redirect)
-    should assign_to(:doc_template)
     should_not set_the_flash
 
     should "create a doc template" do
@@ -69,7 +64,6 @@ class DocTemplatesControllerTest < ActionController::TestCase
       end
 
       should respond_with(:success)
-      should assign_to(:doc_template)
       should render_template("show")
     end
 
@@ -82,7 +76,6 @@ class DocTemplatesControllerTest < ActionController::TestCase
       end
 
       should respond_with(:redirect)
-      should assign_to(:doc_template)
       should_not set_the_flash
 
       should "update the template" do
@@ -103,7 +96,6 @@ class DocTemplatesControllerTest < ActionController::TestCase
       end
 
       should respond_with(:redirect)
-      should assign_to(:doc_template)
       should_not set_the_flash
       should redirect_to("the template list") { doc_templates_path(@project) }
 

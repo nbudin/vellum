@@ -17,8 +17,6 @@ class RelationshipsControllerTest < ActionController::TestCase
     end
 
     should respond_with(:success)
-    should assign_to(:relationships)
-    should respond_with_json
   end
 
   context "creating a new relationship" do
@@ -38,7 +36,6 @@ class RelationshipsControllerTest < ActionController::TestCase
       end
 
       should respond_with(:redirect)
-      should assign_to(:relationship)
       should_not set_the_flash
 
       should "create a relationship" do
@@ -65,7 +62,6 @@ class RelationshipsControllerTest < ActionController::TestCase
         end
 
         should respond_with(:redirect)
-        should assign_to(:relationship)
         should_not set_the_flash
 
         should "create a relationship and a doc" do
@@ -88,7 +84,6 @@ class RelationshipsControllerTest < ActionController::TestCase
         end
 
         should respond_with(:redirect)
-        should assign_to(:relationship)
         should_not set_the_flash
 
         should "create a relationship and a structure" do
@@ -116,7 +111,6 @@ class RelationshipsControllerTest < ActionController::TestCase
       end
 
       should respond_with(:success)
-      should assign_to(:relationship)
 
       should "update the relationship" do
         assert_equal @left.id, assigns(:relationship).left_id
@@ -132,7 +126,6 @@ class RelationshipsControllerTest < ActionController::TestCase
       end
 
       should respond_with(:redirect)
-      should assign_to(:relationship)
       should_not set_the_flash
 
       should "destroy a relationship" do

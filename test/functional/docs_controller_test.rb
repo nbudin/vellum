@@ -16,8 +16,6 @@ class DocsControllerTest < ActionController::TestCase
     end
 
     should respond_with(:success)
-    should assign_to(:docs)
-    should respond_with_json
   end
 
   context "on GET to :new" do
@@ -26,7 +24,6 @@ class DocsControllerTest < ActionController::TestCase
     end
 
     should respond_with(:success)
-    should assign_to(:doc)
     should render_template("new")
   end
 
@@ -46,7 +43,6 @@ class DocsControllerTest < ActionController::TestCase
     end
 
     should respond_with(:redirect)
-    should assign_to(:doc)
     should_not set_the_flash
 
     should "create a doc with the appropriate attrs" do
@@ -83,8 +79,6 @@ class DocsControllerTest < ActionController::TestCase
       end
 
       should respond_with(:success)
-      should assign_to(:docs)
-      should respond_with_json
     end
 
     context "on GET to :show" do
@@ -93,7 +87,6 @@ class DocsControllerTest < ActionController::TestCase
       end
 
       should respond_with(:success)
-      should assign_to(:doc)
       should render_template("show")
     end
     
@@ -103,7 +96,6 @@ class DocsControllerTest < ActionController::TestCase
       end
       
       should respond_with(:success)
-      should assign_to(:doc)
       should render_template("edit")
     end
 
@@ -120,7 +112,6 @@ class DocsControllerTest < ActionController::TestCase
       end
 
       should respond_with(:redirect)
-      should assign_to(:doc)
       should_not set_the_flash
 
       should "set the new version's author" do
@@ -138,6 +129,8 @@ class DocsControllerTest < ActionController::TestCase
 
     context "on PUT to :update with new assignee" do
       setup do
+        ActionMailer::Base.deliveries.clear
+        
         assert @person.email
         assert_not_equal @person.id, @doc.assignee
         @site_settings = SiteSettings.instance
@@ -149,18 +142,17 @@ class DocsControllerTest < ActionController::TestCase
           :doc => { :assignee_id => @person.id }
       end
 
-      should assign_to(:doc)
-
       should "reassign the doc" do
         assert_equal @person.id, assigns(:doc).assignee.id
       end
 
-      should have_sent_email do |email|
-        email.subject =~ /\[#{@project.name}\]/ &&
-          email.subject.include?(@doc.name) &&
-          email.from.include?(@site_settings.site_email) &&
-          email.to.include?(@person.primary_email_address) &&
-          email.body.include?("assigned to you")
+      should "have sent an email to the assignee" do
+        assert email = ActionMailer::Base.deliveries.last
+        
+        assert_match /\A\[#{@project.name}\].*#{Regexp.escape @doc.name}/, email.subject
+        assert email.from.include?(@site_settings.site_email)
+        assert email.to.include?(@person.email)
+        assert_match /assigned to you/, email.body.to_s
       end
     end
 
@@ -171,12 +163,37 @@ class DocsControllerTest < ActionController::TestCase
       end
 
       should respond_with(:redirect)
-      should assign_to(:doc)
       should_not set_the_flash
       should redirect_to("the project") { project_path @project }
 
       should "destroy a doc" do
         assert_equal @old_count - 1, Doc.count
+      end
+    end
+    
+    context "on POST to :copy" do
+      setup do
+        @old_count = Doc.count
+        post :copy, :id => @doc.id, :project_id => @project.id
+      end
+      
+      should respond_with(:redirect)
+      should_not set_the_flash
+
+      should "create a doc with the appropriate attrs" do
+        assert_equal @old_count + 1, Doc.count
+        assert_equal @doc.name, assigns(:doc).name
+        assert_equal @doc.doc_template, assigns(:doc).doc_template
+        assert_equal @color, assigns(:doc).attrs[@attr.name].value
+      end
+
+      should "set the creator and version author" do
+        assert_equal @person.id, assigns(:doc).creator_id
+        assert_equal @person.id, assigns(:doc).versions.first.author_id
+      end
+
+      should "redirect to the new doc" do
+        assert_redirected_to doc_path(@project, assigns(:doc))
       end
     end
 

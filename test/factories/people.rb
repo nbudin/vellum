@@ -6,6 +6,10 @@ FactoryGirl.define do
 
   factory :person do |p|
     p.email { FactoryGirl.generate(:email) }
+    p.firstname "Firstname"
+    p.lastname "Lastname"
+    
+    after(:build) { |p| p.username = p.email }
   end
 
   factory :project_membership do |m|

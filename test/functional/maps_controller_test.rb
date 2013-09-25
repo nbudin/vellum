@@ -12,7 +12,6 @@ class MapsControllerTest < ActionController::TestCase
       get :index, :project_id => @project.id
     end
 
-    should assign_to(:maps)
     should respond_with(:success)
     should render_template("index")
   end
@@ -23,7 +22,6 @@ class MapsControllerTest < ActionController::TestCase
       post :create, :project_id => @project.id, :map => { :name => "My map" }
     end
 
-    should assign_to(:map)
     should respond_with(:redirect)
     should_not set_the_flash
 
@@ -43,7 +41,6 @@ class MapsControllerTest < ActionController::TestCase
         get :show, :project_id => @project.id, :id => @map.id
       end
 
-      should assign_to(:map)
       should respond_with(:success)
       should render_template("show")
     end
@@ -53,7 +50,6 @@ class MapsControllerTest < ActionController::TestCase
         put :update, :project_id => @project.id, :id => @map.id, :map => { :name => "Renamed" }
       end
 
-      should assign_to(:map)
       should respond_with(:redirect)
       should_not set_the_flash
 
@@ -72,7 +68,6 @@ class MapsControllerTest < ActionController::TestCase
         delete :destroy, :project_id => @project.id, :id => @map.id
       end
 
-      should assign_to(:map)
       should respond_with(:redirect)
       should_not set_the_flash
       should redirect_to("the map list") { maps_path @project }

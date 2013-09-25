@@ -13,7 +13,6 @@ class RelationshipTypesControllerTest < ActionController::TestCase
       get :new, :project_id => @project.id
     end
     
-    should assign_to(:relationship_type)
     should render_template(:choose_templates)
   end
   
@@ -25,7 +24,6 @@ class RelationshipTypesControllerTest < ActionController::TestCase
       }
     end
 
-    should assign_to(:relationship_type)
     should render_template(:choose_templates)
     should_not set_the_flash
 
@@ -48,7 +46,6 @@ class RelationshipTypesControllerTest < ActionController::TestCase
         }
       end
       
-      should assign_to(:relationship_type)
       should render_template(:new)
     end
   
@@ -62,7 +59,6 @@ class RelationshipTypesControllerTest < ActionController::TestCase
         }
       end
   
-      should assign_to(:relationship_type)
       should respond_with(:redirect)
       should_not set_the_flash
   
@@ -86,7 +82,6 @@ class RelationshipTypesControllerTest < ActionController::TestCase
         get :edit, :id => @rt.id, :project_id => @project.id
       end
 
-      should assign_to(:relationship_type)
       should respond_with(:success)
       should render_template("edit")
     end
@@ -98,7 +93,6 @@ class RelationshipTypesControllerTest < ActionController::TestCase
           :relationship_type => { :left_description => @new_desc }
       end
 
-      should assign_to(:relationship_type)
       should respond_with(:redirect)
       should_not set_the_flash
 
@@ -119,7 +113,6 @@ class RelationshipTypesControllerTest < ActionController::TestCase
         delete :destroy, :id => @rt.id, :project_id => @project.id
       end
 
-      should assign_to(:relationship_type)
       should respond_with(:redirect)
       should_not set_the_flash
 

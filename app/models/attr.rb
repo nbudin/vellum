@@ -44,6 +44,10 @@ class Attr < ActiveRecord::Base
   include Attr::WithSlug
   attr_accessor :doc
   
+  after_initialize do |attr|
+    attr[:position] ||= attr.template_attr.try(:position)
+  end
+  
   def shim_for_attr_set(doc)
     shim = Attr.new(:doc => doc)
     %w{name position format}.each do |field|
@@ -100,10 +104,6 @@ class Attr < ActiveRecord::Base
 
   def from_template?
     template_attr
-  end
-
-  def position
-    template_attr.try(:position) || read_attribute(:position)
   end
 
   def ui_type

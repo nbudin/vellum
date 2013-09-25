@@ -16,8 +16,10 @@ FactoryGirl.define do
 
   factory :relationship_type do |rt|
     rt.association :project, :factory => :project
-    rt.after_build do |t|
+    rt.after(:build) do |t|
       %w{left_template right_template}.each do |m|
+        next if t.send(m)
+        
         tmpl = FactoryGirl.build(:doc_template, :project => t.project)
         t.send("#{m}=", tmpl)
       end
@@ -26,14 +28,14 @@ FactoryGirl.define do
 
   factory :doc do |d|
     d.association :project, :factory => :project
-    d.after_build do |doc|
+    d.after(:build) do |doc|
       doc.doc_template ||= FactoryGirl.build(:doc_template, :project => doc.project)
     end
   end
 
   factory :relationship do |r|
     r.association :project, :factory => :project
-    r.after_build do |rel|
+    r.after(:build) do |rel|
       rel.relationship_type ||= FactoryGirl.build(:relationship_type, :project => rel.project)
       rel.left ||= FactoryGirl.build(:doc, :project => rel.project,
         :doc_template => rel.relationship_type.left_template)
@@ -52,7 +54,7 @@ FactoryGirl.define do
 
   factory :character, :class => "DocTemplate" do |tmpl|
     tmpl.name "Character"
-    tmpl.after_build do |t|
+    tmpl.after(:build) do |t|
       hp = t.doc_template_attrs.build(:name => "HP")
       hp.ui_type = "text"
     end
@@ -64,7 +66,7 @@ FactoryGirl.define do
 
   factory :louisiana_purchase, :class => "Project" do |project|
     project.name "Louisiana Purchase"
-    project.after_build do |p|
+    project.after(:build) do |p|
       char = FactoryGirl.build(:character)
       org = FactoryGirl.build(:organization)
       [char, org].each do |tmpl|
@@ -92,7 +94,7 @@ FactoryGirl.define do
       p.relationships << rel
     end
 
-    project.after_create do |p|
+    project.after(:create) do |p|
       p.doc_templates.each do |t|
         t.doc_template_attrs.each do |a|
           a.save!

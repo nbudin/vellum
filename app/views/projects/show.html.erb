@@ -40,22 +40,24 @@ h2 {
   <%= in_place_editor @project, :blurb, :rows => 4 %>
 
   <% @templates.each do |tmpl| -%>
-    <h2><%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a></h2>
-    <div style="margin-left: 20px;">
-      <% if can?(:create, @project.docs.new(:doc_template_id => tmpl.id)) -%>
-  	    <p>
-  	      <%= link_to new_doc_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
-  		      <%= image_tag "structure_add.png" %> Add new <%= tmpl.name %>
-  	      <% end -%>
-  	    </p>
-  	  <% end -%>
-  	  <%= sortlist(@docs[tmpl], "docs_#{tmpl.id}",
-  				  :url => sort_docs_path(@project)
-  				  ) do |doc| -%>
-  		  <%= render :partial => 'docs/show_external',
-  			           :locals => { :doc => doc } %>
-  	  <% end -%>
-    </div>
+    <section class="template">
+      <h2><%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a></h2>
+      <div style="margin-left: 20px;">
+        <% if can?(:create, @project.docs.new(:doc_template_id => tmpl.id)) -%>
+    	    <p>
+    	      <%= link_to new_doc_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
+    		      <%= image_tag "structure_add.png" %> Add new <%= tmpl.name %>
+    	      <% end -%>
+    	    </p>
+    	  <% end -%>
+    	  <%= sortlist(@docs[tmpl], "docs_#{tmpl.id}",
+    				  :url => sort_docs_path(@project)
+    				  ) do |doc| -%>
+    		  <%= render :partial => 'docs/show_external',
+    			           :locals => { :doc => doc } %>
+    	  <% end -%>
+      </div>
+    </section>
   <% end -%>
 
   <% if @templates.size < 1 -%>

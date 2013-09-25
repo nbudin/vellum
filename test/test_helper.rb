@@ -2,27 +2,25 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path("../../config/environment", __FILE__)
 require 'rails/test_help'
 
-class ActiveSupport::TestCase
-  # Transactional fixtures accelerate your tests by wrapping each test method
-  # in a transaction that's rolled back on completion.  This ensures that the
-  # test database remains unchanged so your fixtures don't have to be reloaded
-  # between every test method.  Fewer database queries means faster tests.
-  #
-  # Read Mike Clark's excellent walkthrough at
-  #   http://clarkware.com/cgi/blosxom/2005/10/24#Rails10FastTesting
-  #
-  # Every Active Record database supports transactions except MyISAM tables
-  # in MySQL.  Turn off transactional fixtures in this case; however, if you
-  # don't care one way or the other, switching from MyISAM to InnoDB tables
-  # is recommended.
-  self.use_transactional_fixtures = true
+require 'capybara/rails'
+require 'capybara/poltergeist'
 
-  # Instantiated fixtures are slow, but give you @david where otherwise you
-  # would need people(:david).  If you don't want to migrate your existing
-  # test cases which use the @david style and don't mind the speed hit (each
-  # instantiated fixtures translates to a database query per test method),
-  # then set this back to true.
+class ActiveSupport::TestCase
+  self.use_transactional_fixtures = false
   self.use_instantiated_fixtures  = false
+
+  setup do
+    DatabaseCleaner.strategy = database_cleaner_strategy
+    DatabaseCleaner.start
+  end
+  
+  teardown do
+    DatabaseCleaner.clean
+  end
+  
+  def database_cleaner_strategy
+    :transaction
+  end
 end
 
 class ActionController::TestCase
@@ -32,28 +30,22 @@ class ActionController::TestCase
     @person = FactoryGirl.create(:person)
     sign_in(@person)
   end
-
-  def parse_json_response
-    begin
-        JSON.parse(@response.body)
-    rescue
-    end
-  end
 end
 
-module Shoulda::Matchers::ActionController
-  def respond_with_json
-    RespondWithJsonMatcher.new
+class ActionDispatch::IntegrationTest
+  include Capybara::DSL
+  include Warden::Test::Helpers
+    
+  setup do
+    Warden.test_mode!
+    Capybara.current_driver = :rack_test
   end
   
-  class RespondWithJsonMatcher
-    def matches?(controller)
-      valid_json(controller.response)
-    end
-    
-    protected
-    def valid_json(response)
-      JSON.parse(response.body) rescue nil
-    end
+  teardown do
+    Warden.test_reset!
+  end
+  
+  def database_cleaner_strategy
+    :truncation
   end
 end

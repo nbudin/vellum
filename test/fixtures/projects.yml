@@ -1,7 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-people:
-  id: 1
-  template_schema_id: 1
-
-foobarcorp:
-  template_schema: foobarcorp

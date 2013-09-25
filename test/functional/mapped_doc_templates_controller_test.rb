@@ -20,7 +20,6 @@ class MappedDocTemplatesControllerTest < ActionController::TestCase
         :doc_template_id => @doc_template.id
     end
 
-    should assign_to(:mapped_doc_template)
     should respond_with(:redirect)
     should_not set_the_flash
 
@@ -45,7 +44,6 @@ class MappedDocTemplatesControllerTest < ActionController::TestCase
           :mapped_doc_template => { :color => "black" }
       end
 
-      should assign_to(:mapped_doc_template)
       should respond_with(:redirect)
       should_not set_the_flash
 
@@ -66,7 +64,6 @@ class MappedDocTemplatesControllerTest < ActionController::TestCase
         delete :destroy, :id => @mdt.id, :map_id => @mdt.map.id, :project_id => @mdt.map.project.id
       end
 
-      should assign_to(:mapped_doc_template)
       should respond_with(:redirect)
       should_not set_the_flash
 
