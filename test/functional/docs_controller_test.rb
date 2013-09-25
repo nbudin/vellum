@@ -182,7 +182,7 @@ class DocsControllerTest < ActionController::TestCase
 
       should "create a doc with the appropriate attrs" do
         assert_equal @old_count + 1, Doc.count
-        assert_equal @doc.name, assigns(:doc).name
+        assert_equal "Copy of #{@doc.name}", assigns(:doc).name
         assert_equal @doc.doc_template, assigns(:doc).doc_template
         assert_equal @color, assigns(:doc).attrs[@attr.name].value
       end

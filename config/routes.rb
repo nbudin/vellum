@@ -14,6 +14,10 @@ Vellum::Application.routes.draw do
 
     resources :relationship_types
     resources :docs do
+      member do
+        post :copy
+      end
+      
       collection do
         post :sort
       end

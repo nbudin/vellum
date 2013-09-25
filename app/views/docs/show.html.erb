@@ -46,7 +46,10 @@
         <%= image_tag "workflow_transition.png" %>
         Reassign
     </button>
+    
   <% end -%>
+  <br/>
+  <%= button_to "Copy #{@doc.name}", copy_doc_path(@project, @doc), :class => "new", :method => "post" %>
 	<% if can?(:destroy, @doc) -%>
 		<br/>
 		<%= button_to "Delete #{@doc.name}", doc_path(@project, @doc), :method => "delete",

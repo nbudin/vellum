@@ -2,7 +2,7 @@ class DocsController < ApplicationController
   load_and_authorize_resource :project
   load_and_authorize_resource :doc, :through => :project
   
-  cache_sweeper :project_sweeper, :only => [:create, :update, :destroy, :sort]
+  cache_sweeper :project_sweeper, :only => [:create, :update, :destroy, :sort, :copy]
   
   # GET /docs
   # GET /docs.xml
@@ -141,5 +141,25 @@ class DocsController < ApplicationController
       end
     end
     head :ok
+  end
+  
+  def copy
+    @source_doc = @project.docs.find(params[:id])
+    @doc = @project.docs.new(@source_doc.attributes)
+    @doc.attrs_attributes = @source_doc.attrs_attributes
+    @doc.creator = current_person
+    @doc.name = "Copy of #{@doc.name}"
+    
+    respond_to do |format|
+      if @doc.save
+        format.html { redirect_to doc_url(@project, @doc) }
+        format.xml  { head :created, :location => doc_url(@project, @doc, :format => "xml" ) }
+        format.json { head :created, :location => doc_url(@project, @doc, :format => "json") }
+      else
+        format.html { render :action => "new" }
+        format.xml  { render :xml => @doc.errors.to_xml }
+        format.json { render :json => @doc.errors.to_json }
+      end
+    end
   end
 end
