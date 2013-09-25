@@ -13,6 +13,8 @@ group :production do
   platforms :jruby do
     gem "activerecord-jdbc-adapter", :require => false
   end
+  
+  gem 'rails_12factor'
 end
 
 gem "devise", "~> 2.0.5"
