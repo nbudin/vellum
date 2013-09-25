@@ -13,7 +13,6 @@ Vellum::Application.configure do
 
   # Compress both stylesheets and JavaScripts
   config.assets.js_compressor  = :uglifier
-  config.assets.css_compressor = :scss
   config.assets.compress = true
 
   # Specifies the header that your server uses for sending files
