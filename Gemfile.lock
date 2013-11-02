@@ -256,7 +256,7 @@ DEPENDENCIES
   rails (= 3.2.14)
   rails_12factor
   ruby-graphviz (>= 0.9.2)
-  rubyzip
+  rubyzip (>= 1.0.0)
   sanitize (~> 2.0.2)
   sass-rails (~> 3.2.3)
   shoulda (~> 3.2.0)

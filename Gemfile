@@ -28,7 +28,7 @@ gem "radius"
 gem "version_fu", "~> 1.0.1"
 gem "jquery-rails", '>= 1.0.12'
 gem 'jquery-ui-rails'
-gem "rubyzip"
+gem "rubyzip", ">= 1.0.0", :require => "zip"
 gem "nokogiri", ">= 1.4.1"
 gem "sanitize", "~> 2.0.2"
 gem "heroku_external_db"
