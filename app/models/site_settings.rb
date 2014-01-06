@@ -22,4 +22,8 @@ class SiteSettings < ActiveRecord::Base
       sc
     end
   end
+  
+  def welcome_html
+    read_attribute(:welcome_html).html_safe
+  end
 end

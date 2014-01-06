@@ -79,5 +79,5 @@
 </table>
 
 <div class="document_content" id="doc_content">
-  <%=raw @doc.content %>
+  <%= Sanitize.clean(@doc.content, Sanitize::Config::VELLUM).html_safe %>
 </div>

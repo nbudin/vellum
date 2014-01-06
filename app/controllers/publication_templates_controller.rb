@@ -94,10 +94,10 @@ class PublicationTemplatesController < ApplicationController
         @tempfile = Tempfile.new("vellum-publication-#{Time.now}.#{@publication_template.output_format}")
         @tempfile.write @publication_template.execute(:project => @project)
         
-        @filetype = case @publication_template.output_format.to_sym
-        when :fo
+        @filetype = case @publication_template.output_format.to_s
+        when "fo"
           "application/xslfo+xml"
-        when :html
+        when "html"
           @attachment = false
           "text/html"
         else
