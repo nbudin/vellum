@@ -24,6 +24,6 @@ class SiteSettings < ActiveRecord::Base
   end
   
   def welcome_html
-    read_attribute(:welcome_html).html_safe
+    read_attribute(:welcome_html).try(:html_safe)
   end
 end
