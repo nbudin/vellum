@@ -24,6 +24,12 @@ GEM
       tzinfo (~> 0.3.29)
     activerecord-jdbc-adapter (1.3.1)
       activerecord (>= 2.2)
+    activerecord-jdbcmysql-adapter (1.3.1)
+      activerecord-jdbc-adapter (~> 1.3.1)
+      jdbc-mysql (>= 5.1.22)
+    activerecord-jdbcsqlite3-adapter (1.3.1)
+      activerecord-jdbc-adapter (~> 1.3.1)
+      jdbc-sqlite3 (~> 3.7.2)
     activeresource (3.2.16)
       activemodel (= 3.2.16)
       activesupport (= 3.2.16)
@@ -81,6 +87,7 @@ GEM
       factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
     farbtastic-rails (1.3.0)
+    ffi (1.9.0)
     ffi (1.9.0-java)
     fog (1.15.0)
       builder
@@ -98,6 +105,8 @@ GEM
     i18n (0.6.8)
     illyan_client (1.0.2)
       activeresource
+    jdbc-mysql (5.1.28)
+    jdbc-sqlite3 (3.7.2.1)
     journey (1.0.4)
     jquery-rails (3.0.4)
       railties (>= 3.0, < 5.0)
@@ -230,6 +239,8 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbc-adapter
+  activerecord-jdbcmysql-adapter
+  activerecord-jdbcsqlite3-adapter
   acts_as_list
   ae_users_migrator (>= 1.0.4)
   airbrake

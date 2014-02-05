@@ -11,10 +11,19 @@ group :production do
     gem "mysql2"
   end
   platforms :jruby do
-    gem "activerecord-jdbc-adapter", :require => false
+    gem "activerecord-jdbcmysql-adapter"
   end
   
   gem 'rails_12factor'
+end
+
+platform :ruby do
+  gem "sqlite3", :groups => [:development, :test, :hangar]
+end
+
+platform :jruby do
+  gem "activerecord-jdbc-adapter", require: false
+  gem "activerecord-jdbcsqlite3-adapter", :groups => [:development, :test, :hangar]
 end
 
 gem "devise", "~> 2.0.5"
@@ -34,7 +43,6 @@ gem "sanitize", "~> 2.0.2"
 gem "heroku_external_db"
 gem "illyan_client", ">= 1.0.2"
 gem "airbrake"
-gem "sqlite3", :groups => [:development, :test, :hangar]
 gem "pry-rails", :groups => [:development, :test]
 gem "farbtastic-rails"
 
