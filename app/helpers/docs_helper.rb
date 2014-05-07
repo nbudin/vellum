@@ -91,4 +91,12 @@ module DocsHelper
       content_tag(:td, render_attr_value(attr), :class => attr_class(attr), :class => "value")
     end
   end
+  
+  def relationship_types_for_select(doc_template, relationship_types)
+    relationship_types.flat_map do |typ, directions| 
+      directions.map do |direction|
+        [typ.description_for(doc_template, direction), "#{typ.id}_#{direction}"]
+      end
+    end
+  end
 end
