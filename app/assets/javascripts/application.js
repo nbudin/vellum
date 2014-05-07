@@ -12,3 +12,4 @@
 //= require wysihtml5/wysihtml5-0.3.0
 //= require wysihtml5/simple
 //= require_tree .
+//= require bootstrap.min
