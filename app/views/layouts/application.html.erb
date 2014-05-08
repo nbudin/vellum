@@ -9,33 +9,45 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  
-<div class="topbar">
-  <div class="app_name">
-    <%= link_to @site_settings.site_name, projects_path %>
-  </div>
-  <div class="authbox">
-    <% if person_signed_in? -%>
-        <%= image_tag('ae_users/user.png') %>
-        <%= link_to current_person.name, "#{IllyanClient.base_url}/profile" %>
-        |
-        <%= image_tag "ae_users/logout.png" %>
-        <%= link_to "Log out", destroy_person_session_path %>
-    <% else -%>
-        <%= link_to "Log in", new_person_session_path %>
-    <% end -%>
-  </div>
-  <% if @project and !@project.new_record? -%>
-    <div class="nav_links">
-      <%= nav_link_to @project.name, project_path(@project), "project.png", 
-          %w{projects structures}.include?(params[:controller]) %>
-      <%= nav_link_to "Templates", doc_templates_path(@project), "template.png" %>
-      <%= nav_link_to "Maps", maps_path(@project), "map.png" %>
-      <%= nav_link_to "Publication", publication_templates_path(@project), "publication.png" %>
-	  <%= nav_link_to "CSVs", csv_exports_path(@project), "csv_export.png" %>
-    </div>
-  <% end -%>
-</div>
+
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="<%= projects_path %>"><%= @site_settings.site_name %></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <% if @project and !@project.new_record? -%>
+            <%= nav_link_to @project.name, project_path(@project), "project.png", %w{projects structures}.include?(params[:controller]) %>
+            <%= nav_link_to "Templates", doc_templates_path(@project), "template.png" %>
+            <%= nav_link_to "Maps", maps_path(@project), "map.png" %>
+            <%= nav_link_to "Publication", publication_templates_path(@project), "publication.png" %>
+	    <%= nav_link_to "CSVs", csv_exports_path(@project), "csv_export.png" %>
+            <% end -%>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <% if person_signed_in? -%>
+            <li>
+              <a href="<%= "#{IllyanClient.base_url}/profile" %>"><%= image_tag('ae_users/user.png') %><%= current_person.name %></a>
+            </li>
+            <li>
+              <a href="<%= destroy_person_session_path %>"><%= image_tag "ae_users/logout.png" %>Log out</a>
+            </li>
+            <% else -%>
+            <li>
+              <a href="<%= new_person_session_path %>">Log in</a>
+            </li>
+            <% end -%>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>  
 
 <% if flash[:error] -%>
   <div class="error_messages">

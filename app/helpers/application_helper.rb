@@ -40,10 +40,12 @@ module ApplicationHelper
     if selected.nil?
       selected = request.path =~ /^#{destination}/
     end
-    
-    link_to(destination, {:class => selected ? "selected" : ""}) do
-      output_buffer << image_tag(image_path, :alt => label) if image_path
-      output_buffer << label
+
+    content_tag(:li, {:class => selected ? 'active' : ''}) do
+      link_to(destination) do
+        output_buffer << image_tag(image_path, :alt => label) if image_path
+        output_buffer << label
+      end
     end
   end
   
