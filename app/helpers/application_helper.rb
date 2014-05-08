@@ -120,16 +120,11 @@ module ApplicationHelper
   def itemlist_items(items, options={}, &block)
     with_output_buffer do
       items.each do |item|
-        output_buffer << content_tag(:li, :class => cycle("odd", "even")) do
-          output_buffer << content_tag(:div, :style => "float: right;") do
-            item_actions(item, options)
-          end
-          if options[:partial]
-            output_buffer << render(:partial => options[:partial], :locals => { :item => item })
-          end
-          if block_given?
-            block.call(item)
-          end
+        if options[:partial]
+          output_buffer << render(:partial => options[:partial], :locals => { :item => item })
+        end
+        if block_given?
+          block.call(item)
         end
       end
       output_buffer << "\n"

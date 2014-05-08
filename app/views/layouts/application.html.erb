@@ -33,11 +33,12 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <% if person_signed_in? -%>
-        <li>
-          <a href="<%= "#{IllyanClient.base_url}/profile" %>"><%= image_tag('ae_users/user.png') %><%= current_person.name %></a>
-        </li>
-        <li>
-          <a href="<%= destroy_person_session_path %>"><%= image_tag "ae_users/logout.png" %>Log out</a>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_person.name %> <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="<%= "#{IllyanClient.base_url}/profile" %>"><%= image_tag('ae_users/user.png') %>Profile</a>
+            <li><a href="<%= destroy_person_session_path %>"><%= image_tag "ae_users/logout.png" %>Log out</a></li>
+          </ul>
         </li>
         <% else -%>
         <li>

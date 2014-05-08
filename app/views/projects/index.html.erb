@@ -29,22 +29,25 @@
   <%= @site_settings.welcome_html %>
 <% end -%>
 
-<ul class="itemlist">
+<div class="container">
+  <div class="list-group">
   <%= itemlist_items(@projects, :delete_path => projects_path) do |project| %>
-    <%= link_to(project_path(project)) do -%>
+    <%= link_to project_path(project), :class => "list-group-item" do -%>
       <%= image_tag "project.png" %>
       <%= project.name %>
+      <%= content_tag(:button, {:class => "btn btn-danger", :style => "float: right;"}) do -%>
+      Delete
+      <% end -%>
     <% end -%>
   <% end %>
   <% if person_signed_in? -%>
-    <li style="overflow: hidden;">
-      <%= link_to new_project_path, :class => "button new" do %>
-          <%= image_tag "project_add.png" %>
-          Create project...
-      <% end %>
-    </li>
+  <%= link_to new_project_path, :class => "btn btn-default" do %>
+  <%= image_tag "project_add.png" %>
+  Create project...
+  <% end %>
   <% end -%>
-</ul>
+  </div>
+</div>
 
 
 <% unless person_signed_in? -%>
