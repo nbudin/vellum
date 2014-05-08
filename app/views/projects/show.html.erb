@@ -6,35 +6,7 @@ h2 {
 
 <%= in_place_editor @project, :name, :tag => "h1" %>
 
-<div class="jumpbox">
-  <div class="navigation">
-    <%= link_to projects_path, :class => "button back" do %>
-      <%= image_tag "arrow_left.png" %>
-      Projects
-    <% end -%>
-    <% if can? :update, @project -%>
-      <%= link_to edit_project_path(@project), :class => "button edit" do -%>
-        Sharing
-        <%= image_tag "project_edit.png" %>
-      <% end -%>
-    <% end -%>
-  </div>
-
-  <h2><%=h @project.name %></h2>
-  
-  <ol style="text-align: left;">
-	<li>Contents
-	  <ol>
-		<% @templates.each do |tmpl| -%>
-		  <li><%= link_to tmpl.plural_name, "#template_#{tmpl.id}" %></li>
-		<% end -%>
-	  </ol>
-        </li>
-        <li><%= link_to "Templates", doc_templates_path(@project) %></li>
-        <li><%= link_to "Maps", maps_path(@project) %></li>
-  </ol>
-</div>
-
+<div class="col-md-8">
 <% cache(project_path(@project)) do -%>
 
   <%= in_place_editor @project, :blurb, :rows => 4 %>
@@ -84,3 +56,33 @@ h2 {
     <% end -%>
   </p>
 <% end -%>
+</div>
+
+<div class="panel panel-default col-md-4">
+  <div class="panel-body">
+    <%= link_to projects_path, :class => "button back" do %>
+      <%= image_tag "arrow_left.png" %>
+      Projects
+    <% end -%>
+    <% if can? :update, @project -%>
+      <%= link_to edit_project_path(@project), :class => "button edit" do -%>
+        Sharing
+        <%= image_tag "project_edit.png" %>
+      <% end -%>
+    <% end -%>
+  </div>
+
+  <h2><%=h @project.name %></h2>
+  
+  <ol style="text-align: left;">
+	<li>Contents
+	  <ol>
+		<% @templates.each do |tmpl| -%>
+		  <li><%= link_to tmpl.plural_name, "#template_#{tmpl.id}" %></li>
+		<% end -%>
+	  </ol>
+        </li>
+        <li><%= link_to "Templates", doc_templates_path(@project) %></li>
+        <li><%= link_to "Maps", maps_path(@project) %></li>
+  </ol>
+</div>
