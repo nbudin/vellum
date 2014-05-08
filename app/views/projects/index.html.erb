@@ -7,9 +7,9 @@
         Edit site settings
       <% end -%>
     </div>
-
+    
     <h2><%= @site_settings.site_name %></h2>
-
+    
     <dl>
       <dt>Color</dt>
       <dd><%= @site_settings.site_color %></dd>
@@ -31,25 +31,22 @@
 
 <div class="container">
   <div class="list-group">
-  <%= itemlist_items(@projects, :delete_path => projects_path) do |project| %>
-    <%= link_to project_path(project), :class => "list-group-item" do -%>
-      <%= image_tag "project.png" %>
-      <%= project.name %>
-      <%= content_tag(:button, {:class => "btn btn-danger", :style => "float: right;"}) do -%>
-      Delete
+    <%= itemlist_items(@projects, :delete_path => projects_path) do |project| %>
+      <%= link_to project_path(project), :class => "list-group-item" do -%>
+        <%= image_tag "project.png" %>
+        <%= project.name %>
       <% end -%>
+    <% end %>
+    <% if person_signed_in? -%>
+      <%= link_to new_project_path, :class => "list-group-item list-group-item-success" do %>
+        <%= image_tag "project_add.png" %>
+        Create project...
+      <% end %>
     <% end -%>
-  <% end %>
-  <% if person_signed_in? -%>
-  <%= link_to new_project_path, :class => "btn btn-default" do %>
-  <%= image_tag "project_add.png" %>
-  Create project...
-  <% end %>
-  <% end -%>
-  </div>
+  </ul>
 </div>
 
 
 <% unless person_signed_in? -%>
-<p>To see your projects, please <%= link_to "log in", new_person_session_path %>.</p>
+  <p>To see your projects, please <%= link_to "log in", new_person_session_path %>.</p>
 <% end -%>

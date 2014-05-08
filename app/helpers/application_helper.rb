@@ -140,7 +140,7 @@ module ApplicationHelper
   def sortlist_items(items, list_id, options={}, &block)
     with_output_buffer do
       items.each do |item|
-        output_buffer << content_tag(:li, :id => "#{list_id.singularize}_#{item.id}") do
+        output_buffer << content_tag(:li, :class => "list-group-item", :id => "#{list_id.singularize}_#{item.id}") do
           output_buffer << image_tag("sort_handle.png", :class => "sort_handle")
           block.call(item) if block_given?
         end
@@ -151,7 +151,7 @@ module ApplicationHelper
 
   def sortlist(items, list_id, options={}, &block)
     ul_attrs = {
-      :class => "sortlist",
+      :class => "sortlist list-group",
       :id => list_id,
       :"data-url" => options.delete(:url)
     }.merge(options)

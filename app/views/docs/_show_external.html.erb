@@ -1,20 +1,20 @@
 <div class="external_view">
-    <div class="summary">
-		  <div class="actions">
-        <% if doc.blurb.nil? -%>
-		      <button class="edit add_description" style="margin-right: 0.5em;">
-		    	  Add description
-		      </button>
-		    <% end -%>
-		  </div>	
-		  <h3><%= link_to(doc.name, doc_path(@project, doc)) %></h3>
-	    <span class="assignee">
-  	    <% if doc.assignee -%>
-          (Assigned to <%=h doc.assignee.name -%>)
-  	    <% end -%>
-      </span>
-	  </div>
-	  <%= in_place_editor doc, :blurb, :url => doc_path(@project, doc, :format => 'json'), 
-	                    :rows => 4, :tag => "div", :class => "blurb_display", 
-	                    :style => (doc.blurb.blank? ? "display: none;" : "") %>
+  <div class="summary">
+    <div class="actions">
+      <% if doc.blurb.nil? -%>
+	<button class="btn btn-default add_description" style="margin-right: 0.5em;">
+	  Add description
+	</button>
+      <% end -%>
+    </div>
+    <h3><%= link_to(doc.name, doc_path(@project, doc)) %></h3>
+    <span class="assignee">
+      <% if doc.assignee -%>
+        (Assigned to <%=h doc.assignee.name -%>)
+      <% end -%>
+    </span>
+  </div>
+  <%= in_place_editor doc, :blurb, :url => doc_path(@project, doc, :format => 'json'), 
+    :rows => 4, :tag => "div", :class => "blurb_display", 
+      :style => (doc.blurb.blank? ? "display: none;" : "") %>
 </div>
