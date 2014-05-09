@@ -80,11 +80,13 @@ h2 {
   
   <ul>
     <li>Contents
-      <div class="list-group">
+      <ul>
 	<% @templates.each do |tmpl| -%>
-	  <%= link_to tmpl.plural_name, "#template_#{tmpl.id}", :class => "list-group-item" %>
+          <li>
+	    <%= link_to tmpl.plural_name, "#template_#{tmpl.id}" %>
+          </li>
 	<% end -%>
-      </div>
+      </ul>
     </li>
     <li><%= link_to "Templates", doc_templates_path(@project) %></li>
     <li><%= link_to "Maps", maps_path(@project) %></li>

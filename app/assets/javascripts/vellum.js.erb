@@ -57,7 +57,7 @@
         var target = $this.parent();
 
         target.children().hide();
-        var deleteButton = jQuery("<button type=\"button\" class=\"delete\">Remove</button>");
+        var deleteButton = jQuery("<button type=\"button\" class=\"btn btn-danger\">Remove</button>");
         deleteButton.bind('click', $this, toggleDeleteCheckbox);
         target.append(deleteButton);
 
@@ -105,13 +105,13 @@ jQuery.fn.vellumAttrList = function() {
     var $lastAttr = this.find('tr').last();
     var newAttrHtml = $lastAttr.clone().html();
 
-    var $newAttrDiv = jQuery("<tr style=\"background-color: transparent\"><td colspan=\"2\"><button class=\"new\" type=\"button\">Add field</button></td></tr>");
+    var $newAttrDiv = jQuery("<tr style=\"background-color: transparent\"><td colspan=\"2\"><button class=\"btn btn-success\" type=\"button\">Add field</button></td></tr>");
     $newAttrDiv.find("button").bind('click', {'list': this, 'newAttrDiv': $newAttrDiv, 'rawHtml': newAttrHtml},
         function(event) {
             var timedHtml = event.data.rawHtml.replace(/99999/g, new Date().getTime());
             var newAttr = jQuery("<tr class=\"willAdd\">" + timedHtml + "</tr>");
 
-            var cancelButton = jQuery("<button class=\"delete\" type=\"button\">Remove</button>").
+            var cancelButton = jQuery("<button class=\"btn btn-danger\" type=\"button\">Remove</button>").
                 bind("click", {'target': newAttr, 'list': event.data.list}, function(event) {
                     event.data.target.remove();
             });

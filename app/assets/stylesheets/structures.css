@@ -14,13 +14,7 @@ table.structure > tbody > tr > td:first-child {
 }
 
 .external_view {
-    background-color: #eee; 
-	padding: 0.5em; 
-	margin-bottom: 0.5em; 
-	border-radius: 5px; 
-	-moz-border-radius: 5px; 
-	-webkit-border-radius: 5px; 
-	position: relative;
+    padding: 0.5em; 
 }
 
 .external_view textarea {

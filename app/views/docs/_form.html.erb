@@ -1,22 +1,27 @@
 <%= error_messages_for f.object %>
 
-<p style="margin-top: 2em;">
-  <b><%= f.label :name, "Document Name" %></b><br/>
-  <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold; width: 99%;" %>
-</p>
+<div class="form-group">
+  <%= f.label :name, "Document Name", :class => "control-label" %>
+  <%= f.text_field :name, :class => "form-control input-lg" %>
+</div>
 
-<table class="doc_attrs">
-  <%= f.fields_for :attrs do |attr_fields| %>
-    <%= edit_attr_row(attr_fields) %>
-  <% end -%>
-  
-  <%= f.fields_for :attrs_attributes, nil do |outer_fields| -%>
-    <%= outer_fields.fields_for '99999', Attr.new(:doc => @doc) do |attr_fields| %>
+<div class="form-group">
+  <label class="control-label">Fields</label>
+  <table class="doc_attrs table table-striped">
+    <%= f.fields_for :attrs do |attr_fields| %>
       <%= edit_attr_row(attr_fields) %>
     <% end -%>
-  <% end -%>
-</table>
+    
+    <%= f.fields_for :attrs_attributes, nil do |outer_fields| -%>
+      <%= outer_fields.fields_for '99999', Attr.new(:doc => @doc) do |attr_fields| %>
+        <%= edit_attr_row(attr_fields) %>
+      <% end -%>
+    <% end -%>
+  </table>
+</div>
 
-<div class="vellumAutoResizeWym">
-  <%= wysihtml5_editor f, :content, :style => "width: 100%;" %>
+<div class="form-group">
+  <div class="vellumAutoResizeWym">
+    <%= wysihtml5_editor f, :content, :style => "width: 100%;", :class => "form-control" %>
+  </div>
 </div>
