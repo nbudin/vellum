@@ -1,6 +1,14 @@
 require 'format_conversions/base'
 
 class FormatConversions::GameTeX < FormatConversions::Base
+  def self.filename_extension
+    ".tex"
+  end
+  
+  def self.mime_type
+    "application/x-tex"
+  end
+  
   def characters(string)
     @output << string.gsub(/\s+/, ' ').gsub(/"(?=\S)/, '``').gsub(/(?<!\S)'/, '`')
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140509180907) do
+ActiveRecord::Schema.define(:version => 20140509181840) do
 
   create_table "attrs", :force => true do |t|
     t.integer "doc_version_id"
@@ -168,9 +168,10 @@ ActiveRecord::Schema.define(:version => 20140509180907) do
   end
 
   create_table "projects", :force => true do |t|
-    t.string "name"
-    t.text   "blurb"
-    t.string "public_visibility", :default => "hidden", :null => false
+    t.string  "name"
+    t.text    "blurb"
+    t.string  "public_visibility", :default => "hidden", :null => false
+    t.boolean "gametex_available", :default => false
   end
 
   add_index "projects", ["public_visibility"], :name => "index_projects_on_public_visibility"

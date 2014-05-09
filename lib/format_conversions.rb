@@ -6,6 +6,14 @@ module FormatConversions
     def self.convert(html)
       html
     end
+    
+    def self.filename_extension
+      ".html"
+    end
+    
+    def self.mime_type
+      "text/html"
+    end
   end
   
   CONVERTERS = {
@@ -34,5 +42,13 @@ module FormatConversions
   
   def self.convert(html, format)
     converter_class(format).convert(html)
+  end
+  
+  def self.filename_extension_for(format)
+    converter_class(format).filename_extension
+  end
+  
+  def self.mime_type_for(format)
+    converter_class(format).mime_type
   end
 end

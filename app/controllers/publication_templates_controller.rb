@@ -1,3 +1,5 @@
+require 'format_conversions'
+
 class PublicationTemplatesController < ApplicationController
   load_and_authorize_resource :project
   load_and_authorize_resource :through => :project
@@ -70,7 +72,7 @@ class PublicationTemplatesController < ApplicationController
   def publish
     @publication_template = @project.publication_templates.find(params[:id])
     
-    @attachment = true
+    @attachment = (@publication_template.output_format.to_s != 'html')
     
     begin      
       if @publication_template.doc_template
@@ -85,7 +87,7 @@ class PublicationTemplatesController < ApplicationController
         Zip::OutputStream.open(@tempfile.path) do |zipfile|
           @publication_template.doc_template.docs.each do |doc|
             filename = doc.name.gsub(/[\/\\]/, "_")
-            filename << ".#{@publication_template.output_format}"
+            filename << FormatConversions.filename_extension_for(@publication_template.output_format)
             zipfile.put_next_entry(filename)
             zipfile.print @publication_template.execute(:project => @project, :doc => doc)
           end
@@ -94,17 +96,9 @@ class PublicationTemplatesController < ApplicationController
         @tempfile = Tempfile.new("vellum-publication-#{Time.now}.#{@publication_template.output_format}")
         @tempfile.write @publication_template.execute(:project => @project)
         
-        @filetype = case @publication_template.output_format.to_s
-        when "fo"
-          "application/xslfo+xml"
-        when "html"
-          @attachment = false
-          "text/html"
-        else
-          "application/octet-stream"
-        end
-        
-        @filename = "#{@project.name} - #{@publication_template.name}.#{@publication_template.output_format}"
+        @filetype = FormatConversions.mime_type_for(@publication_template.output_format)
+        extension = FormatConversions.filename_extension_for(@publication_template.output_format)
+        @filename = "#{@project.name} - #{@publication_template.name}#{extension}"
       end
       
       @tempfile.flush

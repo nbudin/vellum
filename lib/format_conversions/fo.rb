@@ -1,6 +1,14 @@
 require 'format_conversions/base'
 
 class FormatConversions::FO < FormatConversions::Base
+  def self.filename_extension
+    ".xml"
+  end
+  
+  def self.mime_type
+    "application/xslfo+xml"
+  end
+  
   def start_element(name, attributes=[])
     @output << case name
     when "p" then %(<block space-after.optimum="8pt" widows="4" orphans="4">)

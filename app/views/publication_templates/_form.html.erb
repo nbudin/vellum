@@ -11,7 +11,7 @@
 
 <p>
   <b><%= f.label :format, "Output Format" %></b><br/>
-  <% %w{html fo}.each do |format| %>
+  <% @project.available_output_formats.each do |format| %>
     <span style="display: inline-block; padding-right: 3em;">
       <%= f.radio_button :format, format %> <%= f.label :format, format.upcase, :value => format %>
     </span>
