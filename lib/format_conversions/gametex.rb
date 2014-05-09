@@ -12,7 +12,7 @@ class FormatConversions::GameTeX < Nokogiri::XML::SAX::Document
   end
   
   def characters(string)
-    @output << string.gsub(/\s+/, ' ').gsub(/"(?=\S)/, '``')
+    @output << string.gsub(/\s+/, ' ').gsub(/"(?=\S)/, '``').gsub(/(?<!\S)'/, '`')
   end
   
   def cdata_block(string)
