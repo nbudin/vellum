@@ -1,8 +1,20 @@
-<p style="margin-top: 2em;">
-  <span style="font-weight: bold; font-size: 200%;"><%=h @doc.name %></span>
+<div class="col-md-8">
+  <p style="margin-top: 2em;">
+    <span style="font-weight: bold; font-size: 200%;"><%=h @doc.name %></span>
     (<%=h @doc.doc_template.name %>)</p>
+  
+  <table style="margin-top: .75em;" class="doc_attrs">
+    <% @doc.attrs.each do |attr| -%>
+      <%= attr_row(attr) %>
+    <% end -%>
+  </table>
+  
+  <div class="document_content" id="doc_content">
+    <%= Sanitize.clean(@doc.content, Sanitize::Config::VELLUM).try(:html_safe) %>
+  </div>
+</div>
 
-<div class="jumpbox">
+<div class="col-md-4 panel panel-default">
   <div class="navigation">
     <%= link_to project_path(@project), :class => "button back" do -%>
       <%= image_tag "arrow_left.png" %>
@@ -29,7 +41,7 @@
       </td>
     </tr>
   </table>
-
+  
   <h2><%=h @doc.name %></h2>
   <p>
     <b>Template:</b> 
@@ -37,47 +49,37 @@
       <%= image_tag "template.png" %>
       <%= @doc.doc_template.name %>
     <% end -%>
-  <%= form_for @doc, :url => doc_path(@project, @doc), :html => {:class => "assignee"} do |f| -%>
-    <%= f.label "assignee_id", "Assigned to" %>
-    <%= f.select "assignee_id", [["nobody", ""]] + @project.authors.sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
-                 :include_blank => false, :selected => (@doc.assignee ? @doc.assignee_id : "") %>
-    
-    <button class="transition">
+    <%= form_for @doc, :url => doc_path(@project, @doc), :html => {:class => "assignee"} do |f| -%>
+      <%= f.label "assignee_id", "Assigned to" %>
+      <%= f.select "assignee_id", [["nobody", ""]] + @project.authors.sort_by { |a| a.name }.collect {|p| [p.name, p.id] },
+      :include_blank => false, :selected => (@doc.assignee ? @doc.assignee_id : "") %>
+      
+      <button class="transition">
         <%= image_tag "workflow_transition.png" %>
         Reassign
-    </button>
-    
-  <% end -%>
-  <br/>
-  <%= button_to "Copy #{@doc.name}", copy_doc_path(@project, @doc), :class => "new", :method => "post" %>
-	<% if can?(:destroy, @doc) -%>
-		<br/>
-		<%= button_to "Delete #{@doc.name}", doc_path(@project, @doc), :method => "delete",
-			:class => "delete", :confirm => "Are you sure you want to delete #{@doc.name}?" %>
-	<% end -%>
+      </button>
+      
+    <% end -%>
+    <br/>
+    <%= button_to "Copy #{@doc.name}", copy_doc_path(@project, @doc), :class => "new", :method => "post" %>
+    <% if can?(:destroy, @doc) -%>
+      <br/>
+      <%= button_to "Delete #{@doc.name}", doc_path(@project, @doc), :method => "delete",
+      :class => "delete", :confirm => "Are you sure you want to delete #{@doc.name}?" %>
+    <% end -%>
   </p>
-
+  
   <h2>Related</h2>
   <div id="relationships">
     <%= @doc.name %>...
     <ul class="itemlist">
       <%= itemlist_items(@relationships, :delete_path => relationships_path(@project)) do |rel| -%>
-		    <%= rel.description_for(@doc) %>
-		    <%= link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)) %>
-	    <% end -%>
+	<%= rel.description_for(@doc) %>
+	<%= link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)) %>
+      <% end -%>
       <li>
-	      <%= render :partial => 'new_relationship', :locals => { :doc => @doc } %>
+	<%= render :partial => 'new_relationship', :locals => { :doc => @doc } %>
       </li>
     </ul>
   </div>  
-</div>
-    
-<table style="margin-top: .75em;" class="doc_attrs">
-    <% @doc.attrs.each do |attr| -%>
-		  <%= attr_row(attr) %>
-    <% end -%>
-</table>
-
-<div class="document_content" id="doc_content">
-  <%= Sanitize.clean(@doc.content, Sanitize::Config::VELLUM).try(:html_safe) %>
 </div>
