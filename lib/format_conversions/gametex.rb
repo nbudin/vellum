@@ -1,22 +1,8 @@
-class FormatConversions::GameTeX < Nokogiri::XML::SAX::Document
-  attr_reader :output
-  
-  def self.convert(html)
-    doc = self.new
-    Nokogiri::HTML::SAX::Parser.new(doc).parse(html)
-    doc.output
-  end
-  
-  def initialize
-    @output = ""
-  end
-  
+require 'format_conversions/base'
+
+class FormatConversions::GameTeX < FormatConversions::Base
   def characters(string)
     @output << string.gsub(/\s+/, ' ').gsub(/"(?=\S)/, '``').gsub(/(?<!\S)'/, '`')
-  end
-  
-  def cdata_block(string)
-    characters(string)
   end
   
   def start_element(name, attributes=[])

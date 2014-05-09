@@ -1,3 +1,5 @@
+require 'format_conversions'
+
 class VPubContext < Radius::Context
   class VPubRuntimeError < Exception
     attr_reader :publication_template, :line, :doc
@@ -79,13 +81,7 @@ class VPubContext < Radius::Context
     end
     
     define_tag 'content' do |tag|
-      content = tag.locals.doc.content
-      
-      if format_for_tag(tag) == "fo"
-        FormatConversions.html_to_fo(content)
-      else
-        content
-      end
+      FormatConversions.convert(tag.locals.doc.content, format_for_tag(tag))
     end
     
     define_tag 'include' do |tag|
