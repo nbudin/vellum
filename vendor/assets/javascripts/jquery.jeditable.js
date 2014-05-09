@@ -402,7 +402,7 @@
         types: {
             defaults: {
                 element : function(settings, original) {
-                    var input = $('<input type="hidden"></input>');                
+                    var input = $('<input type="hidden"></input>');
                     $(this).append(input);
                     return(input);
                 },
@@ -424,7 +424,7 @@
                             });
                         /* otherwise use button with given string as text */
                         } else {
-                            var submit = $('<button type="submit" />');
+                            var submit = $('<button type="submit" class="btn btn-default" />');
                             submit.html(settings.submit);                            
                         }
                         $(this).append(submit);
@@ -435,7 +435,7 @@
                             var cancel = $(settings.cancel);
                         /* otherwise use button with given string as text */
                         } else {
-                            var cancel = $('<button type="cancel" />');
+                            var cancel = $('<button type="cancel" class="btn btn-default"/>');
                             cancel.html(settings.cancel);
                         }
                         $(this).append(cancel);
@@ -455,7 +455,7 @@
             },
             text: {
                 element : function(settings, original) {
-                    var input = $('<input />');
+                    var input = $('<input class="form-control" />');
                     if (settings.width  != 'none') { input.width(settings.width);  }
                     if (settings.height != 'none') { input.height(settings.height); }
                     /* https://bugzilla.mozilla.org/show_bug.cgi?id=236791 */
@@ -467,7 +467,7 @@
             },
             textarea: {
                 element : function(settings, original) {
-                    var textarea = $('<textarea />');
+                    var textarea = $('<textarea class="form-control" />');
                     if (settings.rows) {
                         textarea.attr('rows', settings.rows);
                     } else if (settings.height != "none") {
