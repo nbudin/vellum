@@ -2,20 +2,17 @@
 
 <h2>Templates</h2>
 
-<ul class="itemlist">
-  <%= itemlist_items(@doc_templates,
-                    :delete_path => doc_templates_path(@project)) do |t| %>
-    <%= link_to(doc_template_path(@project, t)) do -%>
+<div class="list-group">
+  <%= itemlist_items(@doc_templates, :delete_path => doc_templates_path(@project)) do |t| %>
+    <%= link_to doc_template_path(@project, t), :class => "list-group-item" do -%>
       <%= image_tag "template.png" %>
       <%= t.name %>
     <% end -%>
   <% end %>
-  <li>
-    <%= link_to new_doc_template_path(@project), :class => "button new" do %>
-      <%= image_tag "template_add.png" %>
-      Add new template...
-    <% end %>
-  </li>
-</ul>
+  <%= link_to new_doc_template_path(@project), :class => "list-group-item list-group-item-success" do %>
+    <%= image_tag "template_add.png" %>
+    Add new template...
+  <% end %>
+</div>
 
 
