@@ -24,26 +24,26 @@
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <% if @project and !@project.new_record? -%>
-        <%= nav_link_to @project.name, project_path(@project), "project.png", %w{projects structures}.include?(params[:controller]) %>
-        <%= nav_link_to "Templates", doc_templates_path(@project), "template.png" %>
-        <%= nav_link_to "Maps", maps_path(@project), "map.png" %>
-        <%= nav_link_to "Publication", publication_templates_path(@project), "publication.png" %>
-	<%= nav_link_to "CSVs", csv_exports_path(@project), "csv_export.png" %>
+          <%= nav_link_to @project.name, project_path(@project), "project.png", %w{projects structures}.include?(params[:controller]) %>
+          <%= nav_link_to "Templates", doc_templates_path(@project), "template.png" %>
+          <%= nav_link_to "Maps", maps_path(@project), "map.png" %>
+          <%= nav_link_to "Publication", publication_templates_path(@project), "publication.png" %>
+	  <%= nav_link_to "CSVs", csv_exports_path(@project), "csv_export.png" %>
         <% end -%>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <% if person_signed_in? -%>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_person.name %> <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="<%= "#{IllyanClient.base_url}/profile" %>"><%= image_tag('ae_users/user.png') %>Profile</a>
-            <li><a href="<%= destroy_person_session_path %>"><%= image_tag "ae_users/logout.png" %>Log out</a></li>
-          </ul>
-        </li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_person.name %> <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="<%= "#{IllyanClient.base_url}/profile" %>"><%= image_tag('ae_users/user.png') %>Profile</a></li>
+              <li><a href="<%= destroy_person_session_path %>"><%= image_tag "ae_users/logout.png" %>Log out</a></li>
+            </ul>
+          </li>
         <% else -%>
-        <li>
-          <a href="<%= new_person_session_path %>">Log in</a>
-        </li>
+          <li>
+            <a href="<%= new_person_session_path %>">Log in</a>
+          </li>
         <% end -%>
       </ul>
     </div><!--/.nav-collapse -->
@@ -51,15 +51,15 @@
 </div>  
 
 <% if flash[:error] -%>
-<div class="error_messages">
-  <%= flash[:error] %>
-</div>
+  <div class="error_messages">
+    <%= flash[:error] %>
+  </div>
 <% end -%>
 
 <p style="color: green"><%= flash[:notice] %></p>
 
 <div class="container">
-<%= yield %>
+  <%= yield %>
 </div>
 
 </body>
