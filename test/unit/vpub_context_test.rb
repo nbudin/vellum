@@ -23,7 +23,7 @@ class VPubContextTest < ActiveSupport::TestCase
     
     should "return the doc's content" do
       assert_equal @bob.content, @parser.parse('<v:content/>')
-      @fo_content = FormatConversions.html_to_fo(@bob.content)
+      @fo_content = FormatConversions.convert(@bob.content, :fo)
       assert_equal @fo_content, @parser.parse('<v:content format="fo"/>')
       @context.format = "fo"
       assert_equal @fo_content, @parser.parse('<v:content/>')
