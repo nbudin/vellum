@@ -18,8 +18,8 @@ class FormatConversions::GameTeX < FormatConversions::Base
     when "strong", "b" then '\textbf{'
     when "em", "i" then '\textit{'
     when "u" then '\uline{'
-    when "ul" then "\n\n\\begin{itemize}"
-    when "ol" then "\n\n\\begin{enumerate}"
+    when "ul" then "\n\n\\begin{itemz}"
+    when "ol" then "\n\n\\begin{enum}"
     when "li" then "\n\\item "
     when "h1" then "\n\\section{"
     when "h2" then "\n\\subsection{"
@@ -36,8 +36,8 @@ class FormatConversions::GameTeX < FormatConversions::Base
     when "strong", "em", "b", "i", "u" then '}'
     when "h1", "h2", "h3", "h4", "h5" then "}\n\n"
     when "p" then "\n\n"
-    when "ul" then "\n\\end{itemize}\n\n"
-    when "ol" then "\n\\end{enumerate}\n\n"
+    when "ul" then "\n\\end{itemz}\n\n"
+    when "ol" then "\n\\end{enum}\n\n"
     else ""
     end
   end
