@@ -1,10 +1,5 @@
-<div class="external_view">
-    <div class="summary">
-		<div class="actions">
-	      <%= link_to(map_path(@project, map), :class => "button edit") do -%>
-	            <%= image_tag "map.png" %> Details
-          <% end -%>
-		</div>			
-		<h3><%= map.name %></h3>
-	</div>
+<div class="summary">
+  <%= link_to(map_path(@project, map)) do -%>
+    <h3><%= map.name %></h3>
+  <% end -%>
 </div>

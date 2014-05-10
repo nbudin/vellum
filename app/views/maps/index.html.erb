@@ -1,26 +1,33 @@
-<h1><%= @project.name %></h1>
-
-<h2>Maps</h2>
-
-<p>Maps let you create a visual diagram of the project.  You can choose a set of
-  templates and see how they are connected to each other.</p>
-
-<ul class="sortlist" data-url="<%=sort_maps_path(@project)%>">
-  <%= sortlist_items(@project.maps, "maps") do |map| -%>
-    <%= render :partial => 'maps/show_external', :locals => { :map => map } %>
-  <% end -%>
-  <li class="external_view">
-    <%= form_for(:map, :url => maps_path(@project)) do |f| %>
-    <div style="float: right;">
-      <button class="new">
-        <%= image_tag "map_add.png" %>
-        Create map
-      </button>
-    </div>
-    <%= f.label "name" %>
-    <%= f.text_field "name" %>
+<div class="col-md-8">
+  <p>Maps let you create a visual diagram of the project.  You can choose a set of
+    templates and see how they are connected to each other.</p>
+  
+  <ul class="sortlist list-group" data-url="<%=sort_maps_path(@project)%>">
+    <%= sortlist_items(@project.maps, "maps") do |map| -%>
+      <%= render :partial => 'maps/show_external', :locals => { :map => map } %>
     <% end -%>
-  </li>
-</ul>
+  </ul>
+</div>
 
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">Create New Map</div>
+    <div class="panel-body">
+      <%= form_for(:map, :url => maps_path(@project)) do |f| %>
+        <div class="form-group">
+          <%= f.label "name", :class => "control-label" %>
+          <%= f.text_field "name", :class => "form-control" %>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary">
+            <%= image_tag "map_add.png" %>
+            Create map
+          </button>
+        </div>
+      <% end -%>
+    </div>
+  </div>
+</div>
+
+  
 
