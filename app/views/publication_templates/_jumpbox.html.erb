@@ -1,36 +1,47 @@
-<div class="jumpbox">
-  <div class="navigation">
-    <%= link_to publication_templates_path(@project), :class => "button back" do -%>
-      <%= image_tag "arrow_left.png" %> Publication
-    <% end -%>
-    <% if can?(:edit, @publication_template) -%>
-      <%= link_to edit_publication_template_path(@project, @publication_template), :class => "button edit" do -%>
-        Edit
-        <%= image_tag "publication_template_edit.png" %>
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <%=h @publication_template.name %>
+      <% if can?(:edit, @publication_template) -%>
+        <%= link_to edit_publication_template_path(@project, @publication_template), :class => "btn btn-default btn-sm" do -%>
+          Edit
+          <%= image_tag "publication_template_edit.png" %>
+        <% end -%>
       <% end -%>
-    <% end -%>
-  </div>
+    </div>
 
-  <h2><%=h @publication_template.name %></h2>
-  <p><b>Output format:</b> <%= @publication_template.format.try(:upcase) %></p>
-  <p>
-    <%= form_for :context, :url => test_publication_template_path(@project, @publication_template) do |f| %>
-      <% if @publication_template.doc_template -%>
-        <%= f.select :doc_id, @publication_template.doc_template.docs.collect { |d| [d.name, d.id] }%>
-      <% end -%>
-      <button class="transition">
-        <%= image_tag "execute.png" %>
-        Test
-      </button>
-    <% end -%>
-  </p>
-  
-  <p>
-    <%= form_for :context, :url => publish_publication_template_path(@project, @publication_template) do |f| %>
-      <button class="delete">
-        <%= image_tag "publication.png" %>
-        Publish
-      </button>
-    <% end -%>
-  </p>
+    <div class="panel-body">
+      <p>
+        <label class="control-label">Output format:</label>
+        <%= @publication_template.format.try(:upcase) %>
+      </p>
+
+      <p>
+        <%= form_for :context, :url => test_publication_template_path(@project, @publication_template), :html => { :class => "form-inline" } do |f| %>
+          <div class="form-group">
+            <% if @publication_template.doc_template -%>
+              <%= f.select :doc_id, @publication_template.doc_template.docs.collect { |d| [d.name, d.id] }, {}, { :class => "form-control" } %>
+            <% end -%>
+          </div>
+          <div class="form-group">
+            <button class="btn btn-default">
+              <%= image_tag "execute.png" %>
+              Test
+            </button>
+          </div>
+        <% end -%>
+      </p>
+      
+      <p>
+        <%= form_for :context, :url => publish_publication_template_path(@project, @publication_template) do |f| %>
+          <div class="form-group">
+            <button class="btn btn-danger">
+              <%= image_tag "publication.png" %>
+              Publish
+            </button>
+          </div>
+        <% end -%>
+      </p>
+    </div>
+  </div>
 </div>
