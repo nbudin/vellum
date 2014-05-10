@@ -63,11 +63,8 @@ h2 {
 </div>
 
 <div class="panel panel-default col-md-4">
-  <div class="panel-body">
-    <%= link_to projects_path, :class => "btn btn-default" do %>
-      <%= image_tag "arrow_left.png" %>
-      Projects
-    <% end -%>
+  <div class="panel-heading">
+    <h2><%=h @project.name %></h2>
     <% if can? :update, @project -%>
       <%= link_to edit_project_path(@project), :class => "btn btn-default", :style => "float: right" do -%>
         Sharing
@@ -75,20 +72,21 @@ h2 {
       <% end -%>
     <% end -%>
   </div>
-
-  <h2><%=h @project.name %></h2>
-  
-  <ul>
-    <li>Contents
-      <ul>
-	<% @templates.each do |tmpl| -%>
-          <li>
-	    <%= link_to tmpl.plural_name, "#template_#{tmpl.id}" %>
-          </li>
-	<% end -%>
-      </ul>
-    </li>
-    <li><%= link_to "Templates", doc_templates_path(@project) %></li>
-    <li><%= link_to "Maps", maps_path(@project) %></li>
-  </ol>
+  <div class="panel-body">
+    
+    <ul>
+      <li>Contents
+        <ul>
+	  <% @templates.each do |tmpl| -%>
+            <li>
+	      <%= link_to tmpl.plural_name, "#template_#{tmpl.id}" %>
+            </li>
+	  <% end -%>
+        </ul>
+      </li>
+      <li><%= link_to "Templates", doc_templates_path(@project) %></li>
+      <li><%= link_to "Maps", maps_path(@project) %></li>
+    </ul
+  </div>
 </div>
+  
