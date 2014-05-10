@@ -1,19 +1,13 @@
 <%= form_for @project.relationships.new, { :html => {'data-project-url' => project_url(@project), :class => "vellumRelationshipBuilder"} } do |f| -%>
-  <div style="float: right;">
-    <button class="new">
-      <%= image_tag "relationship_add.png" %>
-      Add
-    </button>
-  </div>
-  
   <%= f.hidden_field :source_id, :value => doc.id %>
   <%= f.select :relationship_type_id_and_source_direction, [["", ""]] + @relationship_types.collect { |typ, directions| 
-        directions.collect { |direction|
-          [typ.description_for(doc.doc_template, direction), "#{typ.id}_#{direction}"]
-        }.flatten
-      } %>
-  <%= f.select :target_id, (
-    [["New document...", "new"]] +
-    @project.docs.collect { |doc| [doc.name, doc.id] }
-    ) %>
+                                                                                                      directions.collect { |direction|
+                                                                                                                           [typ.description_for(doc.doc_template, direction), "#{typ.id}_#{direction}"]
+                                                                                                                           }.flatten
+                                                                                                      }, {}, { :class => "form-control" } %>
+  <%= f.select :target_id, ([["New document...", "new"]] + @project.docs.collect { |doc| [doc.name, doc.id] }), {}, { :class => "form-control" } %>
+  <button class="btn btn-success">
+      <%= image_tag "relationship_add.png" %>
+    Add
+  </button>
 <% end -%>
