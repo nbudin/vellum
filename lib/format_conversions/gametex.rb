@@ -1,6 +1,18 @@
 require 'format_conversions/base'
 
 class FormatConversions::GameTeX < FormatConversions::Base
+  class TeXPants < RubyPants
+    def to_tex
+      # kind of a hack, but we can't just tell RubyPants to replace e.g. double right-quotes with " because it will then replace them again
+      # later in the algorithm.
+      educate_quotes(self).
+        gsub(entity(:single_left_quote), '`').
+        gsub(entity(:single_right_quote), "'").
+        gsub(entity(:double_left_quote), '``').
+        gsub(entity(:double_right_quote), "''")
+    end
+  end
+  
   def self.filename_extension
     ".tex"
   end
@@ -10,7 +22,7 @@ class FormatConversions::GameTeX < FormatConversions::Base
   end
   
   def characters(string)
-    @output << string.gsub(/\s+/, ' ').gsub(/"(?=\S)/, '``').gsub(/(?<!\S)'/, '`')
+    @output << TeXPants.new(string, [:quotes]).to_tex
   end
   
   def start_element(name, attributes=[])
