@@ -1,44 +1,47 @@
 <%= form_for(@project, :as => :project, :url => projects_url) do |f| %>
   <h1>Create a Project</h1>
 
-  <div class="cardform">
+  <div class="jumbotron">
     <%= error_messages_for @project %>
 
-    <p>
-      <b><%= f.label :name, "Project Name" %></b><br/>
-      <%= f.text_field :name, :style => "font-size: 200%; font-weight: bold; width: 99%;" %>
-    </p>
+    <div class="form-group">
+      <%= f.label :name, "Project Name", :class => "control-label" %>
+      <%= f.text_field :name, :class => "form-control input-lg" %>
+    </div>
     
-    <div class="callout">
-    <% if @template_sources.size > 0 -%>
-      <h2>Get started faster</h2>
-      <p>
-        If you want, you can use some templates from an existing project as a starting point.  This will
-        let you start writing documents using some pre-existing formats.  You'll have your own copies of
-        the templates in your project, and can edit them without affecting the original project.
-      </p>
-      <p>
-        If you don't copy templates from an existing project, you'll have to create some of your own.
-      </p>
-
-      <p style="font-weight: bold;">
-        <%= f.label "template_source_project_id", "Choose a project to copy templates from:" %>
-        <%= f.select "template_source_project_id", [["I will make my own templates.", ""]] + @template_sources.collect {|p| [p.name, p.id]} %>
-      </p>
-    <% else -%>
-      <h2>Getting started</h2>
-      
-      <p>
-        Once you hit "Create", you'll have an empty project.  Before you can get started writing, you'll
-        need to create some templates to use.  There will be instructions on the project page about how
-        to do that.
-      </p>
-    <% end -%>
+    <div class="panel panel-default">
+      <% if @template_sources.size > 0 -%>
+      <div class="panel-heading">Get started faster</div>
+      <div class="panel-body">
+        <span class="help-block">
+          If you want, you can use some templates from an existing project as a starting point.  This will
+          let you start writing documents using some pre-existing formats.  You'll have your own copies of
+          the templates in your project, and can edit them without affecting the original project.
+        </span>
+        <span class="help-block">
+          If you don't copy templates from an existing project, you'll have to create some of your own.
+        </span>
+        
+        <div class="form-group">
+          <%= f.label "template_source_project_id", "Choose a project to copy templates from:", :class => "control-label" %>
+          <%= f.select "template_source_project_id", [["I will make my own templates.", ""]] + @template_sources.collect {|p| [p.name, p.id]}, {}, { :class => "form-control input-sm" } %>
+        </div>
+        <% else -%>
+        <div class="panel-heading">Getting started</div>
+        <div class="panel-body">
+          <span class="help-block">
+            Once you hit "Create", you'll have an empty project.  Before you can get started writing, you'll
+            need to create some templates to use.  There will be instructions on the project page about how
+            to do that.
+          </span>
+        </div>
+        <% end -%>
+      </div>
     </div>
 
-    <div class="submit">
-      <%= link_to "Back", projects_path, :class => "button cancel" %>
-      <button type="submit" class="new">
+    <div class="form-group">
+      <%= link_to "Cancel", projects_path, :class => "btn btn-danger" %>
+      <button type="submit" class="btn btn-primary">
         Create
       </button>
     </div>

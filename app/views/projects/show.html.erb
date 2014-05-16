@@ -6,81 +6,87 @@ h2 {
 
 <%= in_place_editor @project, :name, :tag => "h1" %>
 
-<div class="jumpbox">
-  <div class="navigation">
-    <%= link_to projects_path, :class => "button back" do %>
-      <%= image_tag "arrow_left.png" %>
-      Projects
+<div class="col-md-8">
+  <% cache(project_path(@project)) do -%>
+    
+    <%= in_place_editor @project, :blurb, :rows => 4 %>
+    
+    <% @templates.each do |tmpl| -%>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a>
+        </div>
+        <div class="panel-body">
+    	  <%= sortlist(@docs[tmpl], "docs_#{tmpl.id}", :url => sort_docs_path(@project)) do |doc| -%>
+    	    <%= render :partial => 'docs/show_external', :locals => { :doc => doc } %>
+          <% end -%>
+          <% if can?(:create, @project.docs.new(:doc_template_id => tmpl.id)) -%>
+            <div class="list-group">
+    	      <%= link_to new_doc_path(@project, :template_id => tmpl.id), :class => "list-group-item list-group-item-success" do -%>
+    	        <%= image_tag "structure_add.png" %> Add new <%= tmpl.name %>
+    	      <% end -%>
+            </div>
+    	  <% end -%>
+        </div>
+      </div>
     <% end -%>
-    <% if can? :update, @project -%>
-      <%= link_to edit_project_path(@project), :class => "button edit" do -%>
-        Sharing
-        <%= image_tag "project_edit.png" %>
-      <% end -%>
-    <% end -%>
-  </div>
-
-  <h2><%=h @project.name %></h2>
   
-  <ol style="text-align: left;">
-	<li>Contents
-	  <ol>
-		<% @templates.each do |tmpl| -%>
-		  <li><%= link_to tmpl.plural_name, "#template_#{tmpl.id}" %></li>
-		<% end -%>
-	  </ol>
+    <% if @templates.size < 1 -%>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Welcome to <%= @project.name %>
+        </div>
+        <div class="panel-body">
+          <p>Before you can get started writing, Vellum needs to know a little bit about
+            your project.  In particular, it needs to know what kinds of documents you're
+            going to be putting in it.  The way you tell it about that is by making
+            <strong>templates</strong>.</p>
+          
+          <p>You need a template for each <strong>type</strong> of document you're going
+            to write.  So if you create a template called "Character,"
+            Vellum will know that you're going to be writing some characters.
+            You can make as many templates as you want.  They'll all show up as sections
+            on this page.</p>
+        </div>
+      </div>
+    <% end -%>
+    
+    <% if can?(:create, @project.doc_templates.new) -%>
+      <div class="list-group">
+        <%= link_to new_doc_template_path(@project), :class => "list-group-item list-group-item-success" do %>
+          <%= image_tag "template_add.png" %>
+          Add new template...
+        <% end %>
+      </div>
+    <% end -%>
+  <% end -%>
+</div>
+
+<div class="col-md-4">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <%=h @project.name %>
+      <% if can? :update, @project -%>
+        <%= link_to edit_project_path(@project), :class => "btn btn-default btn-sm" do -%>
+          Edit
+          <%= image_tag "project_edit.png" %>
+        <% end -%>
+      <% end -%>
+    </div>
+    <div class="panel-body">
+      <ul>
+        <li>Contents
+          <ul>
+	    <% @templates.each do |tmpl| -%>
+              <li>
+	        <%= link_to tmpl.plural_name, "#template_#{tmpl.id}" %>
+              </li>
+	    <% end -%>
+          </ul>
         </li>
         <li><%= link_to "Templates", doc_templates_path(@project) %></li>
         <li><%= link_to "Maps", maps_path(@project) %></li>
-  </ol>
+      </ul
+    </div>
+  </div>
 </div>
-
-<% cache(project_path(@project)) do -%>
-
-  <%= in_place_editor @project, :blurb, :rows => 4 %>
-
-  <% @templates.each do |tmpl| -%>
-    <section class="template">
-      <h2><%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a></h2>
-      <div style="margin-left: 20px;">
-        <% if can?(:create, @project.docs.new(:doc_template_id => tmpl.id)) -%>
-    	    <p>
-    	      <%= link_to new_doc_path(@project, :template_id => tmpl.id), :class => "button new" do -%>
-    		      <%= image_tag "structure_add.png" %> Add new <%= tmpl.name %>
-    	      <% end -%>
-    	    </p>
-    	  <% end -%>
-    	  <%= sortlist(@docs[tmpl], "docs_#{tmpl.id}",
-    				  :url => sort_docs_path(@project)
-    				  ) do |doc| -%>
-    		  <%= render :partial => 'docs/show_external',
-    			           :locals => { :doc => doc } %>
-    	  <% end -%>
-      </div>
-    </section>
-  <% end -%>
-
-  <% if @templates.size < 1 -%>
-    <h2>Welcome to <%= @project.name %></h2>
-
-    <p>Before you can get started writing, Vellum needs to know a little bit about
-      your project.  In particular, it needs to know what kinds of documents you're
-      going to be putting in it.  The way you tell it about that is by making
-      <strong>templates</strong>.</p>
-
-    <p>You need a template for each <strong>type</strong> of document you're going
-      to write.  So if you create a template called "Character,"
-      Vellum will know that you're going to be writing some characters.
-      You can make as many templates as you want.  They'll all show up as sections
-      on this page.</p>
-  <% end -%>
-
-  <p>
-    <% if can?(:create, @project.doc_templates.new) -%>
-      <%= link_to new_doc_template_path(@project), :class => "button new" do %>
-        <%= image_tag "template_add.png" %>
-        Add new template...
-      <% end %>
-    <% end -%>
-  </p>
-<% end -%>

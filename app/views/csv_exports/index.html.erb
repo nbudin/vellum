@@ -2,16 +2,24 @@
 
 <h2>CSV Exports</h2>
 
-<ul class="itemlist">
-  <%= itemlist_items(@csv_exports,
-                    :delete_path => csv_exports_path(@project)) do |csv_export| %>
-    <%= link_to(csv_export_path(@project, csv_export)) do -%>
-      <%= image_tag "csv_export.png" %>
-      <%= csv_export.name %>
-    <% end -%>
+<ul class="list-group">
+  <%= itemlist_items(@csv_exports) do |csv_export| %>
+    <li class="list-group-item">
+      <ul class="list-inline">
+        <li>
+          <%= link_to(csv_export_path(@project, csv_export)) do -%>
+            <%= image_tag "csv_export.png" %>
+            <%= csv_export.name %>
+          <% end -%>
+        </li>
+        <li>
+          <%= item_actions(csv_export, :delete_path => csv_exports_path(@project)) %>
+        </li>
+      </ul>
+    </li>
   <% end %>
-  <li>
-    <%= link_to new_csv_export_path(@project), :class => "button new" do %>
+  <li class="list-group-item list-group-item-success">
+    <%= link_to new_csv_export_path(@project) do %>
       <%= image_tag "csv_export_add.png" %>
       Create new CSV export...
     <% end %>

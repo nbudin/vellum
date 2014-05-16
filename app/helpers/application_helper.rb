@@ -40,10 +40,12 @@ module ApplicationHelper
     if selected.nil?
       selected = request.path =~ /^#{destination}/
     end
-    
-    link_to(destination, {:class => selected ? "selected" : ""}) do
-      output_buffer << image_tag(image_path, :alt => label) if image_path
-      output_buffer << label
+
+    content_tag(:li, {:class => selected ? 'active' : ''}) do
+      link_to(destination) do
+        output_buffer << image_tag(image_path, :alt => label) if image_path
+        output_buffer << label
+      end
     end
   end
   
@@ -110,24 +112,18 @@ module ApplicationHelper
 
   def item_actions(item, options={})
     if options[:delete_path] && can?(:destroy, item)
-      button_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",
-                      :style => "margin: 0;", :method => :delete, :class => "button delete")
+      button_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",:style => "margin: 0;", :method => :delete, :class => "btn btn-danger btn-xs")
     end
   end
 
   def itemlist_items(items, options={}, &block)
     with_output_buffer do
       items.each do |item|
-        output_buffer << content_tag(:li, :class => cycle("odd", "even")) do
-          output_buffer << content_tag(:div, :style => "float: right;") do
-            item_actions(item, options)
-          end
-          if options[:partial]
-            output_buffer << render(:partial => options[:partial], :locals => { :item => item })
-          end
-          if block_given?
-            block.call(item)
-          end
+        if options[:partial]
+          output_buffer << render(:partial => options[:partial], :locals => { :item => item })
+        end
+        if block_given?
+          block.call(item)
         end
       end
       output_buffer << "\n"
@@ -143,7 +139,7 @@ module ApplicationHelper
   def sortlist_items(items, list_id, options={}, &block)
     with_output_buffer do
       items.each do |item|
-        output_buffer << content_tag(:li, :id => "#{list_id.singularize}_#{item.id}") do
+        output_buffer << content_tag(:li, :class => "list-group-item", :id => "#{list_id.singularize}_#{item.id}") do
           output_buffer << image_tag("sort_handle.png", :class => "sort_handle")
           block.call(item) if block_given?
         end
@@ -154,7 +150,7 @@ module ApplicationHelper
 
   def sortlist(items, list_id, options={}, &block)
     ul_attrs = {
-      :class => "sortlist",
+      :class => "sortlist list-group",
       :id => list_id,
       :"data-url" => options.delete(:url)
     }.merge(options)

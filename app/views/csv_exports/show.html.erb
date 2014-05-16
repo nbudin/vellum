@@ -1,18 +1,22 @@
-<h2><%= @csv_export.name %></h2>
-
-<%= render :partial => 'jumpbox' %>
-
-<h3><%= @csv_export.filename %></h3>
-
-<table border="1" style="width: 100%;">
-  <tr>
-	  <% @csv_export.attr_names.each do |attr_name| -%>
-      <th><%= attr_name %></th>
-    <% end -%>
-  </tr>
-  <% 3.times do -%>
+<div class="col-md-8">
+  <h2><%= @csv_export.name %></h2>
+  
+  <h3><%= @csv_export.filename %></h3>
+  
+  <table class="table table-bordered">
     <tr>
-      <% @csv_export.attr_names.size.times do -%><td>...</td><% end -%>
+      <% @csv_export.attr_names.each do |attr_name| -%>
+        <th><%= attr_name %></th>
+      <% end -%>
     </tr>
-  <% end -%>
-</table>
+    <% 3.times do -%>
+      <tr>
+        <% @csv_export.attr_names.size.times do -%><td>...</td><% end -%>
+      </tr>
+    <% end -%>
+  </table>
+</div>
+
+<div class="col-md-4">
+  <%= render :partial => 'jumpbox' %>
+</div>
