@@ -1,25 +1,25 @@
 <h1>Site settings</h1>
 
-<%= form_for @site_settings, :url => {:action => "update_settings"} do |f| -%>
-  <table>
-    <tr>
-      <th>Site name</th>
-      <td><%= f.text_field :site_name %></td>
-    </tr>
-    <tr>
-      <th>Site color</th>
-      <td><%= f.text_field :site_color %></td>
-    </tr>
-    <tr>
-      <th>Site email address</th>
-      <td><%= f.text_field :site_email %></td>
-    </tr>
-    <tr>
-      <th>Welcome page</th>
-      <td>
-        <%= text_area_tag "site_settings[welcome_html]", @site_settings.welcome_html, :class => "mceEditor" %>
-      </td>
-    </tr>
-  </table>
-  <%= submit_tag "Save changes", :class => "save" %>
+<%= form_for @site_settings, :url => {:action => "update_settings"}, :html => {:role => "form"} do |f| -%>
+  <div class="form-group">
+    <%= f.label :site_name %>
+    <%= f.text_field :site_name, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :site_color %>
+    <%= f.text_field :site_color, class: "form-control" %>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :site_email, "Site email address" %>
+    <%= f.text_field :site_email, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :welcome_html, "Welcome page" %>
+    <%= f.text_area :welcome_html, class: "form-control", style: "font-family: monospace" %>
+  </div>
+  
+  <%= submit_tag "Save changes", :class => "btn btn-primary" %>
 <% end -%>
