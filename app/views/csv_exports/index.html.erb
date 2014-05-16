@@ -3,12 +3,19 @@
 <h2>CSV Exports</h2>
 
 <ul class="list-group">
-  <%= itemlist_items(@csv_exports, :delete_path => csv_exports_path(@project)) do |csv_export| %>
+  <%= itemlist_items(@csv_exports) do |csv_export| %>
     <li class="list-group-item">
-      <%= link_to(csv_export_path(@project, csv_export)) do -%>
-        <%= image_tag "csv_export.png" %>
-        <%= csv_export.name %>
-      <% end -%>
+      <ul class="list-inline">
+        <li>
+          <%= link_to(csv_export_path(@project, csv_export)) do -%>
+            <%= image_tag "csv_export.png" %>
+            <%= csv_export.name %>
+          <% end -%>
+        </li>
+        <li>
+          <%= item_actions(csv_export, :delete_path => csv_exports_path(@project)) %>
+        </li>
+      </ul>
     </li>
   <% end %>
   <li class="list-group-item list-group-item-success">

@@ -14,20 +14,30 @@
   
   <p><%= @doc_template.name %>...</p>
   
-  <div class="list-group">
-    <%= itemlist_items(@relationship_types, :delete_path => relationship_types_path(@project)) do |typ| -%>
-      <%= link_to edit_relationship_type_path(@project, typ), :class => "list-group-item" do -%>
-	<%= image_tag "relationship_type.png" %>
-	<%= typ.description_for(@doc_template) %>
-	<%= typ.other_template(@doc_template).name %>
+  <ul class="list-group">
+    <%= itemlist_items(@relationship_types) do |typ| -%>
+      <li class="list-group-item">
+        <ul class="list-inline">
+          <li>
+            <%= link_to edit_relationship_type_path(@project, typ) do -%>
+	      <%= image_tag "relationship_type.png" %>
+	      <%= typ.description_for(@doc_template) %>
+	      <%= typ.other_template(@doc_template).name %>
+            <% end -%>
+          </li>
+          <li>
+            <%= item_actions(typ, :delete_path => relationship_types_path(@project)) %>
+          </li>
+        </ul>
+      </li>
+    <% end -%>
+    <li class="list-group-item list-group-item-success">
+      <%= link_to(new_relationship_type_path(@project, :relationship_type => {:left_template_id => @doc_template.id})) do %>
+        <%= image_tag "relationship_type.png" %>
+        Create relationship type...
       <% end -%>
-    <% end -%>
-    
-    <%= link_to(new_relationship_type_path(@project, :relationship_type => {:left_template_id => @doc_template.id}), :class => "list-group-item list-group-item-success") do %>
-      <%= image_tag "relationship_type.png" %>
-      Create relationship type...
-    <% end -%>
-  </div>
+    </li>
+  </ul>
 </div>
 <div class="col-md-4">
   <div class="panel panel-default">

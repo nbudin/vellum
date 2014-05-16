@@ -30,18 +30,29 @@
 <% end -%>
 
 <div class="container">
-  <div class="list-group">
-    <%= itemlist_items(@projects, :delete_path => projects_path) do |project| %>
-      <%= link_to project_path(project), :class => "list-group-item" do -%>
-        <%= image_tag "project.png" %>
-        <%= project.name %>
-      <% end -%>
+  <ul class="list-group">
+    <%= itemlist_items(@projects) do |project| %>
+      <li class="list-group-item">
+        <ul class="list-inline">
+          <li>
+            <%= link_to project_path(project) do -%>
+              <%= image_tag "project.png" %>
+              <%= project.name %>
+            <% end -%>
+          </li>
+          <li>
+            <%= item_actions(project, :delete_path => projects_path) %>
+          </li>
+        </ul>
+      </li>
     <% end %>
     <% if person_signed_in? -%>
-      <%= link_to new_project_path, :class => "list-group-item list-group-item-success" do %>
-        <%= image_tag "project_add.png" %>
-        Create project...
-      <% end %>
+      <li class="list-group-item list-group-item-success">
+        <%= link_to new_project_path do %>
+          <%= image_tag "project_add.png" %>
+          Create project...
+        <% end %>
+      </li>
     <% end -%>
   </ul>
 </div>

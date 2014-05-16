@@ -74,10 +74,17 @@
         <div id="relationships">
           <%= @doc.name %>...
           <ul>
-            <%= itemlist_items(@relationships, :delete_path => relationships_path(@project)) do |rel| -%>
+            <%= itemlist_items(@relationships) do |rel| -%>
               <li>
-	        <%= rel.description_for(@doc) %>
-	        <%= link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)) %>
+                <ul class="list-inline">
+                  <li>
+	            <%= rel.description_for(@doc) %>
+	            <%= link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)) %>
+                  </li>
+                  <li>
+                    <%= item_actions(rel, :delete_path => relationships_path(@project)) %>
+                  </li>
+                </ul>
               </li>
             <% end -%>
           </ul>
