@@ -140,7 +140,7 @@ module ApplicationHelper
     with_output_buffer do
       items.each do |item|
         output_buffer << content_tag(:li, :class => "list-group-item", :id => "#{list_id.singularize}_#{item.id}") do
-          output_buffer << image_tag("sort_handle.png", :class => "sort_handle")
+          output_buffer << content_tag(:span, "", :class => "glyphicon glyphicon-sort sort_handle")
           block.call(item) if block_given?
         end
         output_buffer << "\n"

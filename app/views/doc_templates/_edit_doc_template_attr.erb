@@ -1,7 +1,7 @@
 <tr <% if dta_fields.object.new_record? %>class="willAdd"<% end %>>
   <td class="name">
     <div class="form-group">
-      <%= dta_fields.text_field "position", :style => "width: 1.5em;", :"data-sort-handle-img" => image_path("sort_handle.png"), :class => "position" %>
+      <%= dta_fields.text_field "position", :style => "width: 1.5em;", :class => "position" %>
       <%= dta_fields.label "name", dta_fields.object.new_record? ? "Add" : "Name", :class => "control-label" %>
       <%= dta_fields.text_field "name", :class => "form-control" %>
     </div>

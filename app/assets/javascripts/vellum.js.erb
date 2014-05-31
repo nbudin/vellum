@@ -68,8 +68,7 @@
         var $this = jQuery(this);
         
         $this.hide();
-        var sortHandleImgPath = $this.attr('data-sort-handle-img');
-        $this.parents('tr').find('td.name').prepend("<img class=\"sort_handle\" src=\""+sortHandleImgPath+"\"/>");
+        $this.parents('tr').find('td.name').prepend("<span class=\"glyphicon glyphicon-sort sort_handle\"></span>");
     }
 
     jQuery.fn.vellumTemplateAttr = function() {
