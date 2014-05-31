@@ -11,5 +11,5 @@
 //= require farbtastic
 //= require wysihtml5/wysihtml5-0.3.0
 //= require wysihtml5/simple
+//= require bootstrap
 //= require_tree .
-//= require bootstrap.min
