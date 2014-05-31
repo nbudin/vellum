@@ -6,6 +6,7 @@
  *= require jumpbox
  *= require wysihtml5
  *= require structures
- *= require site_theme
  *= require bootstrap
+ *= require bootstrap-vellum
+ *= require site_theme
 */
