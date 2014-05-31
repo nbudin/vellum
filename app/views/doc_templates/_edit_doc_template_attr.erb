@@ -11,7 +11,7 @@
       <%= dta_fields.label "ui_type", "Display as", :class => "control-label" %>
       <%= dta_fields.select "ui_type", DocTemplateAttr.ui_types_for_select, {}, {:class => "ui_type_select form-control"} %>
     </div>
-    <div class="choices form-group">
+    <div class="choices form-group pull-right">
       <%= dta_fields.label "human_choices", "Choices", :class => "control-label" %>
       <%= dta_fields.text_field "human_choices", :placeholder => "Example: apple, banana, pear", :class => "form-control" %>
     </div>

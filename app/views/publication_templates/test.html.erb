@@ -1,52 +1,55 @@
-<h2> 
-  Output from "<%=h @publication_template.name %>"
-  <% if @doc -%>
-    for "<%=h @doc.name %>"
+<div class="col-md-8">
+  <h2> 
+    Output from "<%=h @publication_template.name %>"
+    <% if @doc -%>
+      for "<%=h @doc.name %>"
+    <% end -%>
+  </h2>
+
+  <% if @error -%>
+    <% if @error.is_a?(VPubContext::VPubRuntimeError) %>
+      <h3>Error in publication template</h3>
+    
+      <p><%= @error.to_s %></p>
+    
+      <p>
+        <b>While running publication template:</b>
+        <% if @error.publication_template -%>
+          <%= @error.publication_template.name %>
+        <% else -%>
+          N/A
+        <% end -%>
+        <br/>
+
+        <b>And processing document:</b>
+        <% if @error.doc -%>
+          <%= @error.doc.name %> (<%= @error.doc.doc_template.try(:name) %>)
+        <% else -%>
+          None
+        <% end -%>
+      </p>
+    <% else -%>
+      <h3><%= @error.class.name %></h3>
+  
+      <p><%= @error.to_s %></p>
+  
+      <pre class="pre-scrollable">
+        <%=h(@error.backtrace.join "\n") %>
+      </pre>
+    <% end -%>
+  <% else -%>
+    <% if @publication_template.output_format == "html" -%>
+      <iframe src="<%= @raw_preview_url %>" style="width: 100%; border: 1px black solid; height: 600px;">
+        Your browser doesn't seem to support iframes; to preview the HTML output of this template, 
+        <%= link_to "click here", @raw_preview_url %>.
+      </iframe>
+    <% end -%>
+  
+    <pre class="pre-scrollable">
+      <%=h(@output) %>
+    </pre>
   <% end -%>
-</h2>
+</div>
 
 <%= render :partial => 'jumpbox' %>
 
-<% if @error -%>
-  <% if @error.is_a?(VPubContext::VPubRuntimeError) %>
-    <h3>Error in publication template</h3>
-    
-    <p><%= @error.to_s %></p>
-    
-    <p>
-      <b>While running publication template:</b>
-      <% if @error.publication_template -%>
-        <%= @error.publication_template.name %>
-      <% else -%>
-        N/A
-      <% end -%>
-      <br/>
-
-      <b>And processing document:</b>
-      <% if @error.doc -%>
-        <%= @error.doc.name %> (<%= @error.doc.doc_template.try(:name) %>)
-      <% else -%>
-        None
-      <% end -%>
-    </p>
-  <% else -%>
-    <h3><%= @error.class.name %></h3>
-  
-    <p><%= @error.to_s %></p>
-  
-    <div class="code">
-      <pre><%=h(@error.backtrace.join "\n") %></pre>
-    </div>
-  <% end -%>
-<% else -%>
-  <% if @publication_template.output_format == "html" -%>
-    <iframe src="<%= @raw_preview_url %>" style="width: 100%; border: 1px black solid; height: 600px;">
-      Your browser doesn't seem to support iframes; to preview the HTML output of this template, 
-      <%= link_to "click here", @raw_preview_url %>.
-    </iframe>
-  <% end -%>
-  
-  <div class="code">
-    <pre><%=h(@output) %></pre>
-  </div>
-<% end -%>

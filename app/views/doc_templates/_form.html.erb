@@ -19,7 +19,7 @@
         a set of radio buttons.</span>
       <span class="help-block">Field names can contain letters, numbers, spaces, and hyphens.</span>
       
-      <table class="doc_template_attrs table">
+      <table class="doc_template_attrs table form-inline">
         <%= f.fields_for :doc_template_attrs do |dta_fields| %>
           <%= render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields } %>
         <% end -%>

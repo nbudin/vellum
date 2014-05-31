@@ -11,22 +11,32 @@ h2 {
     
     <%= in_place_editor @project, :blurb, :rows => 4 %>
     
-    <% @templates.each do |tmpl| -%>
+    <% @templates.each do |tmpl| -%>    
       <div class="panel panel-default">
-        <div class="panel-heading">
-          <%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a>
+        <div class="panel-heading clearfix">
+          <div class="panel-title pull-left" style="padding-top: 5px">
+            <%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a>
+          </div>
+          <% if can?(:create, @project.docs.new(:doc_template_id => tmpl.id)) -%>
+            <div class="navbar-right">
+              <%= link_to(new_doc_path(@project, :template_id => tmpl.id), :class => "btn btn-success btn-sm") do %>
+                Add
+              <% end -%>
+            </div>
+          <% end -%>
         </div>
+        
         <div class="panel-body">
     	  <%= sortlist(@docs[tmpl], "docs_#{tmpl.id}", :url => sort_docs_path(@project)) do |doc| -%>
     	    <%= render :partial => 'docs/show_external', :locals => { :doc => doc } %>
           <% end -%>
           <% if can?(:create, @project.docs.new(:doc_template_id => tmpl.id)) -%>
             <div class="list-group">
-    	      <%= link_to new_doc_path(@project, :template_id => tmpl.id), :class => "list-group-item list-group-item-success" do -%>
-    	        <%= image_tag "structure_add.png" %> Add new <%= tmpl.name %>
-    	      <% end -%>
+              <%= link_to new_doc_path(@project, :template_id => tmpl.id), :class => "list-group-item list-group-item-success" do -%>
+                <%= image_tag "structure_add.png" %> Add new <%= tmpl.name %>
+              <% end -%>
             </div>
-    	  <% end -%>
+    	    <% end -%>
         </div>
       </div>
     <% end -%>
@@ -64,29 +74,29 @@ h2 {
 
 <div class="col-md-4">
   <div class="panel panel-default">
-    <div class="panel-heading">
-      <%=h @project.name %>
+    <div class="panel-heading clearfix">
       <% if can? :update, @project -%>
-        <%= link_to edit_project_path(@project), :class => "btn btn-default btn-sm" do -%>
-          Edit
+        <%= link_to edit_project_path(@project), :class => "pull-right btn btn-default btn-sm" do -%>
+          Sharing
           <%= image_tag "project_edit.png" %>
         <% end -%>
       <% end -%>
+      <%=h @project.name %>
     </div>
     <div class="panel-body">
-      <ul>
+      <ol>
         <li>Contents
-          <ul>
+          <ol>
 	    <% @templates.each do |tmpl| -%>
               <li>
 	        <%= link_to tmpl.plural_name, "#template_#{tmpl.id}" %>
               </li>
 	    <% end -%>
-          </ul>
+          </ol>
         </li>
         <li><%= link_to "Templates", doc_templates_path(@project) %></li>
         <li><%= link_to "Maps", maps_path(@project) %></li>
-      </ul
+      </ol>
     </div>
   </div>
 </div>
