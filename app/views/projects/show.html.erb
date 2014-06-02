@@ -12,7 +12,7 @@ h2 {
     <%= in_place_editor @project, :blurb, :rows => 4 %>
     
     <% @templates.each do |tmpl| -%>    
-      <div class="panel panel-default">
+      <section class="panel panel-default">
         <div class="panel-heading clearfix">
           <div class="panel-title pull-left" style="padding-top: 5px">
             <%=h tmpl.plural_name %><a name="template_<%=tmpl.id%>">&nbsp;</a>
@@ -38,7 +38,7 @@ h2 {
             </div>
     	    <% end -%>
         </div>
-      </div>
+      </section>
     <% end -%>
   
     <% if @templates.size < 1 -%>

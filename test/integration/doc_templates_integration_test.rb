@@ -14,11 +14,11 @@ class DocTemplatesIntegrationTest < ActionController::IntegrationTest
     click_link "Add new template..."
     
     fill_in "Template name", with: "Character"
-    fill_in "Add:", with: "Mana"
+    fill_in "Add", with: "Mana"
     click_button "Create template"
     
     assert has_content?("Character")
-    within("tr:contains(Mana)") { assert has_content?("Simple text input") }
+    within("tr:has(td:contains(Mana))") { assert has_content?("Simple text input") }
   end
   
   test 'add fields to a template' do
@@ -28,9 +28,9 @@ class DocTemplatesIntegrationTest < ActionController::IntegrationTest
     click_link "Character"
     click_link "Edit"
     
-    fill_in "Add:", with: "HP"
+    fill_in "Add", with: "HP"
     click_button "Save changes"
-    within("tr:contains(HP)") { assert has_content?("Simple text input") }
+    within("tr:has(td:contains(HP))") { assert has_content?("Simple text input") }
   end
   
   test 'remove fields from a template' do
@@ -74,7 +74,7 @@ class DocTemplatesIntegrationTest < ActionController::IntegrationTest
       left_template: organization, right_template: character, left_description: "includes")
       
     visit doc_template_url(@project, organization)
-    within("li:has(a:contains('includes'))") { click_button "Delete" }
+    within("li.list-group-item:contains('includes')") { click_button "Delete" }
     
     assert_equal doc_template_url(@project, organization), current_url
     assert has_no_content?("includes Character")
@@ -84,7 +84,7 @@ class DocTemplatesIntegrationTest < ActionController::IntegrationTest
     character = FactoryGirl.create(:doc_template, project: @project, name: "Character")
     
     visit doc_templates_url(@project)
-    within("li:has(a:contains('Character'))") { click_button "Delete" }
+    within("li.list-group-item:contains('Character')") { click_button "Delete" }
     
     assert_equal doc_templates_url(@project), current_url
     assert has_no_content?("Character")
