@@ -25,15 +25,15 @@ class MapsIntegrationTest < ActionController::IntegrationTest
     select "Characters", from: "mapped_doc_template[doc_template_id]"
     within("#docs") { click_button "Add" }
     assert_equal map_path(@project, map), current_path
-    within("#docs ul.itemlist") { assert has_content?("Characters") }
+    assert find("#docs .list-inline", text: "Characters")
     
     select "Organizations", from: "mapped_doc_template[doc_template_id]"
     within("#docs") { click_button "Add" }
-    within("#docs ul.itemlist") { assert has_content?("Organizations") }
+    assert find("#docs .list-inline", text: "Organizations")
     
     select "Organization includes Character", from: "mapped_relationship_type[relationship_type_id]"
     within("#relationships") { click_button "Add" }
-    within("#relationships ul.itemlist") { assert has_content?("Organization includes Character") }
+    assert find("#relationships .list-inline", text: "Organization includes Character")
   end
   
   test 'delete a map' do
