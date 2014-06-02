@@ -41,7 +41,7 @@ class ProjectsIntegrationTest < ActionController::IntegrationTest
     end
     
     visit projects_path
-    within(:xpath, "//ul[@class='itemlist']/li[position() = 4]") do
+    within(:xpath, "//ul[@class='list-group']/li[position() = 4]") do
       click_on "Delete"
     end
     
