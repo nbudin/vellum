@@ -1,5 +1,5 @@
 source "http://rubygems.org"
-ruby "2.0.0"
+ruby "2.1.2"
 
 gem "rails", "3.2.18"
 gem 'sprockets-rails', '=2.0.0.backport1'
