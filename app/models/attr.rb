@@ -1,3 +1,5 @@
+require 'format_conversions'
+
 class Attr < ActiveRecord::Base
   module Base
     extend ActiveSupport::Concern
@@ -50,7 +52,7 @@ class Attr < ActiveRecord::Base
   
   def shim_for_attr_set(doc)
     shim = Attr.new(:doc => doc)
-    %w{name position format}.each do |field|
+    %w{name position}.each do |field|
       shim.send("#{field}=", self.read_attribute(field))
     end
     shim.value_unsafe = value
@@ -58,21 +60,8 @@ class Attr < ActiveRecord::Base
     shim
   end
 
-  def value(format='html')
-    raw_content = read_attribute(:value)
-    raw_format = self.format && self.format.to_sym
-
-    case (format && format.to_sym)
-    when :fo
-      case raw_format
-      when :html
-        FormatConversions.html_to_fo(raw_content)
-      else
-        raw_content
-      end
-    else
-      raw_content
-    end
+  def value(format=:html)
+    FormatConversions.convert(read_attribute(:value), format)
   end
 
   def value=(value)

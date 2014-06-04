@@ -48,6 +48,7 @@ gem "illyan_client", ">= 1.0.2"
 gem "airbrake"
 gem "pry-rails", :groups => [:development, :test]
 gem "farbtastic-rails"
+gem "rubypants", ">= 0.3.0", github: 'jmcnevin/rubypants'
 
 gem "puma"
 gem "asset_sync"

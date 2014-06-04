@@ -1,41 +1,54 @@
-module FormatConversions
-  def self.html_to_fo(html)
-    xml = ""
-    parser = REXML::Parsers::SAX2Parser.new(html)
-    parser.listen(:characters) {|text| xml << text }
+require 'format_conversions/fo'
+require 'format_conversions/gametex'
 
-    parser.listen(:start_element, %w{ p }) do
-      xml << "<block space-after.optimum=\"8pt\" widows=\"4\" orphans=\"4\">"
+module FormatConversions  
+  class HTML
+    def self.convert(html)
+      html
     end
-    parser.listen(:end_element, %w{ p }) do
-      xml << "</block>"
+    
+    def self.filename_extension
+      ".html"
     end
-
-    parser.listen(:start_element, %w{ ul }) do
-      xml << "<list-block start-indent=\"from-parent(start-indent) + 0.5em\" "
-      xml << "provisional-distance-between-starts=\"1em\" "
-      xml << "provisional-label-separation=\"0.5em\" space-after.optimum=\"1em\">"
+    
+    def self.mime_type
+      "text/html"
     end
-    parser.listen(:end_element, %w{ ul }) do
-      xml << "</list-block>"
+  end
+  
+  CONVERTERS = {
+    fo: FormatConversions::FO,
+    gametex: FormatConversions::GameTeX,
+    html: FormatConversions::HTML
+  }
+  
+  class UnknownFormatException < RuntimeError
+    attr_reader :format
+    
+    def initialize(format)
+      @format = format
     end
-
-    parser.listen(:start_element, %w{ li }) do
-      xml << "<list-item>"
-      xml << "  <list-item-label end-indent=\"label-end()\">"
-      xml << "    <block>&#x2022;</block>"
-      xml << "  </list-item-label>"
-      xml << "  <list-item-body start-indent=\"body-start()\">"
-      xml << "    <block>"
+    
+    def message
+      "#{@format} is not a supported format for output; supported formats are #{FormatConversions::CONVERTERS.keys.sort.to_sentence}"
     end
-    parser.listen(:end_element, %w{ li }) do
-      xml << "    </block>"
-      xml << "  </list-item-body>"
-      xml << "</list-item>"
+  end
+  
+  def self.converter_class(format)
+    CONVERTERS[format.to_sym].tap do |klass|
+      raise UnknownFormatException.new(format) unless klass
     end
-
-    parser.parse
-
-    return xml
+  end
+  
+  def self.convert(html, format)
+    converter_class(format).convert(html)
+  end
+  
+  def self.filename_extension_for(format)
+    converter_class(format).filename_extension
+  end
+  
+  def self.mime_type_for(format)
+    converter_class(format).mime_type
   end
 end

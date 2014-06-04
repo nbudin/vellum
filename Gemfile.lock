@@ -8,6 +8,12 @@ GIT
       sass (>= 3.2.0)
       sprockets-rails (~> 2.0.0.backport1)
 
+GIT
+  remote: git://github.com/jmcnevin/rubypants.git
+  revision: b4c507b6549a0a68607bd1c24be2785d71c014d6
+  specs:
+    rubypants (0.3.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -279,6 +285,7 @@ DEPENDENCIES
   rails (= 3.2.18)
   rails_12factor
   ruby-graphviz (>= 0.9.2)
+  rubypants (>= 0.3.0)!
   rubyzip (>= 1.0.0)
   sanitize (~> 2.0.2)
   sass-rails!

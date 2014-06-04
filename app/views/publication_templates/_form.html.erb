@@ -8,7 +8,7 @@
   
   <div class="form-group">
     <%= f.label :format, "Output Format", :class => "control-label" %>
-    <% %w{html fo}.each do |format| %>
+    <% @project.available_output_formats.each do |format| %>
       <div class="checkbox">
         <%= f.label :format, :value => format do -%>
           <%= f.radio_button :format, format %> <%= format.upcase %>

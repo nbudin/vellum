@@ -62,6 +62,10 @@ class Project < ActiveRecord::Base
       @template_source_project_id = project_id
     end
   end
+  
+  def available_output_formats
+    [:html, :fo, (gametex_available? && :gametex)].select { |format| format }
+  end
 
   def as_vproj_json(options = {})
     as_json( 
