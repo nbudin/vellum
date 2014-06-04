@@ -1,24 +1,38 @@
-<div class="wysihtml5">
-  <div class="wysihtml5-toolbar" style="display: none;">
-    <select class="wysihtml5-block-class">
-      <option value="p">Paragraph</option>
-      <option value="h1">Heading 1</option>
-      <option value="h2">Heading 2</option>
-      <option value="h3">Heading 3</option>
-      <option value="h4">Heading 4</option>
-      <option value="h5">Heading 5</option>
-      <option value="h6">Heading 6</option>
-    </select>
-
-    <a data-wysihtml5-command="bold">bold</a>
-    <a data-wysihtml5-command="italic">italic</a>
-    <a data-wysihtml5-command="underline">underline</a>
-    
-    <a data-wysihtml5-command="insertOrderedList">ol</a>
-    <a data-wysihtml5-command="insertUnorderedList">ul</a>
-    
-    <a data-wysihtml5-action="change_view">html view</a>
+<div class="wysihtml5 panel panel-info">
+  <div class="wysihtml5-toolbar panel-heading" style="display: none;">
+    <div class="row">
+      <div class="col-xs-3">
+        <select class="wysihtml5-block-class form-control input-sm">
+          <option value="p">Paragraph</option>
+          <option value="h1">Heading 1</option>
+          <option value="h2">Heading 2</option>
+          <option value="h3">Heading 3</option>
+          <option value="h4">Heading 4</option>
+          <option value="h5">Heading 5</option>
+          <option value="h6">Heading 6</option>
+        </select>
+      </div>
+      
+      <div class="col-xs-9">
+        <div class="btn-group">
+          <a data-wysihtml5-command="bold" class="btn btn-default"><strong>B</strong></a>
+          <a data-wysihtml5-command="italic" class="btn btn-default"><em>I</em></a>
+          <a data-wysihtml5-command="underline" class="btn btn-default"><u>U</u></a>
+        </div>
+        
+        <div class="btn-group">
+          <a data-wysihtml5-command="insertOrderedList" class="btn btn-default">ol</a>
+          <a data-wysihtml5-command="insertUnorderedList" class="btn btn-default">ul</a>
+        </div>
+      
+        <div class="pull-right">
+          <a data-wysihtml5-action="change_view" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></a>
+        </div>
+      </div>
+    </div>
   </div>
   
-  <%= f.text_area field, text_area_options %>
+  <div class="panel-body">
+    <%= f.text_area field, text_area_options %>
+  </div>
 </div>

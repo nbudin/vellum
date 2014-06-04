@@ -56,8 +56,8 @@ class DocsIntegrationTest < ActionController::IntegrationTest
     france = FactoryGirl.create(:doc, project: @project, doc_template: organization, name: "France")
     
     visit project_path(@project)
-    within("section.template", text: "Characters") { assert has_content?("King Louis") }
-    within("section.template", text: "Organizations") { assert has_content?("France") }
+    within("section", text: "Characters") { assert has_content?("King Louis") }
+    within("section", text: "Organizations") { assert has_content?("France") }
     
     click_link "France"
     within ".vellumRelationshipBuilder" do

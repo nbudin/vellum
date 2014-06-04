@@ -64,11 +64,10 @@ module DocsHelper
     content_tag(:tr, :class => attr_class(attr)) do
       content_tag(:td, :class => "name") do
         if attr.from_template?
-          attr_fields.label(:value, attr.name) +
+          attr_fields.label(:value, attr.name, :class => "control-label") +
           attr_fields.hidden_field(:name)
         else
-          attr_fields.text_field("position", :style => "width: 1.5em;", 
-              :"data-sort-handle-img" => image_path("sort_handle.png"), :class => "position") + " " +
+          attr_fields.text_field("position", :style => "width: 1.5em;", :class => "position") + " " +
           attr_fields.text_field(:name)
         end
       end +

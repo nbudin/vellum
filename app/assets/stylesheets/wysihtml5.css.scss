@@ -1,16 +1,7 @@
 .wysihtml5-toolbar {
-  a {
-    border: 1px #666 solid;
-    border-radius: 3px;
-    padding: 3px;
-    text-decoration: none;
-    background-color: white;
-    color: #666;
-    
-    &.wysihtml5-command-active {
-      color: black;
-      background-color: #ffc;
-      border-color: black;
-    }
+  a.wysihtml5-command-active {
+    color: black;
+    background-color: #ffc;
+    border-color: black;
   }
 }

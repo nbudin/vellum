@@ -2,16 +2,24 @@
 
 <h2>Publication Templates</h2>
 
-<ul class="itemlist">
-  <%= itemlist_items(@publication_templates,
-                    :delete_path => publication_templates_path(@project)) do |t| %>
-    <%= link_to(publication_template_path(@project, t)) do -%>
-      <%= image_tag "publication_template.png" %>
-      <%= t.name %>
-    <% end -%>
+<ul class="list-group">
+  <%= itemlist_items(@publication_templates) do |t| %>
+    <li class="list-group-item">
+      <ul class="list-inline">
+        <li>
+          <%= link_to(publication_template_path(@project, t)) do -%>
+            <%= image_tag "publication_template.png" %>
+            <%= t.name %>
+          <% end -%>
+        </li>
+        <li>
+          <%= item_actions(t, :delete_path => publication_templates_path(@project)) %>
+        </li>
+      </ul>
+    </li>
   <% end %>
-  <li>
-    <%= link_to new_publication_template_path(@project), :class => "button new" do %>
+  <li class="list-group-item list-group-item-success">
+    <%= link_to new_publication_template_path(@project) do %>
       <%= image_tag "publication_template_add.png" %>
       Add new template...
     <% end %>
