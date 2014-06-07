@@ -45,7 +45,7 @@ gem "nokogiri", ">= 1.4.1"
 gem "sanitize", "~> 2.0.2"
 gem "heroku_external_db"
 gem "illyan_client", ">= 1.0.2"
-gem "airbrake"
+gem "rollbar"
 gem "pry-rails", :groups => [:development, :test]
 gem "farbtastic-rails"
 gem "rubypants", ">= 0.3.0", github: 'jmcnevin/rubypants'
