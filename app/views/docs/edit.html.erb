@@ -1,44 +1,45 @@
-<div class="col-md-8">
-  <%= form_for(@doc, :url => doc_path(@project, @doc), :html => {:method => 'put'}) do |f| -%>    
+<%= form_for(@doc, :url => doc_path(@project, @doc), :html => {:method => 'put'}) do |f| -%>    
+  <div class="col-md-8">
     <%= render :partial => 'form', :locals => { :f => f } %>
-  <% end -%>
   
-  <script type="text/javascript">
-   jQuery(function() {
-     jQuery('#relationships a[target=_blank]').vellumDocSummaryPopup();
-     jQuery('table.doc_attrs').vellumAttrList();
-   });
-  </script>
-</div>
+    <script type="text/javascript">
+     jQuery(function() {
+       jQuery('#relationships a[target=_blank]').vellumDocSummaryPopup();
+       jQuery('table.doc_attrs').vellumAttrList();
+     });
+    </script>
+  </div>
 
-<div class="col-md-4">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <%= @doc.name %>
-      <button type="submit" class="btn btn-default wymupdate">
-        Save changes
-        <%= image_tag "structure_edit.png" %>
-      </button>
-    </div>
-    <div class="panel-body">
-      <p>
-        <b>Template:</b> 
-        <%= link_to doc_template_path(@doc.project, @doc.doc_template) do -%>
-          <%= image_tag "template.png" %>
-          <%= @doc.doc_template.name %>
-        <% end -%>
-      </p>
-      
-      <h2>Related</h2>
-      <div id="relationships">
-        <%= @doc.name %>...
-        <ul class="itemlist">
-          <%= itemlist_items(@doc.relationships) do |rel| -%>
-            <%= rel.description_for(@doc) %>
-            <%= link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)), :target => "_blank" %>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <%= @doc.name %>
+        <button type="submit" class="btn btn-default wymupdate">
+          Save changes
+          <%= image_tag "structure_edit.png" %>
+        </button>
+      </div>
+      <div class="panel-body">
+        <p>
+          <b>Template:</b> 
+          <%= link_to doc_template_path(@doc.project, @doc.doc_template) do -%>
+            <%= image_tag "template.png" %>
+            <%= @doc.doc_template.name %>
           <% end -%>
-        </ul>
+        </p>
+      
+        <h2>Related</h2>
+        <div id="relationships">
+          <%= @doc.name %>...
+          <ul class="itemlist">
+            <%= itemlist_items(@doc.relationships) do |rel| -%>
+              <%= rel.description_for(@doc) %>
+              <%= link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)), :target => "_blank" %>
+            <% end -%>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-</div>
+
+<% end -%>
