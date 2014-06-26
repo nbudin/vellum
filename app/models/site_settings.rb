@@ -17,7 +17,7 @@ class SiteSettings < ActiveRecord::Base
   def site_color
     sc = read_attribute(:site_color)
     if sc.blank?
-      "\#ff8"
+      "\#ffb"
     else
       sc
     end
