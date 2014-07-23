@@ -9,31 +9,19 @@
     <%= @site_settings.welcome_html %>
   <% end -%>
 
-  <ul class="list-group">
-    <%= itemlist_items(@projects) do |project| %>
-      <li class="list-group-item">
-        <ul class="list-inline">
-          <li>
-            <%= link_to project_path(project) do -%>
-              <%= image_tag "project.png" %>
-              <%= project.name %>
-            <% end -%>
-          </li>
-          <li>
-            <%= item_actions(project, :delete_path => projects_path) %>
-          </li>
-        </ul>
-      </li>
-    <% end %>
-    <% if person_signed_in? -%>
-      <li class="list-group-item list-group-item-success">
-        <%= link_to new_project_path do %>
-          <%= image_tag "project_add.png" %>
-          Create project...
-        <% end %>
-      </li>
-    <% end -%>
-  </ul>
+  <% if @other_projects.present? -%>
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="active"><a href="#my-projects" role="tab" data-toggle="tab">My projects</a></li>
+      <li><a href="#other-projects" role="tab" data-toggle="tab">Other projects</a></li>
+    </ul>
+    
+    <div class="tab-content" style="margin-top: 5px">
+      <div class="tab-pane active" id="my-projects"><%= render partial: "list", locals: { projects: @my_projects } %></div>
+      <div class="tab-pane" id="other-projects"><%= render partial: "list", locals: { projects: @other_projects } %></div>      
+    </div>
+  <% else -%>
+    <%= render partial: "list", locals: { projects: @my_projects } %>
+  <% end -%>
 
   <% unless person_signed_in? -%>
     <p>To see your projects, please <%= link_to "log in", new_person_session_path %>.</p>

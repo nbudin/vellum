@@ -5,7 +5,9 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.xml
   def index
-    @projects = Project.accessible_by(current_ability, :read)
+    @my_projects, @other_projects = Project.includes(:members).accessible_by(current_ability, :read).partition do |project|
+      project.members.include?(current_person)
+    end
     
     respond_to do |format|
       format.html { render :action => "index" }
