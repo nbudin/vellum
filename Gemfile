@@ -8,6 +8,7 @@ gem 'sass-rails', github: 'guilleiguaran/sass-rails', branch: 'backport'
 gem 'coffee-rails', "~> 3.2.1"
 gem 'uglifier', ">= 1.0.3"
 gem 'bootstrap-sass'
+gem 'haml'
 
 group :production do
   platforms :ruby do
@@ -52,6 +53,8 @@ gem "rubypants", ">= 0.3.0", github: 'jmcnevin/rubypants'
 
 gem "puma"
 gem "asset_sync"
+
+gem 'letter_opener', :group => :development
 
 group :test do
   gem 'database_cleaner', '~> 1.0.0'  # 1.1.0 is broken on sqlite3, see https://github.com/bmabey/database_cleaner/issues/224

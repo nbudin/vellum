@@ -1,0 +1,9 @@
+%h1 Welcome
+
+= render partial: "project_invitations/description"
+    
+%p 
+  To accept this invitation, you'll need to sign into Vellum using a Sugar Pond account.  If you don't already have one, you can
+  sign up for one.
+  
+= link_to "Sign in or sign up", new_person_session_path, class: "btn btn-primary btn-lg"

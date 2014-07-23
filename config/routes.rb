@@ -1,5 +1,5 @@
 Vellum::Application.routes.draw do
-  devise_for :people
+  devise_for :people, :project_invitations
 
   resources :projects
   scope 'projects/:project_id' do
@@ -44,6 +44,13 @@ Vellum::Application.routes.draw do
     end
     
     resources :csv_exports
+  end
+  
+  resources :project_invitations, :only => [:show] do
+    member do
+      get :consume
+      put :resend
+    end
   end
   
   get '/about/settings' => 'about#edit_settings'

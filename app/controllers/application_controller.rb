@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   #after_filter :set_access_control_headers
   
   def current_ability
-    Ability.new(current_person)
+    Ability.new(current_person, current_project_invitation)
   end
   
   rescue_from CanCan::AccessDenied do |exception|

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140509181840) do
+ActiveRecord::Schema.define(:version => 20140706185414) do
 
   create_table "attrs", :force => true do |t|
     t.integer "doc_version_id"
@@ -159,6 +159,26 @@ ActiveRecord::Schema.define(:version => 20140509181840) do
   end
 
   add_index "people", ["username"], :name => "index_people_on_username", :unique => true
+
+  create_table "project_invitations", :force => true do |t|
+    t.string   "token",                                :null => false
+    t.string   "email",                                :null => false
+    t.integer  "project_id",                           :null => false
+    t.integer  "inviter_id",                           :null => false
+    t.text     "membership_attributes"
+    t.datetime "consumed_at"
+    t.integer  "project_membership_id"
+    t.integer  "sign_in_count",         :default => 0, :null => false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+  end
+
+  add_index "project_invitations", ["project_id", "email"], :name => "index_project_invitations_on_project_id_and_email", :unique => true
+  add_index "project_invitations", ["token"], :name => "index_project_invitations_on_token", :unique => true
 
   create_table "project_memberships", :force => true do |t|
     t.integer "project_id"

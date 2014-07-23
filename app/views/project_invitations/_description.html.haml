@@ -1,0 +1,17 @@
+%p
+  - if @project_invitation.inviter
+    %strong= @project_invitation.inviter.name
+    has invited you
+  - else
+    You've been invited
+  to collaborate on the project
+  %strong #{@project_invitation.project.name}.
+  
+  You'll be able to:
+  
+%ul
+  %li View and download all project documents
+  - if @project_invitation.author
+    %li Edit and create new documents
+  - if @project_invitation.admin
+    %li Administer the collaborator list

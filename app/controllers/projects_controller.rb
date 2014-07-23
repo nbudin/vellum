@@ -54,7 +54,8 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id], :include => {:project_memberships => :person})
     authorize! :change_permissions, @project
     
-    @project.project_memberships.build
+    @project_invitations = @project.project_invitations.pending.to_a
+    @project_invitations << @project.project_invitations.build
   end
 
   # POST /projects
@@ -86,6 +87,11 @@ class ProjectsController < ApplicationController
   def update
     @project = Project.find(params[:id])
     authorize! :change_permissions, @project
+    
+    params[:project][:project_invitations_attributes].each do |key, attributes|
+      attributes.except!(:inviter, :inviter_id)
+      attributes[:inviter] = current_person unless attributes[:id]
+    end
 
     respond_to do |format|
       if @project.update_attributes(params[:project])

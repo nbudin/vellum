@@ -10,10 +10,12 @@ class Project < ActiveRecord::Base
   has_many :csv_exports, :dependent => :destroy
   
   has_many :project_memberships
+  has_many :project_invitations
   has_many :members, :class_name => "Person", :through => :project_memberships, :source => :person
   has_many :authors, :class_name => "Person", :through => :project_memberships, :source => :person, :conditions => { "project_memberships.author" => true }
   has_many :admins, :class_name => "Person", :through => :project_memberships, :source => :person, :conditions => { "project_memberships.admin" => true }
   accepts_nested_attributes_for :project_memberships, :allow_destroy => true, :reject_if => lambda { |attrs| attrs['email'].blank? }
+  accepts_nested_attributes_for :project_invitations, :allow_destroy => true, :reject_if => lambda { |attrs| attrs['email'].blank? }
 
   attr_reader :template_source_project_id
   validates_associated :doc_templates
