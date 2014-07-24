@@ -4,5 +4,6 @@ language: ruby
 before_install: 
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
+  - "npm install -g bower"
 before_script:
   - "bundle exec rake db:schema:load bower:install"
