@@ -4,9 +4,9 @@
  *= require vellum
  *= require editors
  *= require jumpbox
- *= require wysihtml5
  *= require structures
  *= require bootstrap
  *= require bootstrap-vellum
+ *= require bootstrap-wysihtml5
  *= require site_theme
 */

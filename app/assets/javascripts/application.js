@@ -10,7 +10,8 @@
 //= require jquery_ujs
 //= require jeditable/jquery.jeditable
 //= require farbtastic/farbtastic
-//= require wysihtml5/wysihtml5-0.3.0
-//= require wysihtml5/simple
 //= require bootstrap
+//= require bootstrap-wysihtml5
+//= require wysihtml5-parser-rules
+
 //= require_tree .
