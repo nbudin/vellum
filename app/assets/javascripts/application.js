@@ -8,7 +8,8 @@
 //= require jquery
 //= require jquery.ui.all
 //= require jquery_ujs
-//= require farbtastic
+//= require jeditable/jquery.jeditable
+//= require farbtastic/farbtastic
 //= require wysihtml5/wysihtml5-0.3.0
 //= require wysihtml5/simple
 //= require bootstrap

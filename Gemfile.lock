@@ -71,6 +71,7 @@ GEM
       sass (~> 3.2)
     bourne (1.5.0)
       mocha (>= 0.13.2, < 0.15)
+    bower-rails (0.8.2)
     builder (3.0.4)
     cancan (1.6.10)
     capybara (2.1.0)
@@ -265,6 +266,7 @@ DEPENDENCIES
   ae_users_migrator (>= 1.0.4)
   asset_sync
   bootstrap-sass
+  bower-rails
   cancan
   capybara
   coffee-rails (~> 3.2.1)

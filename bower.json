@@ -1,0 +1,7 @@
+{
+  "name": "vellum",
+  "dependencies": {
+    "jeditable": "1.7.3",
+    "farbtastic": "1.3u"
+  }
+}

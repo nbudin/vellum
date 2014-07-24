@@ -363,6 +363,8 @@ jQuery(function() {
       stylesheets:  [<%= %w(wysihtml5-iframe document).map { |stylesheet| "'#{stylesheet_path stylesheet}'" }.join(', ') %>]
     });
     
+    $($this.find('iframe').get(0).documentContent).find('body').addClass('document_content');
+    
     $this.find('select.wysihtml5-block-class').bind('change', function(event) {
       editor.composer.commands.exec('formatBlock', jQuery(event.target).val());
     });
