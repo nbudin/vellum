@@ -3,7 +3,7 @@
     <span style="font-weight: bold; font-size: 200%;"><%=h @doc.name %></span>
     (<%=h @doc.doc_template.name %>)</p>
   
-  <table style="margin-top: .75em;" class="doc_attrs">
+  <table style="margin-top: .75em;" class="table doc_attrs">
     <% @doc.attrs.each do |attr| -%>
       <%= attr_row(attr) %>
     <% end -%>
