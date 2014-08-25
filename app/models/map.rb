@@ -79,6 +79,7 @@ class Map < ActiveRecord::Base
 
     nodes = {}
     mapped_doc_templates.each do |mdt|
+      next unless mdt.doc_template
       mdt.doc_template.docs.all(:conditions => { :project_id => project.id }).each do |doc|
         nodes[doc.id] = g.add_node("doc_#{doc.id}",
                                 doc_options(doc, mdt))
@@ -86,6 +87,7 @@ class Map < ActiveRecord::Base
     end
     
     mapped_relationship_types.each do |mrt|
+      next unless mrt.relationship_type
       mrt.relationship_type.relationships.all(:conditions => { :project_id => project.id }).each do |relationship|
         next unless nodes[relationship.left_id] && nodes[relationship.right_id]
         g.add_edge(nodes[relationship.left_id], nodes[relationship.right_id],

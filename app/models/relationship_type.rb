@@ -1,11 +1,12 @@
 class RelationshipType < ActiveRecord::Base
   belongs_to :project
   has_many :relationships, :dependent => :destroy
+  has_many :mapped_relationship_types, dependent: :destroy
   belongs_to :left_template, :class_name => "DocTemplate"
   belongs_to :right_template, :class_name => "DocTemplate"
  
   validates_presence_of :left_template, :right_template, :project
-  validate :check_templates_in_project
+  validate :check_templates_in_project  
 
   def name
     real_name = read_attribute :name
