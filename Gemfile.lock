@@ -109,6 +109,8 @@ GEM
       factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
     ffi (1.9.0-java)
+    figaro (1.0.0)
+      thor (~> 0.14)
     fog (1.15.0)
       builder
       excon (~> 0.25.0)
@@ -122,7 +124,7 @@ GEM
     formatador (0.2.4)
     heroku_external_db (1.0.3)
     hike (1.2.3)
-    i18n (0.6.9)
+    i18n (0.6.11)
     illyan_client (1.0.2)
       activeresource
     jdbc-mysql (5.1.28)
@@ -161,7 +163,7 @@ GEM
       cliver (~> 0.2.1)
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
-    polyglot (0.3.4)
+    polyglot (0.3.5)
     pry (0.9.12.2)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -243,7 +245,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.39)
+    tzinfo (0.3.41)
     uglifier (2.2.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
@@ -276,6 +278,7 @@ DEPENDENCIES
   devise (~> 2.0.5)
   devise_cas_authenticatable
   factory_girl_rails
+  figaro
   heroku_external_db
   illyan_client (>= 1.0.2)
   jquery-rails (>= 1.0.12)

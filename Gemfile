@@ -10,6 +10,7 @@ gem 'uglifier', ">= 1.0.3"
 gem 'bootstrap-sass'
 gem 'bootstrap-wysihtml5-rails'
 gem 'bower-rails'
+gem 'figaro'
 
 group :production do
   platforms :ruby do
