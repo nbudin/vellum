@@ -14,3 +14,4 @@ db/*.sqlite3
 bin/
 castronaut.sqlite3
 vendor/assets/bower_components
+public/assets
