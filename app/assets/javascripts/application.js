@@ -11,6 +11,8 @@
 //= require jeditable/jquery.jeditable
 //= require farbtastic/farbtastic
 //= require ace-builds/src/ace
+//= require ace-builds/src/mode-xml
+//= require ace-builds/src/theme-textmate
 //= require bootstrap
 //= require bootstrap-wysihtml5
 //= require wysihtml5-parser-rules
