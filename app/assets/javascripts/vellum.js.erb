@@ -381,4 +381,9 @@ jQuery(function() {
       $this.parents('li').find('.blurb_display').show();
       $this.hide();
   });
+  jQuery(".ace-editable").each(function () {
+    var editor = ace.edit(this);
+    editor.setTheme("ace/theme/github");
+    editor.getSession().setMode(jQuery(this).attr('data-ace-mode'));
+  });
 });

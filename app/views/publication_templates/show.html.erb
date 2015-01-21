@@ -1,9 +1,7 @@
 <div class="col-md-8">
   <h2><%= @publication_template.name %></h2>
   
-  <pre>
-    <%= h(@publication_template.content) %>
-  </pre>
+  <pre><%= h(@publication_template.content) %></pre>
 </div>
 
 <%= render :partial => 'jumpbox' %>

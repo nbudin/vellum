@@ -10,6 +10,7 @@
 //= require jquery_ujs
 //= require jeditable/jquery.jeditable
 //= require farbtastic/farbtastic
+//= require ace-builds/src/ace
 //= require bootstrap
 //= require bootstrap-wysihtml5
 //= require wysihtml5-parser-rules
