@@ -389,6 +389,7 @@ jQuery(function() {
     var editor = ace.edit(editorDiv.get(0));
     editor.setTheme("ace/theme/textmate");
     editor.getSession().setMode($this.attr('data-ace-mode'));
+    editor.getSession().setUseSoftTabs(true);
     editor.setValue($this.val());
     editor.selection.selectFileStart();
     
