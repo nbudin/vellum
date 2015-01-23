@@ -382,8 +382,18 @@ jQuery(function() {
       $this.hide();
   });
   jQuery(".ace-editable").each(function () {
-    var editor = ace.edit(this);
+    var editorDiv = jQuery("<div class=\"form-control\"></div>");
+    var $this = jQuery(this);
+    $this.hide().after(editorDiv);
+    
+    var editor = ace.edit(editorDiv.get(0));
     editor.setTheme("ace/theme/textmate");
-    editor.getSession().setMode(jQuery(this).attr('data-ace-mode'));
+    editor.getSession().setMode($this.attr('data-ace-mode'));
+    editor.setValue($this.val());
+    editor.selection.selectFileStart();
+    
+    $this.closest('form').submit(function() {
+      $this.val(editor.getValue());
+    });
   });
 });
