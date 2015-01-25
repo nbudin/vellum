@@ -33,9 +33,7 @@
   
       <p><%= @error.to_s %></p>
   
-      <pre class="pre-scrollable">
-        <%=h(@error.backtrace.join "\n") %>
-      </pre>
+      <pre class="pre-scrollable"><%=h(@error.backtrace.join "\n") %></pre>
     <% end -%>
   <% else -%>
     <% if @publication_template.output_format == "html" -%>
@@ -45,9 +43,7 @@
       </iframe>
     <% end -%>
   
-    <pre class="pre-scrollable">
-      <%=h(@output) %>
-    </pre>
+    <pre class="pre-scrollable"><%=h(@output) %></pre>
   <% end -%>
 </div>
 

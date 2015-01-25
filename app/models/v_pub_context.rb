@@ -111,7 +111,7 @@ class VPubContext < Radius::Context
       begin
         tmpl = @layout_stack[@layout_stack_index]
       
-        raise VPubRuntimeError.new("<v:yield/> called from template that is not a layout") unless tmpl
+        raise VPubRuntimeError.new("<v:yield/> called, but no template to yield to", @publication_template, tag.locals.doc) unless tmpl
         Radius::Parser.new(self, :tag_prefix => 'v').parse(tmpl.content)
       ensure
         @layout_stack_index -= 1

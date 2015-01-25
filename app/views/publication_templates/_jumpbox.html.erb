@@ -11,10 +11,28 @@
     </div>
 
     <div class="panel-body">
-      <p>
-        <label class="control-label">Output format:</label>
-        <%= @publication_template.format.try(:upcase) %>
-      </p>
+      <dl class="dl-horizontal">
+        <dt>Output format</dt>
+        <dd><%= @publication_template.format.try(:upcase) %></dd>
+        
+        <dt>Operates on</dt>
+        <dd>
+          <% if @publication_template.doc_template -%>
+            <%= @publication_template.doc_template.name %>
+          <% else -%>
+            No document required
+          <% end -%>
+        </dd>
+        
+        <dt>Layout</dt>
+        <dd>
+          <% if @publication_template.layout -%>
+            <%= @publication_template.layout.name %>
+          <% else -%>
+            None
+          <% end -%>
+        </dd>
+      </dl>
 
       <p>
         <%= form_for :context, :url => test_publication_template_path(@project, @publication_template), :html => { :class => "form-inline" } do |f| %>

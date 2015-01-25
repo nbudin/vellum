@@ -18,6 +18,11 @@
   </div>
   
   <div class="form-group">
+    <%= f.label :format, "Layout", :class => "control-label" %>
+    <%= f.collection_select :layout_id, other_publication_templates, :id, :name, { :include_blank => "No layout" }, { :class => "form-control" } %>
+  </div>
+  
+  <div class="form-group">
     <%= f.label :format, "Operates on", :class => "control-label" %>
     <%= f.select :doc_template_id, @doc_templates.collect {|t| [t.name, t.id]}, { :include_blank => "No document required" }, { :class => "form-control" } %>
   </div>

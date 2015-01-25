@@ -143,4 +143,10 @@ class PublicationTemplatesController < ApplicationController
       format.json { head :ok }
     end
   end
+  
+  private
+  def other_publication_templates
+    @publication_template.project.publication_templates.order(:name).reject { |t| t == @publication_template }
+  end
+  helper_method :other_publication_templates
 end
