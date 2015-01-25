@@ -22,6 +22,8 @@ class VPubContext < Radius::Context
     self.format = init_options[:format] || 'html'
     
     @pub_template_cache = {}
+    @layout_stack = (init_options[:layout_stack] || [@publication_template])
+    @layout_stack_index = 0
     
     define_tag 'attr' do |tag|
       get_attr tag
@@ -102,6 +104,18 @@ class VPubContext < Radius::Context
       end
 
       tmpl.execute(:doc => tag.locals.doc, :project => tag.locals.project)
+    end
+    
+    define_tag 'yield' do |tag|
+      @layout_stack_index += 1
+      begin
+        tmpl = @layout_stack[@layout_stack_index]
+      
+        raise VPubRuntimeError.new("<v:yield/> called from template that is not a layout") unless tmpl
+        Radius::Parser.new(self, :tag_prefix => 'v').parse(tmpl.content)
+      ensure
+        @layout_stack_index -= 1
+      end
     end
 
     define_tag 'repeat' do |tag|

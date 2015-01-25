@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140509181840) do
+ActiveRecord::Schema.define(:version => 20150125172206) do
 
   create_table "attrs", :force => true do |t|
     t.integer "doc_version_id"
@@ -229,6 +229,7 @@ ActiveRecord::Schema.define(:version => 20140509181840) do
     t.timestamp "created_at"
     t.timestamp "updated_at"
     t.integer   "doc_template_id"
+    t.integer   "layout_id"
   end
 
   create_table "relationship_types", :force => true do |t|

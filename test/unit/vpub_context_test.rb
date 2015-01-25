@@ -231,5 +231,30 @@ class VPubContextTest < ActiveSupport::TestCase
         assert_equal "Included template \"Another template\" requires a Tree but the current doc is a Person", exc.message
       end
     end
+    
+    context "with a layout" do
+      setup do
+        @layout = FactoryGirl.create(:publication_template, project: @project, name: "Layout", 
+          content: "<section><v:yield/></section>")
+        @publication_template = FactoryGirl.create(:publication_template, layout: @layout, content: "<h1>Doc content</h1>")
+        @context = VPubContext.new(:project => @project, :doc => @bob, publication_template: @publication_template)
+      end
+      
+      should "render in the layout" do
+        assert_equal "<section><h1>Doc content</h1></section>", @publication_template.execute({})
+      end
+      
+      context "in a nested layout" do
+        setup do
+          @outer_layout = FactoryGirl.create(:publication_template, project: @project, name: "Outer Layout",
+            content: "<html><body><v:yield/></body></html>")
+          @layout.update_attributes(layout: @outer_layout)
+        end
+        
+        should "render in both layouts" do
+          assert_equal "<html><body><section><h1>Doc content</h1></section></body></html>", @publication_template.execute({})
+        end
+      end
+    end
   end
 end
