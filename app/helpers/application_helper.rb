@@ -24,6 +24,10 @@ module ApplicationHelper
     render :partial => "shared/wysihtml5_editor", :locals => { :f => f, :field => field, :text_area_options => text_area_options }
   end
   
+  def scribe_editor(f, field, text_area_options={})
+    render :partial => "shared/scribe_editor", :locals => { :f => f, :field => field, :text_area_options => text_area_options }
+  end
+  
   def indefinite_article_for(string)
     if string =~ /^\s*[aeiou]/i
       "an"

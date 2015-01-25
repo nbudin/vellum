@@ -3,6 +3,8 @@
   "dependencies": {
     "jeditable": "1.7.3",
     "farbtastic": "1.3u",
-    "ace-builds": "1.1.8"
+    "ace-builds": "1.1.8",
+    "scribe": "1.2.1",
+    "scribe-plugin-toolbar": "0.1.4"
   }
 }

@@ -1,0 +1,38 @@
+<div class="scribe panel panel-info">
+  <div class="toolbar panel-heading" style="display: none;">
+    <div class="row">
+      <div class="col-xs-3">
+        <select class="wysihtml5-block-class form-control input-sm">
+          <option value="p">Paragraph</option>
+          <option value="h1">Heading 1</option>
+          <option value="h2">Heading 2</option>
+          <option value="h3">Heading 3</option>
+          <option value="h4">Heading 4</option>
+          <option value="h5">Heading 5</option>
+          <option value="h6">Heading 6</option>
+        </select>
+      </div>
+      
+      <div class="col-xs-9">
+        <div class="btn-group">
+          <a data-command-name="bold" class="btn btn-default"><strong>B</strong></a>
+          <a data-command-name="italic" class="btn btn-default"><em>I</em></a>
+          <a data-command-name="underline" class="btn btn-default"><u>U</u></a>
+        </div>
+        
+        <div class="btn-group">
+          <a data-command-name="insertOrderedList" class="btn btn-default">ol</a>
+          <a data-command-name="insertUnorderedList" class="btn btn-default">ul</a>
+        </div>
+      
+        <div class="pull-right">
+          <a data-wysihtml5-action="change_view" class="btn btn-default"><span class="glyphicon glyphicon-edit"></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel-body">
+    <%= f.text_area field, text_area_options %>
+  </div>
+</div>

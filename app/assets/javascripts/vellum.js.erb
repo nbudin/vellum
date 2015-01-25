@@ -370,6 +370,16 @@ jQuery(function() {
     });
   });
   
+  jQuery(".scribe").each(function() {
+    $this = jQuery(this);
+    
+    require(['scribe', 'scribe-plugin-toolbar'], function(Scribe, scribePluginToolbar) {
+      var scribe = new Scribe($this.find('textarea').get(0));
+      var toolbar = $this.find('.toolbar').get(0);
+      scribe.use(scribePluginToolbar(toolbar));
+    });
+  });
+  
   jQuery(".vellumEditExpander").vellumEditExpander();
   jQuery(".vellumAutoResizeWym").vellumAutoResizeWym();
   jQuery(".vellumInPlaceEdit").vellumInPlaceEdit();

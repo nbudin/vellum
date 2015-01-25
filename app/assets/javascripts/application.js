@@ -13,6 +13,8 @@
 //= require ace-builds/src/ace
 //= require ace-builds/src/mode-xml
 //= require ace-builds/src/theme-textmate
+//= require scribe/scribe
+//= require scribe-plugin-toolbar/scribe-plugin-toolbar
 //= require bootstrap
 //= require bootstrap-wysihtml5
 //= require wysihtml5-parser-rules
