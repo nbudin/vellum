@@ -139,8 +139,8 @@ class PublicationTemplatesController < ApplicationController
   end
   
   private
-  def other_publication_templates
-    @publication_template.project.publication_templates.order(:name).reject { |t| t == @publication_template }
+  def layouts
+    @publication_template.project.publication_templates.where(type: "layout").order(:name).reject { |t| t == @publication_template }
   end
-  helper_method :other_publication_templates
+  helper_method :layouts
 end

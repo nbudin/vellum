@@ -29,7 +29,7 @@
     <span data-only-visible-for-publication-template-types="layout">
       <%= f.label :format, "Parent layout", :class => "control-label" %>
     </span>
-    <%= f.collection_select :layout_id, other_publication_templates, :id, :name, { :include_blank => "No layout" }, { :class => "form-control" } %>
+    <%= f.collection_select :layout_id, layouts, :id, :name, { :include_blank => "No layout" }, { :class => "form-control" } %>
   </div>
   
   <div class="form-group" data-only-visible-for-publication-template-types="doc">
