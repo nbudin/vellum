@@ -1,8 +1,8 @@
 source "http://rubygems.org"
 ruby "2.1.2"
 
-gem "rails", "3.2.18"
-gem 'sass-rails', github: 'guilleiguaran/sass-rails', branch: 'backport'
+gem "rails", "3.2.21"
+gem 'sass-rails'
 gem 'coffee-rails', "~> 3.2.1"
 gem 'uglifier', ">= 1.0.3"
 gem 'bootstrap-sass'
