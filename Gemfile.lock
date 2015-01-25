@@ -243,7 +243,7 @@ GEM
     slop (3.4.6)
     spoon (0.0.4)
       ffi
-    sprockets (2.2.2.backport2)
+    sprockets (2.2.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
@@ -322,8 +322,6 @@ DEPENDENCIES
   sanitize (~> 2.0.2)
   sass-rails!
   shoulda (~> 3.2.0)
-  sprockets (= 2.2.2.backport2)
-  sprockets-rails (= 2.0.0.backport1)
   sqlite3
   uglifier (>= 1.0.3)
   version_fu (~> 1.0.1)
