@@ -140,7 +140,7 @@ class PublicationTemplatesController < ApplicationController
   
   private
   def layouts
-    @publication_template.project.publication_templates.where(type: "layout").order(:name).reject { |t| t == @publication_template }
+    @publication_template.project.publication_templates.where(template_type: "layout").order(:name).reject { |t| t == @publication_template }
   end
   helper_method :layouts
 end
