@@ -2,26 +2,38 @@
 
 <h2>Publication Templates</h2>
 
-<ul class="list-group">
-  <%= itemlist_items(@publication_templates) do |t| %>
-    <li class="list-group-item">
-      <ul class="list-inline">
-        <li>
-          <%= link_to(publication_template_path(@project, t)) do -%>
-            <%= image_tag "publication_template.png" %>
-            <%= t.name %>
-          <% end -%>
+<% %w(layout standalone doc partial).each do |template_type| -%>
+  <% human_name = PublicationTemplate.human_template_type(template_type) -%>
+  <% templates = @publication_templates_by_type[template_type] -%>
+
+  <h3><%= human_name.pluralize %></h3>
+  
+  <ul class="list-group">
+    <% if templates.present? -%>
+      <%= itemlist_items(templates) do |t| %>
+        <li class="list-group-item">
+          <ul class="list-inline">
+            <li>
+              <%= link_to(publication_template_path(@project, t)) do -%>
+                <%= image_tag "publication_template.png" %>
+                <%= t.name %>
+              <% end -%>
+              <% if template_type == "doc" -%>
+                (operates on <%= t.doc_template.name %>)
+              <% end -%>
+            </li>
+            <li>
+              <%= item_actions(t, :delete_path => publication_templates_path(@project)) %>
+            </li>
+          </ul>
         </li>
-        <li>
-          <%= item_actions(t, :delete_path => publication_templates_path(@project)) %>
-        </li>
-      </ul>
-    </li>
-  <% end %>
-  <li class="list-group-item list-group-item-success">
-    <%= link_to new_publication_template_path(@project) do %>
-      <%= image_tag "publication_template_add.png" %>
-      Add new template...
+      <% end -%>
     <% end %>
-  </li>
-</ul>
+    <li class="list-group-item list-group-item-success">
+      <%= link_to new_publication_template_path(@project, publication_template: {template_type: template_type}) do %>
+        <%= image_tag "publication_template_add.png" %>
+        Add new <%= human_name.downcase %>...
+      <% end %>
+    </li>
+  </ul>
+<% end -%>

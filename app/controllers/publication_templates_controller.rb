@@ -5,14 +5,12 @@ class PublicationTemplatesController < ApplicationController
   load_and_authorize_resource :through => :project
   
   def index
-    @publication_templates = @project.publication_templates.all(:order => :name)
+    @publication_templates_by_type = @publication_templates.sort_by(&:name).group_by(&:template_type)
   end
   
   # GET /docs/1
   # GET /docs/1.xml
   def show
-    @publication_template = @project.publication_templates.find(params[:id])
-    
     respond_to do |format|
       format.html # show.rhtml
       format.xml  { render :xml => @publication_template.to_xml }
@@ -21,19 +19,15 @@ class PublicationTemplatesController < ApplicationController
   end
   
   def new
-    @publication_template = @project.publication_templates.build
     @doc_templates = @project.doc_templates.all.sort_by { |t| t.name.sort_normalize }
   end
   
   # GET /publication_templates/1;edit
   def edit
-    @publication_template = @project.publication_templates.find(params[:id])
     @doc_templates = @project.doc_templates.all.sort_by { |t| t.name.sort_normalize }
   end
 
   def create
-    @publication_template = @project.publication_templates.new(params[:publication_template])
-
     respond_to do |format|
       if @publication_template.save
         format.html { redirect_to publication_template_url(@project, @publication_template) }

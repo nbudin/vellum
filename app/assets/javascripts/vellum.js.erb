@@ -352,6 +352,24 @@ jQuery.fn.vellumSortList = function () {
     });
 }
 
+jQuery.fn.vellumPublicationTemplateForm = function() {
+  this.each(function() {
+    var $this = jQuery(this);
+    
+    var setVisibilityBasedOnTemplateType = function() {
+      var templateType = $this.find("[name='publication_template[template_type]']").val();
+      $this.find('[data-only-visible-for-publication-template-types]').each(function() {
+        var $el = jQuery(this);
+        var types = $el.data('only-visible-for-publication-template-types').split(' ');
+        $el.toggle(types.indexOf(templateType) > -1);
+      });
+    };
+    
+    $this.find("[name='publication_template[template_type]']").change(setVisibilityBasedOnTemplateType);
+    setVisibilityBasedOnTemplateType();
+  })
+}
+
 jQuery(function() {
   jQuery(".wysihtml5").each(function() {
     $this = jQuery(this);
@@ -374,6 +392,7 @@ jQuery(function() {
   jQuery(".vellumAutoResizeWym").vellumAutoResizeWym();
   jQuery(".vellumInPlaceEdit").vellumInPlaceEdit();
   jQuery(".vellumColorPicker").vellumColorPicker();
+  jQuery(".vellumPublicationTemplateForm").vellumPublicationTemplateForm();
   jQuery(".sortlist").vellumSortList();
   jQuery(".add_description").bind('click', function (e) {
       e.preventDefault();

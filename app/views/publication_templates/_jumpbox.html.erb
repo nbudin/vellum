@@ -12,6 +12,9 @@
 
     <div class="panel-body">
       <dl class="dl-horizontal">
+        <dt>Type</dt>
+        <dd><%= @publication_template.human_template_type %></dd>
+        
         <dt>Output format</dt>
         <dd><%= @publication_template.format.try(:upcase) %></dd>
         

@@ -1,9 +1,14 @@
-<div class="col-md-8">
+<div class="col-md-8 vellumPublicationTemplateForm">
   <%= error_messages_for f.object %>
   
   <div class="form-group">
     <%= f.label :name, "Publication Template Name", :class => "control-label" %>
     <%= f.text_field :name, :class => "form-control" %>
+  </div>
+  
+  <div class="form-group">
+    <%= f.label :format, "Type", :class => "control-label" %>
+    <%= f.select :template_type, PublicationTemplate::TEMPLATE_TYPES.collect { |t| [PublicationTemplate.human_template_type(t), t]}, {}, { :class => "form-control" } %>
   </div>
   
   <div class="form-group">
@@ -17,12 +22,17 @@
     <% end -%>
   </div>
   
-  <div class="form-group">
-    <%= f.label :format, "Layout", :class => "control-label" %>
+  <div class="form-group" data-only-visible-for-publication-template-types="doc layout standalone">
+    <span data-only-visible-for-publication-template-types="doc standalone">
+      <%= f.label :format, "Layout", :class => "control-label" %>
+    </span>
+    <span data-only-visible-for-publication-template-types="layout">
+      <%= f.label :format, "Parent layout", :class => "control-label" %>
+    </span>
     <%= f.collection_select :layout_id, other_publication_templates, :id, :name, { :include_blank => "No layout" }, { :class => "form-control" } %>
   </div>
   
-  <div class="form-group">
+  <div class="form-group" data-only-visible-for-publication-template-types="doc">
     <%= f.label :format, "Operates on", :class => "control-label" %>
     <%= f.select :doc_template_id, @doc_templates.collect {|t| [t.name, t.id]}, { :include_blank => "No document required" }, { :class => "form-control" } %>
   </div>

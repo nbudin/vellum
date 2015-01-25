@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150125172206) do
+ActiveRecord::Schema.define(:version => 20150125180920) do
 
   create_table "attrs", :force => true do |t|
     t.integer "doc_version_id"
@@ -222,14 +222,15 @@ ActiveRecord::Schema.define(:version => 20150125172206) do
   add_index "projects", ["public_visibility"], :name => "index_projects_on_public_visibility"
 
   create_table "publication_templates", :force => true do |t|
-    t.integer   "project_id"
-    t.string    "name"
-    t.string    "format"
-    t.text      "content"
-    t.timestamp "created_at"
-    t.timestamp "updated_at"
-    t.integer   "doc_template_id"
-    t.integer   "layout_id"
+    t.integer  "project_id"
+    t.string   "name"
+    t.string   "format"
+    t.text     "content"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "doc_template_id"
+    t.integer  "layout_id"
+    t.string   "template_type",   :default => "standalone"
   end
 
   create_table "relationship_types", :force => true do |t|
