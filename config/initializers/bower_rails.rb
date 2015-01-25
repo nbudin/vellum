@@ -9,5 +9,5 @@ BowerRails.configure do |bower_rails|
   bower_rails.resolve_before_precompile = true
 
   # Invokes rake bower:clean before precompilation. Defaults to false
-  # bower_rails.clean_before_precompile = true
+  bower_rails.clean_before_precompile = true
 end

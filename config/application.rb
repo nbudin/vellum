@@ -49,6 +49,7 @@ module Vellum
     # Enable the asset pipeline
     config.assets.enabled = true
 
-    config.assets.precompile << ["bootstrap", /\.(png|jpg|gif)\z/]
+    config.assets.precompile = ["application.css", "application.js", "bootstrap", /\.(png|jpg|gif)\z/]
+    puts "config.assets.precompile: #{config.assets.precompile.inspect}"
   end
 end
