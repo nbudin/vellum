@@ -79,7 +79,7 @@ class VPubContext < Radius::Context
     end
     
     define_tag 'name' do |tag|
-      tag.locals.doc.name
+      tag.locals.doc.try(:name)
     end
     
     define_tag 'content' do |tag|
