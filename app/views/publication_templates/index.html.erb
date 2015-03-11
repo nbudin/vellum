@@ -18,7 +18,7 @@
                 <%= image_tag "publication_template.png" %>
                 <%= t.name %>
               <% end -%>
-              <% if template_type == "doc" -%>
+              <% if template_type == "doc" && t.doc_template -%>
                 (operates on <%= t.doc_template.name %>)
               <% end -%>
             </li>
