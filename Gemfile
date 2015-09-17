@@ -1,9 +1,9 @@
 source "http://rubygems.org"
 ruby "2.1.2"
 
-gem "rails", "3.2.21"
+gem "rails", "4.2.4"
 gem 'sass-rails'
-gem 'coffee-rails', "~> 3.2.1"
+gem 'coffee-rails'
 gem 'uglifier', ">= 1.0.3"
 gem 'bootstrap-sass'
 gem 'bootstrap-wysihtml5-rails'
@@ -30,10 +30,10 @@ platform :jruby do
   gem "activerecord-jdbcsqlite3-adapter", :groups => [:development, :test, :hangar]
 end
 
-gem "devise", "~> 2.0.5"
+gem "devise"
 gem "devise_cas_authenticatable"
 gem "ae_users_migrator", ">= 1.0.4"
-gem "cancan"
+gem "cancancan"
 
 gem "acts_as_list"
 gem "ruby-graphviz", ">= 0.9.2", :require => "graphviz"
