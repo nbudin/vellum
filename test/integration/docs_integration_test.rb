@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DocsIntegrationTest < ActionController::IntegrationTest
+class DocsIntegrationTest < ActionDispatch::IntegrationTest
   setup do  
     @person = FactoryGirl.create(:person)
     @project = FactoryGirl.create(:project, name: "Test Project")

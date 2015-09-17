@@ -18,52 +18,52 @@ class SimpleChoiceContainer
 end
 
 class ChoiceContainerTest < ActiveSupport::TestCase
-  context "An empty choice container" do
+  describe "An empty choice container" do
     setup do
       @cc = SimpleChoiceContainer.new
     end
 
-    should "return an empty choice set" do
+    it "should return an empty choice set" do
       assert_equal 0, @cc.choices.size
     end
 
-    should "accept choices being added" do
+    it "should accept choices being added" do
       @cc.choices = ["a", "b"]
       assert_equal 2, @cc.choices.size
     end
   end
 
-  context "A choice container with a blank choice string" do
+  describe "A choice container with a blank choice string" do
     setup do
       @cc = SimpleChoiceContainer.new
       @cc.choices_str = ""
     end
 
-    should "return an empty choice set" do
+    it "should return an empty choice set" do
       assert_equal 0, @cc.choices.size
     end
   end
 
-  context "A choice container with choices in it" do
+  describe "A choice container with choices in it" do
     setup do
       @cc = SimpleChoiceContainer.new
       @cc.choices_str = "a,b,c,d,e"
     end
 
-    should "return the right choice set" do
+    it "should return the right choice set" do
       assert_equal 5, @cc.choices.size
       assert_equal %w{a b c d e}, @cc.choices
       assert_equal "a, b, c, d, e", @cc.human_choices
     end
 
-    should "remove choices correctly" do
+    it "should remove choices correctly" do
       @cc.choices = %w{a b c e}
       assert_equal %w{a b c e}, @cc.choices
       assert_equal "a,b,c,e", @cc.choices_str
       assert_equal "a, b, c, e", @cc.human_choices
     end
 
-    should "remove human choices correctly" do
+    it "should remove human choices correctly" do
       @cc.human_choices = "a, b, c, e"
       assert_equal %w{a b c e}, @cc.choices
       assert_equal "a,b,c,e", @cc.choices_str

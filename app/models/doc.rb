@@ -9,23 +9,34 @@ class AttrSetEditException < Exception
 end
 
 class Doc < ActiveRecord::Base
-  version_fu :foreign_key => "doc_id" do
+  class Version < ActiveRecord::Base
     belongs_to :author, :class_name => "::Person"
-    has_many :attrs, :class_name => "::Attr",
-      :foreign_key => "doc_version_id", :autosave => true
+    has_many :attrs, :class_name => "::Attr", :foreign_key => "doc_version_id", :autosave => true  
+  end
+  
+  has_many :versions do
+    def latest
+      order(version: :desc).first
+    end  
+  end
+
+  before_save :check_for_new_version
+  def check_for_new_version
+    instantiate_revision if create_new_version?
+    true # Never halt save
+  end
+
+  def versioned_columns
+    @versioned_columns ||= begin
+      version = versions.new
+      version.attributes.keys - [version.class.primary_key, 'doc_id', 'author_id', 'version', 'created_at', 'updated_at']
+    end
   end
   
   validate :check_attrs_error
   
-  before_save do |doc|
-    unless doc.content.blank?
-      doc.content = Sanitize.clean(doc.content, Sanitize::Config::VELLUM)
-    end
-  end
-
-  if self.versioned_columns
-    self.versioned_columns -= %w{ author_id }
-  end
+  before_save :sanitize_content
+  after_save :email_new_assignee, if: :assignee_id_changed?
 
   class AttrSet < Array
     def initialize(doc, doc_version = nil)
@@ -245,13 +256,15 @@ class Doc < ActiveRecord::Base
   end
 
   def create_new_version?
-    super || attrs.changed?
+    versioned_columns.detect {|a| __send__ "#{a}_changed?"} || attrs.changed?
   end
 
-  def instatiate_revision
-    super
+  def instantiate_revision
+    new_version = versions.build(attributes.slice(*versioned_columns))
+    version_number = new_record? ? 1 : version + 1
+    new_version.version = version_number
+    self.version = version_number
 
-    new_version = versions.select { |v| v.new_record? }.last
     attrs.save_to_doc_version(new_version)
     reload_working_attrs(new_version)
   end
@@ -330,5 +343,15 @@ class Doc < ActiveRecord::Base
         errors.add(:base, attr_error)
       end
     end
+  end
+  
+  def sanitize_content
+    return if content.blank?
+    content = Sanitize.clean(content, Sanitize::Config::VELLUM)
+  end
+  
+  def email_new_assignee
+    return unless assignee
+    AssignmentMailer.assigned_to_you(self, assignee).deliver
   end
 end

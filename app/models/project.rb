@@ -1,9 +1,9 @@
 class Project < ActiveRecord::Base
   has_many :doc_templates, :dependent => :destroy, :autosave => true
-  has_many :docs, :dependent => :destroy, :include => [:doc_template]
+  has_many :docs, -> { includes(:doc_template) }, :dependent => :destroy
 
   has_many :relationship_types, :dependent => :destroy, :autosave => true
-  has_many :relationships, :dependent => :destroy, :include => [:relationship_type]
+  has_many :relationships, -> { includes(:relationship_type) }, :dependent => :destroy
 
   has_many :publication_templates, :dependent => :destroy
   has_many :maps, :dependent => :destroy
@@ -11,9 +11,11 @@ class Project < ActiveRecord::Base
   
   has_many :project_memberships
   has_many :members, :class_name => "Person", :through => :project_memberships, :source => :person
-  has_many :authors, :class_name => "Person", :through => :project_memberships, :source => :person, :conditions => { "project_memberships.author" => true }
-  has_many :admins, :class_name => "Person", :through => :project_memberships, :source => :person, :conditions => { "project_memberships.admin" => true }
-  accepts_nested_attributes_for :project_memberships, :allow_destroy => true, :reject_if => lambda { |attrs| attrs['email'].blank? }
+  has_many :authors, -> { joins(:project_memberships).where(project_memberships: { author: true }) }, 
+    :class_name => "Person", :through => :project_memberships, :source => :person
+  has_many :admins, -> { joins(:project_memberships).where(project_memberships: { admin: true }) }, 
+    :class_name => "Person", :through => :project_memberships, :source => :person
+  accepts_nested_attributes_for :project_memberships, :allow_destroy => true, reject_if: -> (attrs) { attrs['email'].blank? }
 
   attr_reader :template_source_project_id
   validates_associated :doc_templates

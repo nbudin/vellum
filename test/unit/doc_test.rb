@@ -1,21 +1,16 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class DocTest < ActiveSupport::TestCase
-  should belong_to(:project)
-  should belong_to(:doc_template)
-  should belong_to(:creator)
-  should have_many(:versions)
-
-  context "A doc" do
+  describe "A doc" do
     setup do
       @doc = FactoryGirl.build(:doc, :name => "Bob")
     end
     
-    should "be valid" do
+    it "should be valid" do
       assert @doc.valid?
     end
 
-    should "generate attrs correctly" do
+    it "should generate attrs correctly" do
       assert @doc.attrs
       assert @doc.attrs.is_a? Doc::AttrSet
       assert a = @doc.attrs["new attr"]
@@ -24,49 +19,49 @@ class DocTest < ActiveSupport::TestCase
       assert_equal @doc, a.doc
     end
 
-    should "return the right value for name" do
+    it "should return the right value for name" do
       assert_equal "Bob", @doc.name
     end
 
-    should "not start out assigned to anyone" do
+    it "should not start out assigned to anyone" do
       assert_nil @doc.assignee
     end
     
-    should "automatically sanitize content on save" do
+    it "should automatically sanitize content on save" do
       @doc.content = "<span class=\"invalid-class\">Sanitized</span>"
       assert @doc.save
       assert_equal "Sanitized", @doc.content
     end
 
-    context "having been saved" do
+    describe "having been saved" do
       setup do
         assert @doc.save
       end
 
-      should "have a position" do
+      it "should have a position" do
         assert_not_nil @doc.position
       end
     end
 
-    context "with an attr" do
+    describe "with an attr" do
       setup do
         assert @doc.save
         @attr_name = "Favorite Color"
         assert @attr = @doc.attrs[@attr_name]
       end
 
-      should "return the same attr on subsequent obtains" do
+      it "should return the same attr on subsequent obtains" do
         assert attr = @doc.attrs[@attr_name]
         assert attr === @attr
       end
 
-      context "with choices" do
+      describe "with choices" do
         setup do
           assert @ta = @doc.doc_template.doc_template_attrs.create(:name => @attr_name,
             :ui_type => "multiple", :choices => %w{red green blue})
         end
 
-        should "accept hash values for attrs_attributes=" do
+        it "should accept hash values for attrs_attributes=" do
           @doc.attrs_attributes = [ { 'name' => @attr.name, 
               'value' => { 0 => { 'choice' => "red", 'selected' => true, },
                 1 => { 'choice' => "green", 'selected' => true},
@@ -75,35 +70,35 @@ class DocTest < ActiveSupport::TestCase
         end
       end
       
-      should "sanitize attr content on save" do
+      it "should sanitize attr content on save" do
         @attr.value = "<badelement>Content</badelement>"
         assert @doc.save
         assert_equal "Content", @doc.attrs[@attr_name].value
       end
 
-      context "having a value" do
+      describe "having a value" do
         setup do
           @attr.value = "Yellow"
         end
 
-        should "return the right value on retrieval" do
+        it "should return the right value on retrieval" do
           assert_equal "Yellow", @doc.attrs[@attr_name].value
         end
 
-        should "respond appropriately to attrs_attributes" do
+        it "should respond appropriately to attrs_attributes" do
           assert @avs = @doc.attrs_attributes
           assert_equal "Yellow", @avs.select { |pair| pair['name'] == @attr_name }.first['value']
           assert_equal 1, @avs.size
         end
 
-        should "take attr values from attrs_attributes=" do
+        it "should take attr values from attrs_attributes=" do
           @doc.attrs_attributes = [ { 'name' => @attr.name, 'value' => "Fuschia" } ]
           assert_equal "Fuschia", @attr.value
           assert_equal "Fuschia", @doc.attrs[@attr.name].value
           assert_equal "Fuschia", @doc.attrs_attributes.select {|pair| pair['name'] == @attr_name }.first['value']
         end
 
-        should "take attr values from slugified attrs_attributes=" do
+        it "should take attr values from slugified attrs_attributes=" do
           name = @attr.name
           @doc.attrs_attributes = [ { 'name' => Attr::WithSlug.slug_for(name), 'value' => "Hot pink" } ]
           assert_equal "Hot pink", @attr.value
@@ -111,7 +106,7 @@ class DocTest < ActiveSupport::TestCase
           assert_equal Attr::WithSlug.slug_for(name), @attr.slug
         end
 
-        context "having been saved" do
+        describe "having been saved" do
           setup do
             @version1 = @doc.version
             assert @doc.save
@@ -119,20 +114,20 @@ class DocTest < ActiveSupport::TestCase
             @version2 = @doc.version
           end
 
-          should "have an updated version number" do
+          it "should have an updated version number" do
             assert_equal @version1 + 1, @version2
           end
 
-          should "return the right value on retrieval" do
+          it "should return the right value on retrieval" do
             assert_equal "Yellow", @doc.attrs[@attr_name].value
           end
 
-          should "not have modified the old version" do
+          it "should not have modified the old version" do
             assert @old_doc = @doc.find_version(@version1)
             assert @old_doc.attrs.find_by_name(@attr_name).nil?
           end
 
-          context "and the attr value changed" do
+          describe "and the attr value changed" do
             setup do
               @doc.attrs[@attr_name].value = "Red"
               assert @doc.save
@@ -140,7 +135,7 @@ class DocTest < ActiveSupport::TestCase
               @version3 = @doc.version
             end
 
-            should "preserve the version history" do
+            it "should preserve the version history" do
               assert @doc1 = @doc.find_version(@version1)
               assert @doc2 = @doc.find_version(@version2)
               assert @doc3 = @doc.find_version(@version3)
@@ -151,7 +146,7 @@ class DocTest < ActiveSupport::TestCase
             end
           end
 
-          context "and the attr deleted" do
+          describe "and the attr deleted" do
             setup do
               assert @doc.attrs_attributes.any? { |attrs| attrs['name'] == @attr_name }
               @doc.attrs.delete(@attr_name)
@@ -162,16 +157,16 @@ class DocTest < ActiveSupport::TestCase
               @version3 = @doc.version
             end
 
-            should "not have the attr in the working set" do
+            it "should not have the attr in the working set" do
               assert !@doc.attrs_attributes.any? {|attrs| pair['name'] == @attr_name }
             end
 
-            should "not have the attr on the latest version" do
+            it "should not have the attr on the latest version" do
               assert @doc3 = @doc.find_version(@version3)
               assert_nil @doc3.attrs.find_by_name(@attr_name)
             end
 
-            should "still have the attr on the previous version" do
+            it "should still have the attr on the previous version" do
               assert @doc2 = @doc.find_version(@version2)
               assert_equal "Yellow", @doc2.attrs.find_by_name(@attr_name).value
             end
@@ -180,7 +175,7 @@ class DocTest < ActiveSupport::TestCase
       end
     end
 
-    context "with a related doc" do
+    describe "with a related doc" do
       setup do
         assert @doc.save
 
@@ -197,7 +192,7 @@ class DocTest < ActiveSupport::TestCase
         @joe.reload
       end
 
-      should "show the relationship on both docs" do
+      it "should show the relationship on both docs" do
         assert @doc.inward_relationships.include?(@r), "@r doesn't show up on Bob's inward relationships"
         assert @doc.relationships.include?(@r), "@r doesn't show up on Bob's inward relationships"
         @bob_related = @doc.related_docs(@rt, "inward")
@@ -218,7 +213,7 @@ class DocTest < ActiveSupport::TestCase
       end
     end
 
-    context "with template attrs" do
+    describe "with template attrs" do
       setup do
         @doc_template = @doc.doc_template
         assert @doc_template_attr = @doc_template.doc_template_attrs.new(:name => "Age")
@@ -229,7 +224,7 @@ class DocTest < ActiveSupport::TestCase
         assert @doc.doc_template.doc_template_attrs.include? @doc_template_attr
       end
 
-      should "automatically include the template attrs" do
+      it "should automatically include the template attrs" do
         assert @doc.attrs.any? { |attr| attr.name == @doc_template_attr.name }
 
         attr = @doc.attrs.select { |attr| attr.name == @doc_template_attr.name }.first

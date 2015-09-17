@@ -10,24 +10,28 @@ class DocsControllerTest < ActionController::TestCase
     @project.project_memberships.create(:person => @person, :admin => true, :author => true)
   end
 
-  context "on GET to :index" do
+  describe "on GET to :index" do
     setup do
       get :index, :project_id => @project.id, :format => 'json'
     end
 
-    should respond_with(:success)
+    it "should respond correctly" do
+      must respond_with(:success)
+    end
   end
 
-  context "on GET to :new" do
+  describe "on GET to :new" do
     setup do
       get :new, :project_id => @project.id, :template_id => @tmpl.id
     end
-
-    should respond_with(:success)
-    should render_template("new")
+    
+    it "should respond correctly" do
+      must respond_with(:success)
+      must render_template("new")
+    end
   end
 
-  context "on POST to :create" do
+  describe "on POST to :create" do
     setup do
       @old_count = Doc.count
       @name = "William"
@@ -42,26 +46,28 @@ class DocsControllerTest < ActionController::TestCase
       }
     end
 
-    should respond_with(:redirect)
-    should_not set_the_flash
+    it "should respond correctly" do
+      must respond_with(:redirect)
+      wont set_the_flash
+    end
 
-    should "create a doc with the appropriate attrs" do
+    it "should create a doc with the appropriate attrs" do
       assert_equal @old_count + 1, Doc.count
       assert_equal @name, assigns(:doc).name
       assert_equal @color, assigns(:doc).attrs[@attr.name].value
     end
 
-    should "set the creator and version author" do
+    it "should set the creator and version author" do
       assert_equal @person.id, assigns(:doc).creator_id
       assert_equal @person.id, assigns(:doc).versions.first.author_id
     end
 
-    should "redirect to the new doc" do
+    it "should redirect to the new doc" do
       assert_redirected_to doc_path(@project, assigns(:doc))
     end
   end
 
-  context "with a doc" do
+  describe "with a doc" do
     setup do
       @name = "Melissa"
       @color = "purple"
@@ -73,33 +79,39 @@ class DocsControllerTest < ActionController::TestCase
       @doc.reload
     end
 
-    context "on GET to :index.json with the appropriate template" do
+    describe "on GET to :index.json with the appropriate template" do
       setup do
         get :index, :project_id => @project.id, :template_id => @tmpl.id, :format => "json"
       end
 
-      should respond_with(:success)
+      it "should respond correctly" do
+        must respond_with(:success)
+      end
     end
 
-    context "on GET to :show" do
+    describe "on GET to :show" do
       setup do
         get :show, :id => @doc.id, :project_id => @project.id
       end
 
-      should respond_with(:success)
-      should render_template("show")
+      it "should respond correctly" do
+        must respond_with(:success)
+        must render_template("show")
+      end
     end
     
-    context "on GET to :edit" do
+    describe "on GET to :edit" do
       setup do
         get :edit, :id => @doc.id, :project_id => @project.id
       end
       
-      should respond_with(:success)
-      should render_template("edit")
+      it "should respond correctly" do
+        must respond_with(:success)
+        must render_template("edit")
+      end
     end
 
-    context "on PUT to :update" do
+    describe "on PUT to :update" do
       setup do
         @new_color = "turquoise"
 
@@ -111,23 +123,25 @@ class DocsControllerTest < ActionController::TestCase
           }
       end
 
-      should respond_with(:redirect)
-      should_not set_the_flash
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+      end
 
-      should "set the new version's author" do
+      it "should set the new version's author" do
         assert_equal @person.id, assigns(:doc).versions.latest.author_id
       end
 
-      should "update the structure" do
+      it "should update the structure" do
         assert_equal @new_color, assigns(:doc).attrs[@attr.name].value
       end
 
-      should "redirect back to the structure" do
+      it "should redirect back to the structure" do
         assert_redirected_to doc_path(@project, @doc)
       end
     end
 
-    context "on PUT to :update with new assignee" do
+    describe "on PUT to :update with new assignee" do
       setup do
         ActionMailer::Base.deliveries.clear
         
@@ -142,11 +156,11 @@ class DocsControllerTest < ActionController::TestCase
           :doc => { :assignee_id => @person.id }
       end
 
-      should "reassign the doc" do
+      it "should reassign the doc" do
         assert_equal @person.id, assigns(:doc).assignee.id
       end
 
-      should "have sent an email to the assignee" do
+      it "should have sent an email to the assignee" do
         assert email = ActionMailer::Base.deliveries.last
         
         assert_match /\A\[#{@project.name}\].*#{Regexp.escape @doc.name}/, email.subject
@@ -156,54 +170,58 @@ class DocsControllerTest < ActionController::TestCase
       end
     end
 
-    context "on DELETE to :destroy" do
+    describe "on DELETE to :destroy" do
       setup do
         @old_count = Doc.count
         delete :destroy, :id => @doc.id, :project_id => @project.id
       end
 
-      should respond_with(:redirect)
-      should_not set_the_flash
-      should redirect_to("the project") { project_path @project }
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+        must redirect_to("the project") { project_path @project }
+      end
 
-      should "destroy a doc" do
+      it "should destroy a doc" do
         assert_equal @old_count - 1, Doc.count
       end
     end
     
-    context "on POST to :copy" do
+    describe "on POST to :copy" do
       setup do
         @old_count = Doc.count
         post :copy, :id => @doc.id, :project_id => @project.id
       end
       
-      should respond_with(:redirect)
-      should_not set_the_flash
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+      end
 
-      should "create a doc with the appropriate attrs" do
+      it "should create a doc with the appropriate attrs" do
         assert_equal @old_count + 1, Doc.count
         assert_equal "Copy of #{@doc.name}", assigns(:doc).name
         assert_equal @doc.doc_template, assigns(:doc).doc_template
         assert_equal @color, assigns(:doc).attrs[@attr.name].value
       end
 
-      should "set the creator and version author" do
+      it "should set the creator and version author" do
         assert_equal @person.id, assigns(:doc).creator_id
         assert_equal @person.id, assigns(:doc).versions.first.author_id
       end
 
-      should "redirect to the new doc" do
+      it "should redirect to the new doc" do
         assert_redirected_to doc_path(@project, assigns(:doc))
       end
     end
 
-    context "and another structure" do
+    describe "and another structure" do
       setup do
         @d2 = @project.docs.create(:name => "Another", :doc_template => @tmpl,
           :position => 2)
       end
 
-      context "on POST to :sort" do
+      describe "on POST to :sort" do
         setup do
           assert @doc.position < @d2.position
           
@@ -211,9 +229,11 @@ class DocsControllerTest < ActionController::TestCase
             "docs_#{@tmpl.id}".to_sym => [ @d2.id.to_s, @doc.id.to_s ]
         end
 
-        should respond_with(:success)
+        it "should respond correctly" do
+          must respond_with(:success)
+        end
 
-        should "sort the docs" do
+        it "should sort the docs" do
           @doc.reload
           @d2.reload
 

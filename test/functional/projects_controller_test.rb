@@ -5,42 +5,48 @@ class ProjectsControllerTest < ActionController::TestCase
     create_logged_in_person
   end
 
-  context "on GET to :index" do
+  describe "on GET to :index" do
     setup do
       get :index
     end
 
-    should respond_with(:success)
-    should render_template("index")
+    it "should respond correctly" do
+      must respond_with(:success)
+      must render_template("index")
+    end
   end
 
-  context "on GET to :new" do
+  describe "on GET to :new" do
     setup do
       get :new
     end
 
-    should respond_with(:success)
-    should render_template("new")
+    it "should respond correctly" do
+      must respond_with(:success)
+      must render_template("new")
+    end
   end
 
-  context "on POST to :create with project" do
+  describe "on POST to :create with project" do
     setup do
       @old_count = Project.count
       post :create, { :project => { :name => "My project" }}
     end
 
-    should respond_with(:redirect)
-    should_not set_the_flash
+    it "should respond correctly" do
+      must respond_with(:redirect)
+      wont set_the_flash
+    end
 
-    should "create a project" do
+    it "should create a project" do
       assert_equal @old_count + 1, Project.count
     end
 
-    should "redirect to the project" do
+    it "should redirect to the project" do
       assert_redirected_to project_url(assigns(:project))
     end
 
-    should "grant permissions to the logged in user" do
+    it "should grant permissions to the logged in user" do
       ability = Ability.new(@person)
       %w{read update destroy}.each do |action|
         assert ability.can?(action.to_sym, assigns(:project))
@@ -48,61 +54,69 @@ class ProjectsControllerTest < ActionController::TestCase
     end
   end
 
-  context "with project" do
+  describe "with project" do
     setup do
       @project = FactoryGirl.create(:project)
       @project.project_memberships.create(:person => @person, :author => true, :admin => true)
     end
 
-    context "on GET to :show" do
+    describe "on GET to :show" do
       setup do
         get :show, :id => @project.id
       end
 
-      should respond_with(:success)
-      should render_template(:show)
+      it "should respond correctly" do
+        must respond_with(:success)
+        must render_template(:show)
+      end
     end
 
-    context "on GET to :edit" do
+    describe "on GET to :edit" do
       setup do
         get :edit, :id => @project.id
       end
 
-      should respond_with(:success)
-      should render_template(:edit)
+      it "should respond correctly" do
+        must respond_with(:success)
+        must render_template(:edit)
+      end
     end
 
-    context "on PUT to :update" do
+    describe "on PUT to :update" do
       setup do
         put :update, :id => @project.id, :project => { :name => "New name" }
       end
 
-      should respond_with(:redirect)
-      should_not set_the_flash
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+      end
 
-      should "update the project" do
+      it "should update the project" do
         assert_equal "New name", assigns(:project).name
       end
 
-      should "redirect back to the project" do
+      it "should redirect back to the project" do
         assert_redirected_to project_url(assigns(:project))
       end
     end
 
-    context "on DELETE to :destroy" do
+    describe "on DELETE to :destroy" do
       setup do
         @old_count = Project.count
         delete :destroy, :id => @project.id
       end
 
-      should respond_with(:redirect)
-      should_not set_the_flash
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+      end
 
-      should "destroy the project" do
+      it "should destroy the project" do
         assert_equal @old_count - 1, Project.count
       end
 
-      should "redirect back to the project list" do
+      it "should redirect back to the project list" do
         assert_redirected_to projects_url
       end
     end

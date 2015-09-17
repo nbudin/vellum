@@ -12,7 +12,7 @@ class MappedDocTemplatesControllerTest < ActionController::TestCase
     @request.env["HTTP_REFERER"] = @referer
   end
 
-  context "on POST to :create" do
+  describe "on POST to :create" do
     setup do
       @old_count = MappedDocTemplate.count
 
@@ -20,54 +20,60 @@ class MappedDocTemplatesControllerTest < ActionController::TestCase
         :doc_template_id => @doc_template.id
     end
 
-    should respond_with(:redirect)
-    should_not set_the_flash
+    it "should respond correctly" do
+      must respond_with(:redirect)
+      wont set_the_flash
+    end
 
-    should "create a mapped doc template" do
+    it "should create a mapped doc template" do
       assert_equal @old_count + 1, MappedDocTemplate.count
       assert @map.mapped_doc_templates.all.include?(assigns(:mapped_doc_template))
     end
 
-    should "redirect to referer" do
+    it "should redirect to referer" do
       assert_redirected_to @referer
     end
   end
 
-  context "with a mapped structure template" do
+  describe "with a mapped structure template" do
     setup do
       @mdt = @map.mapped_doc_templates.create(:doc_template => @doc_template)
     end
 
-    context "on PUT to :update" do
+    describe "on PUT to :update" do
       setup do
         put :update, :id => @mdt.id, :map_id => @mdt.map.id, :project_id => @mdt.map.project.id,
           :mapped_doc_template => { :color => "black" }
       end
 
-      should respond_with(:redirect)
-      should_not set_the_flash
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+      end
 
-      should "update the mapped doc template" do
+      it "should update the mapped doc template" do
         assert_equal "black", assigns(:mapped_doc_template).color
         @mdt.reload
         assert_equal "black", @mdt.color
       end
 
-      should "redirect to referer" do
+      it "should redirect to referer" do
         assert_redirected_to @referer
       end
     end
 
-    context "on DELETE to :destroy" do
+    describe "on DELETE to :destroy" do
       setup do
         @old_count = MappedDocTemplate.count
         delete :destroy, :id => @mdt.id, :map_id => @mdt.map.id, :project_id => @mdt.map.project.id
       end
+      
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+      end
 
-      should respond_with(:redirect)
-      should_not set_the_flash
-
-      should "destroy a mapped doc template" do
+      it "should destroy a mapped doc template" do
         assert_equal @old_count - 1, MappedDocTemplate.count
       end
     end

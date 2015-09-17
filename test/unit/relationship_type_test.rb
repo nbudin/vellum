@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class RelationshipTypeTest < ActiveSupport::TestCase
-  context "A relationship of the wrong type" do
+  describe "A relationship of the wrong type" do
     setup do
       @d1 = FactoryGirl.build(:doc)
       @project = @d1.project
@@ -13,7 +13,7 @@ class RelationshipTypeTest < ActiveSupport::TestCase
       @r = @project.relationships.new(:relationship_type => @rt, :left => @d1, :right => @d2)
     end
     
-    should "be invalid" do
+    it "should be invalid" do
       assert !@r.valid?
     end
   end

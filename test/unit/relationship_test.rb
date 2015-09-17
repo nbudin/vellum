@@ -5,17 +5,13 @@ class RelationshipTest < ActiveSupport::TestCase
     FactoryGirl.build(:doc, :project => @p, :doc_template => @t)
   end
   
-  def setup
+  setup do
     @t = FactoryGirl.create(:doc_template)
     @p = @t.project
     @rt = @p.relationship_types.create(:left_template => @t, :right_template => @t)
   end
-  
-  [:left, :right, :project, :relationship_type].each do |f|
-    should validate_presence_of(f)
-  end
-  
-  context "A new relationship" do
+    
+  describe "A new relationship" do
     setup do
       @d1 = build_doc
       @d2 = build_doc
@@ -23,23 +19,23 @@ class RelationshipTest < ActiveSupport::TestCase
       @r = FactoryGirl.build(:relationship, :relationship_type => @rt, :left => @d1, :right => @d2, :project => @p)
     end
     
-    should "pass validation" do
+    it "should pass validation" do
       assert @r.valid?, @r.errors.full_messages.join("\n")
     end
   end
   
-  context "A circular relationship" do
+  describe "A circular relationship" do
     setup do
       @d1 = build_doc
       @r = FactoryGirl.build(:relationship, :relationship_type => @rt, :left => @d1, :right => @d1, :project => @p)
     end
     
-    should "be invalid" do
+    it "should be invalid" do
       assert !@r.valid?
     end
   end
   
-  context "A relationship from the wrong project" do
+  describe "A relationship from the wrong project" do
     setup do
       @d1 = build_doc
       @d2 = build_doc
@@ -48,12 +44,12 @@ class RelationshipTest < ActiveSupport::TestCase
       @r = FactoryGirl.build(:relationship, :relationship_type => @rt, :left => @d1, :right => @d2, :project => @p2)
     end
     
-    should "be invalid" do
+    it "should be invalid" do
       assert !@r.valid?
     end
   end
   
-  context "A duplicate relationship" do
+  describe "A duplicate relationship" do
     setup do
       @p.save
       
@@ -71,11 +67,11 @@ class RelationshipTest < ActiveSupport::TestCase
       @r2 = FactoryGirl.build(:relationship, :relationship_type => @rt, :left => @d1, :right => @d2, :project => @p)
     end
     
-    should "be invalid" do
+    it "should be invalid" do
       assert !@r2.valid?
     end
     
-    should "not prevent other relationships from being created" do
+    it "should not prevent other relationships from being created" do
       assert @rt2 = @p.relationship_types.create(:left_template => @t, :right_template => @t)
       @r3 = FactoryGirl.build(:relationship, :relationship_type => @rt2, :left => @d1, :right => @d2, :project => @p)
       

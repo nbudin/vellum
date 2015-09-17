@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DocTemplatesIntegrationTest < ActionController::IntegrationTest
+class DocTemplatesIntegrationTest < ActionDispatch::IntegrationTest
   setup do
     @person = FactoryGirl.create(:person)
     login_as @person, scope: :person

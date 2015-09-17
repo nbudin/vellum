@@ -2,8 +2,6 @@ class DocTemplatesController < ApplicationController
   load_resource :project
   load_and_authorize_resource :through => :project
   
-  cache_sweeper :project_sweeper, :only => [:create, :update, :destroy]
-  
   # GET /doc_templates
   # GET /doc_templates.xml
   def index

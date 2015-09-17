@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class MapsIntegrationTest < ActionController::IntegrationTest
+class MapsIntegrationTest < ActionDispatch::IntegrationTest
   setup do  
     @person = FactoryGirl.create(:person)
     @project = FactoryGirl.create(:louisiana_purchase)

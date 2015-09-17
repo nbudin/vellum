@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class AnonymousBrowseIntegrationTest < ActionController::IntegrationTest
+class AnonymousBrowseIntegrationTest < ActionDispatch::IntegrationTest
   test 'projects page' do
     visit projects_url
     

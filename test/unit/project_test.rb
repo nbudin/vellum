@@ -1,14 +1,12 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ProjectTest < ActiveSupport::TestCase
-  should validate_presence_of(:name)
-
-  context "A project" do
+  describe "A project" do
     setup do
       assert @project = FactoryGirl.create(:project)
     end
 
-    context "cloning another project's templates" do
+    describe "cloning another project's templates" do
       setup do
         assert @lp = FactoryGirl.create(:louisiana_purchase)
         assert @character = @lp.doc_templates.find_by_name("Character")
@@ -22,7 +20,7 @@ class ProjectTest < ActiveSupport::TestCase
         @project.clone_templates_from(@lp)
       end
 
-      should "have a clone of the templates" do
+      it "should have a clone of the templates" do
         assert new_char = @project.doc_templates.select { |t| t.name == "Character" }.first
         assert !@project.doc_templates.include?(@character)
         assert new_hp = new_char.doc_template_attrs.select { |a| a.name == "HP" }.first
@@ -32,7 +30,7 @@ class ProjectTest < ActiveSupport::TestCase
         assert !@project.doc_templates.include?(@organization)
       end
 
-      should "have a clone of the relationship types" do
+      it "should have a clone of the relationship types" do
         assert new_rt = @project.relationship_types.select { |rt|
           rt.left_name == "Organization includes Character"
           }.first
@@ -43,12 +41,12 @@ class ProjectTest < ActiveSupport::TestCase
         assert !@lp.relationship_types.include?(new_rt)
       end
 
-      should "not have any docs or relationships" do
+      it "should not have any docs or relationships" do
         assert_equal 0, @project.docs.size
         assert_equal 0, @project.relationships.size
       end
 
-      should "be valid" do
+      it "should be valid" do
         assert @project.valid?
         assert @project.save
       end

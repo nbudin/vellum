@@ -8,66 +8,76 @@ class DocTemplatesControllerTest < ActionController::TestCase
     @project.project_memberships.create(:person => @person, :admin => true, :author => true)
   end
 
-  context "on GET to :index" do
+  describe "on GET to :index" do
     setup do
       get :index, :project_id => @project.id
     end
 
-    should respond_with(:success)
-    should render_template("index")
+    it "should respond correctly" do
+      must respond_with(:success)
+      must render_template("index")
+    end
   end
 
-  context "on GET to :index.json" do
+  describe "on GET to :index.json" do
     setup do
       get :index, :project_id => @project.id, :format => "json"
     end
 
-    should respond_with(:success)
+    it "should respond correctly" do
+      must respond_with(:success)
+    end
   end
 
-  context "on GET to :new" do
+  describe "on GET to :new" do
     setup do
       get :new, :project_id => @project.id
     end
 
-    should respond_with(:success)
-    should render_template("new")
+    it "should respond correctly" do
+      must respond_with(:success)
+      must render_template("new")
+    end
   end
 
-  context "on POST to :create" do
+  describe "on POST to :create" do
     setup do
       @old_count = DocTemplate.count
       post :create, :project_id => @project.id,
         :doc_template => { :name => "Car" }
     end
 
-    should respond_with(:redirect)
-    should_not set_the_flash
+    it "should respond correctly" do
+      must respond_with(:redirect)
+      wont set_the_flash
+    end
 
-    should "create a doc template" do
+    it "should create a doc template" do
       assert_equal @old_count + 1, DocTemplate.count
     end
 
-    should "redirect to the new doc template" do
+    it "should redirect to the new doc template" do
       assert_redirected_to doc_template_path(@project, assigns(:doc_template))
     end
   end
 
-  context "with a doc template" do
+  describe "with a doc template" do
     setup do
       @tmpl = FactoryGirl.create(:doc_template, :project => @project)
     end
 
-    context "on GET to :show" do
+    describe "on GET to :show" do
       setup do
         get :show, :project_id => @project.id, :id => @tmpl.id
       end
 
-      should respond_with(:success)
-      should render_template("show")
+      it "should respond correctly" do
+        must respond_with(:success)
+        must render_template("show")
+      end
     end
 
-    context "on PUT to :update" do
+    describe "on PUT to :update" do
       setup do
         @new_name = "A different name"
 
@@ -75,31 +85,35 @@ class DocTemplatesControllerTest < ActionController::TestCase
           :doc_template => { :name => @new_name }
       end
 
-      should respond_with(:redirect)
-      should_not set_the_flash
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+      end
 
-      should "update the template" do
+      it "should update the template" do
         assert_equal @new_name, assigns(:doc_template).name
         @tmpl.reload
         assert_equal @new_name, @tmpl.name
       end
 
-      should "redirect to the template" do
+      it "should redirect to the template" do
         assert_redirected_to doc_template_path(@project, @tmpl)
       end
     end
 
-    context "on DELETE to :destroy" do
+    describe "on DELETE to :destroy" do
       setup do
         @old_count = DocTemplate.count
         delete :destroy, :project_id => @project.id, :id => @tmpl.id
       end
 
-      should respond_with(:redirect)
-      should_not set_the_flash
-      should redirect_to("the template list") { doc_templates_path(@project) }
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+        must redirect_to("the template list") { doc_templates_path(@project) }
+      end
 
-      should "destroy a template" do
+      it "should destroy a template" do
         assert_equal @old_count - 1, DocTemplate.count
       end
     end

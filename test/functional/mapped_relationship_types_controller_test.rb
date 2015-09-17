@@ -12,7 +12,7 @@ class MappedRelationshipTypesControllerTest < ActionController::TestCase
     @request.env["HTTP_REFERER"] = @referer
   end
 
-  context "on POST to :create" do
+  describe "on POST to :create" do
     setup do
       @old_count = MappedRelationshipType.count
 
@@ -20,54 +20,60 @@ class MappedRelationshipTypesControllerTest < ActionController::TestCase
         :relationship_type_id => @relationship_type.id
     end
 
-    should respond_with(:redirect)
-    should_not set_the_flash
+    it "should respond correctly" do
+      must respond_with(:redirect)
+      wont set_the_flash
+    end
 
-    should "create a mapped relationship type" do
+    it "should create a mapped relationship type" do
       assert_equal @old_count + 1, MappedRelationshipType.count
       assert @map.mapped_relationship_types.all.include?(assigns(:mapped_relationship_type))
     end
 
-    should "redirect to referer" do
+    it "should redirect to referer" do
       assert_redirected_to @referer
     end
   end
 
-  context "with a mapped relationship type" do
+  describe "with a mapped relationship type" do
     setup do
       @mrt = @map.mapped_relationship_types.create(:relationship_type => @relationship_type)
     end
 
-    context "on PUT to :update" do
+    describe "on PUT to :update" do
       setup do
         put :update, :id => @mrt.id, :map_id => @mrt.map.id, :project_id => @mrt.map.project.id,
           :mapped_relationship_type => { :color => "black" }
       end
 
-      should respond_with(:redirect)
-      should_not set_the_flash
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+      end
 
-      should "update the mapped relationship type" do
+      it "should update the mapped relationship type" do
         assert_equal "black", assigns(:mapped_relationship_type).color
         @mrt.reload
         assert_equal "black", @mrt.color
       end
 
-      should "redirect to referer" do
+      it "should redirect to referer" do
         assert_redirected_to @referer
       end
     end
 
-    context "on DELETE to :destroy" do
+    describe "on DELETE to :destroy" do
       setup do
         @old_count = MappedRelationshipType.count
         delete :destroy, :id => @mrt.id, :map_id => @mrt.map.id, :project_id => @mrt.map.project.id
       end
 
-      should respond_with(:redirect)
-      should_not set_the_flash
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+      end
 
-      should "destroy a mapped relationship type" do
+      it "should destroy a mapped relationship type" do
         assert_equal @old_count - 1, MappedRelationshipType.count
       end
     end

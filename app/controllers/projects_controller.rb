@@ -1,6 +1,5 @@
 class ProjectsController < ApplicationController
   load_and_authorize_resource :except => [:index]
-  cache_sweeper :project_sweeper, :only => [:update, :create]
 
   # GET /projects
   # GET /projects.xml

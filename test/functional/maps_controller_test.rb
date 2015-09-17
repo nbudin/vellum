@@ -7,72 +7,82 @@ class MapsControllerTest < ActionController::TestCase
     @project.project_memberships.create(:person => @person, :admin => true, :author => true)
   end
 
-  context "on GET to :index" do
+  describe "on GET to :index" do
     setup do
       get :index, :project_id => @project.id
     end
 
-    should respond_with(:success)
-    should render_template("index")
+    it "should respond correctly" do
+      must respond_with(:success)
+      must render_template("index")
+    end
   end
 
-  context "on POST to :create" do
+  describe "on POST to :create" do
     setup do
       @old_count = Map.count
       post :create, :project_id => @project.id, :map => { :name => "My map" }
     end
 
-    should respond_with(:redirect)
-    should_not set_the_flash
+    it "should respond correctly" do
+      must respond_with(:redirect)
+      wont set_the_flash
+    end
 
-    should "create map" do
+    it "should create map" do
       assert_equal @old_count + 1, Map.count
       assert_redirected_to map_path(@project, assigns(:map))
     end
   end
 
-  context "with a map" do
+  describe "with a map" do
     setup do
       @map = @project.maps.create :name => "A map"
     end
 
-    context "on GET to :show" do
+    describe "on GET to :show" do
       setup do
         get :show, :project_id => @project.id, :id => @map.id
       end
 
-      should respond_with(:success)
-      should render_template("show")
+      it "should respond correctly" do
+        must respond_with(:success)
+        must render_template("show")
+      end
     end
 
-    context "on PUT to :update" do
+    describe "on PUT to :update" do
       setup do
         put :update, :project_id => @project.id, :id => @map.id, :map => { :name => "Renamed" }
       end
 
-      should respond_with(:redirect)
-      should_not set_the_flash
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+      end
 
-      should "update the map" do
+      it "should update the map" do
         assert_equal "Renamed", assigns(:map).name
       end
 
-      should "redirect back to the map" do
+      it "should redirect back to the map" do
         assert_redirected_to map_path(@project, assigns(:map))
       end
     end
 
-    context "on DELETE to :destroy" do
+    describe "on DELETE to :destroy" do
       setup do
         @old_count = Map.count
         delete :destroy, :project_id => @project.id, :id => @map.id
       end
 
-      should respond_with(:redirect)
-      should_not set_the_flash
-      should redirect_to("the map list") { maps_path @project }
+      it "should respond correctly" do
+        must respond_with(:redirect)
+        wont set_the_flash
+        must redirect_to("the map list") { maps_path @project }
+      end
 
-      should "destroy a map" do
+      it "should destroy a map" do
         assert_equal @old_count - 1, Map.count
       end
     end

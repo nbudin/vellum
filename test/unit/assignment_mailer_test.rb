@@ -11,7 +11,7 @@ class AssignmentMailerTest < ActionMailer::TestCase
     assert_equal mail1.encoded, mail2.encoded
   end
   
-  context "just assigned a character" do
+  describe "just assigned a character" do
     setup do
       @tmpl = FactoryGirl.create(:doc_template, :name => "Character")
       @project = @tmpl.project
@@ -29,7 +29,7 @@ class AssignmentMailerTest < ActionMailer::TestCase
       assert @structure.save
     end
 
-    should "send the assignee an email" do
+    it "should send the assignee an email" do
       @expected.subject = "[#{@project.name}] #{@structure.name} has been assigned to you"
       @expected.from = @site_settings.site_email
       @expected.to = @person.email

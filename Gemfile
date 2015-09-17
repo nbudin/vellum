@@ -38,7 +38,6 @@ gem "cancancan"
 gem "acts_as_list"
 gem "ruby-graphviz", ">= 0.9.2", :require => "graphviz"
 gem "radius"
-gem "version_fu", "~> 1.0.1"
 gem "jquery-rails", '>= 1.0.12'
 gem 'jquery-ui-rails'
 gem "rubyzip", ">= 1.0.0", :require => "zip"
@@ -54,8 +53,10 @@ gem "puma"
 gem "asset_sync"
 
 group :test do
-  gem 'database_cleaner', '~> 1.0.0'  # 1.1.0 is broken on sqlite3, see https://github.com/bmabey/database_cleaner/issues/224
-  gem 'shoulda', '~> 3.2.0'
+  gem 'database_cleaner'
+  gem 'minitest-spec-rails'
+  gem 'minitest-matchers_vaccine'
+  gem 'shoulda-matchers'
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'capybara'

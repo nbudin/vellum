@@ -42,102 +42,102 @@ class AbilityTest < ActiveSupport::TestCase
     @ability = Ability.new(@person)
   end
   
-  context "A global admin" do
+  describe "A global admin" do
     setup do
       @project = FactoryGirl.create(:project)
       @person = FactoryGirl.create(:person, :admin => true)
       @ability = Ability.new(@person)
     end
     
-    should "have all permissions" do
+    it "should have all permissions" do
       assert_has_project_abilities(%w{read create update destroy copy_templates change_permissions})
       assert_has_content_abilities(%w{read create update destroy})
     end
   end
   
-  context "A project admin/author" do
+  describe "A project admin/author" do
     setup { build_membership_and_ability(:admin => true, :author => true) }
     
-    should "have appropriate permissions" do
+    it "should have appropriate permissions" do
       assert_has_project_abilities(%w{read create update destroy copy_templates change_permissions})
       assert_has_content_abilities(%w{read create update destroy})
     end
   end
   
-  context "A project admin" do
+  describe "A project admin" do
     setup { build_membership_and_ability(:admin => true, :author => false) }
 
     
-    should "have appropriate permissions" do
+    it "should have appropriate permissions" do
       assert_has_project_abilities(%w{read create destroy copy_templates change_permissions})
       assert_has_content_abilities(%w{read})
     end
   end
   
-  context "A project author" do
+  describe "A project author" do
     setup { build_membership_and_ability(:admin => false, :author => true) }
 
-    should "have appropriate permissions" do
+    it "should have appropriate permissions" do
       assert_has_project_abilities(%w{read create update copy_templates})
       assert_has_content_abilities(%w{read create update destroy})
     end
   end
   
-  context "An unprivileged member" do
+  describe "An unprivileged member" do
     setup { build_membership_and_ability(:admin => false, :author => false) }
     
-    should "have appropriate permissions" do
+    it "should have appropriate permissions" do
       assert_has_project_abilities(%w{read create copy_templates})
       assert_has_content_abilities(%w{read})
     end
   end
   
-  context "A non-member" do
+  describe "A non-member" do
     setup do
       @project = FactoryGirl.create(:project)
       @person = FactoryGirl.create(:person)
     end
     
-    should "have appropriate permissions" do
+    it "should have appropriate permissions" do
       @ability = Ability.new(@person)
       assert_has_project_abilities(%w{create})
       assert_has_content_abilities([])
     end
     
-    context "of a public project" do
+    describe "of a public project" do
       setup do
         @project.public_visibility = "visible"
         assert @project.save
       end
       
-      should "be able to read the project" do
+      it "should be able to read the project" do
         @ability = Ability.new(@person)
         assert_has_project_abilities(%w{create read})
         assert_has_content_abilities(%w{read})
       end
     end
     
-    context "of a copy-templates project" do
+    describe "of a copy-templates project" do
       setup do
         @project.public_visibility = "copy_templates"
         assert @project.save
       end
       
-      should "be able to copy templates from the project" do
+      it "should be able to copy templates from the project" do
         @ability = Ability.new(@person)
         assert_has_project_abilities(%w{create copy_templates})
         assert_has_content_abilities([])
       end
     end
     
-    context "An anonymous user" do
+    describe "An anonymous user" do
       setup do
         @project = FactoryGirl.create(:project)
         @person = nil
         @ability = Ability.new(@person)
       end
       
-      should "have no permissions" do
+      it "should have no permissions" do
         @ability = Ability.new(@person)
         assert_has_project_abilities([])
         assert_has_content_abilities([])

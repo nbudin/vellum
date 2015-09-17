@@ -8,8 +8,9 @@ Devise.setup do |config|
   config.mailer_sender = "noreply@sugarpond.net"
   
   config.case_insensitive_keys = []
-  config.use_salt_as_remember_token = true
   config.reset_password_within = 24.hours
+  
+  config.secret_key = ENV['DEVISE_SECRET_KEY'] || 'f76357175fe203599c7365419c4a520888467c3ff23784a9b01ea3677ca4b9ab17ac5b4ce9a59fd995913ce1605cc2ba7148dc5a20f3561289c76658fdf014ca'
 
   # ==> Configuration for any authentication mechanism
   # Configure which keys are used when authenticating an user. By default is
@@ -35,13 +36,6 @@ Devise.setup do |config|
 
   # Configure how many times you want the password is reencrypted. Default is 10.
   # config.stretches = 10
-
-  # Define which will be the encryption algorithm. Supported algorithms are :sha1
-  # (default), :sha512 and :bcrypt. Devise also supports encryptors from others
-  # authentication tools as :clearance_sha1, :authlogic_sha512 (then you should set
-  # stretches above to 20 for default behavior) and :restful_authentication_sha1
-  # (then you should set stretches to 10, and copy REST_AUTH_SITE_KEY to pepper)
-  config.encryptor = :bcrypt
 
   # ==> Configuration for :confirmable
   # The time you want give to your user to confirm his account. During this time
