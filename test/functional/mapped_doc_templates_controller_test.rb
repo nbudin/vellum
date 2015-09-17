@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class MappedDocTemplatesControllerTest < ActionController::TestCase
-  def setup
+  setup do
     create_logged_in_person
     @doc_template = FactoryGirl.create(:doc_template)
     @project = @doc_template.project

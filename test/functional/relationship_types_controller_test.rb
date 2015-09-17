@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class RelationshipTypesControllerTest < ActionController::TestCase
-  def setup
+  setup do
     create_logged_in_person
 
     @project = FactoryGirl.create(:project)

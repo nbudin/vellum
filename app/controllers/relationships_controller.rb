@@ -27,7 +27,7 @@ class RelationshipsController < ApplicationController
   # POST /relationships
   # POST /relationships.xml
   def create
-    @relationship = @project.relationships.new(params[:relationship])
+    @relationship = @project.relationships.new(relationship_params)
     html_redirect = :back
     if params[:relationship][:target_id] == "new"
       tmpl = @relationship.relationship_type.send("#{@relationship.target_direction}_template")
@@ -56,7 +56,7 @@ class RelationshipsController < ApplicationController
     @relationship = Relationship.find(params[:id])
 
     respond_to do |format|
-      if @relationship.update_attributes(params[:relationship])
+      if @relationship.update_attributes(relationship_params)
         format.html { redirect_to :back }
         format.xml  { head :ok }
         format.json { head :ok }
@@ -82,5 +82,19 @@ class RelationshipsController < ApplicationController
       format.xml  { head :ok }
       format.json { head :ok }
     end
+  end
+  
+  private
+  
+  def relationship_params
+    params.require(:relationship).permit(
+      :relationship_type_id, 
+      :source_direction,
+      :relationship_type_id_and_source_direction,
+      :left_id, 
+      :right_id,
+      :source_id,
+      :target_id
+    )
   end
 end

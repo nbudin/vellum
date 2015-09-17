@@ -5,7 +5,7 @@ class DocTemplatesController < ApplicationController
   # GET /doc_templates
   # GET /doc_templates.xml
   def index
-    @doc_templates = @project.doc_templates.all(:order => "name")
+    @doc_templates = @project.doc_templates.order(:name)
 
     respond_to do |format|
       format.html
@@ -41,7 +41,7 @@ class DocTemplatesController < ApplicationController
   # POST /doc_templates
   # POST /doc_templates.xml
   def create
-    @doc_template = @project.doc_templates.new(params[:doc_template])
+    @doc_template = @project.doc_templates.new(doc_template_params)
 
     respond_to do |format|
       if @doc_template.save
@@ -58,7 +58,7 @@ class DocTemplatesController < ApplicationController
   # PUT /doc_templates/1.xml
   def update
     @doc_template = DocTemplate.find(params[:id])
-    update_params = params[:doc_template].dup
+    update_params = doc_template_params.dup
     if update_params[:doc_template_attrs_attributes]
       update_params[:doc_template_attrs_attributes].reject! { |id, attr_params| attr_params[:name].blank? }
     end
@@ -86,5 +86,21 @@ class DocTemplatesController < ApplicationController
       format.html { redirect_to doc_templates_url(@project) }
       format.xml  { head :ok }
     end
+  end
+  
+  private
+  
+  def doc_template_params
+    params.require(:doc_template).permit(
+      :name,
+      doc_template_attrs_attributes: [
+        :id,
+        :_destroy,
+        :name,
+        :position,
+        :ui_type,
+        :human_choices
+      ]
+    )
   end
 end
