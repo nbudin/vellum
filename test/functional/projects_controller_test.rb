@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ProjectsControllerTest < ActionController::TestCase
-  def setup
+  setup do
     create_logged_in_person
   end
 

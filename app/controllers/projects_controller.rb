@@ -24,15 +24,13 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.xml
   def show
-    @project = Project.find(params[:id], 
-      :include => { :docs => { :doc_template => [] },
-                    :project_memberships => [] })
+    @project = Project.includes(:project_memberships, docs: :doc_template).find(params[:id])
 
     respond_to do |format|
       format.html do
         @templates = @project.doc_templates.sort_by { |t| t.name.sort_normalize }
         @docs = {}
-        @project.docs.all(:include => [:doc_template, :assignee]).each do |d|
+        @project.docs.includes(:doc_template, :assignee).each do |d|
           @docs[d.doc_template] ||= []
           @docs[d.doc_template] << d
         end
@@ -66,11 +64,12 @@ class ProjectsController < ApplicationController
       authorize! :copy_templates, source_project
     end
     
-    @project = Project.new(params[:project])
-    @project.project_memberships.build(:person => current_person, :project => @project, :author => true, :admin => true)
+    @project = Project.new(project_params)
 
     respond_to do |format|
       if @project.save
+        @project.project_memberships.create!(:person => current_person, :author => true, :admin => true)
+
         format.html { redirect_to project_url(@project) }
         format.xml  { head :created, :location => project_url(@project) }
         format.json { head :created, :location => project_url(@project) }
@@ -89,7 +88,7 @@ class ProjectsController < ApplicationController
     authorize! :change_permissions, @project
 
     respond_to do |format|
-      if @project.update_attributes(params[:project])
+      if @project.update_attributes(project_params)
         format.html { redirect_to project_url(@project) }
         format.xml  { render :xml => @project.to_xml }
         format.json { render :json => @project.to_json }
@@ -112,5 +111,22 @@ class ProjectsController < ApplicationController
       format.xml  { head :ok }
       format.json { head :ok }
     end
+  end
+  
+  private
+  
+  def project_params
+    params.require(:project).permit(
+      :name, 
+      :blurb, 
+      :public_visibility, 
+      project_memberships_attributes: [
+        :id,
+        :email,
+        :author,
+        :admin,
+        :_destroy
+      ]
+    )
   end
 end

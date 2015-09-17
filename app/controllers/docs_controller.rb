@@ -171,9 +171,11 @@ class DocsController < ApplicationController
       :content, 
       :assignee_id,
       attrs_attributes: [
+        :id,
         :name, 
         :position, 
         :value,
+        :_destroy,
         multiple_value: [:choice, :selected]
       ]
     )
