@@ -26,7 +26,7 @@ class MapsControllerTest < ActionController::TestCase
 
     it "should respond correctly" do
       must respond_with(:redirect)
-      wont set_the_flash
+      wont set_flash
     end
 
     it "should create map" do
@@ -58,7 +58,7 @@ class MapsControllerTest < ActionController::TestCase
 
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
       end
 
       it "should update the map" do
@@ -78,7 +78,7 @@ class MapsControllerTest < ActionController::TestCase
 
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
         must redirect_to("the map list") { maps_path @project }
       end
 

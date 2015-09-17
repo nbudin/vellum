@@ -63,18 +63,22 @@ class Attr < ActiveRecord::Base
   def value(format=:html)
     FormatConversions.convert(read_attribute(:value), format)
   end
+  
+  def multiple_value
+    value
+  end
+  
+  def multiple_value=(value)
+    keys = value.keys.sort
+    selected_keys = keys.select { |key| 
+      ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value[key]['selected'])
+    }
+    
+    write_attribute(:value, selected_keys.collect { |key| value[key]['choice'] }.join(", "))
+  end
 
   def value=(value)
-    write_attribute(:value, case value
-    when Hash
-      keys = value.keys.sort
-      selected_keys = keys.select { |key| 
-        ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value[key]['selected'])
-      }
-      selected_keys.collect { |key| value[key]['choice'] }.join(", ")
-    else
-      Sanitize.clean(value.to_s, Sanitize::Config::VELLUM)
-    end)
+    write_attribute(:value, Sanitize.clean(value.to_s, Sanitize::Config::VELLUM))
   end
   
   def raw_value

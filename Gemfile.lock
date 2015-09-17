@@ -54,7 +54,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    acts_as_list (0.3.0)
+    acts_as_list (0.7.2)
       activerecord (>= 3.0)
     addressable (2.3.5)
     ae_users_migrator (1.0.5)

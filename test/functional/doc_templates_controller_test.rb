@@ -49,7 +49,7 @@ class DocTemplatesControllerTest < ActionController::TestCase
 
     it "should respond correctly" do
       must respond_with(:redirect)
-      wont set_the_flash
+      wont set_flash
     end
 
     it "should create a doc template" do
@@ -87,7 +87,7 @@ class DocTemplatesControllerTest < ActionController::TestCase
 
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
       end
 
       it "should update the template" do
@@ -109,7 +109,7 @@ class DocTemplatesControllerTest < ActionController::TestCase
 
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
         must redirect_to("the template list") { doc_templates_path(@project) }
       end
 

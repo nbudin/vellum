@@ -15,10 +15,11 @@ class MapsController < ApplicationController
   # GET /maps/1
   # GET /maps/1.xml
   def show
-    @map = @project.maps.find(params[:id], :include => {
-      :mapped_relationship_types => { :relationship_type => :relationships }, 
-      :mapped_doc_templates => { :doc_template => :docs }})
-      
+    @map = @project.maps.includes(
+      mapped_relationship_types: { relationship_type: :relationships },
+      mapped_doc_templates: { doc_template: :docs }
+    ).find(params[:id])
+    
     attachment_filename = "#{@project.name} #{@map.name}.#{params[:format]}"
     respond_to do |format|
       format.html # show.html.erb

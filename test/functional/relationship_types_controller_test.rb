@@ -28,7 +28,7 @@ class RelationshipTypesControllerTest < ActionController::TestCase
 
     it "should respond correctly" do
       must render_template(:choose_templates)
-      wont set_the_flash
+      wont set_flash
     end
 
     it "should not create a relationship type" do
@@ -67,7 +67,7 @@ class RelationshipTypesControllerTest < ActionController::TestCase
   
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
       end
   
       it "should create a relationship type" do
@@ -105,7 +105,7 @@ class RelationshipTypesControllerTest < ActionController::TestCase
 
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
       end
 
       it "should update the relationship type" do
@@ -127,7 +127,7 @@ class RelationshipTypesControllerTest < ActionController::TestCase
 
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
       end
 
       it "should destroy a relationship type" do

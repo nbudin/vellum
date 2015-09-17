@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class DocsControllerTest < ActionController::TestCase
-  def setup
+  setup do
     create_logged_in_person
     
     assert @attr = FactoryGirl.create(:doc_template_attr, :name => "Favorite color")
@@ -48,7 +48,7 @@ class DocsControllerTest < ActionController::TestCase
 
     it "should respond correctly" do
       must respond_with(:redirect)
-      wont set_the_flash
+      wont set_flash
     end
 
     it "should create a doc with the appropriate attrs" do
@@ -125,7 +125,7 @@ class DocsControllerTest < ActionController::TestCase
 
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
       end
 
       it "should set the new version's author" do
@@ -178,7 +178,7 @@ class DocsControllerTest < ActionController::TestCase
 
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
         must redirect_to("the project") { project_path @project }
       end
 
@@ -195,7 +195,7 @@ class DocsControllerTest < ActionController::TestCase
       
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
       end
 
       it "should create a doc with the appropriate attrs" do

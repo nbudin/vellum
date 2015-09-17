@@ -35,7 +35,7 @@ class ProjectsControllerTest < ActionController::TestCase
 
     it "should respond correctly" do
       must respond_with(:redirect)
-      wont set_the_flash
+      wont set_flash
     end
 
     it "should create a project" do
@@ -89,7 +89,7 @@ class ProjectsControllerTest < ActionController::TestCase
 
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
       end
 
       it "should update the project" do
@@ -109,7 +109,7 @@ class ProjectsControllerTest < ActionController::TestCase
 
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
       end
 
       it "should destroy the project" do

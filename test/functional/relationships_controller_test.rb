@@ -39,7 +39,7 @@ class RelationshipsControllerTest < ActionController::TestCase
 
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
       end
 
       it "should create a relationship" do
@@ -67,7 +67,7 @@ class RelationshipsControllerTest < ActionController::TestCase
 
         it "should respond correctly" do
           must respond_with(:redirect)
-          wont set_the_flash
+          wont set_flash
         end
 
         it "should create a relationship and a doc" do
@@ -91,7 +91,7 @@ class RelationshipsControllerTest < ActionController::TestCase
 
         it "should respond correctly" do
           must respond_with(:redirect)
-          wont set_the_flash
+          wont set_flash
         end
 
         it "should create a relationship and a structure" do
@@ -137,7 +137,7 @@ class RelationshipsControllerTest < ActionController::TestCase
 
       it "should respond correctly" do
         must respond_with(:redirect)
-        wont set_the_flash
+        wont set_flash
       end
 
       it "should destroy a relationship" do

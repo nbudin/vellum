@@ -214,8 +214,8 @@ class Doc < ActiveRecord::Base
         
         next if dupes.include?(name)
         
-        if ActiveRecord::ConnectionAdapters::Column.value_to_boolean(item['_destroy']) ||
-            ActiveRecord::ConnectionAdapters::Column.value_to_boolean(item['_delete'])
+        if ActiveRecord::Type::Boolean.new.type_cast_from_database(item['_destroy']) ||
+            ActiveRecord::Type::Boolean.new.type_cast_from_database(item['_delete'])
           self.delete(name)
         else
           self[name].value = item['value']
@@ -352,6 +352,6 @@ class Doc < ActiveRecord::Base
   
   def email_new_assignee
     return unless assignee
-    AssignmentMailer.assigned_to_you(self, assignee).deliver
+    AssignmentMailer.assigned_to_you(self, assignee).deliver_later
   end
 end

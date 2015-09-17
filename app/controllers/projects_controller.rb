@@ -52,7 +52,7 @@ class ProjectsController < ApplicationController
   end
   
   def edit
-    @project = Project.find(params[:id], :include => {:project_memberships => :person})
+    @project = Project.includes(project_memberships: :person).find(params[:id])
     authorize! :change_permissions, @project
     
     @project.project_memberships.build

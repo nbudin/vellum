@@ -9,7 +9,7 @@ class DocsController < ApplicationController
     if params[:template_id]
       conds[:doc_template_id] = @project.doc_templates.find(params[:template_id]).id
     end
-    @docs = @project.docs.all(:conditions => conds).sort_by {|s| s.name.try(:sort_normalize) || "" }
+    @docs = @project.docs.where(conds).to_a.sort_by {|s| s.name.try(:sort_normalize) || "" }
 
     serialization_options = { :only => [:id, :name, :version, :blurb, :doc_template_id] }
     respond_to do |format|
@@ -21,10 +21,12 @@ class DocsController < ApplicationController
   # GET /docs/1
   # GET /docs/1.xml
   def show
-    @doc = @project.docs.find(params[:id],
-      :include => { :doc_template => [],
-                    :outward_relationships => { :left => [], :relationship_type => [:left_template, :right_template] }, 
-                    :inward_relationships => { :right => [], :relationship_type => [:left_template, :right_template] } })
+    @doc = @project.docs.includes(
+      :doc_template,
+      outward_relationships: [:left, relationship_type: [:left_template, :right_template]],
+      inward_relationships: [:right, relationship_type: [:left_template, :right_template]]
+    ).find(params[:id])
+
     @doc.project = @project
     @relationships = @doc.relationships.sort_by do |rel|
       other = rel.other(@doc)
@@ -40,7 +42,7 @@ class DocsController < ApplicationController
       end
     end
     
-    other_docs = @project.docs.all(:conditions => {:doc_template_id => @doc.doc_template.id}, :order => 'position')
+    other_docs = @project.docs.where(doc_template_id: @doc.doc_template_id).order(:position).to_a
     my_index = other_docs.index(@doc)
     @prev_doc = (my_index > 0) && other_docs[my_index - 1]
     @next_doc = (my_index < other_docs.length - 1) && other_docs[my_index + 1]
@@ -71,9 +73,8 @@ class DocsController < ApplicationController
       @doc_template = @project.doc_templates.find(params[:template_id])
     end
 
-    @doc = @project.docs.new(params[:doc].update(
-        :doc_template => @doc_template,
-        :creator => current_person))
+    @doc = @project.docs.new(doc_params)
+    @doc.assign_attributes(doc_template: @doc_template, creator: current_person)
 
     respond_to do |format|
       if @doc.save
@@ -93,7 +94,7 @@ class DocsController < ApplicationController
   def update
     @doc = @project.docs.find(params[:id])
 
-    successful_save = @doc.update_attributes(params[:doc])
+    successful_save = @doc.update_attributes(doc_params)
     if successful_save
       v = @doc.versions.latest
       v.author = current_person
@@ -143,7 +144,7 @@ class DocsController < ApplicationController
   
   def copy
     @source_doc = @project.docs.find(params[:id])
-    @doc = @project.docs.new(@source_doc.attributes)
+    @doc = @source_doc.dup
     @doc.attrs_attributes = @source_doc.attrs_attributes
     @doc.creator = current_person
     @doc.name = "Copy of #{@doc.name}"
@@ -159,5 +160,22 @@ class DocsController < ApplicationController
         format.json { render :json => @doc.errors.to_json }
       end
     end
+  end
+  
+  private
+  
+  def doc_params
+    params.require(:doc).permit(
+      :name, 
+      :blurb, 
+      :content, 
+      :assignee_id,
+      attrs_attributes: [
+        :name, 
+        :position, 
+        :value,
+        multiple_value: [:choice, :selected]
+      ]
+    )
   end
 end

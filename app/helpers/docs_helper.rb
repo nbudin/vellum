@@ -25,7 +25,7 @@ module DocsHelper
         when :dropdown
           attr_fields.select :value, attr.choices
         when :multiple
-          attr_fields.fields_for :value do |value_fields|
+          attr_fields.fields_for :multiple_value do |value_fields|
             content_tag(:ul, :style => "list-style-type: none;") do
               i = -1
               attr.choices.collect do |choice|
