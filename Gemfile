@@ -63,7 +63,7 @@ group :test do
 end
 
 group :development do
-  gem 'capistrano', '3.2.1'
+  gem 'capistrano'
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
 end
