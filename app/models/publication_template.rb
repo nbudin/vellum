@@ -29,7 +29,6 @@ class PublicationTemplate < ActiveRecord::Base
     read_attribute :format
   end
   
-  private
   def layout_stack
     (layout.try(:layout_stack) || []) + [self]
   end  

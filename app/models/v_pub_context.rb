@@ -68,7 +68,7 @@ class VPubContext < Radius::Context
       end
       
       prev_doc = tag.locals.doc
-      docs = tag.locals.project.docs.all(:conditions => conds)
+      docs = tag.locals.project.docs.where(conds).to_a
       content = sort_docs(tag, docs).collect do |d|
         tag.locals.doc = d
         tag.expand

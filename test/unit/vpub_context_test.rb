@@ -9,7 +9,7 @@ class VPubContextTest < ActiveSupport::TestCase
       @bob = FactoryGirl.build(:doc, :doc_template => @person,
         :project => @project, :name => "Bob", :content => "<p>Here we have <b>Bob</b>.<br/>Bob likes to ski.</p>")
       
-      @describe = VPubContext.new(:project => @project, :doc => @bob)
+      @context = VPubContext.new(:project => @project, :doc => @bob)
       @parser = Radius::Parser.new(@context, :tag_prefix => 'v')
     end
   
@@ -237,7 +237,7 @@ class VPubContextTest < ActiveSupport::TestCase
         @layout = FactoryGirl.create(:publication_template, project: @project, name: "Layout", 
           content: "<section><v:yield/></section>")
         @publication_template = FactoryGirl.create(:publication_template, layout: @layout, content: "<h1>Doc content</h1>")
-        @describe = VPubContext.new(:project => @project, :doc => @bob, publication_template: @publication_template)
+        @context = VPubContext.new(:project => @project, :doc => @bob, publication_template: @publication_template)
       end
       
       it "should render in the layout" do
