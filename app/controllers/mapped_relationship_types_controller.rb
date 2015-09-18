@@ -6,7 +6,7 @@ class MappedRelationshipTypesController < ApplicationController
   # POST /mapped_relationship_types
   # POST /mapped_relationship_types.xml
   def create
-    @mapped_relationship_type = @map.mapped_relationship_types.new(params[:mapped_relationship_type])
+    @mapped_relationship_type = @map.mapped_relationship_types.new(mapped_relationship_type_params)
 
     respond_to do |format|
       if @mapped_relationship_type.save
@@ -25,7 +25,7 @@ class MappedRelationshipTypesController < ApplicationController
     @mapped_relationship_type = @map.mapped_relationship_types.find(params[:id])
 
     respond_to do |format|
-      if @mapped_relationship_type.update_attributes(params[:mapped_relationship_type])
+      if @mapped_relationship_type.update_attributes(mapped_relationship_type_params)
         format.html { redirect_to(:back) }
         format.xml  { head :ok }
       else
@@ -45,5 +45,11 @@ class MappedRelationshipTypesController < ApplicationController
       format.html { redirect_to :back }
       format.xml  { head :ok }
     end
+  end
+  
+  private
+  
+  def mapped_relationship_type_params
+    params.fetch(:mapped_relationship_type, {}).permit(:relationship_type_id, :color)
   end
 end

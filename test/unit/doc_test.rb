@@ -62,10 +62,16 @@ class DocTest < ActiveSupport::TestCase
         end
 
         it "should accept hash values for attrs_attributes=" do
-          @doc.attrs_attributes = [ { 'name' => @attr.name, 
-              'value' => { 0 => { 'choice' => "red", 'selected' => true, },
-                1 => { 'choice' => "green", 'selected' => true},
-                2 => { 'choice' => "blue", 'selected' => false } } } ]
+          @doc.attrs_attributes = [ 
+            { 
+              'name' => @attr.name, 
+              'multiple_value' => { 
+                0 => { 'choice' => "red", 'selected' => true },
+                1 => { 'choice' => "green", 'selected' => true },
+                2 => { 'choice' => "blue", 'selected' => false } 
+              } 
+            }
+          ]
           assert_equal "red, green", @attr.value
         end
       end

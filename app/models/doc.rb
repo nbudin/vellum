@@ -218,7 +218,8 @@ class Doc < ActiveRecord::Base
             ActiveRecord::Type::Boolean.new.type_cast_from_database(item['_delete'])
           self.delete(name)
         else
-          self[name].value = item['value']
+          self[name].value = item['value'] if item.has_key?('value')
+          self[name].value = item['multiple_value'] if item.has_key?('multiple_value')
         end
       end
       
@@ -268,6 +269,10 @@ class Doc < ActiveRecord::Base
     attrs.save_to_doc_version(new_version)
     reload_working_attrs(new_version)
   end
+  
+  def find_version(num)
+    versions.find_by(version: num)
+  end
 
   def to_param
     if name
@@ -304,7 +309,7 @@ class Doc < ActiveRecord::Base
         return (related_docs(relationship_type, :outward) + related_docs(relationship_type, :inward)).uniq
       end
       
-      return project.relationship_types.all(:conditions => conds).collect do |rt|
+      return project.relationship_types.where(conds).collect do |rt|
         related_docs(rt, direction)
       end.flatten
     end

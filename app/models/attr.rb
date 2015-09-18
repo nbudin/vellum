@@ -71,7 +71,7 @@ class Attr < ActiveRecord::Base
   def multiple_value=(value)
     keys = value.keys.sort
     selected_keys = keys.select { |key| 
-      ActiveRecord::ConnectionAdapters::Column.value_to_boolean(value[key]['selected'])
+      ActiveRecord::Type::Boolean.new.type_cast_from_database(value[key]['selected'])
     }
     
     write_attribute(:value, selected_keys.collect { |key| value[key]['choice'] }.join(", "))

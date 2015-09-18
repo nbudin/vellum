@@ -3,8 +3,6 @@ class MapsController < ApplicationController
   load_and_authorize_resource :map, :through => :project
 
   def index
-    @maps = @project.maps
-
     respond_to do |format|
       format.html
       format.xml  { render :xml => @maps }
@@ -43,8 +41,6 @@ class MapsController < ApplicationController
   # POST /maps
   # POST /maps.xml
   def create
-    @map = @project.maps.new(params[:map])
-
     respond_to do |format|
       if @map.save
         format.html { redirect_to map_url(@project, @map) }
@@ -61,10 +57,8 @@ class MapsController < ApplicationController
   # PUT /maps/1
   # PUT /maps/1.xml
   def update
-    @map = @project.maps.find(params[:id])
-
     respond_to do |format|
-      if @map.update_attributes(params[:map])
+      if @map.update(map_params)
         format.html { redirect_to map_url(@project, @map) }
         format.xml  { render :xml => @map.to_xml }
         format.json { render :json => @map.to_json }
@@ -92,5 +86,9 @@ class MapsController < ApplicationController
   private
   def get_project
     @project = Project.find(params[:project_id])
+  end
+  
+  def map_params
+    params.require(:map).permit(:name, :blurb)
   end
 end

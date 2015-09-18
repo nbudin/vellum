@@ -3,9 +3,7 @@ class RelationshipTypesController < ApplicationController
   load_and_authorize_resource :relationship_type, :through => :project
   
   def new
-    set_relationship_type_return_url
-    @relationship_type = @project.relationship_types.build(params[:relationship_type])
-    
+    set_relationship_type_return_url    
     render :action => "choose_templates" if templates_needed?
   end
   
@@ -28,8 +26,6 @@ class RelationshipTypesController < ApplicationController
   # POST /relationship_types
   # POST /relationship_types.xml
   def create
-    @relationship_type = @project.relationship_types.build(params[:relationship_type])
-    
     if templates_needed?
       set_relationship_type_return_url
       render :action => "choose_templates"
@@ -53,10 +49,8 @@ class RelationshipTypesController < ApplicationController
   # PUT /relationship_types/1
   # PUT /relationship_types/1.xml
   def update
-    @relationship_type = @project.relationship_types.find(params[:id])
-
     respond_to do |format|
-      if @relationship_type.update_attributes(params[:relationship_type])
+      if @relationship_type.update(relationship_type_params)
         format.html { redirect_to(relationship_type_return_url) }
         format.xml  { head :ok }
         format.json { head :ok }
@@ -93,4 +87,14 @@ class RelationshipTypesController < ApplicationController
   def templates_needed?
     @relationship_type.left_template.nil? or @relationship_type.right_template.nil?
   end 
+  
+  def relationship_type_params
+    params.require(:relationship_type).permit(
+      :name,
+      :left_template_id, 
+      :right_template_id,
+      :left_description,
+      :right_description
+    )
+  end
 end

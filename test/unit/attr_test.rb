@@ -71,14 +71,14 @@ class AttrTest < ActiveSupport::TestCase
       end
 
       it "should accept hash values" do
-        @attr.value = { 0 => { 'choice' => "to seek the Grail", 'selected' => true },
+        @attr.multiple_value = { 0 => { 'choice' => "to seek the Grail", 'selected' => true },
             1 => { 'choice' => "to star in a movie", 'selected' => false }
         }
         assert_equal "to seek the Grail", @attr.value
       end
 
       it "should reject hash values that are not in the choices list" do
-        @attr.value = { 0 => { 'choice' => "a", :selected => 1 } }
+        @attr.multiple_value = { 0 => { 'choice' => "a", :selected => 1 } }
         assert_equal "", @attr.value
       end
     end

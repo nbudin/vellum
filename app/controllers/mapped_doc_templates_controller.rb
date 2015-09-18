@@ -6,8 +6,6 @@ class MappedDocTemplatesController < ApplicationController
   # POST /mapped_doc_templates
   # POST /mapped_doc_templates.xml
   def create
-    @mapped_doc_template = @map.mapped_doc_templates.new(params[:mapped_doc_template])
-
     respond_to do |format|
       if @mapped_doc_template.save
         format.html { redirect_to :back }
@@ -22,10 +20,8 @@ class MappedDocTemplatesController < ApplicationController
   # PUT /mapped_doc_templates/1
   # PUT /mapped_doc_templates/1.xml
   def update
-    @mapped_doc_template = @map.mapped_doc_templates.find(params[:id])
-
     respond_to do |format|
-      if @mapped_doc_template.update_attributes(params[:mapped_doc_template])
+      if @mapped_doc_template.update_attributes(mapped_doc_template_params)
         format.html { redirect_to :back }
         format.xml  { head :ok }
       else
@@ -38,12 +34,16 @@ class MappedDocTemplatesController < ApplicationController
   # DELETE /mapped_doc_templates/1
   # DELETE /mapped_doc_templates/1.xml
   def destroy
-    @mapped_doc_template = @map.mapped_doc_templates.find(params[:id])
     @mapped_doc_template.destroy
 
     respond_to do |format|
       format.html { redirect_to :back }
       format.xml  { head :ok }
     end
+  end
+  
+  private
+  def mapped_doc_template_params
+    params.fetch(:mapped_doc_template, {}).permit(:doc_template_id, :color)
   end
 end
