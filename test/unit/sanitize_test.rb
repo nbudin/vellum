@@ -12,7 +12,7 @@ class SanitizeTest < ActiveSupport::TestCase
   end
 
   test "allow tables" do
-    assert_sanitized("<table><tr><td>A table!</td></tr></table>", %r{<table>\s*<tr>\s*<td>A table!</td>\s*</tr>\s*</table>})
+    assert_sanitized("<table><tbody><tr><td>A table!</td></tr></tbody></table>", %r{<table>\s*<tbody>\s*<tr>\s*<td>A table!</td>\s*</tr>\s*</tbody>\s*</table>})
   end
   
   test "remove non-Vellum classes" do
@@ -34,10 +34,10 @@ class SanitizeTest < ActiveSupport::TestCase
   end
   
   test "convert non-Unix line breaks" do
-    assert_sanitized("<p>My text<br />\nis on two lines</p>", "<p>My text<br />\nis on two lines</p>")
-    assert_sanitized("<p>My text<br />\r\nis on two lines</p>", "<p>My text<br />\nis on two lines</p>")
-    assert_sanitized("<p>My text<br />\ris on two lines</p>", "<p>My text<br />\nis on two lines</p>")
-    assert_sanitized("<p>My text<br />\r\nis on<br />\rthree lines</p>", "<p>My text<br />\nis on<br />\nthree lines</p>")
+    assert_sanitized("<p>My text<br>\nis on two lines</p>", "<p>My text<br>\nis on two lines</p>")
+    assert_sanitized("<p>My text<br>\r\nis on two lines</p>", "<p>My text<br>\nis on two lines</p>")
+    assert_sanitized("<p>My text<br>\ris on two lines</p>", "<p>My text<br>\nis on two lines</p>")
+    assert_sanitized("<p>My text<br>\r\nis on<br>\rthree lines</p>", "<p>My text<br>\nis on<br>\nthree lines</p>")
   end
 
   private
