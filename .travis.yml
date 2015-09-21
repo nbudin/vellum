@@ -1,5 +1,6 @@
 rvm:
   - 2.1.2
+sudo: false
 language: ruby
 before_install: 
   - "export DISPLAY=:99.0"
