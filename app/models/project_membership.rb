@@ -19,8 +19,8 @@ class ProjectMembership < ActiveRecord::Base
     if email and self.person.nil?
       logger.info "Not found, trying Illyan invite"
       begin
-        invitee = IllyanClient::Person.new(:person => { :email => email })
-        invitee.save
+        invitee = IllyanClient::Person.new(email: email)
+        IllyanClient.default_client.create_person(invitee)
         logger.info "Invite successful!  Got back #{invitee.inspect}"
         
         self.person = Person.create(:email => email, :username => email, :firstname => invitee.firstname, 
