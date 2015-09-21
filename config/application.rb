@@ -50,6 +50,5 @@ module Vellum
     config.assets.enabled = true
 
     config.assets.precompile = ["application.css", "application.js", "bootstrap", /\.(png|jpg|gif)\z/]
-    puts "config.assets.precompile: #{config.assets.precompile.inspect}"
   end
 end

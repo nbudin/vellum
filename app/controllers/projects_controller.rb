@@ -119,6 +119,7 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(
       :name, 
       :blurb, 
+      :template_source_project_id,
       :public_visibility, 
       project_memberships_attributes: [
         :id,

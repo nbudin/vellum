@@ -8,7 +8,7 @@ class AssignmentMailerTest < ActionMailer::TestCase
     dm1.message_id = "message_id"
     dm2.message_id = "message_id"
     
-    assert_equal mail1.encoded, mail2.encoded
+    assert_equal dm1.encoded, dm2.encoded
   end
   
   describe "just assigned a character" do

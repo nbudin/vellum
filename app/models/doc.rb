@@ -219,7 +219,7 @@ class Doc < ActiveRecord::Base
           self.delete(name)
         else
           self[name].value = item['value'] if item.has_key?('value')
-          self[name].value = item['multiple_value'] if item.has_key?('multiple_value')
+          self[name].multiple_value = item['multiple_value'] if item.has_key?('multiple_value')
         end
       end
       

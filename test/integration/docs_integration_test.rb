@@ -28,6 +28,7 @@ class DocsIntegrationTest < ActionDispatch::IntegrationTest
     check "East"
     check "North West"
     fill_in "GM Notes", with: "Grognar is a moron."
+    
     click_button "Create Character"
     
     grognar = Doc.find_by_name("Grognar")
