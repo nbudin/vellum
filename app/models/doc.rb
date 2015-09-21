@@ -352,7 +352,7 @@ class Doc < ActiveRecord::Base
   
   def sanitize_content
     return if content.blank?
-    content = Sanitize.clean(content, Sanitize::Config::VELLUM)
+    self.content = Sanitize.clean(content, Sanitize::Config::VELLUM)
   end
   
   def email_new_assignee
