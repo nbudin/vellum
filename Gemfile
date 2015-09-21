@@ -44,7 +44,7 @@ gem "rubyzip", ">= 1.0.0", :require => "zip"
 gem "nokogiri", ">= 1.4.1"
 gem "sanitize", "~> 4.0.0"
 gem "heroku_external_db"
-gem "illyan_client", ">= 1.0.2"
+gem "illyan_client", "~> 2.0"
 gem "rollbar"
 gem "pry-rails", :groups => [:development, :test]
 gem "rubypants", ">= 0.3.0", github: 'jmcnevin/rubypants'
