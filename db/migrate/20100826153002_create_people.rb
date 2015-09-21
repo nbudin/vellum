@@ -75,7 +75,7 @@ class CreatePeople < ActiveRecord::Migration
       person_ids.each do |person_id|
         person = @@dumpfile.people[person_id]
         
-        merge_into = Person.find_by_username(person.primary_email_address.address)
+        merge_into = Person.find_by(username: person.primary_email_address.address)
         if merge_into.nil?
           pr = Person.new(:firstname => person.firstname, :lastname => person.lastname, 
             :email => person.primary_email_address.address, :gender => person.gender, :birthdate => person.birthdate,

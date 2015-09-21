@@ -577,7 +577,7 @@ class CreateDocumentsV2 < ActiveRecord::Migration
         say "#{structure.name} contains a single doc; using that doc for the content"
         attr_name = docv1_attrs.first.name
         docv2.attrs.delete(attr_name)
-        template_attr = docv2.doc_template.doc_template_attrs.find_by_name(attr_name)
+        template_attr = docv2.doc_template.doc_template_attrs.find_by(name: attr_name)
         template_attr.destroy unless template_attr.nil?
 
         docv1 = structure.attr_value(attr_name).try(:doc)

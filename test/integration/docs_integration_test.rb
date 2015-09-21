@@ -31,7 +31,7 @@ class DocsIntegrationTest < ActionDispatch::IntegrationTest
     
     click_button "Create Character"
     
-    grognar = Doc.find_by_name("Grognar")
+    grognar = Doc.find_by(name: "Grognar")
     assert_equal doc_path(@project, grognar), current_path
     
     {

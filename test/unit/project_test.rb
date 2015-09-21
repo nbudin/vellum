@@ -9,9 +9,9 @@ class ProjectTest < ActiveSupport::TestCase
     describe "cloning another project's templates" do
       setup do
         assert @lp = FactoryGirl.create(:louisiana_purchase)
-        assert @character = @lp.doc_templates.find_by_name("Character")
-        assert @hp = @character.doc_template_attrs.find_by_name("HP")
-        assert @org = @lp.doc_templates.find_by_name("Organization")
+        assert @character = @lp.doc_templates.find_by(name: "Character")
+        assert @hp = @character.doc_template_attrs.find_by(name: "HP")
+        assert @org = @lp.doc_templates.find_by(name: "Organization")
         assert @includes = @lp.relationship_types.first
         assert_equal "Organization includes Character", @includes.left_name
         assert @lp.docs.size > 0

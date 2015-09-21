@@ -14,7 +14,7 @@ class MapsIntegrationTest < ActionDispatch::IntegrationTest
     fill_in "Name", with: "Plot web"
     click_button "Create map"
     
-    assert_equal map_path(@project, Map.find_by_name("Plot web")), current_path
+    assert_equal map_path(@project, Map.find_by(name: "Plot web")), current_path
     assert has_content?("Plot web")
   end
   

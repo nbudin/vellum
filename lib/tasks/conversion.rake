@@ -24,7 +24,7 @@ namespace :convert do
       end
     end
 
-    dta = doc_template.doc_template_attrs.find_by_name(ENV["ATTR_NAME"])
+    dta = doc_template.doc_template_attrs.find_by(name: ENV["ATTR_NAME"])
     unless dta.nil?
       dta.destroy
     end

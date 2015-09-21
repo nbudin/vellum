@@ -130,7 +130,7 @@ class DocTest < ActiveSupport::TestCase
 
           it "should not have modified the old version" do
             assert @old_doc = @doc.find_version(@version1)
-            assert @old_doc.attrs.find_by_name(@attr_name).nil?
+            assert @old_doc.attrs.find_by(name: @attr_name).nil?
           end
 
           describe "and the attr value changed" do
@@ -146,9 +146,9 @@ class DocTest < ActiveSupport::TestCase
               assert @doc2 = @doc.find_version(@version2)
               assert @doc3 = @doc.find_version(@version3)
 
-              assert @doc1.attrs.find_by_name(@attr_name).nil?
-              assert_equal "Yellow", @doc2.attrs.find_by_name(@attr_name).value
-              assert_equal "Red", @doc3.attrs.find_by_name(@attr_name).value
+              assert @doc1.attrs.find_by(name: @attr_name).nil?
+              assert_equal "Yellow", @doc2.attrs.find_by(name: @attr_name).value
+              assert_equal "Red", @doc3.attrs.find_by(name: @attr_name).value
             end
           end
 
@@ -169,12 +169,12 @@ class DocTest < ActiveSupport::TestCase
 
             it "should not have the attr on the latest version" do
               assert @doc3 = @doc.find_version(@version3)
-              assert_nil @doc3.attrs.find_by_name(@attr_name)
+              assert_nil @doc3.attrs.find_by(name: @attr_name)
             end
 
             it "should still have the attr on the previous version" do
               assert @doc2 = @doc.find_version(@version2)
-              assert_equal "Yellow", @doc2.attrs.find_by_name(@attr_name).value
+              assert_equal "Yellow", @doc2.attrs.find_by(name: @attr_name).value
             end
           end
         end

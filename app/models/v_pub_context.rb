@@ -61,7 +61,7 @@ class VPubContext < Radius::Context
     define_tag 'each_doc' do |tag|
       conds = {}
       if tag.attr['template']
-        doc_template = tag.locals.project.doc_templates.find_by_name(tag.attr['template'])
+        doc_template = tag.locals.project.doc_templates.find_by(name: tag.attr['template'])
         raise "Couldn't find any template called #{tag.attr['template']}" unless doc_template
         
         conds[:doc_template_id] = doc_template.id
@@ -228,7 +228,7 @@ class VPubContext < Radius::Context
   
   def get_pub_template(tag)
     template_name = tag.attr['template']
-    tmpl = (@pub_template_cache[template_name] ||= tag.locals.project.publication_templates.find_by_name(template_name))
+    tmpl = (@pub_template_cache[template_name] ||= tag.locals.project.publication_templates.find_by(name: template_name))
     
     if tmpl
       return tmpl
