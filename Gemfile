@@ -67,4 +67,6 @@ group :development do
   gem 'capistrano'
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
+  
+  gem 'spring'
 end
