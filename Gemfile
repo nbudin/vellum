@@ -10,25 +10,9 @@ gem 'bootstrap-wysihtml5-rails'
 gem 'bower-rails'
 gem 'figaro'
 
-group :production do
-  platforms :ruby do
-    gem "mysql2"
-  end
-  platforms :jruby do
-    gem "activerecord-jdbcmysql-adapter"
-  end
-  
-  gem 'rails_12factor'
-end
-
-platform :ruby do
-  gem "sqlite3", :groups => [:development, :test, :hangar]
-end
-
-platform :jruby do
-  gem "activerecord-jdbc-adapter", require: false
-  gem "activerecord-jdbcsqlite3-adapter", :groups => [:development, :test, :hangar]
-end
+gem "mysql2"
+gem 'rails_12factor'
+gem "sqlite3", :groups => [:development, :test]
 
 gem "devise"
 gem "devise_cas_authenticatable"
