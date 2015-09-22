@@ -10,7 +10,7 @@ gem 'bootstrap-wysihtml5-rails'
 gem 'bower-rails'
 gem 'figaro'
 
-gem "mysql2"
+gem "mysql2", '~> 0.3.18'
 gem 'rails_12factor'
 gem "sqlite3", :groups => [:development, :test]
 

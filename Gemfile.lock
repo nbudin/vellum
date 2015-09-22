@@ -256,7 +256,7 @@ GEM
       rails (>= 4.1)
     multi_json (1.11.2)
     multipart-post (2.0.0)
-    mysql2 (0.4.1)
+    mysql2 (0.3.20)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
@@ -403,7 +403,7 @@ DEPENDENCIES
   launchy
   minitest-matchers_vaccine
   minitest-spec-rails
-  mysql2
+  mysql2 (~> 0.3.18)
   nokogiri (>= 1.4.1)
   poltergeist
   pry-rails
