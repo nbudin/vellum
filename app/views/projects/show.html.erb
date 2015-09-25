@@ -41,7 +41,7 @@ h2 {
       </section>
     <% end -%>
   
-    <% if @templates.size < 1 -%>
+    <% if @templates.none? -%>
       <div class="panel panel-default">
         <div class="panel-heading">
           Welcome to <%= @project.name %>
