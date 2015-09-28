@@ -28,7 +28,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       format.html do
-        @templates = @project.doc_templates.sort_by { |t| t.name.sort_normalize }
+        @templates = @project.doc_templates.to_a.sort_by { |t| t.name.sort_normalize }
         @docs = {}
         @project.docs.includes(:doc_template, :assignee).each do |d|
           @docs[d.doc_template] ||= []
