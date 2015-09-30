@@ -27,7 +27,7 @@ h2 {
         </div>
         
         <div class="panel-body">
-    	  <%= sortlist(@docs[tmpl], "docs_#{tmpl.id}", :url => sort_docs_path(@project)) do |doc| -%>
+    	  <%= sortlist(@docs[tmpl] || [], "docs_#{tmpl.id}", :url => sort_docs_path(@project)) do |doc| -%>
     	    <%= render :partial => 'docs/show_external', :locals => { :doc => doc } %>
           <% end -%>
           <% if can?(:create, @project.docs.new(:doc_template_id => tmpl.id)) -%>
