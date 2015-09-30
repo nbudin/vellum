@@ -29,15 +29,8 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html do
         @templates = @project.doc_templates.to_a.sort_by { |t| t.name.sort_normalize }
-        @docs = {}
-        @project.docs.includes(:doc_template, :assignee).each do |d|
-          @docs[d.doc_template] ||= []
-          @docs[d.doc_template] << d
-        end
-        @templates.each do |tmpl|
-          @docs[tmpl] ||= []
-          @docs[tmpl] = @docs[tmpl].sort_by { |s| s.position || 0 }
-        end
+        @docs = @project.docs.includes(:doc_template, :assignee).to_a.group_by(&:doc_template)
+        @docs.transform_values! { |docs| docs.sort_by! { |d| d.position || 0 } }
       end
       format.xml  { render :xml => @project.to_xml }
       format.json { render :json => @project.to_json }
