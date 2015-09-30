@@ -5,7 +5,7 @@ class CsvExportsController < ApplicationController
   load_and_authorize_resource :through => :project
   
   def index
-    @csv_exports = @project.csv_exports.all(:order => :name)
+    @csv_exports = @csv_exports.order(:name)
   end
   
   def new
