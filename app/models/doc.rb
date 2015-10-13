@@ -235,7 +235,7 @@ class Doc < ActiveRecord::Base
     end
   end
 
-  belongs_to :project
+  belongs_to :project, touch: true
   belongs_to :doc_template
   belongs_to :creator, :class_name => "Person"
   belongs_to :assignee, :class_name => "Person"

@@ -7,7 +7,7 @@ h2 {
 <%= in_place_editor @project, :name, :tag => "h1" %>
 
 <div class="col-md-8">
-  <% cache(project_path(@project)) do -%>
+  <% cache(@project) do -%>
     
     <%= in_place_editor @project, :blurb, :rows => 4 %>
     

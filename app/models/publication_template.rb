@@ -1,5 +1,5 @@
 class PublicationTemplate < ActiveRecord::Base
-  belongs_to :project
+  belongs_to :project, touch: true
   belongs_to :doc_template
   belongs_to :layout, class_name: "PublicationTemplate"
   
