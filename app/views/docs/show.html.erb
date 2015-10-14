@@ -65,7 +65,7 @@
       <div class="form-group">
         <% if can?(:destroy, @doc) -%>
           <%= button_to "Delete #{@doc.name}", doc_path(@project, @doc), :method => "delete",
-          :class => "btn btn-danger", :confirm => "Are you sure you want to delete #{@doc.name}?" %>
+          :class => "btn btn-danger", "data-confirm" => "Are you sure you want to delete #{@doc.name}?" %>
         <% end -%>
       </div>
       

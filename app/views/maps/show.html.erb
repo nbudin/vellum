@@ -102,7 +102,7 @@
         <div class="form-group">
           <% if can?(:destroy, @map) -%>
             <%= button_to "Delete", map_path(@project, @map), :method => "delete",
-            :class => "btn btn-danger", :confirm => "Are you sure you want to delete the #{@map.name} map?" %>
+            :class => "btn btn-danger", "data-confirm" => "Are you sure you want to delete the #{@map.name} map?" %>
           <% end -%>
         </div>
       </div>

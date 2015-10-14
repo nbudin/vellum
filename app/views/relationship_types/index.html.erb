@@ -8,7 +8,7 @@
   <tr>
     <td><%= link_to 'Show', relationship_type %></td>
     <td><%= link_to 'Edit', edit_relationship_type_path(relationship_type) %></td>
-    <td><%= link_to 'Destroy', relationship_type, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Destroy', relationship_type, "data-confirm" => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

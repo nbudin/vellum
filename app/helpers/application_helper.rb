@@ -112,7 +112,7 @@ module ApplicationHelper
 
   def item_actions(item, options={})
     if options[:delete_path] && can?(:destroy, item)
-      button_to("Delete", options[:delete_path] + "/#{item.id}", :confirm => "Are you sure?",:style => "margin: 0;", :method => :delete, :class => "btn btn-danger btn-xs")
+      button_to("Delete", options[:delete_path] + "/#{item.id}", "data-confirm" => "Are you sure?",:style => "margin: 0;", :method => :delete, :class => "btn btn-danger btn-xs")
     end
   end
 
@@ -200,7 +200,7 @@ module ApplicationHelper
             actions_html = ""
             if delete_path
               actions_html << content_tag(:li) do
-                link_to("Delete", delete_path, :confirm => "Are you sure?", :method => :delete, :class => "button delete")
+                link_to("Delete", delete_path, "data-confirm" => "Are you sure?", :method => :delete, :class => "button delete")
               end
             end
           end
