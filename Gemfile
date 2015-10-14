@@ -45,6 +45,7 @@ group :test do
   gem 'launchy'
   gem 'capybara'
   gem 'poltergeist'
+  gem "codeclimate-test-reporter", group: :test
 end
 
 group :development do
