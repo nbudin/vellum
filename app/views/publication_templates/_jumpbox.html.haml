@@ -1,0 +1,41 @@
+.col-md-4
+  .panel.panel-default
+    .panel-heading
+      = h @publication_template.name
+      - if can?(:edit, @publication_template)
+        = link_to edit_publication_template_path(@project, @publication_template), :class => "btn btn-default btn-sm" do
+          Edit
+          = image_tag "publication_template_edit.png"
+    .panel-body
+      %dl.dl-horizontal
+        %dt Type
+        %dd= @publication_template.human_template_type
+        %dt Output format
+        %dd= @publication_template.format.try(:upcase)
+        %dt Operates on
+        %dd
+          - if @publication_template.doc_template
+            = @publication_template.doc_template.name
+          - else
+            No document required
+        %dt Layout
+        %dd
+          - if @publication_template.layout
+            = @publication_template.layout.name
+          - else
+            None
+      %p
+        = form_for :context, :url => test_publication_template_path(@project, @publication_template), :html => { :class => "form-inline" } do |f|
+          .form-group
+            - if @publication_template.doc_template
+              = f.select :doc_id, @publication_template.doc_template.docs.collect { |d| [d.name, d.id] }, {}, { :class => "form-control" }
+          .form-group
+            %button.btn.btn-default
+              = image_tag "execute.png"
+              Test
+      %p
+        = form_for :context, :url => publish_publication_template_path(@project, @publication_template) do |f|
+          .form-group
+            %button.btn.btn-danger
+              = image_tag "publication.png"
+              Publish

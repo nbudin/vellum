@@ -1,0 +1,29 @@
+.panel.panel-default
+  .panel-heading
+    New relationship type
+  .panel-body
+    = form_for @relationship_type, :url => new_relationship_type_path(@project), :html => { :method => :get } do |f|
+      .form-group
+        = f.label :name, "Relationship Type", :class => "control-label"
+        = f.text_field :name, :class => "form-control"
+      = f.hidden_field :left_description
+      = f.hidden_field :right_description
+      .form-group
+        %h2 Choose templates
+        %p
+          Relationship types define the connections documents can have with one another.
+          For example, a character might be involved in a plot.  To define this, you can
+          create a "Character is involved in Plot" relationship between the Character
+          template and the Plot template.
+        %p
+          Relationships can also exist between two documents of the same template.  For
+          example, it is perfectly legitimate for a Character to know a Character.
+        %dl.doc_template_attrs
+          %dt= f.label :left_template_id, "First template"
+          %dd= f.select :left_template_id, [""] + @project.doc_templates.collect {|t| [t.name, t.id]}, {}, { :class => "form-control" }
+          %dt= f.label :right_template_id, "Second template"
+          %dd= f.select :right_template_id, [""] + @project.doc_templates.collect {|t| [t.name, t.id]}, {}, { :class => "form-control" }
+      .form-group
+        = link_to :back, :class => "btn btn-default" do
+          Cancel
+        = submit_tag "Continue", :class => "btn btn-primary"

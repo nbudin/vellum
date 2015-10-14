@@ -1,0 +1,31 @@
+= form_for(@project, :as => :project, :url => projects_url) do |f|
+  %h1 Create a Project
+  .jumbotron
+    = error_messages_for @project
+    .form-group
+      = f.label :name, "Project Name", :class => "control-label"
+      = f.text_field :name, :class => "form-control input-lg"
+    .panel.panel-default
+      - if @template_sources.size > 0
+        .panel-heading Get started faster
+        .panel-body
+          %span.help-block
+            If you want, you can use some templates from an existing project as a starting point.  This will
+            let you start writing documents using some pre-existing formats.  You'll have your own copies of
+            the templates in your project, and can edit them without affecting the original project.
+          %span.help-block
+            If you don't copy templates from an existing project, you'll have to create some of your own.
+          .form-group
+            = f.label "template_source_project_id", "Choose a project to copy templates from:", :class => "control-label"
+            = f.select "template_source_project_id", [["I will make my own templates.", ""]] + @template_sources.collect {|p| [p.name, p.id]}, {}, { :class => "form-control input-sm" }
+      - else
+        .panel-heading Getting started
+        .panel-body
+          %span.help-block
+            Once you hit "Create", you'll have an empty project.  Before you can get started writing, you'll
+            need to create some templates to use.  There will be instructions on the project page about how
+            to do that.
+  .form-group
+    = link_to "Cancel", projects_path, :class => "btn btn-danger"
+    %button.btn.btn-primary{:type => "submit"}
+      Create

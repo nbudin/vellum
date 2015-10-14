@@ -1,0 +1,89 @@
+%h2 VPub Templates
+%p
+  VPub is a simple templating language for Vellum projects and documents.  It lets you generate
+  HTML, XSL:FO, and other types of documents right from Vellum.
+%div{:style => "align: left; padding-left: 1em;"}
+  %h3{:style => "margin-left: -0.5em;"} VPub Tags
+  %p
+    %b &lt;v:name/&gt;
+    %br/
+    Outputs the name of the current document.
+  %p
+    %b &lt;v:content/&gt;
+    %br/
+    Outputs the content of the current document, converted into the appropriate output format for
+    this template.
+  %p
+    %b &lt;v:attr:value name="Attribute Name"/&gt;
+    %br/
+    Outputs the value of the "Attribute Name" attribute for the current document, if it exists.
+  %p
+    %b &lt;v:attr:if_value name="Attribute Name" eq="value"&gt; ... &lt;/v:attr:if_value&gt;
+    %br/
+    Outputs the inner content only if the "Attribute Name" attribute is equal to "value" in the
+    current document.
+  %p
+    %b &lt;v:attr:if_value name="Attribute Name" ne="value"&gt; ... &lt;/v:attr:if_value&gt;
+    %br/
+    Outputs the inner content only if the "Attribute Name" attribute is
+    %i not
+    equal to "value" in the
+    current document.
+  %p
+    %b &lt;v:attr:if_value name="Attribute Name" match="regex"&gt; ... &lt;/v:attr:if_value&gt;
+    %br/
+    Outputs the inner content only if the "Attribute Name" attribute matches the regular expression "regex" in the
+    current document.
+  %p
+    %b &lt;v:each_related how="is married to"&gt; ... &lt;/v:each_related&gt;
+    %br/
+    Loops through each document with a "is married to" relationship with the current document.  Outputs the inner
+    content
+    = succeed "." do
+      %i in the context of each related document
+  %p
+    %b &lt;v:each_doc template="Character"&gt; ... &lt;/v:each_doc&gt;
+    %br/
+    Loops through each document using the "Character" template.  Outputs the inner
+    content
+    = succeed "." do
+      %i in the context of each Character document
+  %p
+    %b &lt;v:include template="Another publication template" /&gt;
+    %br/
+    Runs another publication template you specify by name and includes the output of that template.  This can be used
+    to separate out frequently-used snippets of content into a single template.
+  %p
+    %b &lt;v:repeat times="3"&gt; ... &lt;/v:repeat&gt;
+    %br/
+    Outputs the inner content the specified number of times.
+  %p
+    %b &lt;v:repeat times="@XYZ"&gt; ... &lt;/v:repeat&gt;
+    %br/
+    Outputs the inner content the number of times equal to the current document's XYZ attribute value.
+  %p
+    %b &lt;v:yield/&gt;
+    %br/
+    To be used in a layout.  This is a placeholder for the actual content to be rendered in the layout.
+  %h3{:style => "margin-left: -0.5em;"} Sorting
+  %p
+    The &lt;v:each_related&gt; and &lt;v:each_doc&gt; tags accept an optional "sort" parameter.  This can be
+    used to loop through each document in a particular order.
+  %p
+    The simplest way to use the "sort" parameter is to sort by an attribute of the documents.  For example,
+    if all your "Character" documents have a "Favorite Color" attribute, you can sort by their favorite color
+    like this: &lt;v:each_doc template="Character" sort="Favorite Color"&gt;...&lt;v:each_doc&gt;
+  %p
+    You can sort by multiple fields by separating them with commas.  For example, to sort by the Favorite Color
+    and then the Favorite Food if two characters have the same Favorite Color, you can do:
+    \&lt;v:each_doc template="Character" sort="Favorite Color, Favorite Food"&gt;...&lt;v:each_doc&gt;
+  %p
+    To sort by a numeric field, prepend a number sign (#) to the field name.  So if your characters are numbered,
+    you can sort by number like so: &lt;v:each_doc template="Character" sort="#Number"&gt;...&lt;v:each_doc&gt;
+  %p
+    To sort in reverse order, prepend a minus sign (-) to the field name.  So to get numbered characters in reverse,
+    you can do this: &lt;v:each_doc template="Character" sort="-#Number"&gt;...&lt;v:each_doc&gt;
+  %p
+    Finally, the at sign (@) is used for retrieving special non-attribute fields.  Right now, the only one is the
+    document's name (@name).  To sort by document name, you can do this:
+    \&lt;v:each_doc template="Character" sort="@name"&gt;...&lt;v:each_doc&gt;

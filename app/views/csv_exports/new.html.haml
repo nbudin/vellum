@@ -1,0 +1,2 @@
+= form_for(@csv_export, :url => csv_exports_path(@project)) do |f|
+  = render :partial => "form", :locals => { :f => f, :btn_text => "Create CSV export" }

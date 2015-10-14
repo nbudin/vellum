@@ -1,0 +1,15 @@
+= error_messages_for f.object
+.form-group
+  = f.label :name, "Document Name", :class => "control-label"
+  = f.text_field :name, :class => "form-control input-lg"
+.form-group
+  %label.control-label Fields
+  %table.doc_attrs.table
+    = f.fields_for :attrs do |attr_fields|
+      = edit_attr_row(attr_fields)
+    = f.fields_for :attrs_attributes, nil do |outer_fields|
+      = outer_fields.fields_for '99999', Attr.new(:doc => @doc) do |attr_fields|
+        = edit_attr_row(attr_fields)
+.form-group
+  .vellumAutoResizeWym
+    = wysihtml5_editor f, :content, :style => "width: 100%;", :class => "form-control"

@@ -1,0 +1,16 @@
+%h1= @project.name
+%h2 CSV Exports
+%ul.list-group
+  = itemlist_items(@csv_exports) do |csv_export|
+    %li.list-group-item
+      %ul.list-inline
+        %li
+          = link_to(csv_export_path(@project, csv_export)) do
+            = image_tag "csv_export.png"
+            = csv_export.name
+        %li
+          = item_actions(csv_export, :delete_path => csv_exports_path(@project))
+  %li.list-group-item.list-group-item-success
+    = link_to new_csv_export_path(@project) do
+      = image_tag "csv_export_add.png"
+      Create new CSV export...

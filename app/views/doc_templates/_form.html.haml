@@ -1,0 +1,35 @@
+.panel.panel-default
+  .panel-body
+    = error_messages_for f.object
+    .form-group
+      = f.label :name, "Template name", :class => "control-label"
+      = f.text_field :name, :class => "form-control"
+    .form-group
+      %label.control-label Template Fields
+      %span.help-block
+        All documents contain a main area to write in.  Fields let you add some
+        additional areas.
+      %span.help-block
+        For example, on a "Plot" template, you might want a
+        separate area for your notes, so you could create a field called "Writer
+        Notes" and make it a rich text area.  Or on a Character, you might want to
+        be able to choose which family the character comes from.  You could make that
+        a set of radio buttons.
+      %span.help-block Field names can contain letters, numbers, spaces, and hyphens.
+      %table.doc_template_attrs.table.form-inline
+        = f.fields_for :doc_template_attrs do |dta_fields|
+          = render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields }
+        = f.fields_for :doc_template_attrs_attributes, nil do |outer_fields|
+          = outer_fields.fields_for '99999',  @doc_template.doc_template_attrs.new do |dta_fields|
+            = render :partial => "edit_doc_template_attr", :locals => { :dta_fields => dta_fields }
+    .submit
+      = link_to :back, :class => "btn btn-default" do
+        Cancel
+      - if f.object.new_record?
+        = submit_tag "Create template", :class => "btn btn-primary"
+      - else
+        = submit_tag "Save changes", :class => "btn btn-primary"
+  :javascript
+    jQuery(function() {
+      jQuery('table.doc_template_attrs').vellumAttrList();
+    });

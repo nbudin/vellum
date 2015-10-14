@@ -1,0 +1,16 @@
+%h1= @project.name
+%h2 Templates
+%ul.list-group
+  = itemlist_items(@doc_templates) do |t|
+    %li.list-group-item
+      %ul.list-inline
+        %li
+          = link_to doc_template_path(@project, t) do
+            = image_tag "template.png"
+            = t.name
+        %li
+          = item_actions(t, :delete_path => doc_templates_path(@project))
+  %li.list-group-item.list-group-item-success
+    = link_to new_doc_template_path(@project) do
+      = image_tag "template_add.png"
+      Add new template...

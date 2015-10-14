@@ -1,0 +1,13 @@
+.col-md-8
+  %h2= @csv_export.name
+  %h3= @csv_export.filename
+  %table.table.table-bordered
+    %tr
+      - @csv_export.attr_names.each do |attr_name|
+        %th= attr_name
+    - 3.times do
+      %tr
+        - @csv_export.attr_names.size.times do
+          %td ...
+.col-md-4
+  = render :partial => 'jumpbox'

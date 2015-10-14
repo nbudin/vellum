@@ -1,0 +1,68 @@
+:css
+  h2 {
+     border-bottom: 1px dotted black;
+  }
+= in_place_editor @project, :name, :tag => "h1"
+.col-md-8
+  - cache(@project) do
+    = in_place_editor @project, :blurb, :rows => 4
+    - @templates.each do |tmpl|
+      %section.panel.panel-default
+        .panel-heading.clearfix
+          .panel-title.pull-left{:style => "padding-top: 5px"}
+            = h tmpl.plural_name
+            %a{:name => "template_#{tmpl.id}"} &nbsp;
+          - if can?(:create, @project.docs.new(:doc_template_id => tmpl.id))
+            .navbar-right
+              = link_to(new_doc_path(@project, :template_id => tmpl.id), :class => "btn btn-success btn-sm") do
+                Add
+        .panel-body
+          = sortlist(@docs[tmpl] || [], "docs_#{tmpl.id}", :url => sort_docs_path(@project)) do |doc|
+            = render :partial => 'docs/show_external', :locals => { :doc => doc }
+          - if can?(:create, @project.docs.new(:doc_template_id => tmpl.id))
+            .list-group
+              = link_to new_doc_path(@project, :template_id => tmpl.id), :class => "list-group-item list-group-item-success" do
+                = image_tag "structure_add.png"
+                Add new #{tmpl.name}
+    - if @templates.none?
+      .panel.panel-default
+        .panel-heading
+          Welcome to #{@project.name}
+        .panel-body
+          %p
+            Before you can get started writing, Vellum needs to know a little bit about
+            your project.  In particular, it needs to know what kinds of documents you're
+            going to be putting in it.  The way you tell it about that is by making
+            = succeed "." do
+              %strong templates
+          %p
+            You need a template for each
+            %strong type
+            of document you're going
+            to write.  So if you create a template called "Character,"
+            Vellum will know that you're going to be writing some characters.
+            You can make as many templates as you want.  They'll all show up as sections
+            on this page.
+    - if can?(:create, @project.doc_templates.new)
+      .list-group
+        = link_to new_doc_template_path(@project), :class => "list-group-item list-group-item-success" do
+          = image_tag "template_add.png"
+          Add new template...
+.col-md-4
+  .panel.panel-default
+    .panel-heading.clearfix
+      - if can? :update, @project
+        = link_to edit_project_path(@project), :class => "pull-right btn btn-default btn-sm" do
+          Sharing
+          = image_tag "project_edit.png"
+      = h @project.name
+    .panel-body
+      %ol
+        %li
+          Contents
+          %ol
+            - @templates.each do |tmpl|
+              %li
+                = link_to tmpl.plural_name, "#template_#{tmpl.id}"
+        %li= link_to "Templates", doc_templates_path(@project)
+        %li= link_to "Maps", maps_path(@project)

@@ -1,0 +1,32 @@
+.col-md-8.vellumPublicationTemplateForm
+  = error_messages_for f.object
+  .form-group
+    = f.label :name, "Publication Template Name", :class => "control-label"
+    = f.text_field :name, :class => "form-control"
+  .form-group
+    = f.label :format, "Type", :class => "control-label"
+    = f.select :template_type, PublicationTemplate::TEMPLATE_TYPES.collect { |t| [PublicationTemplate.human_template_type(t), t]}, {}, { :class => "form-control" }
+  .form-group
+    = f.label :format, "Output Format", :class => "control-label"
+    - @project.available_output_formats.each do |format|
+      .checkbox
+        = f.label :format, :value => format do
+          = f.radio_button :format, format
+          = format.upcase
+  .form-group{"data-only-visible-for-publication-template-types" => "doc layout standalone"}
+    %span{"data-only-visible-for-publication-template-types" => "doc standalone"}
+      = f.label :format, "Layout", :class => "control-label"
+    %span{"data-only-visible-for-publication-template-types" => "layout"}
+      = f.label :format, "Parent layout", :class => "control-label"
+    = f.collection_select :layout_id, layouts, :id, :name, { :include_blank => "No layout" }, { :class => "form-control" }
+  .form-group{"data-only-visible-for-publication-template-types" => "doc"}
+    = f.label :format, "Operates on", :class => "control-label"
+    = f.select :doc_template_id, @doc_templates.collect {|t| [t.name, t.id]}, { :include_blank => "No document required" }, { :class => "form-control" }
+  .form-group
+    = f.text_area :content, :style => "width: 100%; max-width: 100%; font-family: monospace;", :class => "form-control ace-editable", "data-ace-mode" => "ace/mode/xml"
+  .form-group
+    = submit_tag btn_text, :class => "btn btn-primary"
+.col-md-4
+  .panel.panel-default
+    .panel-body
+      = render :partial => "vpub_help"

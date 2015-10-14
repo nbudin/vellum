@@ -1,0 +1,55 @@
+- if @project.errors.count > 0
+  %h2 Sorry!  There were some errors saving your changes:
+  %ul
+    - @project.errors.full_messages.each do |msg|
+      %li= h msg
+= form_for @project, html: { class: "form-inline" } do |f|
+  .panel.panel-default
+    .panel-heading
+      Sharing options for #{@project.name}
+    .panel-body
+      .form-group
+        = f.label :public_visibility, "Project Visibility", :class => "control-label"
+        = f.select :public_visibility, [["Only members can see this project", "hidden"],  |
+          ["Anyone can copy the templates from this project", "copy_templates"],          |
+          ["Anyone can see, read, and copy the templates from this project", "visible"]], |
+          {},                                                                             |
+          {:class => "form-control"}                                                      |
+        %span.help-block
+          Should the general public be able to read this project?  You can choose to make the project documents public,
+          or just the templates.  Select an option from the drop-down menu above.
+        .form-group
+          %label.control-label Members
+          %span.help-block
+            Anyone listed in the table below will be able to see this project and its documents.  Authors can edit the
+            documents and templates in the project, and admins can delete the project and change its members.
+          %table.table.table-striped
+            %tr
+              %th
+              %th Email address
+              %th{:title => "Authors can edit the documents and templates in the project."} Author?
+              %th{:title => "Admins can delete the project and change its members."} Admin?
+              %th
+            = f.fields_for :project_memberships do |membership_fields|
+              %tr
+                - if membership_fields.object.new_record?
+                  %td{:style => "text-align: right;"}= membership_fields.label :email, "Add:"
+                  %td= membership_fields.text_field :email, :class => "form-control"
+                - else
+                  %td
+                  %td= membership_fields.object.person.email
+                - if membership_fields.object.person == current_person
+                  %td= membership_fields.check_box :author, :disabled => true
+                  %td= membership_fields.check_box :admin, :disabled => true
+                  %td
+                - else
+                  %td= membership_fields.check_box :author
+                  %td= membership_fields.check_box :admin
+                  %td{:style => "text-align: right;"}
+                    - unless membership_fields.object.new_record?
+                      = membership_fields.label :_destroy, "Remove?"
+                      = membership_fields.check_box :_destroy
+      .form-group
+        = link_to :back, :class => "btn btn-default" do
+          Cancel
+        = f.submit "Save changes", :class => "btn btn-primary"

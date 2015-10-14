@@ -1,0 +1,24 @@
+= form_for(@doc, :url => docs_path(@project)) do |f|
+  .col-md-8
+    = hidden_field_tag "template_id", @doc.doc_template.id
+    = render :partial => "form", :locals => { :f => f }
+  .col-md-4
+    .panel.panel-default
+      .panel-heading New Document
+      .panel-body
+        %p
+          %b Template:
+          = link_to doc_template_path(@doc.project, @doc.doc_template) do
+            = image_tag "template.png"
+            = @doc.doc_template.name
+        .navigation
+          = link_to project_path(@project), :class => "btn btn-default" do
+            = image_tag "arrow_left.png"
+            Cancel
+          %button.btn.btn-primary{:style => "float: right;", :type => "submit"}
+            Create #{@doc.doc_template.name}
+            = image_tag "structure_add.png"
+:javascript
+  jQuery(function() {
+    jQuery('table.doc_attrs').vellumAttrList();
+  });

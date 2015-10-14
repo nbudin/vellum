@@ -1,0 +1,60 @@
+.col-md-8
+  %p{:style => "margin-top: 2em;"}
+    %span{:style => "font-weight: bold; font-size: 200%;"}= h @doc.name
+    (#{h @doc.doc_template.name})
+  %table.table.doc_attrs{:style => "margin-top: .75em;"}
+    - @doc.attrs.each do |attr|
+      = attr_row(attr)
+  #doc_content.document_content
+    = Sanitize.clean(@doc.content, Sanitize::Config::VELLUM).try(:html_safe)
+.col-md-4
+  .panel.panel-default
+    .panel-heading
+      = h @doc.name
+      - if can?(:edit, @doc)
+        = link_to edit_doc_path(@project, @doc), :class => "btn btn-default btn-sm" do
+          Edit
+          = image_tag "structure_edit.png"
+    .panel-body
+      %ul.pager
+        %li.previous
+          - if @prev_doc
+            = link_to "<< #{@prev_doc.name}", doc_path(@prev_doc.project, @prev_doc)
+        %li.next
+          - if @next_doc
+            = link_to "#{@next_doc.name} >>", doc_path(@next_doc.project, @next_doc)
+      .form-group
+        %label.control-label Template:
+        = link_to doc_template_path(@doc.project, @doc.doc_template) do
+          = image_tag "template.png"
+          = @doc.doc_template.name
+      .form-group
+        = form_for @doc, :url => doc_path(@project, @doc), :html => {:class => "assignee"} do |f|
+          = f.label "assignee_id", "Assigned to", :class => "control-label"
+          = f.select "assignee_id", [["nobody", ""]] + @project.authors.sort_by { |a| a.name }.collect {|p| [p.name, p.id] }, |
+            {:include_blank => false, :selected => (@doc.assignee ? @doc.assignee_id : "")}, {:class => "form-control"}       |
+          %button.btn.btn-primary
+            = image_tag "workflow_transition.png"
+            Reassign
+      .form-group
+        = button_to "Copy #{@doc.name}", copy_doc_path(@project, @doc), :class => "btn btn-success", :method => "post"
+      .form-group
+        - if can?(:destroy, @doc)
+          = button_to "Delete #{@doc.name}", doc_path(@project, @doc), :method => "delete",               |
+            :class => "btn btn-danger", "data-confirm" => "Are you sure you want to delete #{@doc.name}?" |
+      .form-group
+        %label.control-label Related
+        #relationships
+          = @doc.name
+          \...
+          %ul
+            = itemlist_items(@relationships) do |rel|
+              %li
+                %ul.list-inline
+                  %li
+                    = rel.description_for(@doc)
+                    = link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc))
+                  %li
+                    = item_actions(rel, :delete_path => relationships_path(@project))
+      .form-group
+        = render :partial => 'new_relationship', :locals => { :doc => @doc }

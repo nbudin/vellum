@@ -1,0 +1,9 @@
+%h1
+  New attribute for template "#{h @doc_template.name}"
+= error_messages_for :attr
+= form_for(:attr, :url => doc_template_attrs_path(@project, @doc_template)) do |f|
+  = hidden_field_tag "config_class", params[:config_class]
+  %p
+    = f.text_field "name"
+    = submit_tag "Create"
+= link_to 'Cancel', doc_template_path(@project, @doc_template)

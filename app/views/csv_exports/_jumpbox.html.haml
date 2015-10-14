@@ -1,0 +1,11 @@
+.panel.panel-default
+  .panel-heading
+    = @csv_export.name
+    - if can?(:edit, @csv_export)
+      = link_to edit_csv_export_path(@project, @csv_export), :class => "btn btn-default btn-sm" do
+        Edit
+        = image_tag "csv_export.png"
+  .panel-body
+    = link_to csv_export_path(@project, @csv_export, :format => "csv"), :class => "btn btn-danger" do
+      = image_tag "csv_export.png"
+      Export

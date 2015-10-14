@@ -1,0 +1,15 @@
+%ul.list-group
+  = itemlist_items(projects) do |project|
+    %li.list-group-item
+      %ul.list-inline
+        %li
+          = link_to project_path(project) do
+            = image_tag "project.png"
+            = project.name
+        %li
+          = item_actions(project, :delete_path => projects_path)
+  - if person_signed_in?
+    %li.list-group-item.list-group-item-success
+      = link_to new_project_path do
+        = image_tag "project_add.png"
+        Create project...

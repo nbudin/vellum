@@ -1,0 +1,28 @@
+.wysihtml5.panel.panel-info
+  .wysihtml5-toolbar.panel-heading{:style => "display: none;"}
+    .row
+      .col-xs-3
+        %select.wysihtml5-block-class.form-control.input-sm
+          %option{:value => "p"} Paragraph
+          %option{:value => "h1"} Heading 1
+          %option{:value => "h2"} Heading 2
+          %option{:value => "h3"} Heading 3
+          %option{:value => "h4"} Heading 4
+          %option{:value => "h5"} Heading 5
+          %option{:value => "h6"} Heading 6
+      .col-xs-9
+        .btn-group
+          %a.btn.btn-default{"data-wysihtml5-command" => "bold"}
+            %strong B
+          %a.btn.btn-default{"data-wysihtml5-command" => "italic"}
+            %em I
+          %a.btn.btn-default{"data-wysihtml5-command" => "underline"}
+            %u U
+        .btn-group
+          %a.btn.btn-default{"data-wysihtml5-command" => "insertOrderedList"} ol
+          %a.btn.btn-default{"data-wysihtml5-command" => "insertUnorderedList"} ul
+        .pull-right
+          %a.btn.btn-default{"data-wysihtml5-action" => "change_view"}
+            %span.glyphicon.glyphicon-edit
+  .panel-body
+    = f.text_area field, text_area_options

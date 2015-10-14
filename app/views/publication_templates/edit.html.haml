@@ -1,0 +1,2 @@
+= form_for(@publication_template, :url => publication_template_path(@project, @publication_template)) do |f|
+  = render :partial => "form", :locals => { :f => f, :btn_text => "Save changes" }

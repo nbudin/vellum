@@ -1,0 +1,38 @@
+.col-md-8
+  %h1 Projects
+  - if @site_settings.welcome_html.blank?
+    %h1 Welcome to Vellum
+    %p Vellum is a collaborative space for online writing projects.
+  - else
+    = @site_settings.welcome_html
+  - if @other_projects.present?
+    %ul.nav.nav-tabs{:role => "tablist"}
+      %li.active
+        %a{"data-toggle" => "tab", :href => "#my-projects", :role => "tab"} My projects
+      %li
+        %a{"data-toggle" => "tab", :href => "#other-projects", :role => "tab"} Other projects
+    .tab-content{:style => "margin-top: 5px"}
+      #my-projects.tab-pane.active= render partial: "list", locals: { projects: @my_projects }
+      #other-projects.tab-pane= render partial: "list", locals: { projects: @other_projects }
+  - else
+    = render partial: "list", locals: { projects: @my_projects }
+  - unless person_signed_in?
+    %p
+      To see your projects, please #{link_to "log in", new_person_session_path}.
+- if current_person.try(:admin?)
+  .col-md-4
+    .panel.panel-default
+      .panel-heading.clearfix
+        .panel-title.pull-left{:style => "padding-top: 5px"}
+          = @site_settings.site_name
+        .navbar-right
+          = link_to({ :controller => "about", :action => "edit_settings" }, :class => "btn btn-default btn-sm") do
+            Edit site settings
+      .panel-body
+        %dl
+          %dt Color
+          %dd= @site_settings.site_color
+          %dt Site email
+          %dd= @site_settings.site_email
+          %dt Admin
+          %dd= @site_settings.admin && @site_settings.admin.name

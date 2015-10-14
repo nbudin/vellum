@@ -1,0 +1,23 @@
+%h1= @project.name
+%h2 Publication Templates
+- %w(layout standalone doc partial).each do |template_type|
+  - human_name = PublicationTemplate.human_template_type(template_type)
+  - templates = @publication_templates_by_type[template_type]
+  %h3= human_name.pluralize
+  %ul.list-group
+    - if templates.present?
+      = itemlist_items(templates) do |t|
+        %li.list-group-item
+          %ul.list-inline
+            %li
+              = link_to(publication_template_path(@project, t)) do
+                = image_tag "publication_template.png"
+                = t.name
+              - if template_type == "doc" && t.doc_template
+                (operates on #{t.doc_template.name})
+            %li
+              = item_actions(t, :delete_path => publication_templates_path(@project))
+    %li.list-group-item.list-group-item-success
+      = link_to new_publication_template_path(@project, publication_template: {template_type: template_type}) do
+        = image_tag "publication_template_add.png"
+        Add new #{human_name.downcase}...

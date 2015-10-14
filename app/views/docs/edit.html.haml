@@ -1,0 +1,29 @@
+= form_for(@doc, :url => doc_path(@project, @doc), :html => {:method => 'put'}) do |f|
+  .col-md-8
+    = render :partial => 'form', :locals => { :f => f }
+    :javascript
+      jQuery(function() {
+        jQuery('#relationships a[target=_blank]').vellumDocSummaryPopup();
+        jQuery('table.doc_attrs').vellumAttrList();
+      });
+  .col-md-4
+    .panel.panel-default
+      .panel-heading
+        = @doc.name
+        %button.btn.btn-default.wymupdate{:type => "submit"}
+          Save changes
+          = image_tag "structure_edit.png"
+      .panel-body
+        %p
+          %b Template:
+          = link_to doc_template_path(@doc.project, @doc.doc_template) do
+            = image_tag "template.png"
+            = @doc.doc_template.name
+        %h2 Related
+        #relationships
+          = @doc.name
+          \...
+          %ul.itemlist
+            = itemlist_items(@doc.relationships) do |rel|
+              = rel.description_for(@doc)
+              = link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)), :target => "_blank"

@@ -1,0 +1,71 @@
+.col-md-8
+  = in_place_editor @map, :name, :tag => "h1", :url => map_url(@project, @map, :format => 'json')
+  = in_place_editor @map, :blurb, :rows => 4, :url => map_url(@project, @map, :format => 'json')
+  %p
+    = image_tag "map_download.png"
+    Download map:
+    = link_to "PDF", map_path(:format => "pdf")
+    = link_to "SVG", map_path(:format => "svg")
+  /[if IE]
+    <object src="<haml:loud>map_path(:format =&amp;gt; &amp;quot;svg&amp;quot;) </haml:loud>" classid="image/svg+xml"
+    width="100%">
+  / [if !IE]
+  %object{:data => map_path(:format => "svg"), :height => "80%", :type => "image/svg+xml", :width => "100%"}
+    / <![endif]
+.col-md-4
+  .panel.panel-default
+    .panel-body
+      - if can?(:edit, @map)
+        %h2 Documents
+        #docs
+          Include all...
+          %ul.list-group
+            = itemlist_items(@map.mapped_doc_templates) do |mdt|
+              %li.list-group-item
+                %ul.list-inline
+                  %li
+                    %span{:style => "font-weight: bold; color: #{mdt.color};"}
+                      = h mdt.doc_template && mdt.doc_template.name.pluralize
+                  %li
+                    = item_actions(mdt, :delete_path => mapped_doc_templates_path(@project, @map))
+            %li.list-group-item
+              = form_for :mapped_doc_template, :url => mapped_doc_templates_path(@project, @map), :html => { :class => "form-inline" } do |f|
+                .form-group
+                  = color_picker(f, "color")
+                .form-group
+                  = f.select "doc_template_id", @project.doc_templates.reject { |t| |
+                    @map.doc_templates.include? t                                   |
+                    }.collect { |t|                                                 |
+                    [t.plural_name, t.id]                                           |
+                    }, {}, { :class => "form-control input-sm" }                    |
+                .form-group
+                  = submit_tag "Add", :class => "btn btn-primary btn-xs"
+      %h2 Relationships
+      #relationships
+        Draw arrows for...
+        %ul.list-group
+          = itemlist_items(@map.mapped_relationship_types) do |mrt|
+            %li.list-group-item
+              %ul.list-inline
+                %li
+                  %span{:style => "font-weight: bold; color: #{mrt.color};"}
+                    = h mrt.relationship_type && mrt.relationship_type.left_name
+                %li
+                  = item_actions(mrt, :delete_path => mapped_relationship_types_path(@project, @map))
+          %li.list-group-item
+            = form_for :mapped_relationship_type, :url => mapped_relationship_types_path(@project, @map), :html => { :class => "form-inline" } do |f|
+              .form-group
+                = color_picker(f, "color")
+              .form-group
+                = f.select "relationship_type_id",             |
+                  @project.relationship_types.reject { |t|     |
+                  @map.relationship_types.include? t           |
+                  }.collect { |t|                              |
+                  [t.left_name, t.id]                          |
+                  }, {}, { :class => "form-control input-sm" } |
+              .form-group
+                = submit_tag "Add", :class => "btn btn-primary btn-xs"
+        .form-group
+          - if can?(:destroy, @map)
+            = button_to "Delete", map_path(@project, @map), :method => "delete",                                    |
+              :class => "btn btn-danger", "data-confirm" => "Are you sure you want to delete the #{@map.name} map?" |

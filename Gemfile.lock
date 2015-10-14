@@ -224,6 +224,8 @@ GEM
     formatador (0.2.5)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    haml (4.0.7)
+      tilt
     heroku_external_db (1.0.3)
     i18n (0.7.0)
     illyan_client (2.0.0)
@@ -405,6 +407,7 @@ DEPENDENCIES
   devise_cas_authenticatable
   factory_girl_rails
   figaro
+  haml
   heroku_external_db
   illyan_client (~> 2.0)
   jquery-rails (>= 1.0.12)

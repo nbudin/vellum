@@ -1,0 +1,45 @@
+.col-md-8
+  %h1= @doc_template.name
+  %h2 Template Fields
+  %p
+    The following fields will appear on
+    %strong all
+    = @doc_template.name.pluralize
+    \:
+  %table.table.table-striped.table-bordered
+    %tr
+      %th Name
+      %th Type
+    = render :partial => "doc_template_attr", :collection => @doc_template.doc_template_attrs
+  %h2 Relationship Types
+  %p
+    = @doc_template.name
+    \...
+  %ul.list-group
+    = itemlist_items(@relationship_types) do |typ|
+      %li.list-group-item
+        %ul.list-inline
+          %li
+            = link_to edit_relationship_type_path(@project, typ) do
+              = image_tag "relationship_type.png"
+              = typ.description_for(@doc_template)
+              = typ.other_template(@doc_template).name
+          %li
+            = item_actions(typ, :delete_path => relationship_types_path(@project))
+    %li.list-group-item.list-group-item-success
+      = link_to(new_relationship_type_path(@project, :relationship_type => {:left_template_id => @doc_template.id})) do
+        = image_tag "relationship_type.png"
+        Create relationship type...
+.col-md-4
+  .panel.panel-default
+    .panel-heading
+      = h @doc_template.name
+      = link_to edit_doc_template_path(@project, @doc_template), :class => "btn btn-default btn-sm" do
+        = image_tag "template_edit.png"
+        Edit
+    .panel-body
+      %p
+        Part of
+        = link_to @project do
+          = image_tag "project.png"
+          = h @project.name

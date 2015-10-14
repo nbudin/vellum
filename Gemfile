@@ -18,6 +18,7 @@ gem "devise"
 gem "devise_cas_authenticatable"
 gem "ae_users_migrator", ">= 1.0.4"
 gem "cancancan"
+gem "haml"
 
 gem "acts_as_list"
 gem "ruby-graphviz", ">= 0.9.2", :require => "graphviz"
