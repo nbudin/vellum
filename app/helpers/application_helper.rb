@@ -1,5 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
+  include PageTitleHelper
+  
   def in_place_editor(object, attr, options = {})
     tag = options.delete(:tag) || "p"
     rows = options.delete(:rows)
@@ -46,63 +48,6 @@ module ApplicationHelper
         output_buffer << image_tag(image_path, :alt => label) if image_path
         output_buffer << label
       end
-    end
-  end
-  
-  def page_title
-    noun = nil
-    if params[:id]
-      obj = nil
-      var_name = "@#{controller.controller_name.tableize.singularize}"
-      if instance_variable_defined?(var_name)
-        obj = instance_variable_get var_name
-      else
-        begin
-          klass = eval(controller.controller_name.classify.singularize)
-        rescue
-        end
-        
-        if klass.kind_of? Class and klass.respond_to? 'find'
-          obj = klass.find(params[:id])
-        end
-      end
-      if obj and obj.respond_to? 'name'
-        noun = obj.name
-      end
-    end
-    
-    if noun.nil?
-      # fallback - we couldn't get the current object's name
-      noun = controller.controller_name.humanize
-      unless controller.action_name == 'index'
-        noun = noun.singularize
-      end
-    end
-
-    if controller.action_name == 'edit'
-      verbnoun = "Editing #{noun}"
-    elsif controller.action_name == 'new'
-      verbnoun = "New #{noun}"
-    else
-      verbnoun = noun
-    end
-
-    if params[:project_id]
-      proj = if instance_variable_defined?(:@project)
-               @project
-             else
-               Project.find(params[:project_id])
-             end
-      return "#{verbnoun} - #{proj.name}"
-    elsif params[:template_schema_id]
-      ts = if instance_variable_defined?(:@template_schema)
-             @template_schema
-           else
-             TemplateSchema.find(params[:template_schema_id])
-           end
-      return "#{verbnoun} - #{ts.name}"
-    else
-      return verbnoun
     end
   end
 
