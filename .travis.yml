@@ -8,3 +8,6 @@ before_install:
   - "npm install -g bower"
 before_script:
   - "bundle exec rake db:schema:load bower:install"
+addons:
+  code_climate:
+    repo_token: 1a38b5fd0d6270e3deed4fbb8bb641c115ce48f1df47180f921d8b6db5ddd240
