@@ -90,9 +90,11 @@ class Attr < ActiveRecord::Base
   end
 
   def template_attr
-    if doc && doc.doc_template
-      doc.doc_template.doc_template_attrs.select { |dta| dta.name == self.name }.first
-    end
+    doc_template.doc_template_attrs.select { |dta| dta.name == self.name }.first
+  end
+  
+  def doc_template
+    @doc_template ||= doc.try(:doc_template) || doc_version.try { doc.try(:doc_template) }
   end
 
   def from_template?

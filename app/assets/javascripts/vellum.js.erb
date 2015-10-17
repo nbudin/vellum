@@ -370,6 +370,23 @@ jQuery.fn.vellumPublicationTemplateForm = function() {
   })
 }
 
+jQuery.fn.vellumVersionNavSelect = function() {
+  this.each(function() {
+    var $this = jQuery(this);
+    baseUrl = $this.data('version-url-base');
+    
+    $this.on('change', function() {
+      versionId = $this.val();
+      if (!versionId) {
+        return;
+      }
+      
+      url = baseUrl + '/' + versionId;
+      window.location.href = url;
+    });
+  })
+}
+
 jQuery(function() {
   jQuery(".wysihtml5").each(function() {
     $this = jQuery(this);
@@ -393,6 +410,7 @@ jQuery(function() {
   jQuery(".vellumInPlaceEdit").vellumInPlaceEdit();
   jQuery(".vellumColorPicker").vellumColorPicker();
   jQuery(".vellumPublicationTemplateForm").vellumPublicationTemplateForm();
+  jQuery(".vellumVersionNavSelect").vellumVersionNavSelect();
   jQuery(".sortlist").vellumSortList();
   jQuery(".add_description").bind('click', function (e) {
       e.preventDefault();

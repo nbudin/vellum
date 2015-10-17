@@ -227,6 +227,7 @@ GEM
     haml (4.0.7)
       tilt
     heroku_external_db (1.0.3)
+    htmldiff (0.0.1)
     i18n (0.7.0)
     illyan_client (2.0.0)
       activemodel
@@ -409,6 +410,7 @@ DEPENDENCIES
   figaro
   haml
   heroku_external_db
+  htmldiff
   illyan_client (~> 2.0)
   jquery-rails (>= 1.0.12)
   jquery-ui-rails

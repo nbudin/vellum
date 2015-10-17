@@ -1,0 +1,29 @@
+.panel.panel-default
+  .panel-heading{style: "overflow: auto"}
+    .pull-right
+      = link_to doc_path(@doc.project, @doc), class: "btn btn-default" do
+        = image_tag "structure.png"
+        Return to #{@doc.name}
+    %h3{style: "margin: 0"}= h @doc_version.name
+    Version #{@doc_version.version}
+  .panel-body
+    .form-group.version-diff
+      %label.control-label Legend
+      %br
+      %ins.diffins Added text
+      %br
+      %ins.diffmod Changed text
+      %br
+      %del.diffdel Deleted text
+    .form-group
+      - if can?(:update, @doc)
+        = button_to "Revert to this version", revert_doc_path(@project, @doc, doc_version_id: @doc_version.id), :method => "put", :class => "btn btn-danger", "data-confirm" => "Are you sure you want to revert to this version of #{@doc.name}?"
+    .form-group
+      %label.control-label History
+      %ul
+        - @doc.versions.reorder(:version).each do |version|
+          %li
+            - if version == @doc_version
+              %strong= version.description
+            - else
+              = link_to version.description, doc_doc_version_path(version.project, version.doc, version)

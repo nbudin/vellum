@@ -24,7 +24,8 @@ class DocsController < ApplicationController
     @doc = @project.docs.includes(
       :doc_template,
       outward_relationships: [:left, relationship_type: [:left_template, :right_template]],
-      inward_relationships: [:right, relationship_type: [:left_template, :right_template]]
+      inward_relationships: [:right, relationship_type: [:left_template, :right_template]],
+      versions: :author
     ).find(params[:id])
 
     @doc.project = @project
@@ -94,15 +95,8 @@ class DocsController < ApplicationController
   def update
     @doc = @project.docs.find(params[:id])
 
-    successful_save = @doc.update_attributes(doc_params)
-    if successful_save
-      v = @doc.versions.latest
-      v.author = current_person
-      successful_save = v.save
-    end
-
     respond_to do |format|
-      if successful_save
+      if @doc.update_attributes(doc_params) && @doc.latest_version.update(author: current_person)
         format.html { redirect_to doc_url(@project, @doc) }
         format.xml  { render :xml => @doc.to_xml }
         format.json { render :json => @doc.to_json }
@@ -156,6 +150,28 @@ class DocsController < ApplicationController
         format.json { head :created, :location => doc_url(@project, @doc, :format => "json") }
       else
         format.html { render :action => "new" }
+        format.xml  { render :xml => @doc.errors.to_xml }
+        format.json { render :json => @doc.errors.to_json }
+      end
+    end
+  end
+  
+  def revert
+    @doc_version = @doc.versions.find(params[:doc_version_id])
+    
+    @doc.attrs_attributes = @doc_version.attrs_attributes
+    @doc.name = @doc_version.name
+    @doc.content = @doc_version.content
+    
+    respond_to do |format|
+      if @doc.save
+        @doc.latest_version.update(author: current_person)
+        
+        format.html { redirect_to doc_url(@project, @doc) }
+        format.xml  { render :xml => @doc.to_xml }
+        format.json { render :json => @doc.to_json }
+      else
+        format.html { render :action => "edit" }
         format.xml  { render :xml => @doc.errors.to_xml }
         format.json { render :json => @doc.errors.to_json }
       end

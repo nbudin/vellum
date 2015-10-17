@@ -1,0 +1,1 @@
+Date::DATE_FORMATS[:short_with_year] = "%b %-d, %Y"

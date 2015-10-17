@@ -34,6 +34,8 @@ gem "rollbar"
 gem "pry-rails", :groups => [:development, :test]
 gem "rubypants", ">= 0.3.0", github: 'jmcnevin/rubypants'
 
+gem 'htmldiff'
+
 gem "puma"
 gem "asset_sync"
 
