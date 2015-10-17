@@ -90,7 +90,7 @@ class Attr < ActiveRecord::Base
   end
 
   def template_attr
-    doc_template.doc_template_attrs.select { |dta| dta.name == self.name }.first
+    doc_template.try { doc_template_attrs.find { |dta| dta.name == self.name } }
   end
   
   def doc_template
