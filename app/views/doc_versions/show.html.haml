@@ -6,10 +6,13 @@
     - @doc_version.attrs.each do |attr|
       - if @doc_version.previous_version
         - prev_attr = @doc_version.previous_version.attrs.find { |prev_attr| prev_attr.slug == attr.slug }
-        - diff_content = capture do
-          .version-diff{class: attr_class(attr)}
-            = diff_sanitized(prev_attr.value, attr.value)
-        = attr_row(attr, diff_content)
+        - if prev_attr
+          - diff_content = capture do
+            .version-diff{class: attr_class(attr)}
+              = diff_sanitized(prev_attr.value, attr.value)
+          = attr_row(attr, diff_content)
+        - else
+          = attr_row(attr)
       - else
         = attr_row(attr)
   #doc_content.document_content
