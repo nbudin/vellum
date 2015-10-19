@@ -5,10 +5,11 @@ GIT
     rubypants (0.3.0)
 
 GIT
-  remote: git://github.com/mattgibson/htmldiff.git
-  revision: ef4f0ae999fe2c860729d31b6108b301494cf3a9
+  remote: git://github.com/nbudin/htmldiff-lcs.git
+  revision: efeec72cdedadfb310dbb6474395289287d0fcdc
   specs:
-    htmldiff (0.0.1)
+    htmldiff-lcs (0.0.1)
+      diff-lcs
 
 GEM
   remote: http://rubygems.org/
@@ -110,6 +111,7 @@ GEM
     devise_cas_authenticatable (1.5.0)
       devise (>= 1.2.0)
       rubycas-client (>= 2.2.1)
+    diff-lcs (1.2.5)
     docile (1.1.5)
     erubis (2.7.0)
     excon (0.45.4)
@@ -415,7 +417,7 @@ DEPENDENCIES
   figaro
   haml
   heroku_external_db
-  htmldiff!
+  htmldiff-lcs!
   illyan_client (~> 2.0)
   jquery-rails (>= 1.0.12)
   jquery-ui-rails
