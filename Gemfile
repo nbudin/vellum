@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 ruby "2.1.2"
 
-gem "rails", "4.2.4"
+gem "rails", "4.2.5"
 gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier', ">= 1.0.3"
@@ -53,6 +53,6 @@ group :development do
   gem 'capistrano'
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
-  
+
   gem 'spring'
 end
