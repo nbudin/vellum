@@ -1,5 +1,5 @@
 class DocTemplate < ActiveRecord::Base
-  belongs_to :project
+  belongs_to :project, touch: true
 
   has_many :doc_template_attrs, -> { order(:position) }, :dependent => :destroy, :autosave => true
   has_many :outward_relationship_types, :foreign_key => :left_template_id, :class_name => "RelationshipType", :dependent => :destroy
