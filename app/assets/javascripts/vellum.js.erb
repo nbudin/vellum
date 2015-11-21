@@ -10,7 +10,7 @@
           target.hide();
         }
     }
-    
+
     function updateMarkForDeletionClass(checkbox) {
         if (checkbox == null) {
             checkbox = this;
@@ -63,10 +63,10 @@
 
         updateDeleteButtonText($this);
     }
-    
+
     function makePositionIntoDraggable() {
         var $this = jQuery(this);
-        
+
         $this.hide();
         $this.parents('tr').find('td.name').prepend("<span class=\"glyphicon glyphicon-sort sort_handle\"></span>");
     }
@@ -80,7 +80,7 @@
             .bind('change', updateMarkForDeletionClass)
             .each(updateMarkForDeletionClass)
             .each(makeDeleteCheckboxAButton);
-            
+
         this.parent().find('input.position')
             .each(makePositionIntoDraggable);
 
@@ -94,7 +94,7 @@ jQuery.fn.zebrify = function(selector) {
     // stupid zero-based indexing: :even gives you the odd ones and vice versa
     children.filter(":even").removeClass("even").addClass("odd");
     children.filter(":odd").removeClass("odd").addClass("even");
-    
+
     return this;
 };
 
@@ -121,7 +121,7 @@ jQuery.fn.vellumAttrList = function() {
         });
     $lastAttr.remove();
     this.append($newAttrDiv);
-    
+
     var $attrList = this;
     this.sortable({'handle': '.sort_handle', 'items': 'tr:not(.fromTemplate)', 'stop': function (event, ui) {
         $attrList.find('tr').each(function(index) {
@@ -139,7 +139,7 @@ jQuery.fn.vellumAttrList = function() {
             return $helper;
         }
     });
-    
+
     return this;
 };
 
@@ -166,7 +166,7 @@ jQuery.fn.vellumDocSummaryPopup = function() {
             jQuery('li.expanded').removeClass('expanded');
             jQuery('a#closeDocSummaryPopup').remove();
             jQuery('a#popupDoc').remove();
-            
+
             jQuery.getJSON(href + '.json', function(data) {
                 var content = data.content;
                 if (content == null || content.length == 0) {
@@ -191,7 +191,7 @@ jQuery.fn.vellumDocSummaryPopup = function() {
                 });
                 li.prepend(popupLink);
                 li.prepend(closeLink);
-                
+
                 popup.slideDown("fast");
             });
         });
@@ -202,55 +202,18 @@ jQuery.fn.vellumEditExpander = function () {
     this.each(function() {
         var $this = jQuery(this);
         var children = $this.children("*:visible").hide();
-    
-        var preview = jQuery("<div class=\"edit-expander-preview\" style=\"cursor: pointer;\">" 
-            + $this.attr('data-edit-expander-preview') 
+
+        var preview = jQuery("<div class=\"edit-expander-preview\" style=\"cursor: pointer;\">"
+            + $this.attr('data-edit-expander-preview')
             + " <em>(click to edit)</em>"
             + "</div>");
         $this.prepend(preview);
         preview.bind('click', function () {
            preview.hide();
-           children.show(); 
-        });        
+           children.show();
+        });
     });
-    
-    return this;
-};
 
-jQuery.fn.vellumAutoResizeWym = function () {
-    var $wymIframe = this.find(".wym_iframe iframe");
-    if ($wymIframe.size() == 0) {
-        return this;
-    }
-    
-    var doResize = function () {
-        var targetHeight = jQuery(window).height() - $wymIframe.offset().top - 15;
-
-        if (targetHeight < 200) {
-            targetHeight = 200;
-        }
-
-        $wymIframe.height(targetHeight);
-    };
-    
-    var initLoop = function() {
-        // bit of a hack.  wait for the iframe height to be 200 before doing the initial resize.
-        
-        if ($wymIframe.height() < 200) {
-            setTimeout(initLoop, 100);
-        } else {
-            doResize();
-        }
-    };
-    
-    var autoResizeTimer;
-    jQuery(window).resize(function () {
-        clearTimeout(autoResizeTimer);
-        autoResizeTimer = setTimeout(doResize, 100);
-    });
-    
-    initLoop();
-    
     return this;
 };
 
@@ -261,10 +224,10 @@ jQuery.fn.vellumInPlaceEdit = function() {
         var object = $this.attr('data-in-place-edit-object');
         var field = $this.attr('data-in-place-edit-field');
         var rows = $this.attr('data-in-place-edit-rows');
-        
-        var options = { 
-            'name': object + "[" + field + "]", 
-            'id': 'element_id', 
+
+        var options = {
+            'name': object + "[" + field + "]",
+            'id': 'element_id',
             'method': 'PUT',
             'submit': 'Save',
             'cancel': 'Cancel',
@@ -273,12 +236,12 @@ jQuery.fn.vellumInPlaceEdit = function() {
                 jQuery(this).html(jQuery.parseJSON(value)[field]);
             }
         };
-        
+
         if (rows != null) {
             options['type'] = 'textarea';
             options['rows'] = rows;
         }
-        
+
         $this.editable(url, options);
     });
 };
@@ -287,36 +250,36 @@ jQuery.fn.vellumColorPicker = function() {
     this.each(function() {
         var $this = jQuery(this);
         var $field = $this.parent().find("input[name=\"" + $this.attr('data-colorpicker-field') + "\"]");
-        
+
         var callback = function(color) {
             $field.val(color);
             $this.css('background-color', color);
         };
-        
+
         var $placeholder = $this.find('.vellumColorPickerPlaceholder');
         $placeholder.farbtastic(callback).hide();
         if ($field.val() == "") {
             $field.val("#000000");
         }
         callback($field.val());
-        
+
         origPos = $placeholder.show().position();
         $placeholder.hide();
-        
+
         var resetPlaceholder = function() {
             $placeholder.css('left', origPos.left)
                 .css('top', origPos.top)
                 .detach()
                 .appendTo($this);
         }
-        
+
         var popupPlaceholder = function() {
             var offset = $placeholder.show().offset();
             $placeholder.detach().appendTo("body")
                 .css('left', offset.left)
                 .css('top', offset.top);
         }
-        
+
         $this.bind("click", function () {
             if ($placeholder.is(':visible')) {
                 resetPlaceholder();
@@ -336,7 +299,7 @@ jQuery.fn.vellumSortList = function () {
         var $this = jQuery(this);
         var url = $this.attr('data-url');
         var id = $this.attr('id');
-        
+
         $this.sortable({
             'axis': 'y',
             'dropOnEmpty': false,
@@ -355,7 +318,7 @@ jQuery.fn.vellumSortList = function () {
 jQuery.fn.vellumPublicationTemplateForm = function() {
   this.each(function() {
     var $this = jQuery(this);
-    
+
     var setVisibilityBasedOnTemplateType = function() {
       var templateType = $this.find("[name='publication_template[template_type]']").val();
       $this.find('[data-only-visible-for-publication-template-types]').each(function() {
@@ -364,7 +327,7 @@ jQuery.fn.vellumPublicationTemplateForm = function() {
         $el.toggle(types.indexOf(templateType) > -1);
       });
     };
-    
+
     $this.find("[name='publication_template[template_type]']").change(setVisibilityBasedOnTemplateType);
     setVisibilityBasedOnTemplateType();
   })
@@ -375,21 +338,44 @@ jQuery(function() {
     $this = jQuery(this);
     var editor = new wysihtml5.Editor($this.find('textarea').get(0), { // id of textarea element
       toolbar:      $this.find('.wysihtml5-toolbar').get(0), // id of toolbar element
-      parserRules:  wysihtml5ParserRules, // defined in parser rules set 
+      parserRules:  wysihtml5ParserRules, // defined in parser rules set
       cleanUp:      false,
       autoLink:     false,
-      stylesheets:  [<%= %w(wysihtml5-iframe document).map { |stylesheet| "'#{stylesheet_path stylesheet}'" }.join(', ') %>]
+      stylesheets:  [<%= %w(wysihtml5-iframe document).map { |stylesheet| "'#{stylesheet_path stylesheet}'" }.join(', ') %>],
+      height:       '75vh'
     });
-    
+
     $($this.find('iframe').get(0).documentContent).find('body').addClass('document_content');
-    
+
+    // editor.on('load', function() {
+    //   // The wysiwyg editor is in the DOM. It's safe to make the plugin call
+    //   $(editor.composer.editableArea).css('height: 75vh');
+    // });
+
+    // editor.observe("load", function () {
+    //     var $iframe = $(this.composer.iframe);
+    //     var $body = $(this.composer.element);
+    //
+    //     $body
+    //       .css({
+    //         'min-height': 0,
+    //         'line-height': '20px',
+    //         'overflow': 'hidden',
+    //       })
+    //       .bind('keypress keyup keydown paste change focus blur', function(e) {
+    //         var height = Math.min($body[0].scrollHeight, $body.height());
+    //         // a little extra height to prevent spazzing out when creating newlines
+    //         var extra = e.type == "blur" ? 0 : 20 ;
+    //         $iframe.height(height + extra);
+    //       });
+    // });
+
     $this.find('select.wysihtml5-block-class').bind('change', function(event) {
       editor.composer.commands.exec('formatBlock', jQuery(event.target).val());
     });
   });
-  
+
   jQuery(".vellumEditExpander").vellumEditExpander();
-  jQuery(".vellumAutoResizeWym").vellumAutoResizeWym();
   jQuery(".vellumInPlaceEdit").vellumInPlaceEdit();
   jQuery(".vellumColorPicker").vellumColorPicker();
   jQuery(".vellumPublicationTemplateForm").vellumPublicationTemplateForm();
@@ -404,14 +390,14 @@ jQuery(function() {
     var editorDiv = jQuery("<div class=\"form-control\"></div>");
     var $this = jQuery(this);
     $this.hide().after(editorDiv);
-    
+
     var editor = ace.edit(editorDiv.get(0));
     editor.setTheme("ace/theme/textmate");
     editor.getSession().setMode($this.attr('data-ace-mode'));
     editor.getSession().setUseSoftTabs(true);
     editor.setValue($this.val());
     editor.selection.selectFileStart();
-    
+
     $this.closest('form').submit(function() {
       $this.val(editor.getValue());
     });

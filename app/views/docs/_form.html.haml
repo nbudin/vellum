@@ -11,5 +11,4 @@
       = outer_fields.fields_for '99999', Attr.new(:doc => @doc) do |attr_fields|
         = edit_attr_row(attr_fields)
 .form-group
-  .vellumAutoResizeWym
-    = wysihtml5_editor f, :content, :style => "width: 100%;", :class => "form-control"
+  = wysihtml5_editor f, :content, :style => "width: 100%; height: 75vh;", :class => "form-control"
