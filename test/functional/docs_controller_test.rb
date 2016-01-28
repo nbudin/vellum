@@ -3,7 +3,7 @@ require 'test_helper'
 class DocsControllerTest < ActionController::TestCase
   setup do
     create_logged_in_person
-    
+
     assert @attr = FactoryGirl.create(:doc_template_attr, :name => "Favorite color")
     assert @tmpl = @attr.doc_template
     assert @project = @tmpl.project
@@ -24,7 +24,7 @@ class DocsControllerTest < ActionController::TestCase
     setup do
       get :new, :project_id => @project.id, :template_id => @tmpl.id
     end
-    
+
     it "should respond correctly" do
       must respond_with(:success)
       must render_template("new")
@@ -99,12 +99,12 @@ class DocsControllerTest < ActionController::TestCase
         must render_template("show")
       end
     end
-    
+
     describe "on GET to :edit" do
       setup do
         get :edit, :id => @doc.id, :project_id => @project.id
       end
-      
+
       it "should respond correctly" do
         must respond_with(:success)
         must render_template("edit")
