@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
 class AttrTest < ActiveSupport::TestCase
   describe "with an existing Attr" do
@@ -9,7 +9,7 @@ class AttrTest < ActiveSupport::TestCase
     end
 
     subject { @attr }
-    
+
     it "should allow the proper values for names" do
       ["a name", "rather-usual", "10 lbs"].each do |value|
         must allow_value(value).for(:name)
