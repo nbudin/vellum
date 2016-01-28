@@ -1,11 +1,11 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
 class DocTest < ActiveSupport::TestCase
   describe "A doc" do
     setup do
       @doc = FactoryGirl.build(:doc, :name => "Bob")
     end
-    
+
     it "should be valid" do
       assert @doc.valid?
     end
@@ -26,7 +26,7 @@ class DocTest < ActiveSupport::TestCase
     it "should not start out assigned to anyone" do
       assert_nil @doc.assignee
     end
-    
+
     it "should automatically sanitize content on save" do
       @doc.content = "<span class=\"invalid-class\">Sanitized</span>"
       assert @doc.save
@@ -62,20 +62,20 @@ class DocTest < ActiveSupport::TestCase
         end
 
         it "should accept hash values for attrs_attributes=" do
-          @doc.attrs_attributes = [ 
-            { 
-              'name' => @attr.name, 
-              'multiple_value' => { 
+          @doc.attrs_attributes = [
+            {
+              'name' => @attr.name,
+              'multiple_value' => {
                 0 => { 'choice' => "red", 'selected' => true },
                 1 => { 'choice' => "green", 'selected' => true },
-                2 => { 'choice' => "blue", 'selected' => false } 
-              } 
+                2 => { 'choice' => "blue", 'selected' => false }
+              }
             }
           ]
           assert_equal "red, green", @attr.value
         end
       end
-      
+
       it "should sanitize attr content on save" do
         @attr.value = "<badelement>Content</badelement>"
         assert @doc.save
