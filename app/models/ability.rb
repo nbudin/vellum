@@ -24,7 +24,7 @@ class Ability
 
   def grant_admin_permissions
     can [:read, :update, :destroy, :change_permissions, :copy_templates], Project
-    can :manage, PROJECT_CONTENTS + MAP_CONTENTS + [SiteSettings]
+    can :manage, PROJECT_CONTENTS + MAP_CONTENTS + DOC_CONTENTS + [SiteSettings]
   end
 
   def grant_non_admin_permissions
