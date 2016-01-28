@@ -43,6 +43,10 @@
           = button_to "Delete #{@doc.name}", doc_path(@project, @doc), :method => "delete",               |
             :class => "btn btn-danger", "data-confirm" => "Are you sure you want to delete #{@doc.name}?" |
       .form-group
+        %label.control-label History
+        #history
+          = select_tag :history_nav, options_from_collection_for_select(@doc.versions.order(version: :desc), :id, :description), include_blank: true, class: "form-control vellumVersionNavSelect", "data-version-url-base" => doc_doc_versions_path(@project, @doc)
+      .form-group
         %label.control-label Related
         #relationships
           = @doc.name

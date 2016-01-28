@@ -76,18 +76,27 @@ module DocsHelper
   end
 
   def render_attr_value(attr)
-    case (attr.ui_type.try(:to_sym))
-    when :textarea
-      content_tag(:div, attr.value.try(:html_safe), :class => "document_content")
-    else
-      attr.value
+    content = case (attr.ui_type.try(:to_sym))
+    when :textarea then attr.value.try(:html_safe)
+    else attr.value
+    end
+    
+    content_tag(:div, content, class: attr_class(attr))
+  end
+  
+  def attr_class(attr)
+    case attr.ui_type.try(:to_sym)
+    when :textarea then "document_content"
+    else ""
     end
   end
   
-  def attr_row(attr)
+  def attr_row(attr, content = nil)
     content_tag(:tr) do
+      content ||= render_attr_value(attr)
+      
       content_tag(:td, attr.name, :class => "name") +
-      content_tag(:td, render_attr_value(attr), :class => attr_class(attr), :class => "value")
+      content_tag(:td, content, :class => attr_class(attr), :class => "value")
     end
   end
   

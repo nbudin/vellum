@@ -34,6 +34,8 @@ gem "rollbar"
 gem "pry-rails", :groups => [:development, :test]
 gem "rubypants", ">= 0.3.0", github: 'jmcnevin/rubypants'
 
+gem 'htmldiff-lcs', github: 'nbudin/htmldiff-lcs', require: 'htmldiff'
+
 gem "puma"
 gem "asset_sync"
 
@@ -41,6 +43,7 @@ group :test do
   gem 'database_cleaner'
   gem 'minitest-spec-rails'
   gem 'minitest-matchers_vaccine'
+  gem 'minitest-reporters'
   gem 'shoulda-matchers'
   gem 'factory_girl_rails'
   gem 'launchy'

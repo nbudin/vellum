@@ -3,6 +3,7 @@
  *= require farbtastic/farbtastic
  *= require vellum
  *= require editors
+ *= require diffs
  *= require jumpbox
  *= require structures
  *= require bootstrap

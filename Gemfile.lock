@@ -4,6 +4,13 @@ GIT
   specs:
     rubypants (0.3.0)
 
+GIT
+  remote: git://github.com/nbudin/htmldiff-lcs.git
+  revision: efeec72cdedadfb310dbb6474395289287d0fcdc
+  specs:
+    htmldiff-lcs (0.0.1)
+      diff-lcs
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -48,6 +55,7 @@ GEM
     addressable (2.3.8)
     ae_users_migrator (1.0.6)
       activerecord (>= 2.3)
+    ansi (1.5.0)
     arel (6.0.3)
     asset_sync (1.0.0)
       activemodel
@@ -106,6 +114,7 @@ GEM
     devise_cas_authenticatable (1.5.0)
       devise (>= 1.2.0)
       rubycas-client (>= 2.2.1)
+    diff-lcs (1.2.5)
     docile (1.1.5)
     erubis (2.7.0)
     excon (0.45.4)
@@ -258,6 +267,11 @@ GEM
     minitest (5.8.4)
     minitest-matchers_vaccine (1.0.3)
       minitest (~> 5.0)
+    minitest-reporters (1.0.11)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     minitest-spec-rails (5.3.0)
       minitest (~> 5.0)
       rails (>= 4.1)
@@ -331,6 +345,7 @@ GEM
     rollbar (2.3.0)
       oj (~> 2.12.14)
     ruby-graphviz (1.2.2)
+    ruby-progressbar (1.7.1)
     rubycas-client (2.3.9)
       activesupport
     rubyzip (1.1.7)
@@ -412,11 +427,13 @@ DEPENDENCIES
   figaro
   haml
   heroku_external_db
+  htmldiff-lcs!
   illyan_client (~> 2.0)
   jquery-rails (>= 1.0.12)
   jquery-ui-rails
   launchy
   minitest-matchers_vaccine
+  minitest-reporters
   minitest-spec-rails
   mysql2 (~> 0.3.18)
   nokogiri (>= 1.4.1)

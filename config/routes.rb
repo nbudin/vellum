@@ -16,11 +16,14 @@ Vellum::Application.routes.draw do
     resources :docs do
       member do
         post :copy
+        put :revert
       end
       
       collection do
         post :sort
       end
+      
+      resources :doc_versions, path: "versions", only: [:index, :show]
     end
 
     resources :relationships

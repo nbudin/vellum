@@ -1,0 +1,22 @@
+.version-diff {
+  ins {
+    text-decoration: none;
+    
+    &.diffins {
+      background-color: #cfc;
+    }
+  
+    &.diffmod {
+      background-color: #ee0;
+    }
+  }
+  
+  del.diffdel {
+    background-color: #fcc;
+    text-decoration: line-through;
+  }
+  
+  del.diffmod {
+    display: none;
+  }
+}
