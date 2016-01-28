@@ -43,6 +43,7 @@ group :test do
   gem 'database_cleaner'
   gem 'minitest-spec-rails'
   gem 'minitest-matchers_vaccine'
+  gem 'minitest-reporters'
   gem 'shoulda-matchers'
   gem 'factory_girl_rails'
   gem 'launchy'
