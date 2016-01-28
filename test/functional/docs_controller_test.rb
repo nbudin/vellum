@@ -129,7 +129,7 @@ class DocsControllerTest < ActionController::TestCase
       end
 
       it "should set the new version's author" do
-        assert_equal @person.id, assigns(:doc).versions.latest.author_id
+        assert_equal @person.id, assigns(:doc).latest_version.author_id
       end
 
       it "should update the structure" do
@@ -144,7 +144,7 @@ class DocsControllerTest < ActionController::TestCase
     describe "on PUT to :update with new assignee" do
       setup do
         ActionMailer::Base.deliveries.clear
-        
+
         assert @person.email
         assert_not_equal @person.id, @doc.assignee
         @site_settings = SiteSettings.instance
@@ -162,7 +162,7 @@ class DocsControllerTest < ActionController::TestCase
 
       it "should have sent an email to the assignee" do
         assert email = ActionMailer::Base.deliveries.last
-        
+
         assert_match /\A\[#{@project.name}\].*#{Regexp.escape @doc.name}/, email.subject
         assert email.from.include?(@site_settings.site_email)
         assert email.to.include?(@person.email)
@@ -186,13 +186,13 @@ class DocsControllerTest < ActionController::TestCase
         assert_equal @old_count - 1, Doc.count
       end
     end
-    
+
     describe "on POST to :copy" do
       setup do
         @old_count = Doc.count
         post :copy, :id => @doc.id, :project_id => @project.id
       end
-      
+
       it "should respond correctly" do
         must respond_with(:redirect)
         wont set_flash
@@ -224,7 +224,7 @@ class DocsControllerTest < ActionController::TestCase
       describe "on POST to :sort" do
         setup do
           assert @doc.position < @d2.position
-          
+
           post :sort, :project_id => @project.id,
             "docs_#{@tmpl.id}".to_sym => [ @d2.id.to_s, @doc.id.to_s ]
         end
