@@ -2,13 +2,13 @@ require 'rollbar/rails'
 Rollbar.configure do |config|
   # Without configuration, Rollbar is enabled in all environments.
   # To disable in specific environments, set config.enabled=false.
-  
+
   config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
 
   if Rails.env.test? || Rails.env.development?
     config.enabled = false
   end
-  
+
 
   # By default, Rollbar will try to call the `current_user` controller method
   # to fetch the logged-in user object, and then call that object's `id`,
@@ -48,4 +48,18 @@ Rollbar.configure do |config|
   # config.use_sidekiq
   # You can supply custom Sidekiq options:
   # config.use_sidekiq 'queue' => 'my_queue'
+
+  # Ignore weird 404s
+  config.exception_level_filters.merge!('ActionController::RoutingError' => lambda { |e|
+    if e.message =~ %r(No route matches \[[A-Z]+\] "/(.+)")
+      return 'ignore' if $1.include?('data:image')
+
+      case $1.split("/").first.to_s.downcase
+      when *%w(myadmin phpmyadmin w00tw00t pma cgi-bin xmlrpc.php wp-admin wordpress cfide)
+        'ignore'
+      else
+        'warning'
+      end
+    end
+  })
 end
