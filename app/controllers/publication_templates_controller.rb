@@ -110,10 +110,8 @@ class PublicationTemplatesController < ApplicationController
   # PUT /publication_templates/1
   # PUT /publication_templates/1.xml
   def update
-    @publication_template = @project.publication_templates.find(params[:id])
-
     respond_to do |format|
-      if @publication_template.update_attributes(params[:publication_template])
+      if @publication_template.update_attributes(publication_template_params)
         format.html { redirect_to publication_template_url(@project, @publication_template) }
         format.xml  { head :ok }
         format.json { head :ok }
@@ -128,7 +126,6 @@ class PublicationTemplatesController < ApplicationController
   # DELETE /publication_templates/1
   # DELETE /publication_templates/1.xml
   def destroy
-    @publication_template = @project.publication_templates.find(params[:id])
     @publication_template.destroy
 
     respond_to do |format|
