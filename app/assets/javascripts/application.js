@@ -13,6 +13,7 @@
 //= require ace-builds/src/ace
 //= require ace-builds/src/mode-xml
 //= require ace-builds/src/theme-textmate
+//= require ace-builds/src/ext-language_tools
 //= require bootstrap
 //= require bootstrap-wysihtml5
 //= require wysihtml5-parser-rules

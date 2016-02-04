@@ -337,13 +337,13 @@ jQuery.fn.vellumVersionNavSelect = function() {
   this.each(function() {
     var $this = jQuery(this);
     baseUrl = $this.data('version-url-base');
-    
+
     $this.on('change', function() {
       versionId = $this.val();
       if (!versionId) {
         return;
       }
-      
+
       url = baseUrl + '/' + versionId;
       window.location.href = url;
     });
@@ -403,21 +403,5 @@ jQuery(function() {
       var $this = jQuery(this);
       $this.parents('li').find('.blurb_display').show();
       $this.hide();
-  });
-  jQuery(".ace-editable").each(function () {
-    var editorDiv = jQuery("<div class=\"form-control\"></div>");
-    var $this = jQuery(this);
-    $this.hide().after(editorDiv);
-
-    var editor = ace.edit(editorDiv.get(0));
-    editor.setTheme("ace/theme/textmate");
-    editor.getSession().setMode($this.attr('data-ace-mode'));
-    editor.getSession().setUseSoftTabs(true);
-    editor.setValue($this.val());
-    editor.selection.selectFileStart();
-
-    $this.closest('form').submit(function() {
-      $this.val(editor.getValue());
-    });
   });
 });
