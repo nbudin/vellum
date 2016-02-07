@@ -31,37 +31,71 @@
 //   exports.ExampleHighlightRules = ExampleHighlightRules;
 // });
 
-var VPUB_TAGS = [
-  'v:name',
-  'v:content',
-  'v:each_doc',
-  'v:attr:value',
-  'v:attr:if_value',
-  'v:each_related',
-  'v:include',
-  'v:repeat',
-  'v:yield'
-];
+var vpubAttributeMap = {
+  'v:name': [],
+  'v:content': [],
+  'v:each_doc': ['template', 'sort'],
+  'v:attr:value': ['name'],
+  'v:attr:if_value': ['name', 'eq', 'ne', 'match'],
+  'v:each_related': ['how'],
+  'v:include': ['template', 'sort'],
+  'v:repeat': ['times'],
+  'v:yield': []
+};
 
-jQuery(function() {
-  var vpubTagCompleter = {
-    getCompletions: function(editor, session, pos, prefix, callback) {
-      var token = session.getTokenAt(pos.row, pos.column);
+var vpubElements = Object.keys(vpubAttributeMap);
 
-      if (token.type === 'meta.tag.tag-name.xml') {
-        if (token.value.match(/^v:/)) {
-          return VPUB_TAGS.map(function (tag) {
-            return {
-              value: tag,
-              meta: "tag",
-              score: Number.MAX_VALUE
-            };
-          });
-        }
+var VPubTagCompleter = {
+  getCompletions: function(editor, session, pos, prefix, callback) {
+    var token = session.getTokenAt(pos.row, pos.column);
+
+    if (token.type === 'meta.tag.tag-name.xml') {
+      if (token.value.match(/^v:/)) {
+        var completions = vpubElements.map(function (tag) {
+          return {
+            value: tag.slice(2),
+            meta: "tag",
+            score: Number.MAX_VALUE
+          };
+        });
+
+        callback(null, completions);
       }
     }
   }
+};
 
+var VPubAttrCompleter = {
+  findTagName: function(session, pos) {
+      var iterator = new TokenIterator(session, pos.row, pos.column);
+      var token = iterator.getCurrentToken();
+      while (token && !is(token, "tag-name")){
+          token = iterator.stepBackward();
+      }
+      if (token)
+          return token.value;
+  },
+
+  getCompletions: function(state, session, pos, prefix) {
+      var tagName = VPubAttrCompleter.findTagName(session, pos);
+      if (!tagName)
+          return [];
+      var attributes = [];
+      if (tagName in vpubAttributeMap) {
+          attributes = attributeMap[tagName];
+      }
+      return attributes.map(function(attribute){
+          return {
+              caption: attribute,
+              snippet: attribute + '="$0"',
+              meta: "attribute",
+              score: Number.MAX_VALUE
+          };
+      });
+  }
+};
+
+jQuery(function() {
   jQuery(".ace-editable").each(function () {
     var editorDiv = jQuery("<div class=\"form-control\"></div>");
     var $this = jQuery(this);
@@ -76,7 +110,8 @@ jQuery(function() {
     editor.setValue($this.val());
     editor.selection.selectFileStart();
 
-    langTools.addCompleter(vpubTagCompleter);
+    langTools.addCompleter(VPubTagCompleter);
+    langTools.addCompleter(VPubAttrCompleter);
 
     $this.closest('form').submit(function() {
       $this.val(editor.getValue());
