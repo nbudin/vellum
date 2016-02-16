@@ -3,17 +3,15 @@ require 'csv'
 class CsvExportsController < ApplicationController
   load_and_authorize_resource :project
   load_and_authorize_resource :through => :project
-  
+
   def index
     @csv_exports = @csv_exports.order(:name)
   end
-  
+
   def new
   end
-  
+
   def create
-    @csv_export = @project.csv_exports.new(params[:csv_export])
-    
     respond_to do |format|
       if @csv_export.save
         format.html { redirect_to csv_export_url(@project, @csv_export) }
@@ -37,13 +35,13 @@ class CsvExportsController < ApplicationController
       end
     end
   end
-  
+
   def edit
   end
-  
+
   def update
     respond_to do |format|
-      if @csv_export.update_attributes(params[:csv_export])
+      if @csv_export.update(csv_export_params)
         format.html { redirect_to csv_export_url(@project, @csv_export) }
         format.xml  { head :created, :location => csv_export_url(@project, @csv_export, :format => "xml" ) }
         format.json { head :created, :location => csv_export_url(@project, @csv_export, :format => "json") }
@@ -54,7 +52,7 @@ class CsvExportsController < ApplicationController
       end
     end
   end
-  
+
   def destroy
     @csv_export.destroy
 
@@ -63,5 +61,10 @@ class CsvExportsController < ApplicationController
       format.xml  { head :ok }
       format.json { head :ok }
     end
+  end
+
+  private
+  def csv_export_params
+    params.require(:csv_export).permit(:doc_template_id, :name, :attr_names_commasep)
   end
 end
