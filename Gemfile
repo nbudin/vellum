@@ -11,6 +11,7 @@ gem 'bower-rails'
 gem 'figaro'
 
 gem "pg"
+gem "mysql2", '~> 0.3.18'
 gem 'rails_12factor', group: :production
 gem "sqlite3", :groups => [:development, :test]
 
