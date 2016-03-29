@@ -56,6 +56,7 @@ group :development do
   gem 'capistrano'
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
+  gem 'capistrano-maintenance'
 
   gem 'spring'
 end
