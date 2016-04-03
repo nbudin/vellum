@@ -29,7 +29,7 @@ set :log_level, :info
 set :linked_files, %w{config/database.yml config/application.yml}
 
 # Default value for linked_dirs is []
-# set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
+set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -47,7 +47,7 @@ namespace :deploy do
   end
 
   after :publishing, :restart
-  
+
   desc 'Notify Rollbar of the deploy'
   task :notify_rollbar do
     on roles(:app) do |h|
@@ -57,7 +57,7 @@ namespace :deploy do
       execute "curl https://api.rollbar.com/api/1/deploy/ -F access_token=$(cat #{release_path}/config/application.yml |grep '^ROLLBAR_ACCESS_TOKEN:' |cut -d ' ' -f 2) -F environment=#{rails_env} -F revision=#{revision} -F local_username=#{local_user} >/dev/null 2>&1", :once => true
     end
   end
-  
+
   after :deploy, 'notify_rollbar'
 
 end
