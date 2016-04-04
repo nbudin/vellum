@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
     @my_projects, @other_projects = Project.includes(:members).accessible_by(current_ability, :read).partition do |project|
       project.members.include?(current_person)
     end
-    
+
     respond_to do |format|
       format.html { render :action => "index" }
       format.xml  { authorize! :create, Project ; render :xml => @projects.to_xml }
@@ -17,7 +17,7 @@ class ProjectsController < ApplicationController
 
   def new
     @template_sources = Project.accessible_by(current_ability, :copy_templates)
-    
+
     render :action => "new"
   end
 
@@ -34,18 +34,18 @@ class ProjectsController < ApplicationController
       end
       format.xml  { render :xml => @project.to_xml }
       format.json { render :json => @project.to_json }
-      format.vproj { 
+      format.vproj {
         tempfile = @project.to_vproj
         send_file tempfile.path, :type => :vproj, :disposition => 'attachment',
           :filename => "#{@project.name}.vproj"
       }
     end
   end
-  
+
   def edit
     @project = Project.includes(project_memberships: :person).find(params[:id])
     authorize! :change_permissions, @project
-    
+
     @project.project_memberships.build
   end
 
@@ -56,7 +56,7 @@ class ProjectsController < ApplicationController
       source_project = Project.find(params[:project][:template_source_project_id])
       authorize! :copy_templates, source_project
     end
-    
+
     @project = Project.new(project_params)
 
     respond_to do |format|
@@ -105,15 +105,15 @@ class ProjectsController < ApplicationController
       format.json { head :ok }
     end
   end
-  
+
   private
-  
+
   def project_params
     params.require(:project).permit(
-      :name, 
-      :blurb, 
+      :name,
+      :blurb,
       :template_source_project_id,
-      :public_visibility, 
+      :public_visibility,
       project_memberships_attributes: [
         :id,
         :email,

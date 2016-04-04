@@ -8,12 +8,12 @@ class Project < ActiveRecord::Base
   has_many :publication_templates, :dependent => :destroy
   has_many :maps, :dependent => :destroy
   has_many :csv_exports, :dependent => :destroy
-  
+
   has_many :project_memberships
   has_many :members, :class_name => "Person", :through => :project_memberships, :source => :person
-  has_many :authors, -> { joins(:project_memberships).where(project_memberships: { author: true }) }, 
+  has_many :authors, -> { joins(:project_memberships).where(project_memberships: { author: true }) },
     :class_name => "Person", :through => :project_memberships, :source => :person
-  has_many :admins, -> { joins(:project_memberships).where(project_memberships: { admin: true }) }, 
+  has_many :admins, -> { joins(:project_memberships).where(project_memberships: { admin: true }) },
     :class_name => "Person", :through => :project_memberships, :source => :person
   accepts_nested_attributes_for :project_memberships, :allow_destroy => true, reject_if: -> (attrs) { attrs['email'].blank? }
 
@@ -22,7 +22,7 @@ class Project < ActiveRecord::Base
   validates_associated :relationship_types
   validates_presence_of :name
   validates_inclusion_of :public_visibility, :in => %w(hidden visible copy_templates)
-  
+
   def to_param
     if name
       return "#{id}-#{name.parameterize}"
@@ -40,7 +40,7 @@ class Project < ActiveRecord::Base
       new_templates[tmpl.id] = new_tmpl
 
       tmpl.doc_template_attrs.each do |dta|
-        new_attr = new_tmpl.doc_template_attrs.build(:name => dta.name, 
+        new_attr = new_tmpl.doc_template_attrs.build(:name => dta.name,
           :position => dta.position, :ui_type => dta.ui_type,
           :choices => dta.choices)
       end
@@ -64,21 +64,21 @@ class Project < ActiveRecord::Base
       @template_source_project_id = project_id
     end
   end
-  
+
   def available_output_formats
     [:html, :fo, (gametex_available? && :gametex)].select { |format| format }
   end
 
   def as_vproj_json(options = {})
-    as_json( 
-      { include: { 
-        :project_memberships => { methods: [:email] }, 
-        :doc_templates => { include: [:doc_template_attrs] }, 
-        :relationship_types => {}, 
-        :docs => {}, 
-        :relationships => {}, 
-        :publication_templates => {}, 
-        :maps => { include: [:mapped_doc_templates, :mapped_relationship_types] }, 
+    as_json(
+      { include: {
+        :project_memberships => { methods: [:email] },
+        :doc_templates => { include: [:doc_template_attrs] },
+        :relationship_types => {},
+        :docs => {},
+        :relationships => {},
+        :publication_templates => {},
+        :maps => { include: [:mapped_doc_templates, :mapped_relationship_types] },
         :csv_exports => {}
       } }.merge(options)
     )
@@ -90,7 +90,7 @@ class Project < ActiveRecord::Base
 
   def to_vproj(options = {})
     tempfile = Tempfile.new("#{name}.vproj")
-    
+
     Zip::OutputStream.open(tempfile.path) do |zipfile|
       zipfile.put_next_entry "project.json"
       zipfile.print(to_vproj_json(options))
