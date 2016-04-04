@@ -56,7 +56,7 @@ group :development do
   gem 'capistrano'
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
-  gem 'capistrano-maintenance'
+  gem 'capistrano-maintenance', require: false
 
   gem 'spring'
 end
