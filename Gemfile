@@ -11,7 +11,8 @@ gem 'bower-rails'
 gem 'figaro'
 
 gem "pg"
-gem 'rails_12factor', group: :production
+# DISABLING rails_12factor BECAUSE IT'S PREVENTING production.log GETTING WRITTEN
+# gem 'rails_12factor', group: :production
 gem "sqlite3", :groups => [:development, :test]
 
 gem "devise"
