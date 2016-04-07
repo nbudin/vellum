@@ -3,7 +3,7 @@ require 'format_conversions'
 class VPubContext < Radius::Context
   class VPubRuntimeError < Exception
     attr_reader :publication_template, :line, :doc
-    
+
     def initialize(msg, publication_template, doc)
       super(msg)
       @template = publication_template
@@ -11,40 +11,40 @@ class VPubContext < Radius::Context
       @doc = doc
     end
   end
-    
+
   attr_reader :format, :publication_template
-  
+
   def initialize(init_options = {})
     super()
     @publication_template = init_options[:publication_template]
     globals.doc = init_options[:doc]
     globals.project = init_options[:project] || (globals.doc && globals.doc.project)
     self.format = init_options[:format] || 'html'
-    
+
     @pub_template_cache = {}
     @layout_stack = (init_options[:layout_stack] || [@publication_template])
     @layout_stack_index = 0
-    
+
     define_tag 'attr' do |tag|
       get_attr tag
       tag.expand
     end
-    
+
     define_tag 'attr:value' do |tag|
       get_attr tag
-      
+
       tag.locals.attr.value(format_for_tag(tag))
     end
-    
+
     define_tag 'attr:if_value' do |tag|
       get_attr tag
-      
+
       eval_conditional_tag(tag, tag.locals.attr.value || "")
     end
-    
+
     define_tag 'each_related' do |tag|
       how = tag.attr['how']
-      
+
       tag.locals.do_not_recurse ||= [tag.locals.doc]
 
       related = tag.locals.doc.related_docs(how).reject do |d|
@@ -57,16 +57,16 @@ class VPubContext < Radius::Context
         tag.expand
       end.join("")
     end
-    
+
     define_tag 'each_doc' do |tag|
       conds = {}
       if tag.attr['template']
         doc_template = tag.locals.project.doc_templates.find_by(name: tag.attr['template'])
         raise "Couldn't find any template called #{tag.attr['template']}" unless doc_template
-        
+
         conds[:doc_template_id] = doc_template.id
       end
-      
+
       prev_doc = tag.locals.doc
       docs = tag.locals.project.docs.where(conds).to_a
       content = sort_docs(tag, docs).collect do |d|
@@ -74,22 +74,22 @@ class VPubContext < Radius::Context
         tag.expand
       end.join
       tag.locals.doc = prev_doc
-      
+
       content
     end
-    
+
     define_tag 'name' do |tag|
       tag.locals.doc.try(:name)
     end
-    
+
     define_tag 'content' do |tag|
       FormatConversions.convert(tag.locals.doc.content, format_for_tag(tag))
     end
-    
+
     define_tag 'include' do |tag|
       tmpl = get_pub_template(tag)
-      
-      if tmpl.doc_template 
+
+      if tmpl.doc_template
         if tag.locals.doc
           if tmpl.doc_template != tag.locals.doc.doc_template
             raise VPubRuntimeError.new(
@@ -105,12 +105,12 @@ class VPubContext < Radius::Context
 
       tmpl.execute(:doc => tag.locals.doc, :project => tag.locals.project)
     end
-    
+
     define_tag 'yield' do |tag|
       @layout_stack_index += 1
       begin
         tmpl = @layout_stack[@layout_stack_index]
-      
+
         raise VPubRuntimeError.new("<v:yield/> called, but no template to yield to", @publication_template, tag.locals.doc) unless tmpl
         Radius::Parser.new(self, :tag_prefix => 'v').parse(tmpl.content)
       ensure

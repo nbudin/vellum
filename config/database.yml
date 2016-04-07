@@ -1,13 +1,17 @@
-development:
-  adapter: sqlite3
-  database: db/development.sqlite3
+development: &DEV
+  adapter: postgresql
+  host: localhost
+  username: postgres
+  database: vellum_production
 
 test: &TEST
-  adapter: sqlite3
-  database: db/test.sqlite3
+  adapter: postgresql
+  host: localhost
+  username: postgres
+  database: vellum_test
 
-cucumber: 
+cucumber:
   <<: *TEST
 
 production:
-  <<: *TEST
+  <<: *DEV
