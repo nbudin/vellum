@@ -2,6 +2,8 @@ rvm:
   - 2.1.2
 sudo: false
 language: ruby
+services:
+  - postgresql
 before_install: 
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
