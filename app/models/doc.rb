@@ -17,7 +17,7 @@ class Doc < ActiveRecord::Base
   end
 
   def latest_version
-    versions.order(version: :desc).first
+    versions.where.not(version: nil).order(version: :desc).first
   end
 
   validate :check_attrs_error
