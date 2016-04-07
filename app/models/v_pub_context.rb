@@ -134,29 +134,29 @@ class VPubContext < Radius::Context
       content
     end
   end
-  
+
   def format_for_tag(tag)
     tag.attr['format'] || @format
   end
-  
+
   def format=(format)
     @format = format
   end
-  
+
   def get_attr(tag)
     if tag.attr['name']
       tag.locals.attr = tag.locals.doc.attrs[tag.attr['name']]
     end
   end
-  
+
   def sort_docs(tag, docs)
-    return docs unless tag.attr['sort']
-    
-    fields = tag.attr['sort'].split(/\s*,\s*/)
+    sort_attr = tag.attr['sort'] || '@id'
+    fields = sort_attr.split(/\s*,\s*/)
+
     docs.sort do |a, b|
       fields_to_try = fields.dup
       result = 0
-      
+
       while fields_to_try.size > 0 && result == 0
         field = fields_to_try.shift
 
@@ -167,17 +167,20 @@ class VPubContext < Radius::Context
         if field =~ /([^A-Za-z0-9]+)(.*)$/
           options = $1
           field = $2
-          
+
           numeric = true if options.include? '#'
           desc = -1 if options.include? '-'
           special = true if options.include? '@'
         end
-        
+
         if special
           case field
           when "name"
             av = a.name
             bv = b.name
+          when "id"
+            av = a.id
+            bv = b.id
           else
             av = nil
             bv = nil
@@ -186,12 +189,12 @@ class VPubContext < Radius::Context
           av = a.attrs[field].value
           bv = b.attrs[field].value
         end
-        
+
         if numeric
           av = av.try(:to_f)
           bv = bv.try(:to_f)
         end
-        
+
         result = if av.nil? && bv.nil?
           0
         elsif av.nil?
@@ -201,14 +204,14 @@ class VPubContext < Radius::Context
         else
           av <=> bv
         end
-        
+
         result *= desc
       end
-      
+
       result
     end
   end
-  
+
   def eval_conditional_tag(tag, value)
     cond = false
     if tag.attr['eq']
@@ -220,16 +223,16 @@ class VPubContext < Radius::Context
     if tag.attr['match']
       cond ||= (value =~ /#{tag.attr['match']}/)
     end
-    
+
     if cond
       tag.expand
     end
   end
-  
+
   def get_pub_template(tag)
     template_name = tag.attr['template']
     tmpl = (@pub_template_cache[template_name] ||= tag.locals.project.publication_templates.find_by(name: template_name))
-    
+
     if tmpl
       return tmpl
     else
