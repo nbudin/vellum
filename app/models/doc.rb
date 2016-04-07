@@ -11,7 +11,7 @@ class Doc < ActiveRecord::Base
 
   def versioned_columns
     @versioned_columns ||= begin
-      version = versions.new
+      version = Doc::Version.new
       version.attributes.keys - [version.class.primary_key, 'doc_id', 'author_id', 'version', 'created_at', 'updated_at']
     end
   end
