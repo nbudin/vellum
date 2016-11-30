@@ -31,8 +31,7 @@
       .form-group
         = form_for @doc, :url => doc_path(@project, @doc), :html => {:class => "assignee"} do |f|
           = f.label "assignee_id", "Assigned to", :class => "control-label"
-          = f.select "assignee_id", [["nobody", ""]] + @project.authors.sort_by { |a| a.name }.collect {|p| [p.name, p.id] }, |
-            {:include_blank => false, :selected => (@doc.assignee ? @doc.assignee_id : "")}, {:class => "form-control"}       |
+          = f.select "assignee_id", [["nobody", ""]] + @project.authors.uniq.sort_by(&:name).collect {|p| [p.name, p.id] }, {:include_blank => false, :selected => (@doc.assignee ? @doc.assignee_id : "")}, :class => "form-control"
           %button.btn.btn-primary
             = image_tag "workflow_transition.png"
             Reassign
