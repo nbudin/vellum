@@ -24,7 +24,7 @@
           = @doc.name
           \...
           %ul
-            = @doc.relationships.each do |rel|
+            - @doc.relationships.each do |rel|
               %li
                 = rel.description_for(@doc)
                 = link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)), :target => "_blank"
