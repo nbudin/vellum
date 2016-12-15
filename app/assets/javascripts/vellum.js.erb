@@ -179,10 +179,10 @@ jQuery.fn.vellumDocSummaryPopup = function() {
                 li.addClass('expanded');
 
                 var popupLink = jQuery("<a href=\"" + href + "\" target=\"blank\" style=\"float: right;\" id=\"popupDoc\">" +
-                    "<img src=\"/images/popup.png\" alt=\"Pop up\" title=\"Pop up\"/></a>");
+                    "<img src=\"<%= image_path 'popup.png' %>\" alt=\"Pop up\" title=\"Pop up\"/></a>");
 
                 var closeLink = jQuery("<a href=\"#\" id=\"closeDocSummaryPopup\" style=\"float: right;\">" +
-                    "<img src=\"/images/contract.png\" alt=\"Close\" title=\"Close\"/></a>");
+                    "<img src=\"<%= image_path 'contract.png' %>\" alt=\"Close\" title=\"Close\"/></a>");
                 closeLink.bind("click", function () {
                     jQuery('#docSummaryPopup').slideUpAndRemove();
                     jQuery('li.expanded').removeClass('expanded');
@@ -337,13 +337,13 @@ jQuery.fn.vellumVersionNavSelect = function() {
   this.each(function() {
     var $this = jQuery(this);
     baseUrl = $this.data('version-url-base');
-    
+
     $this.on('change', function() {
       versionId = $this.val();
       if (!versionId) {
         return;
       }
-      
+
       url = baseUrl + '/' + versionId;
       window.location.href = url;
     });
