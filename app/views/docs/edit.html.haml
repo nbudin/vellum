@@ -23,7 +23,8 @@
         #relationships
           = @doc.name
           \...
-          %ul.itemlist
-            = itemlist_items(@doc.relationships) do |rel|
-              = rel.description_for(@doc)
-              = link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)), :target => "_blank"
+          %ul
+            = @doc.relationships.each do |rel|
+              %li
+                = rel.description_for(@doc)
+                = link_to rel.other(@doc).name, doc_path(@project, rel.other(@doc)), :target => "_blank"
