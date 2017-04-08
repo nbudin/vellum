@@ -2,7 +2,7 @@ development: &DEV
   adapter: postgresql
   host: localhost
   username: postgres
-  database: vellum_production
+  database: vellum_developmen
 
 test: &TEST
   adapter: postgresql

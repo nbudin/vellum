@@ -34,6 +34,7 @@ gem "illyan_client", "~> 2.0"
 gem "rollbar"
 gem "pry-rails", :groups => [:development, :test]
 gem "rubypants", ">= 0.3.0", github: 'jmcnevin/rubypants'
+gem 'elasticsearch-rails'
 
 gem 'htmldiff-lcs', github: 'nbudin/htmldiff-lcs', require: 'htmldiff'
 
