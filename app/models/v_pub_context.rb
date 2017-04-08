@@ -150,7 +150,7 @@ class VPubContext < Radius::Context
   end
 
   def sort_docs(tag, docs)
-    sort_attr = tag.attr['sort'] || '@id'
+    sort_attr = tag.attr['sort'] || '@position'
     fields = sort_attr.split(/\s*,\s*/)
 
     docs.sort do |a, b|
@@ -181,6 +181,9 @@ class VPubContext < Radius::Context
           when "id"
             av = a.id
             bv = b.id
+          when "position"
+            av = a.position
+            bv = b.position
           else
             av = nil
             bv = nil
