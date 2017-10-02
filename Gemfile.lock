@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/jmcnevin/rubypants.git
-  revision: b4c507b6549a0a68607bd1c24be2785d71c014d6
+  revision: 98be6d349f18bb9c74f01ba659ef7b4bb35f48b9
   specs:
-    rubypants (0.3.0)
+    rubypants (0.5.1)
 
 GIT
   remote: git://github.com/nbudin/htmldiff-lcs.git
@@ -130,6 +130,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.10.0)
       faraday (>= 0.7.4, < 0.10)
+    ffi (1.9.10)
     ffi (1.9.10-java)
     figaro (1.1.1)
       thor (~> 0.14)
