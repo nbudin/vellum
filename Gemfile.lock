@@ -1,10 +1,4 @@
 GIT
-  remote: git://github.com/jmcnevin/rubypants.git
-  revision: b4c507b6549a0a68607bd1c24be2785d71c014d6
-  specs:
-    rubypants (0.3.0)
-
-GIT
   remote: git://github.com/nbudin/htmldiff-lcs.git
   revision: efeec72cdedadfb310dbb6474395289287d0fcdc
   specs:
@@ -130,6 +124,7 @@ GEM
       multipart-post (>= 1.2, < 3)
     faraday_middleware (0.10.0)
       faraday (>= 0.7.4, < 0.10)
+    ffi (1.9.10)
     ffi (1.9.10-java)
     figaro (1.1.1)
       thor (~> 0.14)
@@ -346,6 +341,7 @@ GEM
     ruby-progressbar (1.7.1)
     rubycas-client (2.3.9)
       activesupport
+    rubypants (0.6.0)
     rubyzip (1.1.7)
     sanitize (4.0.0)
       crass (~> 1.0.2)
@@ -443,7 +439,7 @@ DEPENDENCIES
   rails (= 4.2.6)
   rollbar
   ruby-graphviz (>= 0.9.2)
-  rubypants (>= 0.3.0)!
+  rubypants (>= 0.3.0)
   rubyzip (>= 1.0.0)
   sanitize (~> 4.0.0)
   sass-rails
