@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 ruby "2.1.2"
 
-gem "rails", "4.2.6"
+gem "rails", "4.2.7.1"
 gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier', ">= 1.0.3"
@@ -24,11 +24,11 @@ gem "haml"
 gem "acts_as_list"
 gem "ruby-graphviz", ">= 0.9.2", :require => "graphviz"
 gem "radius"
-gem "jquery-rails", '>= 1.0.12'
+gem "jquery-rails", '~> 3.1.3'
 gem 'jquery-ui-rails'
-gem "rubyzip", ">= 1.0.0", :require => "zip"
+gem "rubyzip", "~> 1.2.1", :require => "zip"
 gem "nokogiri", ">= 1.8.1"
-gem "sanitize", "~> 4.0.0"
+gem "sanitize", "~> 4.6.3"
 gem "heroku_external_db"
 gem "illyan_client", "~> 2.0"
 gem "rollbar"
