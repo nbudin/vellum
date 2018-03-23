@@ -10,7 +10,7 @@ class AboutController < ApplicationController
 
   def update_settings
     if @site_settings.update_attributes(site_settings_params)
-      redirect_to :action => "index"
+      redirect_to projects_path
     else
       render :action => "edit_settings"
     end
