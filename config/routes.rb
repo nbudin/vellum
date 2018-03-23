@@ -18,11 +18,11 @@ Vellum::Application.routes.draw do
         post :copy
         put :revert
       end
-      
+
       collection do
         post :sort
       end
-      
+
       resources :doc_versions, path: "versions", only: [:index, :show]
     end
 
@@ -45,12 +45,12 @@ Vellum::Application.routes.draw do
         post :publish
       end
     end
-    
+
     resources :csv_exports
   end
-  
+
   get '/about/settings' => 'about#edit_settings'
-  post '/about/settings' => 'about#update_settings'
+  patch '/about/settings' => 'about#update_settings'
 
   root :to => 'projects#index'
 end
