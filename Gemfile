@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 ruby "2.1.2"
 
-gem "rails", "4.2.7.1"
+gem "rails", "4.2.11.1"
 gem 'sass-rails'
 gem 'coffee-rails'
 gem 'uglifier', ">= 1.0.3"
