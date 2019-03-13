@@ -26,7 +26,7 @@ gem "ruby-graphviz", ">= 0.9.2", :require => "graphviz"
 gem "radius"
 gem "jquery-rails", '~> 3.1.3'
 gem 'jquery-ui-rails'
-gem "rubyzip", "~> 1.2.1", :require => "zip"
+gem "rubyzip", "~> 1.2.2", :require => "zip"
 gem "nokogiri", ">= 1.8.1"
 gem "sanitize", "~> 4.6.3"
 gem "heroku_external_db"
