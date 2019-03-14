@@ -40,6 +40,9 @@ gem 'htmldiff-lcs', github: 'nbudin/htmldiff-lcs', require: 'htmldiff'
 gem "puma"
 gem "asset_sync"
 
+# Not sure what's causing us to need this but we do apparently
+gem 'xmlrpc'
+
 group :test do
   gem 'database_cleaner'
   gem 'minitest-spec-rails'
