@@ -1,7 +1,7 @@
 # config valid only for Capistrano 3.1
 lock '3.4.0'
 
-set :rbenv_ruby, '2.1.2'
+set :rbenv_ruby, '2.6.2'
 set :rbenv_custom_path, "/opt/rbenv"
 
 set :application, 'vellum'
