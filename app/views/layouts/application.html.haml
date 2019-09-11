@@ -39,7 +39,7 @@
                       = image_tag('ae_users/user.png')
                       Profile
                   %li
-                    = link_to destroy_person_session_path, method: 'DELETE'
+                    = link_to destroy_person_session_path, method: 'DELETE' do
                       = image_tag "ae_users/logout.png"
                       Log out
             - else
