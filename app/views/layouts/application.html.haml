@@ -39,7 +39,7 @@
                       = image_tag('ae_users/user.png')
                       Profile
                   %li
-                    %a{:href => destroy_person_session_path}
+                    = link_to destroy_person_session_path, method: 'DELETE'
                       = image_tag "ae_users/logout.png"
                       Log out
             - else
