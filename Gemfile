@@ -34,6 +34,7 @@ gem "illyan_client", "~> 2.0"
 gem "rollbar"
 gem "pry-rails", :groups => [:development, :test]
 gem "rubypants", ">= 0.3.0", github: 'jmcnevin/rubypants'
+gem 'webdrivers', groups: [:development, :test]
 
 gem 'htmldiff-lcs', github: 'nbudin/htmldiff-lcs', require: 'htmldiff'
 
