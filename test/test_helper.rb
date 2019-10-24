@@ -9,7 +9,23 @@ require 'minitest/reporters'
 Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 
 require 'capybara/rails'
-require 'capybara/poltergeist'
+require 'selenium/webdriver'
+
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
+
+Capybara.register_driver :headless_chrome do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: { args: %w(headless disable-gpu) }
+  )
+
+  Capybara::Selenium::Driver.new app,
+    browser: :chrome,
+    desired_capabilities: capabilities
+end
+
+Capybara.javascript_driver = :headless_chrome
 
 class ActiveSupport::TestCase
   self.use_transactional_fixtures = false
@@ -44,11 +60,12 @@ class ActionDispatch::IntegrationTest
 
   setup do
     Warden.test_mode!
-    Capybara.current_driver = :rack_test
   end
 
   teardown do
     Warden.test_reset!
+    Capybara.reset_sessions!
+    Capybara.use_default_driver
   end
 
   def database_cleaner_strategy

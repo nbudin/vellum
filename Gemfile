@@ -52,7 +52,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'capybara'
-  gem 'poltergeist'
+  gem 'selenium-webdriver'
   gem "codeclimate-test-reporter", group: :test
 end
 
