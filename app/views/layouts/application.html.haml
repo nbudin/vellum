@@ -7,6 +7,8 @@
       \- #{@site_settings.site_name}
     = stylesheet_link_tag 'application'
     = javascript_include_tag 'application'
+    - if Rails.env.development?
+      = javascript_include_tag "http://code.jquery.com/jquery-migrate-1.4.1.js"
     = csrf_meta_tags
     %meta{:content => "width=device-width", :name => "viewport"}/
   %body

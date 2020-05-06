@@ -62,15 +62,15 @@ class DocsIntegrationTest < ActionDispatch::IntegrationTest
 
     click_link "France"
     within ".vellumRelationshipBuilder" do
-      assert_equal 0, evaluate_script("jQuery('select\#relationship_target_id:visible').size()")
-      assert_equal 1, evaluate_script("jQuery('.vellumRelationshipBuilder button:disabled').size()")
+      assert_equal 0, evaluate_script("jQuery('select\#relationship_target_id:visible').length")
+      assert_equal 1, evaluate_script("jQuery('.vellumRelationshipBuilder button:disabled').length")
 
       select("includes", :from => "relationship[relationship_type_id_and_source_direction]")
       sleep 2
-      assert_equal 1, evaluate_script("jQuery('.vellumRelationshipBuilder select[name=\"relationship[target_id]\"]:visible').size()")
+      assert_equal 1, evaluate_script("jQuery('.vellumRelationshipBuilder select[name=\"relationship[target_id]\"]:visible').length")
 
       select "King Louis", from: "relationship[target_id]"
-      assert_equal 1, evaluate_script("jQuery('.vellumRelationshipBuilder button:enabled').size()")
+      assert_equal 1, evaluate_script("jQuery('.vellumRelationshipBuilder button:enabled').length")
 
       click_on('Add')
     end

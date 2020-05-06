@@ -6,7 +6,7 @@
 //
 //= require rollbar
 //= require jquery
-//= require jquery.ui.all
+//= require jquery-ui
 //= require jquery_ujs
 //= require jeditable/jquery.jeditable
 //= require farbtastic/farbtastic

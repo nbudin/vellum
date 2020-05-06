@@ -8,7 +8,7 @@
 		var description = $this.find('option:selected').html();
 		var match = idpdRegex.exec(idPlusDirection);
 		var projectURL = $form.attr('data-project-url');
-	
+
 		if (match) {
             var relationshipTypeId = match[1];
             var sourceDirection = match[2];
@@ -42,13 +42,13 @@
 			enableDisableButton();
 		}
     };
-    
+
     enableDisableButton = function () {
         var $this = jQuery(this);
         var $form = $this.parent();
         var $button = $form.find('button');
-        
-        if ($form.find('select').filter(function () { return (jQuery(this).val() == '') }).size() > 0) {
+
+        if ($form.find('select').filter(function () { return (jQuery(this).val() == '') }).length > 0) {
             $button.attr('disabled', 'disabled');
         } else {
             $button.removeAttr('disabled');
@@ -58,7 +58,7 @@
     jQuery.fn.vellumRelationshipBuilder = function() {
         this.find('select[name="relationship[relationship_type_id_and_source_direction]"]')
             .bind('change', updateTargets);
-            
+
         this.find('select[name="relationship[target_id]"]')
             .bind('change', enableDisableButton)
             .hide()
