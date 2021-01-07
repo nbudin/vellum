@@ -296,8 +296,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.11.0-java)
       racc (~> 1.4)
-    nokogumbo (1.5.0)
-      nokogiri
+    nokogumbo (2.0.4)
+      nokogiri (~> 1.8, >= 1.8.4)
     orm_adapter (0.5.0)
     pg (0.18.3)
     pry (0.10.1)
@@ -359,10 +359,10 @@ GEM
     rubycas-client (2.3.9)
       activesupport
     rubyzip (2.0.0)
-    sanitize (4.6.4)
+    sanitize (5.2.2)
       crass (~> 1.0.2)
-      nokogiri (>= 1.4.4)
-      nokogumbo (~> 1.4)
+      nokogiri (>= 1.8.0)
+      nokogumbo (~> 2.0)
     sass (3.7.3)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -465,7 +465,7 @@ DEPENDENCIES
   ruby-graphviz (>= 0.9.2)
   rubypants (>= 0.3.0)!
   rubyzip (~> 2.0.0)
-  sanitize (~> 4.6.3)
+  sanitize (~> 5.2.2)
   sass-rails
   selenium-webdriver
   shoulda-matchers
