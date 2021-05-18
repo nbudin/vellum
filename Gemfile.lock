@@ -299,7 +299,7 @@ GEM
     nokogumbo (1.5.0)
       nokogiri
     orm_adapter (0.5.0)
-    pg (1.2.3)
+    pg (0.21.0)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -456,7 +456,7 @@ DEPENDENCIES
   minitest-reporters
   minitest-spec-rails
   nokogiri (>= 1.8.1)
-  pg
+  pg (~> 0.15)
   pry-rails
   puma
   radius

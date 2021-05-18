@@ -10,7 +10,7 @@ gem 'bootstrap-wysihtml5-rails'
 gem 'bower-rails'
 gem 'figaro'
 
-gem "pg"
+gem "pg", '~> 0.15'
 # DISABLING rails_12factor BECAUSE IT'S PREVENTING production.log GETTING WRITTEN
 # gem 'rails_12factor', group: :production
 gem "sqlite3", :groups => [:development, :test]
