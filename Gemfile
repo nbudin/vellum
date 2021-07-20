@@ -28,7 +28,7 @@ gem "jquery-rails", '~> 4.4.0'
 gem 'jquery-ui-rails'
 gem "rubyzip", "~> 2.0.0", :require => "zip"
 gem "nokogiri", ">= 1.8.1"
-gem "sanitize", "~> 4.6.3"
+gem "sanitize", "~> 5.2.3"
 gem "heroku_external_db"
 gem "illyan_client", "~> 2.0"
 gem "rollbar"
