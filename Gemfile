@@ -24,7 +24,7 @@ gem "haml"
 gem "acts_as_list"
 gem "ruby-graphviz", ">= 0.9.2", :require => "graphviz"
 gem "radius"
-gem "jquery-rails", '~> 4.3.5'
+gem "jquery-rails", '~> 4.4.0'
 gem 'jquery-ui-rails'
 gem "rubyzip", "~> 2.0.0", :require => "zip"
 gem "nokogiri", ">= 1.8.1"
