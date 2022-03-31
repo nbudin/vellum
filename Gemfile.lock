@@ -12,7 +12,7 @@ GIT
       diff-lcs
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     CFPropertyList (2.3.1)
     actionmailer (4.2.11.1)

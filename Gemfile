@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 ruby "2.6.2"
 
 gem "rails", "4.2.11.1"
@@ -33,10 +33,10 @@ gem "heroku_external_db"
 gem "illyan_client", "~> 2.0"
 gem "rollbar"
 gem "pry-rails", :groups => [:development, :test]
-gem "rubypants", ">= 0.3.0", github: 'jmcnevin/rubypants'
+gem "rubypants", ">= 0.3.0", git: 'https://github.com/jmcnevin/rubypants.git'
 gem 'webdrivers', groups: [:development, :test]
 
-gem 'htmldiff-lcs', github: 'nbudin/htmldiff-lcs', require: 'htmldiff'
+gem 'htmldiff-lcs', git: 'https://github.com/nbudin/htmldiff-lcs.git', require: 'htmldiff'
 
 gem "puma"
 gem "asset_sync"
