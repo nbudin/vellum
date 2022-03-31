@@ -1,11 +1,11 @@
 GIT
-  remote: git://github.com/jmcnevin/rubypants.git
-  revision: b4c507b6549a0a68607bd1c24be2785d71c014d6
+  remote: https://github.com/jmcnevin/rubypants.git
+  revision: 17a30a483a3817216825a5bb6b3482bfb345fef0
   specs:
-    rubypants (0.3.0)
+    rubypants (0.7.0)
 
 GIT
-  remote: git://github.com/nbudin/htmldiff-lcs.git
+  remote: https://github.com/nbudin/htmldiff-lcs.git
   revision: efeec72cdedadfb310dbb6474395289287d0fcdc
   specs:
     htmldiff-lcs (0.0.1)
@@ -116,7 +116,7 @@ GEM
     devise_cas_authenticatable (1.5.0)
       devise (>= 1.2.0)
       rubycas-client (>= 2.2.1)
-    diff-lcs (1.2.5)
+    diff-lcs (1.5.0)
     docile (1.3.2)
     erubis (2.7.0)
     excon (0.71.1)
@@ -311,9 +311,9 @@ GEM
     pry-rails (0.3.4)
       pry (>= 0.9.10)
     public_suffix (4.0.6)
-    puma (5.6.2)
+    puma (5.6.4)
       nio4r (~> 2.0)
-    puma (5.6.2-java)
+    puma (5.6.4-java)
       nio4r (~> 2.0)
     racc (1.6.0)
     racc (1.6.0-java)
