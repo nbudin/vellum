@@ -62,6 +62,8 @@ group :development do
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
   gem 'capistrano-maintenance', require: false
+  gem 'ed25519'
+  gem 'bcrypt_pbkdf'
 
   gem 'spring'
 end
