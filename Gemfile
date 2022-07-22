@@ -1,5 +1,5 @@
 source "https://rubygems.org"
-ruby File.read(File.expand_path('../.ruby-version', __FILE__))
+ruby File.read(File.expand_path('../.ruby-version', __FILE__)).strip
 
 gem "rails", "4.2.11.1"
 gem 'sass-rails'

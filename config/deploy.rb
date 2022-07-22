@@ -1,7 +1,7 @@
 # config valid only for Capistrano 3.1
 lock '3.4.0'
 
-set :rbenv_ruby, File.read(File.expand_path('../../.ruby-version', __FILE__))
+set :rbenv_ruby, File.read(File.expand_path('../../.ruby-version', __FILE__)).strip
 set :rbenv_custom_path, "/opt/rbenv"
 
 set :application, 'vellum'
