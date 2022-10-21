@@ -480,7 +480,7 @@ DEPENDENCIES
   xmlrpc
 
 RUBY VERSION
-   ruby 2.7.6p219
+   ruby 2.6.10p210
 
 BUNDLED WITH
    1.17.2
