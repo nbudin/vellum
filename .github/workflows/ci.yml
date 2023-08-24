@@ -31,8 +31,12 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: install node
+        uses: actions/setup-node@v3
       - name: Database setup
         run: bundle exec rake db:create db:schema:load
+      - name: Install Bower
+        run: npm install -g bower
       - name: Compile assets
         run: bundle exec rake assets:precompile
       - name: Run tests
