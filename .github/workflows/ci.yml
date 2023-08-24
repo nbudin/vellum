@@ -32,7 +32,7 @@ jobs:
         with:
           bundler-cache: true
       - name: Database setup
-        run: bundle exec rake db:create db:migrate
+        run: bundle exec rake db:create db:schema:load
       - name: Run tests
         run: TERM=xterm-color bundle exec rake test
       - name: Publish Test Report
