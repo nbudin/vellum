@@ -11,7 +11,7 @@ jobs:
     name: minitest
     runs-on: ubuntu-latest
     env:
-      TEST_DATABASE_URL: postgres://postgres:postgres@localhost/${{ github.event.repository.name }}_test
+      DATABASE_URL: postgres://postgres:postgres@localhost/${{ github.event.repository.name }}_test
       RAILS_ENV: test
     services:
       postgres:
