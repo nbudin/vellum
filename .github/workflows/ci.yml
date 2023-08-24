@@ -33,6 +33,8 @@ jobs:
           bundler-cache: true
       - name: Database setup
         run: bundle exec rake db:create db:schema:load
+      - name: Compile assets
+        run: bundle exec rake assets:precompile
       - name: Run tests
         run: TERM=xterm-color bundle exec rake test
       - name: Publish Test Report
