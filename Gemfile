@@ -39,7 +39,6 @@ gem 'webdrivers', groups: [:development, :test]
 gem 'htmldiff-lcs', git: 'https://github.com/nbudin/htmldiff-lcs.git', require: 'htmldiff'
 
 gem "puma"
-gem "asset_sync"
 
 # Not sure what's causing us to need this but we do apparently
 gem 'xmlrpc'
