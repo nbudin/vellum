@@ -168,10 +168,10 @@ GEM
     mime-types-data (3.2016.0521)
     mini_mime (1.1.2)
     mini_portile2 (2.8.4)
-    minitest (5.16.3)
+    minitest (5.19.0)
     minitest-matchers_vaccine (1.0.3)
       minitest (~> 5.0)
-    minitest-reporters (1.0.11)
+    minitest-reporters (1.6.1)
       ansi
       builder
       minitest (>= 5.0)
@@ -250,7 +250,7 @@ GEM
     rollbar (2.8.3)
       multi_json
     ruby-graphviz (1.2.2)
-    ruby-progressbar (1.7.1)
+    ruby-progressbar (1.13.0)
     rubycas-client (2.3.9)
       activesupport
     rubyzip (2.0.0)
