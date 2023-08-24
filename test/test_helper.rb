@@ -6,7 +6,20 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rails/test_help'
 
 require 'minitest/reporters'
-Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
+require "minitest/reporters"
+if ENV["CI"].present?
+  Minitest::Reporters.use!(
+    [
+      Minitest::Reporters::DefaultReporter.new,
+      Minitest::Reporters::HtmlReporter.new(output_filename: "minitest-report.html"),
+      Minitest::Reporters::JUnitReporter.new
+    ],
+    ENV,
+    Minitest.backtrace_filter
+  )
+else
+  Minitest::Reporters.use!(Minitest::Reporters::ProgressReporter.new, ENV, Minitest.backtrace_filter)
+end
 
 require 'capybara/rails'
 require 'selenium/webdriver'
