@@ -45,6 +45,7 @@ gem 'xmlrpc'
 
 group :test do
   gem 'database_cleaner'
+  gem 'minitest', '< 5.19'  # minitest-spec-rails breaks because of the removal of the MiniTest alias
   gem 'minitest-spec-rails'
   gem 'minitest-matchers_vaccine'
   gem 'minitest-reporters'
