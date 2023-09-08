@@ -47,7 +47,7 @@ jobs:
         run: |
           echo "FROM ghcr.io/${{ github.repository }}:${{ github.sha }}" >>Dockerfile.web
           echo "FROM ghcr.io/${{ github.repository }}:${{ github.sha }}" >>Dockerfile.release
-          echo "CMD bundle exec bin/rails db:migrate" >>Dockerfile.release
+          echo "CMD bundle exec rake db:migrate" >>Dockerfile.release
       - name: Build web image
         uses: docker/build-push-action@v4
         with:
