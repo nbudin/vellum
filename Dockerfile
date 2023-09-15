@@ -43,13 +43,13 @@ RUN apt-get update -qq && \
   apt-get install --no-install-recommends -y libpq5 libsqlite3-0 nodejs && \
   rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Copy built artifacts: gems, application
-COPY --from=build /usr/local/bundle /usr/local/bundle
-COPY --from=build --chown=rails:rails /rails /rails
-
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash
 USER rails:rails
+
+# Copy built artifacts: gems, application
+COPY --from=build /usr/local/bundle /usr/local/bundle
+COPY --from=build --chown=rails:rails /rails /rails
 
 EXPOSE 3000
 CMD bundle exec rails server -b 0.0.0.0 -p $PORT
