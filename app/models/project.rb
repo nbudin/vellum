@@ -75,7 +75,7 @@ class Project < ActiveRecord::Base
         :project_memberships => { methods: [:email] },
         :doc_templates => { include: [:doc_template_attrs] },
         :relationship_types => {},
-        :docs => {},
+        :docs => { methods: [:attrs_attributes] },
         :relationships => {},
         :publication_templates => {},
         :maps => { include: [:mapped_doc_templates, :mapped_relationship_types] },

@@ -3,6 +3,7 @@ development: &DEV
   host: localhost
   username: postgres
   database: vellum_development
+  pool: <%= ENV['DB_POOL'] || 16 %>
 
 test: &TEST
   adapter: postgresql
