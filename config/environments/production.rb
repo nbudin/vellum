@@ -44,7 +44,16 @@ Vellum::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
-  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              ENV['SMTP_HOST']     || 'smtp.gmail.com',
+    port:                 ENV['SMTP_PORT']&.to_i || 587,
+    domain:               ENV['SMTP_DOMAIN']   || 'gmail.com',
+    user_name:            ENV['SMTP_USERNAME'],
+    password:             ENV['SMTP_PASSWORD'],
+    authentication:       :plain,
+    enable_starttls_auto: true
+  }
 
   # Enable threaded mode
   # config.threadsafe!
