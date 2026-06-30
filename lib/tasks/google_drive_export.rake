@@ -76,4 +76,30 @@ namespace :google_drive do
 
     puts "Done."
   end
+
+  desc "Summarize projects that could not be shared with certain users due to missing Google accounts."
+  task sharing_failures: :environment do
+    # Map of email -> [{name:, folder_url:}]
+    failures = Hash.new { |h, k| h[k] = [] }
+
+    Project.where.not(google_drive_folder_url: nil).order(:name).each do |project|
+      (project.google_drive_warnings || []).each do |warning|
+        if (match = warning.match(/\ACould not share with (.+?):/))
+          failures[match[1]] << { name: project.name, folder_url: project.google_drive_folder_url }
+        end
+      end
+    end
+
+    if failures.empty?
+      puts "No sharing failures found."
+      next
+    end
+
+    puts "#{failures.size} email address(es) with sharing failures:\n\n"
+    failures.sort.each do |email, projects|
+      puts email
+      projects.each { |p| puts "  #{p[:name]}: #{p[:folder_url]}" }
+      puts
+    end
+  end
 end
