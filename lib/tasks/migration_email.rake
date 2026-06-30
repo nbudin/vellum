@@ -53,9 +53,14 @@ namespace :vellum do
       end
     end
 
-    puts "#{people_projects.size} recipients found.\n\n"
+    already_sent, pending = people_projects.partition { |person, _| person.migration_emailed_at.present? }
 
-    people_projects.each do |person, projects|
+    if already_sent.any?
+      puts "Skipping #{already_sent.size} already-notified recipient(s)."
+    end
+    puts "#{pending.size} recipient(s) to notify.\n\n"
+
+    pending.each do |person, projects|
       name         = person.firstname.presence || person.name.presence || person.email
       project_list = projects.map { |p| "  * #{p.name}: https://vellum.aegames.org/projects/#{p.id}" }.join("\n")
       body         = body_template % { name: name, project_list: project_list }
@@ -67,7 +72,9 @@ namespace :vellum do
           subject: subject,
           body:    body
         ).deliver_now
+        person.update_column(:migration_emailed_at, Time.now)
         puts "Sent to #{person.email}"
+        sleep 2
       else
         puts "=" * 60
         puts "To:      #{person.email}"
