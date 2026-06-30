@@ -44,6 +44,13 @@ namespace :google_drive do
       Project.order(:name).to_a
     end
 
+    already_done, projects = projects.partition { |p| p.google_drive_folder_url.present? }
+    if already_done.any?
+      puts "Skipping #{already_done.size} already-exported project(s):"
+      already_done.each { |p| puts "  #{p.name} (#{p.google_drive_folder_url})" }
+      puts
+    end
+
     puts "Authenticating with Google Drive..."
     exporter = GoogleDriveExporter.new(creds_path)
 
