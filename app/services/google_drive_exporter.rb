@@ -73,6 +73,14 @@ class GoogleDriveExporter
       warn "Could not share with #{email}: #{e.message}"
     end
 
+    if @warnings.any?
+      log "  Uploading export warnings"
+      warnings_text = "Export warnings for #{project.name}\n" \
+                      "Generated: #{Time.now}\n\n" +
+                      @warnings.map { |w| "- #{w}" }.join("\n")
+      upload_file("Export Warnings.txt", warnings_text, 'text/plain', parent_id: folder['id'])
+    end
+
     folder_url = "https://drive.google.com/drive/folders/#{folder['id']}"
     { folder_id: folder['id'], folder_url: folder_url, warnings: @warnings }
   end

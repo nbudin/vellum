@@ -96,7 +96,6 @@ namespace :vellum do
     # Available variables:
     #   %{name}         — the person's first name (or full name if no first name)
     #   %{project_list} — bulleted list of exported projects with Drive folder links
-    #   %{warnings}     — any warnings from the export (blank if none)
     #
     subject = "Your Vellum projects have been migrated to Google Drive"
 
@@ -107,7 +106,6 @@ namespace :vellum do
       You should now have access to the following folders:
 
       %{project_list}
-      %{warnings}
       Please let me know if you have any trouble accessing your projects, or if
       anything looks wrong or missing.  Thanks so much!
 
@@ -144,16 +142,7 @@ namespace :vellum do
       name = person.firstname.presence || person.name.presence || person.email
 
       project_list = projects.map { |p| "  * #{p.name}: #{p.google_drive_folder_url}" }.join("\n")
-
-      all_warnings = projects.flat_map { |p| p.google_drive_warnings || [] }
-      warnings_section = if all_warnings.any?
-        "Note: the following warnings occurred during export:\n" +
-          all_warnings.map { |w| "  - #{w}" }.join("\n") + "\n\n"
-      else
-        ""
-      end
-
-      body = body_template % { name: name, project_list: project_list, warnings: warnings_section }
+      body = body_template % { name: name, project_list: project_list }
 
       if send_it
         ActionMailer::Base.mail(
