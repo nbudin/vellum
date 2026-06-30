@@ -60,6 +60,16 @@ class GoogleDriveExporter
       update_doc(file_map[doc.id]['id'], doc.name, render_doc_html(doc, url_map))
     end
 
+    export_publications(project, parent_folder_id: folder['id'])
+
+    emails = project.members.map(&:email).compact.uniq
+    emails.each do |email|
+      log "  Sharing with #{email}"
+      share_folder(folder['id'], email)
+    rescue => e
+      log "  WARNING: Could not share with #{email}: #{e.message}"
+    end
+
     folder_url = "https://drive.google.com/drive/folders/#{folder['id']}"
     { folder_id: folder['id'], folder_url: folder_url }
   end
@@ -81,6 +91,75 @@ class GoogleDriveExporter
         end
       end
     end.each(&:join)
+  end
+
+  # ── Publication template export ───────────────────────────────────────────
+
+  def export_publications(project, parent_folder_id:)
+    renderable = project.publication_templates
+      .includes(:doc_template)
+      .select { |pt| %w(standalone doc).include?(pt.template_type) }
+    return if renderable.empty?
+
+    log "  Creating Publications subfolder"
+    pub_folder = create_folder("Publications", parent_id: parent_folder_id)
+
+    renderable.each do |pt|
+      case pt.template_type
+      when 'standalone'
+        export_standalone_publication(pt, project, parent_folder_id: pub_folder['id'])
+      when 'doc'
+        export_doc_publication(pt, project, parent_folder_id: pub_folder['id'])
+      end
+    end
+  end
+
+  def export_standalone_publication(pt, project, parent_folder_id:)
+    log "  Publishing standalone: #{pt.name}"
+    content = pt.execute(project: project)
+    filename = "#{pt.name}#{publication_extension(pt)}"
+    upload_file(filename, content, publication_mime_type(pt), parent_id: parent_folder_id)
+  rescue => e
+    log "  WARNING: Failed to render '#{pt.name}': #{e.message}"
+  end
+
+  def export_doc_publication(pt, project, parent_folder_id:)
+    return unless pt.doc_template
+    docs = project.docs.where(doc_template_id: pt.doc_template_id).to_a
+    return if docs.empty?
+
+    log "  Creating Publications/#{pt.name} subfolder"
+    folder = create_folder(pt.name, parent_id: parent_folder_id)
+    ext  = publication_extension(pt)
+    mime = publication_mime_type(pt)
+
+    # Force VPubContext to autoload in the main thread before parallel execution;
+    # Rails 4 autoloading is not thread-safe and will raise a circular dependency
+    # error if multiple threads try to load the same constant simultaneously.
+    VPubContext
+
+    parallel_each(docs) do |doc|
+      log "  Publishing #{pt.name}: #{doc.name}"
+      content = pt.execute(doc: doc, project: project)
+      upload_file("#{doc.name}#{ext}", content, mime, parent_id: folder['id'])
+    rescue => e
+      log "  WARNING: Failed to render '#{doc.name}' with '#{pt.name}': #{e.message}"
+    end
+  end
+
+  def publication_extension(pt)
+    return '.html' if pt.output_format.blank?
+    FormatConversions.filename_extension_for(pt.output_format)
+  rescue FormatConversions::UnknownFormatException
+    ".#{pt.output_format}"
+  end
+
+  def publication_mime_type(pt)
+    case pt.output_format.to_s
+    when 'fo'       then 'application/xml'
+    when 'gametex'  then 'text/plain'
+    else                 'text/html'
+    end
   end
 
   # ── Drive API calls ────────────────────────────────────────────────────────
@@ -107,6 +186,12 @@ class GoogleDriveExporter
 
   def update_doc(file_id, name, html)
     drive_multipart_patch("/files/#{file_id}?uploadType=multipart&supportsAllDrives=true&fields=id", { name: name }, html, 'text/html')
+  end
+
+  def share_folder(folder_id, email)
+    permission = { type: 'user', role: 'writer', emailAddress: email }
+    drive_post("/files/#{folder_id}/permissions?supportsAllDrives=true&sendNotificationEmail=false",
+               permission.to_json, 'application/json')
   end
 
   # ── HTTP helpers ───────────────────────────────────────────────────────────
