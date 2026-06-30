@@ -159,6 +159,7 @@ namespace :vellum do
           body:    body
         ).deliver_now
         puts "Sent to #{person.email}"
+        sleep 2
       else
         puts "=" * 60
         puts "To:      #{person.email}"
