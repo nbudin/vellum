@@ -34,7 +34,7 @@ jobs:
       - name: install node
         uses: actions/setup-node@v4
       - name: Database setup
-        run: bundle exec rake db:create db:schema:load
+        run: bundle exec rake db:create db:schema:load db:migrate
       - name: Install Bower
         run: npm install -g bower
       - name: Compile assets
