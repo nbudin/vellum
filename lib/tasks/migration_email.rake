@@ -23,7 +23,7 @@ namespace :vellum do
 
       I'm writing to let you know that after over a decade of maintenance, I'm making plans to take Vellum offline.
       It's become impossible to keep Vellum up to date with security updates and continue maintaining its database
-      hosting.  I realize this might be disappointing, and I'm sorry it has come to this step.
+      hosting.
 
       In order to keep your writing available to you, I'm migrating everything on Vellum to Google Docs.  Each project
       will have its own Google Drive folder, which will be shared with you and your co-authors.  I'll also be making
