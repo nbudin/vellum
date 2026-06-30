@@ -17,6 +17,8 @@ class Project < ActiveRecord::Base
     :class_name => "Person", :through => :project_memberships, :source => :person
   accepts_nested_attributes_for :project_memberships, :allow_destroy => true, reject_if: -> (attrs) { attrs['email'].blank? && attrs['id'].blank? }
 
+  serialize :google_drive_warnings, Array
+
   attr_reader :template_source_project_id
   validates_associated :doc_templates
   validates_associated :relationship_types
@@ -75,7 +77,7 @@ class Project < ActiveRecord::Base
         :project_memberships => { methods: [:email] },
         :doc_templates => { include: [:doc_template_attrs] },
         :relationship_types => {},
-        :docs => {},
+        :docs => { methods: [:attrs_attributes] },
         :relationships => {},
         :publication_templates => {},
         :maps => { include: [:mapped_doc_templates, :mapped_relationship_types] },
