@@ -26,13 +26,13 @@ jobs:
         ports:
           - 5432:5432
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
       - name: install node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
       - name: Database setup
         run: bundle exec rake db:create db:schema:load
       - name: Install Bower
@@ -42,13 +42,13 @@ jobs:
       - name: Run tests
         run: TERM=xterm-color bundle exec rake test
       - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v3
+        uses: mikepenz/action-junit-report@v4
         if: always() # always run even if the previous step fails
         with:
           check_name: "Minitest Report"
           report_paths: "test/reports/TEST-*.xml"
       - name: Archive HTML test reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-reports
@@ -56,19 +56,19 @@ jobs:
   docker-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Log in to registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@master
+        uses: docker/setup-buildx-action@v3
       - name: Read .ruby-version
         id: ruby-version
         run: echo "ruby-version=$(cat .ruby-version)" >> $GITHUB_OUTPUT
       - name: Build (and push to registry, if on main)
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: ${{ github.event_name == 'push' && github.event.ref == 'refs/heads/main' }}
@@ -89,7 +89,7 @@ jobs:
       name: ${{ steps.release-drafter.outputs.name }}
       html_url: ${{ steps.release-drafter.outputs.html_url }}
     steps:
-      - uses: release-drafter/release-drafter@v5
+      - uses: release-drafter/release-drafter@v6
         id: release-drafter
         with:
           config-name: release-drafter.yml
