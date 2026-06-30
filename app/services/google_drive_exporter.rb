@@ -20,9 +20,12 @@ class GoogleDriveExporter
     @access_token = fetch_access_token
   end
 
-  # Exports a single project. Returns { folder_id:, folder_url: }.
+  # Exports a single project. Returns { folder_id:, folder_url:, warnings: [] }.
   # Pass parent_folder_id to nest the project folder inside an existing Drive folder.
   def export_project(project, parent_folder_id: nil)
+    @warnings       = []
+    @warnings_mutex = Mutex.new
+
     log "Creating folder: #{project.name}"
     folder = create_folder(project.name, parent_id: parent_folder_id)
 
@@ -67,11 +70,11 @@ class GoogleDriveExporter
       log "  Sharing with #{email}"
       share_folder(folder['id'], email)
     rescue => e
-      log "  WARNING: Could not share with #{email}: #{e.message}"
+      warn "Could not share with #{email}: #{e.message}"
     end
 
     folder_url = "https://drive.google.com/drive/folders/#{folder['id']}"
-    { folder_id: folder['id'], folder_url: folder_url }
+    { folder_id: folder['id'], folder_url: folder_url, warnings: @warnings }
   end
 
   private
@@ -120,7 +123,7 @@ class GoogleDriveExporter
     filename = "#{pt.name}#{publication_extension(pt)}"
     upload_file(filename, content, publication_mime_type(pt), parent_id: parent_folder_id)
   rescue => e
-    log "  WARNING: Failed to render '#{pt.name}': #{e.message}"
+    warn "Failed to render publication '#{pt.name}': #{e.message}"
   end
 
   def export_doc_publication(pt, project, parent_folder_id:)
@@ -143,7 +146,7 @@ class GoogleDriveExporter
       content = pt.execute(doc: doc, project: project)
       upload_file("#{doc.name}#{ext}", content, mime, parent_id: folder['id'])
     rescue => e
-      log "  WARNING: Failed to render '#{doc.name}' with '#{pt.name}': #{e.message}"
+      warn "Failed to render '#{doc.name}' with publication '#{pt.name}': #{e.message}"
     end
   end
 
@@ -346,5 +349,10 @@ class GoogleDriveExporter
 
   def log(msg)
     puts msg
+  end
+
+  def warn(msg)
+    log "  WARNING: #{msg}"
+    @warnings_mutex.synchronize { @warnings << msg }
   end
 end

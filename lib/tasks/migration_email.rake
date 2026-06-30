@@ -81,4 +81,104 @@ namespace :vellum do
 
     puts "\nDone. (Run with SEND=true to deliver.)" unless send_it
   end
+
+  desc <<~DESC
+    Preview or send followup emails to members of projects that have been exported
+    to Google Drive but not yet notified. Marks projects as notified after sending.
+
+    Usage:
+      bundle exec rake vellum:notify_exported          # preview
+      SEND=true bundle exec rake vellum:notify_exported  # send
+  DESC
+  task notify_exported: :environment do
+    # ── Edit this template before sending ─────────────────────────────────
+    #
+    # Available variables:
+    #   %{name}         — the person's first name (or full name if no first name)
+    #   %{project_list} — bulleted list of exported projects with Drive folder links
+    #   %{warnings}     — any warnings from the export (blank if none)
+    #
+    subject = "Your Vellum projects have been migrated to Google Drive"
+
+    body_template = <<~BODY
+      Hi %{name},
+
+      Your Vellum projects have been migrated to Google Drive and shared with you.
+      You should now have access to the following folders:
+
+      %{project_list}
+      %{warnings}
+      Please let me know if you have any trouble accessing your projects, or if
+      anything looks wrong or missing.  Thanks so much!
+
+      Nat Budin
+      natbudin@gmail.com
+    BODY
+    # ──────────────────────────────────────────────────────────────────────
+
+    from    = "natbudin@gmail.com"
+    send_it = ENV['SEND'] == 'true'
+
+    exported_projects = Project.where.not(google_drive_folder_url: nil)
+                               .where(google_drive_notified_at: nil)
+                               .includes(:members)
+                               .order(:name)
+
+    if exported_projects.empty?
+      puts "No exported-but-unnotified projects found."
+      next
+    end
+
+    # Build a map of person -> [projects]
+    people_projects = Hash.new { |h, k| h[k] = [] }
+    exported_projects.each do |project|
+      project.members.each do |person|
+        next if person.email.blank?
+        people_projects[person] << project
+      end
+    end
+
+    puts "#{people_projects.size} recipients across #{exported_projects.size} project(s).\n\n"
+
+    people_projects.each do |person, projects|
+      name = person.firstname.presence || person.name.presence || person.email
+
+      project_list = projects.map { |p| "  * #{p.name}: #{p.google_drive_folder_url}" }.join("\n")
+
+      all_warnings = projects.flat_map { |p| p.google_drive_warnings || [] }
+      warnings_section = if all_warnings.any?
+        "Note: the following warnings occurred during export:\n" +
+          all_warnings.map { |w| "  - #{w}" }.join("\n") + "\n\n"
+      else
+        ""
+      end
+
+      body = body_template % { name: name, project_list: project_list, warnings: warnings_section }
+
+      if send_it
+        ActionMailer::Base.mail(
+          from:    from,
+          to:      person.email,
+          subject: subject,
+          body:    body
+        ).deliver_now
+        puts "Sent to #{person.email}"
+      else
+        puts "=" * 60
+        puts "To:      #{person.email}"
+        puts "From:    #{from}"
+        puts "Subject: #{subject}"
+        puts "-" * 60
+        puts body
+        puts
+      end
+    end
+
+    if send_it
+      exported_projects.update_all(google_drive_notified_at: Time.now)
+      puts "\nMarked #{exported_projects.size} project(s) as notified."
+    else
+      puts "\nDone. (Run with SEND=true to deliver and mark projects as notified.)"
+    end
+  end
 end

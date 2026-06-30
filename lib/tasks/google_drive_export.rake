@@ -52,7 +52,19 @@ namespace :google_drive do
     projects.each do |project|
       puts "=== #{project.name} ==="
       result = exporter.export_project(project, parent_folder_id: parent_folder_id)
-      puts "  Folder URL: #{result[:folder_url]}\n\n"
+
+      project.update_columns(
+        google_drive_folder_url: result[:folder_url],
+        google_drive_exported_at: Time.now,
+        google_drive_warnings: result[:warnings].to_yaml
+      )
+
+      puts "  Folder URL: #{result[:folder_url]}"
+      if result[:warnings].any?
+        puts "  Warnings (#{result[:warnings].size}):"
+        result[:warnings].each { |w| puts "    - #{w}" }
+      end
+      puts
     end
 
     puts "Done."
