@@ -1,5 +1,55 @@
 namespace :vellum do
   desc <<~DESC
+    Mark people as already notified by parsing a notify_migration log file.
+
+    Reads "Sent to <email>" lines from the log file and stamps migration_emailed_at
+    on the matching Person records, so re-running notify_migration skips them.
+
+    Usage:
+      LOG_FILE=sent.log bundle exec rake vellum:mark_migration_sent
+  DESC
+  task mark_migration_sent: :environment do
+    log_path = ENV['LOG_FILE'].presence
+    abort "Set LOG_FILE to the path of the notify_migration output log." unless log_path
+    abort "File not found: #{log_path}" unless File.exist?(log_path)
+
+    emails = File.readlines(log_path, chomp: true).filter_map do |line|
+      line.match(/\ASent to (.+)\z/)&.[](1)&.strip
+    end
+
+    abort "No 'Sent to ...' lines found in #{log_path}." if emails.empty?
+
+    puts "Found #{emails.size} sent address(es) in log."
+
+    sent_at = Time.now
+    updated = 0
+    skipped = 0
+    not_found = []
+
+    emails.each do |email|
+      person = Person.find_by(email: email)
+      if person.nil?
+        not_found << email
+        next
+      end
+      if person.migration_emailed_at.present?
+        skipped += 1
+        next
+      end
+      person.update_column(:migration_emailed_at, sent_at)
+      updated += 1
+    end
+
+    puts "Marked #{updated} person(s) as notified."
+    puts "Skipped #{skipped} already-marked person(s)." if skipped > 0
+    if not_found.any?
+      puts "#{not_found.size} address(es) not found in database:"
+      not_found.each { |e| puts "  #{e}" }
+    end
+  end
+
+
+  desc <<~DESC
     Preview or send migration notification emails to all Vellum project members.
 
     Each person receives one email listing all their projects. By default this
