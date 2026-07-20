@@ -47,6 +47,7 @@ params = CGI.parse(uri.query || "")
   <%= attribute "password", password, true %>
   <%= attribute "host",     host %>
   <%= attribute "port",     port %>
+  pool: <%= ENV["DB_POOL"] || 16 %>
 
 <% params.each do |key, value| %>
   <%= key %>: <%= value.first %>
