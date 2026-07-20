@@ -63,7 +63,7 @@ namespace :google_drive do
       project.update_columns(
         google_drive_folder_url: result[:folder_url],
         google_drive_exported_at: Time.now,
-        google_drive_warnings: result[:warnings].to_yaml
+        google_drive_warnings: result[:warnings]
       )
 
       puts "  Folder URL: #{result[:folder_url]}"
