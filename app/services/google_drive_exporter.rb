@@ -248,12 +248,21 @@ class GoogleDriveExporter
     ].join("\r\n")
   end
 
-  def execute(uri, req)
+  TRANSIENT_ERRORS = [
+    Errno::ECONNRESET, Errno::ECONNREFUSED, Errno::ETIMEDOUT, Errno::EPIPE,
+    EOFError, OpenSSL::SSL::SSLError, Net::OpenTimeout, Net::ReadTimeout
+  ].freeze
+
+  def execute(uri, req, attempt: 1)
     response = Net::HTTP.start(uri.host, uri.port, use_ssl: true) { |http| http.request(req) }
     unless response.is_a?(Net::HTTPSuccess)
       raise "Drive API error #{response.code}: #{response.body}"
     end
     JSON.parse(response.body)
+  rescue *TRANSIENT_ERRORS
+    raise if attempt >= 3
+    sleep(attempt)
+    execute(uri, req, attempt: attempt + 1)
   end
 
   # ── Service account JWT auth ───────────────────────────────────────────────
