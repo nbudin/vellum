@@ -56,9 +56,17 @@ namespace :google_drive do
 
     puts "Exporting #{projects.size} project(s)...\n\n"
 
+    failed = []
+
     projects.each do |project|
       puts "=== #{project.name} ==="
-      result = exporter.export_project(project, parent_folder_id: parent_folder_id)
+      begin
+        result = exporter.export_project(project, parent_folder_id: parent_folder_id)
+      rescue => e
+        puts "  FAILED: #{e.class}: #{e.message}"
+        failed << project
+        next
+      end
 
       project.update_columns(
         google_drive_folder_url: result[:folder_url],
@@ -72,6 +80,11 @@ namespace :google_drive do
         result[:warnings].each { |w| puts "    - #{w}" }
       end
       puts
+    end
+
+    if failed.any?
+      puts "#{failed.size} project(s) failed and were skipped (re-run this task to retry them):"
+      failed.each { |p| puts "  #{p.name} (id: #{p.id})" }
     end
 
     puts "Done."
