@@ -100,6 +100,8 @@ class GoogleDriveExporter
           break unless item
           block.call(item)
         end
+      ensure
+        ActiveRecord::Base.clear_active_connections!
       end
     end.each(&:join)
   end
