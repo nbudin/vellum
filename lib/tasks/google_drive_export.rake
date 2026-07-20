@@ -82,9 +82,9 @@ namespace :google_drive do
     any_failures = false
 
     Project.where.not(google_drive_folder_url: nil).order(:name).each do |project|
-      failed_emails = (project.google_drive_warnings || []).filter_map do |warning|
+      failed_emails = (project.google_drive_warnings || []).map do |warning|
         warning.match(/\ACould not share with (.+?):/)[1] rescue nil
-      end
+      end.compact
       next if failed_emails.empty?
 
       unless any_failures

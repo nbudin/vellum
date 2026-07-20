@@ -13,9 +13,9 @@ namespace :vellum do
     abort "Set LOG_FILE to the path of the notify_migration output log." unless log_path
     abort "File not found: #{log_path}" unless File.exist?(log_path)
 
-    emails = File.readlines(log_path, chomp: true).filter_map do |line|
+    emails = File.readlines(log_path, chomp: true).map do |line|
       line.match(/\ASent to (.+)\z/)&.[](1)&.strip
-    end
+    end.compact
 
     abort "No 'Sent to ...' lines found in #{log_path}." if emails.empty?
 
