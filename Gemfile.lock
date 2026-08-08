@@ -64,7 +64,7 @@ GEM
     bootstrap-sass (3.4.1)
       autoprefixer-rails (>= 5.2.1)
       sassc (>= 2.0.0)
-    bootstrap-wysihtml5-rails (0.3.2.100)
+    bootstrap-wysihtml5-rails (0.3.3.8)
       railties (>= 3.0)
     bower-rails (0.11.0)
     builder (3.2.4)
